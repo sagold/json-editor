@@ -8,16 +8,17 @@ import { StringEditorPlugin, SelectEditor } from './StringEditor';
 import { NullEditorPlugin } from './NullEditor';
 import { ErrorEditorPlugin } from './ErrorEditor';
 import { UnknownEditorPlugin } from './UnknownEditor';
-import { Editor, EditorPlugin } from '../types';
 import { Node } from 'headless-json-editor';
+import { Editor, EditorPlugin } from './decorators';
 
 export type { Editor };
 
+// @todo consider removing complex EditorPlugin type
 export const defaultEditors: EditorPlugin[] = [
     {
         id: 'hidden-editor',
         use: (node) => node.options.hidden,
-        Editor: () => <></>
+        Editor: () => null
     },
     SelectOneOfEditorPlugin,
     MultiSelectEditorPlugin,
@@ -25,14 +26,11 @@ export const defaultEditors: EditorPlugin[] = [
     ObjectEditorPlugin,
     {
         id: 'select-string-editor',
-        // @ts-ignore
         use: (node) => node.schema.type === 'string' && Array.isArray(node.schema.enum),
-        // @ts-ignore
         Editor: SelectEditor
     },
     StringEditorPlugin,
     NumberEditorPlugin,
-    // @ts-ignore
     BooleanEditorPlugin,
     NullEditorPlugin,
     ErrorEditorPlugin,
@@ -45,7 +43,7 @@ export function createGetEditor(editors: EditorPlugin[]): GetEditor {
     return function getEditor(node: Node, options?: Record<string, unknown>): Editor {
         const { Editor } = editors.find((ed) => ed.use(node, options)) || {};
         if (Editor) {
-            return Editor;
+            return Editor as Editor;
         }
         throw new Error(`Failed retrieving an editor for '${node.pointer}'`);
     };

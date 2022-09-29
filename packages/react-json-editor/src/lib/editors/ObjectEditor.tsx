@@ -1,8 +1,7 @@
 import { ObjectNode } from 'headless-json-editor';
-import { EditorPlugin } from '../types';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Message } from 'semantic-ui-react';
-import { parentEditor } from './decorators';
+import { parentEditor, EditorPlugin } from './decorators';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/objecteditor/index.ts
 
@@ -30,8 +29,6 @@ export const ObjectEditor = parentEditor<ObjectNode>(({ node, instance, getEdito
 
 export const ObjectEditorPlugin: EditorPlugin = {
     id: 'object-editor',
-    // @ts-ignore
     use: (node) => node.schema.type === 'object',
-    // @ts-ignore
     Editor: ObjectEditor
 };

@@ -1,10 +1,9 @@
 import { JSONSchema, isJSONError } from 'json-schema-library';
 import { useState, useRef, useEffect } from 'react';
-import { EditorPlugin } from '../types';
 import { ArrayNode, Node, HeadlessJsonEditor } from 'headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
-import { Button, Icon, Modal, Dropdown, Message, Popup } from 'semantic-ui-react';
-import { parentEditor } from './decorators';
+import { Button, Icon, Modal, Dropdown, Message, Popup, DropdownProps } from 'semantic-ui-react';
+import { parentEditor, EditorPlugin } from './decorators';
 import Sortable from 'sortablejs';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
@@ -71,13 +70,14 @@ export type ArrayNodeOptions = {
 };
 
 export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor }) => {
-    const [modal, setModal] = useState({ open: false, options: [], selected: 0 });
-    // @ts-ignore
+    const [modal, setModal] = useState<{ open: boolean; options: JSONSchema[]; selected: number }>({
+        open: false,
+        options: [],
+        selected: 0
+    });
     const openModal = (options: JSONSchema[]) => setModal({ open: true, options, selected: 0 });
     const closeModal = () => setModal({ open: false, options: [], selected: 0 });
     const Header = getEditorHeader(node);
-
-    console.log('render array');
 
     function addItem() {
         const options = instance.getArrayAddOptions(node);
@@ -96,18 +96,17 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
         closeModal();
     }
 
-    // @ts-ignore
-    const handleSelection = (event, { value }) => setModal({ ...modal, selected: parseInt(value) });
-    // @ts-ignore
-    const sortable: ArrayNodeOptions['sortable'] = node.options.sortable ?? { disabled: true };
-    // @ts-ignore
+    const handleSelection = (event, { value }: DropdownProps) => setModal({ ...modal, selected: parseInt(`${value}`) });
+    let sortable = node.options.sortable;
+    if (sortable === undefined) {
+        sortable = { disabled: true };
+    }
+
     sortable.disabled = sortable.disabled ?? false;
-    // @ts-ignore
     sortable.group = sortable.group ?? node.pointer;
 
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
-        // @ts-ignore
         if (!sortable.disabled && ref.current) {
             // const sortable = Sortable.create(ref.current, {
             Sortable.create(ref.current, {
@@ -116,8 +115,11 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                 ...sortable,
                 // Element dragging ended
                 onEnd: function (/**Event*/ evt) {
-                    // @ts-ignore
-                    instance.moveItem(`${node.pointer}/${evt.oldIndex}`, evt.newIndex);
+                    const targetIndex = parseInt(`${evt.newIndex}`);
+                    if (isNaN(targetIndex)) {
+                        return;
+                    }
+                    instance.moveItem(`${node.pointer}/${evt.oldIndex}`, targetIndex);
                     console.log('move', `${node.pointer}/${evt.oldIndex}`, evt.newIndex);
                     // evt.to;    // target list
                     // evt.from;  // previous list
@@ -127,7 +129,7 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                     // evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
                     // evt.clone // the clone element
                     // evt.pullMode;  // when item is in
-                    const itemEl = evt.item; // dragged HTMLElement
+                    // const itemEl = evt.item; // dragged HTMLElement
                 }
             });
         }
@@ -141,7 +143,6 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                     <Icon name="add" />
                 </Button>
             </Header>
-            {/*@ts-ignore*/}
             <p>{node.schema.description as string}</p>
             {node.errors.length > 0 && (
                 <Message error>
@@ -152,7 +153,7 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                     </Message.List>
                 </Message>
             )}
-            {/*@ts-ignore*/}
+            {/* @ts-ignore */}
             <div className="children" ref={ref}>
                 {node.children.map((child) => {
                     const Node = getEditor(child);
@@ -162,7 +163,6 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                             instance={instance}
                             size={node.children.length}
                             key={child.id}
-                            // @ts-ignore
                             withDragHandle={!sortable.disabled}
                         >
                             <Node node={child} instance={instance} getEditor={getEditor} />
@@ -174,14 +174,11 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                 <Modal.Header>Select new array item</Modal.Header>
                 <Modal.Content>
                     <Dropdown
-                        // @ts-ignore
                         onChange={handleSelection}
                         defaultValue={0}
                         options={modal.options.map((o, index) => ({
-                            // @ts-ignore
                             key: o.id,
                             value: index,
-                            // @ts-ignore
                             text: o.title
                         }))}
                     />
@@ -201,8 +198,6 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
 
 export const ArrayEditorPlugin: EditorPlugin = {
     id: 'array-editor',
-    // @ts-ignore
     use: (node) => node.schema.type === 'array',
-    // @ts-ignore
     Editor: ArrayEditor
 };

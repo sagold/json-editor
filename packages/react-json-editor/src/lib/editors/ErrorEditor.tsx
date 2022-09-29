@@ -1,10 +1,9 @@
-import { EditorPlugin } from '../types';
+import { EditorPlugin } from './decorators';
 import { json, Node, isJSONError, HeadlessJsonEditor } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
 export const ErrorEditor = ({ node, instance }: { node: Node; instance: HeadlessJsonEditor }) => {
     const value = JSON.stringify(json(node));
-    // @ts-ignore
     const description = `${node.schema.name} '${node.pointer}': ${node.schema.message}`;
     return (
         <div data-type="error">
@@ -14,7 +13,6 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: Headless
                 readOnly
                 value={value}
                 error={node.errors.length > 0 && node.errors.map((e) => e.message)}
-                // @ts-ignore
                 label={`${node.property} (${node.schema.name})`}
             />
             <Button basic icon onClick={() => instance.remove(node.pointer)}>

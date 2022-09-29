@@ -1,5 +1,5 @@
-import { EditorPlugin } from '../types';
-import { Node } from 'headless-json-editor';
+import { EditorPlugin } from './decorators';
+import { Node, NullNode } from 'headless-json-editor';
 
 export const NullEditor = ({ node }: { node: Node }) => (
     <div data-type="null">
@@ -12,7 +12,6 @@ export const NullEditor = ({ node }: { node: Node }) => (
 
 export const NullEditorPlugin: EditorPlugin = {
     id: 'null-editor',
-    // @ts-ignore
     use: (node) => node.schema.type === 'null',
     Editor: NullEditor
 };

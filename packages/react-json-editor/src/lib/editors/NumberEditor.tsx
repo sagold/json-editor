@@ -1,5 +1,5 @@
 import { NumberNode } from 'headless-json-editor';
-import { EditorPlugin } from '../types';
+import { EditorPlugin } from './decorators';
 import { Form } from 'semantic-ui-react';
 import { valueEditor } from './decorators';
 
@@ -29,8 +29,6 @@ export const NumberEditor = valueEditor<NumberNode>(({ node, setValue }) => (
 
 export const NumberEditorPlugin: EditorPlugin = {
     id: 'number-editor',
-    // @ts-ignore
     use: (node) => node.schema.type === 'number',
-    // @ts-ignore
     Editor: NumberEditor
 };

@@ -2,7 +2,7 @@ import { JSONSchema } from 'json-schema-library';
 import { useState, useEffect, useRef } from 'react';
 import { HeadlessJsonEditor, Plugin, Node, createOnChangePlugin, OnChangeListener } from 'headless-json-editor';
 import { GetEditor, createGetEditor, defaultEditors } from './editors';
-import { EditorPlugin } from './types';
+import { EditorPlugin } from './editors/decorators';
 
 export type JsonEditorOptions = {
     schema: JSONSchema;

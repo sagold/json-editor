@@ -1,18 +1,16 @@
 import { StringNode } from 'headless-json-editor';
-import { EditorPlugin } from '../types';
 import { Form, Dropdown } from 'semantic-ui-react';
-import { valueEditor } from './decorators';
+import { valueEditor, EditorPlugin } from './decorators';
 
 export const StringEditor = valueEditor<StringNode>(({ node, setValue }) => {
-    // @ts-ignore
-    const disabled = node.options.disabled || (node.schema.const && node.errors.length === 0);
+    const isValidConst = node.schema.const !== null && node.errors.length === 0;
+    const disabled = node.options.disabled || isValidConst;
 
     return (
         <div data-type="string" className={disabled ? 'disabled' : 'enabled'}>
             <Form.Input
                 id={node.pointer}
                 type="text"
-                // @ts-ignore
                 disabled={disabled}
                 value={node.value}
                 error={node.errors.length > 0 && node.errors.map((e) => e.message)}
@@ -26,17 +24,15 @@ export const StringEditor = valueEditor<StringNode>(({ node, setValue }) => {
 
 export const StringEditorPlugin: EditorPlugin = {
     id: 'string-editor',
-    // @ts-ignore
     use: (node) => node.schema.type === 'string',
-    // @ts-ignore
     Editor: StringEditor
 };
 
 export const SelectEditor = valueEditor<StringNode>(({ node, setValue }) => {
-    // @ts-ignore
+    const enumValues = (node.schema.enum || []) as string[];
+
     const titles = (node.options.enum as string[]) ?? [];
-    // @ts-ignore
-    const options = node.schema.enum.map((value, index) => ({
+    const options = enumValues.map((value, index) => ({
         key: index,
         value,
         text: titles[index] ?? value

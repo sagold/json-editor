@@ -1,6 +1,6 @@
 import { Form, Checkbox } from 'semantic-ui-react';
 import { BooleanNode } from 'headless-json-editor';
-import { valueEditor } from './decorators';
+import { EditorPlugin, valueEditor } from './decorators';
 
 export const BooleanEditor = valueEditor<BooleanNode>(({ node, setValue }) => (
     <div data-type="boolean">
@@ -15,7 +15,7 @@ export const BooleanEditor = valueEditor<BooleanNode>(({ node, setValue }) => (
     </div>
 ));
 
-export const BooleanEditorPlugin = {
+export const BooleanEditorPlugin: EditorPlugin = {
     id: 'boolean-editor',
     use: (node) => node.schema.type === 'boolean',
     Editor: BooleanEditor
