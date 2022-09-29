@@ -1,5 +1,5 @@
 import { EditorPlugin } from './decorators';
-import { Node, NullNode } from 'headless-json-editor';
+import { Node } from 'headless-json-editor';
 
 export const NullEditor = ({ node }: { node: Node }) => (
     <div data-type="null">

@@ -43,7 +43,7 @@ export function createGetEditor(editors: EditorPlugin[]): GetEditor {
     return function getEditor(node: Node, options?: Record<string, unknown>): Editor {
         const { Editor } = editors.find((ed) => ed.use(node, options)) || {};
         if (Editor) {
-            return Editor as Editor;
+            return Editor;
         }
         throw new Error(`Failed retrieving an editor for '${node.pointer}'`);
     };

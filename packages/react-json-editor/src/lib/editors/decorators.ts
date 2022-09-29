@@ -28,7 +28,7 @@ export type ValueEditorProps<T extends ValueNode> = {
 
 export type ValueEditor<T extends ValueNode> = (props: ValueEditorProps<T>) => JSX.Element | null;
 
-export function valueEditor<T extends ValueNode>(EditorComponent: ValueEditor<T>): ValueEditor<T> {
+export function valueEditor<T extends ValueNode>(EditorComponent: ValueEditor<T>): Editor<any> {
     return memo(
         (props: EditorProps<T>) =>
             EditorComponent({
@@ -49,7 +49,7 @@ export type ParentEditorProps<T extends ParentNode> = {
 };
 export type ParentEditor<T extends ParentNode> = (props: ParentEditorProps<T>) => JSX.Element | null;
 
-export function parentEditor<T extends ParentNode>(EditorComponent: ParentEditor<T>): ParentEditor<T> {
+export function parentEditor<T extends ParentNode>(EditorComponent: ParentEditor<T>): Editor<any> {
     return memo(
         (props: EditorProps<T>) =>
             EditorComponent({
@@ -61,7 +61,7 @@ export function parentEditor<T extends ParentNode>(EditorComponent: ParentEditor
     );
 }
 
-type DecoratedEditor =
+export type DecoratedEditor =
     | ParentEditor<ObjectNode>
     | ParentEditor<ArrayNode>
     | ValueEditor<StringNode>
@@ -73,7 +73,7 @@ type DecoratedEditor =
 export type EditorPlugin = {
     readonly id: string;
     use: (node: Node, options?: Record<string, unknown>) => boolean;
-    Editor: DecoratedEditor;
+    Editor: Editor;
 };
 
 export type Editor<T extends Node = Node> = (props: EditorProps<T>) => JSX.Element | null;
