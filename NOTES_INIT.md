@@ -1,13 +1,22 @@
 yarn global add nx
 npx create-nx-workspace --preset=ts
-nx generate @nrwl/js:library --name=headless-json-editor --buildable --preset=ts
+nx generate @nrwl/js:library --name=headless-json-editor --buildable --publishable --preset=ts
 yarn add -D @nrwl/react
-nx g @nrwl/react:lib react-json-editor --preset=ts
+nx g @nrwl/react:lib react-json-editor --publishable --preset=ts
 
 ## changes to ts-config in headless-json-editor
 
 - [add] "noImplicitAny": false
 - [remove] "noPropertyAccessFromIndexSignature": true
+
+
+## actions
+
+rename repository: https://nx.dev/packages/workspace/generators/move
+
+```sh
+nx g @nrwl/workspace:move --project headless-json-editor _headless-json-editor
+```
 
 ## references
 
