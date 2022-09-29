@@ -9,7 +9,8 @@ export const data = {
             type: 'paragraph',
             text: 'Lorem ipsum sit dolor'
         }
-    ]
+    ],
+    dependency: {}
     // @todo additionalProperties = false => should add error to additional property and add delete option
     // @todo additionalProperties = true => results in wron schema (root) for property
     // @todo no add.Props => returns error instead of schema. should be derived schema?
@@ -213,6 +214,26 @@ export const schema = {
                         }
                     }
                 ]
+            }
+        },
+        dependency: {
+            title: 'dependency',
+            type: 'object',
+            properties: {
+                trigger: {
+                    title: 'trigger',
+                    type: 'string'
+                }
+            },
+            dependencies: {
+                trigger: {
+                    properties: {
+                        additionalValue: {
+                            title: 'dynamic value',
+                            type: 'string'
+                        }
+                    }
+                }
             }
         },
         unknownNotAllowed: {

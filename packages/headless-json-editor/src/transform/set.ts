@@ -15,7 +15,7 @@ import { create } from '../node/create';
 import { json } from '../node/json';
 import { split, set as setPointer, join } from 'gson-pointer';
 import { invalidPathError } from '../errors';
-import { getChildNodeIndex } from '../node/getChildNode';
+import { getChildNodeIndex, getChildNode } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
 function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
@@ -37,7 +37,12 @@ function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string,
 /**
  * set (add, update) given data to location of json pointer
  */
-export function set(core: Draft, previousRoot: Node, pointer: JSONPointer, value: any): [JSONError] | [Node, Change[]] {
+export function set<T extends Node = Node>(
+    core: Draft,
+    previousRoot: T,
+    pointer: JSONPointer,
+    value: any
+): [JSONError] | [T, Change[]] {
     const changeSet: Change[] = [];
     const frags = split(pointer);
     const newRootNode = { ...previousRoot };
@@ -93,6 +98,39 @@ export function set(core: Draft, previousRoot: Node, pointer: JSONPointer, value
                     node: parent.children[index]
                 });
                 return [newRootNode, changeSet];
+            }
+        }
+
+        // replace whole object and reuse currently edited node
+        if (targetNode.schema.dependencies) {
+            // @todo improve diff
+            // if next key is a key in dependencies, recreate whole node and
+            // let `create` do the complex work
+            const changedProperty = frags[0];
+            const dependencyAffected = targetNode.schema.dependencies[changedProperty] != null;
+            if (dependencyAffected) {
+                // store current edited child for later, we have to reuse it
+                const currentlyEditedChild = getChildNode(targetNode, frags[0]);
+
+                // rebuild this object with updated data
+                const currentData = json(targetNode) as Record<string, unknown>;
+                setPointer(currentData, join(frags), value);
+                changeSet.push({
+                    type: 'delete',
+                    node: targetNode
+                });
+
+                // note: we may not replace edited child, but must update it
+                const newTargetNode = create<ObjectNode>(core, currentData, targetNode.schema, targetNode.pointer);
+                changeSet.push({
+                    type: 'create',
+                    node: newTargetNode
+                });
+
+                const nextChildIndex = getChildNodeIndex(newTargetNode, frags[0]);
+                // @ts-ignore
+                newTargetNode.children[nextChildIndex] = currentlyEditedChild;
+                targetNode.children = newTargetNode.children;
             }
         }
 

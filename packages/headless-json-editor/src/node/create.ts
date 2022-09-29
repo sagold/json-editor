@@ -11,6 +11,7 @@ import {
     NullNode,
     JSONSchema
 } from '../types';
+import query from 'gson-query';
 
 type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 
@@ -18,7 +19,8 @@ function getOptions(schema: JSONSchema) {
     return {
         title: schema.title,
         description: schema.description,
-        disabled: false,
+        // @ts-ignore
+        disabled: schema.isActive === false || false,
         hidden: false,
         ...(schema.options ?? {})
     };
@@ -57,16 +59,65 @@ export const NODES: Record<NodeType, CreateNode> = {
             children: [],
             errors: []
         };
-        Object.keys(data).forEach((key) => {
-            const nextSchema = core.step(key, schema, data, pointer); // not save
-            node.children.push(create(core, data[key], nextSchema, `${pointer}/${key}`));
+
+        /**
+         * if there are dependencies
+         * - we need at least to flag the schema:
+         *     1. if it is active (an active flag indicates a dynamic property)
+         * - create nodes for all schemas
+         *
+         * consider to move this to json-schema-library
+         */
+        let totalData = data;
+        let properties = schema.properties;
+        if (schema.dependencies) {
+            Object.keys(schema.dependencies).forEach((dependentKey) => {
+                const additionalSchema = schema.dependencies![dependentKey];
+                // ignore if its not a json-schema
+                if (getTypeOf(additionalSchema) !== 'object') {
+                    return;
+                }
+
+                // @ts-ignore
+                additionalSchema.type = 'object';
+
+                const testValue = data[dependentKey];
+                const isActive = typeof testValue === 'string' ? testValue.length > 0 : testValue != null;
+                const additionalData = core.getTemplate({}, additionalSchema);
+                totalData = { ...additionalData, ...data };
+
+                // @ts-ignore
+                Object.keys(additionalSchema.properties).forEach((key) => {
+                    // @ts-ignore
+                    additionalSchema.properties[key].isActive = isActive;
+                    // @ts-ignore
+                    additionalSchema.properties[key].isDynamic = true;
+                });
+
+                // @ts-ignore
+                properties = { ...properties, ...(additionalSchema.properties ?? {}) };
+                return;
+            });
+        }
+
+        Object.keys(totalData).forEach((key) => {
+            const nextSchema = core.step(key, schema, totalData, pointer); // not save
+            node.children.push(create(core, totalData[key], nextSchema, `${pointer}/${key}`));
         });
-        if (schema.properties) {
+
+        if (properties) {
             // simplified solution to maintain order as is given by json-schema
             // should probably use combination of additionalProperties, dependencies, etc
-            const props = Object.keys(schema.properties);
-            node.children.sort((a, b) => props.indexOf(a.property) - props.indexOf(b.property));
+            const props = Object.keys(properties);
+            node.children.sort((a, b) => {
+                return props.indexOf(a.property) - props.indexOf(b.property);
+            });
         }
+
+        if (schema.dependencies) {
+            // console.log(node);
+        }
+
         return node;
     },
     string: (core, value: string, schema, pointer): StringNode => {

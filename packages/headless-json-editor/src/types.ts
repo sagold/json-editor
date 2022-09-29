@@ -6,6 +6,8 @@ type JSONSchemaDefinition = JSONSchema7Definition & JSONSchemaOptions;
 
 export type JSONSchema =
     | JSONSchema7 & {
+          isActive?: boolean;
+          isDynamic?: boolean;
           oneOfSchema?: JSONSchema;
           options?: JSONSchemaOptions;
           properties?: { [key: string]: JSONSchemaDefinition };

@@ -402,6 +402,87 @@ describe('set', () => {
         });
     });
 
+    describe('object dependencies', () => {
+        let dependencies: Draft;
+        beforeEach(() => {
+            dependencies = new Draft07({
+                type: 'object',
+                properties: { test: { type: 'string' } },
+                dependencies: {
+                    test: {
+                        properties: {
+                            additionalValue: { description: 'added', type: 'string' }
+                        }
+                    }
+                }
+            });
+        });
+
+        it('should activate deactivated dynamic schema', () => {
+            const before = create<ObjectNode>(dependencies, { test: '' });
+            assert.equal(before.children[1].schema.description, 'added');
+            assert.equal(before.children[1].schema.isActive, false);
+
+            const [after] = set<ObjectNode>(dependencies, before, '/test', 'with-value');
+            assert.equal(after.children[1].schema.isActive, true);
+        });
+
+        it('should deactivate activated dynamic schema', () => {
+            const before = create<ObjectNode>(dependencies, { test: 'with-value' });
+            assert.equal(before.children[1].schema.description, 'added');
+            assert.equal(before.children[1].schema.isActive, true);
+
+            const [after] = set<ObjectNode>(dependencies, before, '/test', '');
+            assert.equal(after.children[1].schema.isActive, false);
+        });
+
+        it('should activate deactivated dynamic schema (not on root)', () => {
+            const draft = new Draft07({
+                type: 'object',
+                properties: {
+                    content: {
+                        type: 'object',
+                        properties: { test: { type: 'string' } },
+                        dependencies: {
+                            test: {
+                                properties: {
+                                    additionalValue: { description: 'added', type: 'string' }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const root = create<ObjectNode>(draft, { content: { test: '' } });
+            const before = get(root, '/content/additionalValue');
+            assert.equal(before.schema.description, 'added');
+            assert.equal(before.schema.isActive, false);
+
+            const [updatedRoot] = set<ObjectNode>(draft, root, '/content/test', 'with-value');
+            assert(updatedRoot.type === 'object');
+            const after = get(updatedRoot, '/content/additionalValue');
+            assert.equal(after.schema.isActive, true);
+        });
+
+        it('should not replace dependency node', () => {
+            const before = create<ObjectNode>(dependencies, { test: '' });
+
+            const [after] = set<ObjectNode>(dependencies, before, '/test', 'with-value');
+
+            assert.equal(before.children[0].id, after.children[0].id);
+        });
+
+        it('should not replace dependent node', () => {
+            const before = create<ObjectNode>(dependencies, { test: 'with-value', additionalValue: 'before' });
+
+            const [after] = set<ObjectNode>(dependencies, before, '/test', '');
+
+            assert(after.type === 'object');
+            assert.deepEqual(json(after), { test: '', additionalValue: 'before' });
+        });
+    });
+
     describe('scenarios', () => {
         it('should not lose oneOf objects when setting a value', () => {
             const core: Draft = new Draft07({
