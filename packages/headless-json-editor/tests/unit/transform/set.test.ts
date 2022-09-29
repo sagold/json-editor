@@ -20,7 +20,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 
 describe('set', () => {
     let core: Draft;
-    let template;
+    let template: Record<string, unknown>;
 
     beforeEach(() => {
         core = new Draft07({

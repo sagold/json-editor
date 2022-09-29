@@ -10,13 +10,13 @@ import { Change, Node, ParentNode, ArrayNode, isJSONError } from './node/types';
 import { splitLastProperty } from './splitLastProperty';
 
 export interface Plugin {
-    create(jst: HeadlessJsonEditor): PluginObserver | false;
+    create(he: HeadlessJsonEditor): PluginObserver | false;
 }
 export type DoneEvent = { type: 'done'; previous: ParentNode; next: ParentNode };
 export type PluginEvent = Change | DoneEvent;
 export type PluginObserver = (root: Node, change: PluginEvent) => void | [Node, Change[]];
 
-function isPluginObserver(p): p is PluginObserver {
+function isPluginObserver(p: unknown): p is PluginObserver {
     return typeof p === 'function';
 }
 

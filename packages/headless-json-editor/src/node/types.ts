@@ -14,7 +14,7 @@ export type DefaultNodeOptions = {
     disabled: boolean;
     hidden: boolean;
     title?: string;
-    [o: string]: any;
+    [o: string]: unknown;
 };
 
 export type ArrayType = 'array';
@@ -98,7 +98,7 @@ export type ParentNode = ArrayNode | ObjectNode;
 export type ValueNode = StringNode | NumberNode | NullNode | BooleanNode;
 
 const NodeTypes = ['array', 'object', 'string', 'number', 'null', 'boolean'] as const;
-export function isNode(node): node is Node {
+export function isNode(node: any): node is Node {
     return NodeTypes.includes(node?.type);
 }
 

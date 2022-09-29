@@ -113,16 +113,16 @@ export const NODES: Record<NodeType, CreateNode> = {
     }
 };
 
-export function create<T = Node>(
+export function create<T extends Node = Node>(
     draft: Draft,
     data: unknown,
     schema: JSONSchema = draft.rootSchema,
     pointer: JSONPointer = '#'
 ): T {
-    const dataType = data == null ? 'null' : getTypeOf(data ?? schema.const);
+    const dataType = data == null ? 'null' : (getTypeOf(data ?? schema.const) as NodeType);
 
     if (NODES[dataType]) {
-        return NODES[dataType](draft, data, schema, pointer);
+        return NODES[dataType](draft, data, schema, pointer) as T;
     }
     // e.g. null, undefined, etc
     throw new Error(`unsupported datatype '${dataType}' in create node`);

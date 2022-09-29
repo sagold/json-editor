@@ -18,7 +18,7 @@ import { getChildNodeIndex } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
 function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
-    const data = json(parentNode);
+    const data = json(parentNode) as Record<string, unknown>;
     data[childProperty] = value;
     const schema = draft.step(childProperty, parentNode.schema, data, parentNode.pointer);
     // unknown property in schema
@@ -64,7 +64,7 @@ export function set(
         // change and must replace the whole subtree
         if (targetNode.schema.oneOf || targetNode.schema.oneOfSchema) {
             // build new data starting from parentNode
-            const dataFromParentNode = json(parentNode);
+            const dataFromParentNode = json(parentNode) as Record<string, unknown>;
             setPointer(dataFromParentNode, join(childProperty, frags), value);
             // we know that the previoius node has to be a parent
             const parent = parentNode as ObjectNode | ArrayNode;
@@ -131,17 +131,22 @@ export function set(
 
             // we know that the previoius node has to be a array parent
             const parent = parentNode as ArrayNode;
+            // @ts-ignore
             const currentSchema = parent.children[childProperty]?.schema;
             if (currentSchema == null || !deepEqual(childSchema, currentSchema)) {
                 // @change replace node
+                // @ts-ignore
                 if (isNode(parent.children[childProperty])) {
                     changeSet.push({
                         type: 'delete',
+                        // @ts-ignore
                         node: parent.children[childProperty]
                     });
                 }
+                // @ts-ignore
                 parent.children[childProperty] = create(
                     core,
+                    // @ts-ignore
                     dataFromParentNode[childProperty],
                     childSchema,
                     `${parentNode.pointer}/${childProperty}`
@@ -149,6 +154,7 @@ export function set(
                 // @change create node
                 changeSet.push({
                     type: 'create',
+                    // @ts-ignore
                     node: parent.children[childProperty]
                 });
                 return [newRootNode, changeSet];
@@ -174,7 +180,8 @@ export function set(
         }
 
         const childPointer = `${parentNode.pointer}/${childProperty}`;
-        const childIndex = parentNode.type === 'object' ? parentNode.children.length : childProperty;
+        const childIndex =
+            parentNode.type === 'object' ? parentNode.children.length : (childProperty as unknown as number);
         (parentNode as ObjectNode).children[childIndex] = create(core, value, schema, childPointer);
         // @change create node
         changeSet.push({

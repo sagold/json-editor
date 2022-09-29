@@ -11,7 +11,7 @@ function each(node: Node, cb: (node: Node) => void) {
     }
 }
 
-function filterErrors(errors): JSONError[] {
+function filterErrors(errors: JSONError[]): JSONError[] {
     return [errors].flat(Infinity).filter(isJSONError);
 }
 
@@ -24,7 +24,7 @@ export async function validate(draft: Draft, root: Node, pointer: JSONPointer = 
         return startNode;
     }
 
-    const pointerToErrors = {};
+    const pointerToErrors: Record<string, JSONError[]> = {};
     // reset errors
     each(startNode, (node) => {
         node.errors = [];

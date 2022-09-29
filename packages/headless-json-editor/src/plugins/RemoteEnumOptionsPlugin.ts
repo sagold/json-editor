@@ -1,3 +1,4 @@
+import { JSONPointer } from 'json-schema-library';
 import { HeadlessJsonEditor, Plugin, PluginObserver, PluginEvent } from '../HeadlessJsonEditor';
 import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
 
@@ -20,16 +21,16 @@ import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
  * ```
  */
 export const RemoteEnumOptionsPlugin: Plugin = {
-    create(jst: HeadlessJsonEditor) {
-        const sources = {};
-        const targets = {};
+    create() {
+        const sources: Record<string, JSONPointer> = {};
+        const targets: Record<string, JSONPointer> = {};
 
         function updateEnumInSchema(root: Node, changedNode: Node) {
             const sourceNode = get(root, targets[changedNode.pointer]);
             if (isJSONError(sourceNode)) {
                 return;
             }
-            const enumValues = json(sourceNode).filter((v) => !(v == null || v === ''));
+            const enumValues = (json(sourceNode) as string[]).filter((v: unknown) => !(v == null || v === ''));
             const [newRoot, additionalChanges] = updateSchema(root, changedNode.pointer, {
                 ...changedNode.schema,
                 items: {
@@ -46,6 +47,7 @@ export const RemoteEnumOptionsPlugin: Plugin = {
 
         const updateEnum: PluginObserver = (root: Node, event: PluginEvent) => {
             if (event.type === 'create' && event.node.options.syncEnum) {
+                // @ts-ignore
                 const source = get(root, event.node.options.syncEnum.source);
                 if (!isJSONError(source)) {
                     sources[source.pointer] = event.node.pointer;

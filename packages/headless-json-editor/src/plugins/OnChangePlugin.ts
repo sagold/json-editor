@@ -13,7 +13,7 @@ export function createOnChangePlugin(onChangeListener: OnChangeListener): Plugin
     }
 
     return {
-        create(jst: HeadlessJsonEditor) {
+        create() {
             return function onChange(root, event) {
                 if (event.type === 'done') {
                     onChangeListener(json(root), root);

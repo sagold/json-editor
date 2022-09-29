@@ -5,14 +5,14 @@ import { getChildNodeIndex } from '../node/getChildNode';
 import { split, join } from 'gson-pointer';
 
 export function buildPathsMap(paths: (JSONPointer | string[])[]) {
-    const map: { [p: string]: any } = {};
+    const map: Record<string, unknown> = {};
     paths.forEach((p) => {
         const frags = split(p);
         let currentLocation = map;
         for (let i = 0, l = frags.length; i < l; i += 1) {
             const property = frags[i];
             currentLocation[property] = currentLocation[property] || {};
-            currentLocation = currentLocation[property];
+            currentLocation = currentLocation[property] as Record<string, unknown>;
         }
         currentLocation.$return = true;
     });
@@ -67,7 +67,7 @@ export function unlinkPath(
             });
         }
         // unlink next node
-        const nextNode = { ...targetNode.children[childIndex] };
+        const nextNode: Node = { ...targetNode.children[childIndex] };
         // unlink current childlist
         targetNode.children = [...targetNode.children];
         // unlink next node in children
