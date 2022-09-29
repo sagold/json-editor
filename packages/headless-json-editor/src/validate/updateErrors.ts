@@ -38,8 +38,10 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
     // assign errors
     syncErrors.forEach((err: JSONError) => {
         const pointer = err.data?.pointer ?? '#';
-        // schema may change
-        pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
+        if (pointerToErrors[pointer] == null) {
+            // retrieve new (dynamic) node
+            pointerToErrors[pointer] = get(root, pointer).errors;
+        }
         pointerToErrors[pointer].push(err);
     });
 
@@ -49,6 +51,8 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
             // console.log(errors);
             filterErrors(errors).forEach((err) => {
                 const pointer = err.data?.pointer ?? '#';
+                // schema may change
+                pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
                 pointerToErrors[pointer].push(err);
             });
         })

@@ -20,6 +20,16 @@ function isPluginObserver(p: unknown): p is PluginObserver {
     return typeof p === 'function';
 }
 
+function getRootChange(changes: Change[]) {
+    let lowestPointer: string = changes[0]?.node.pointer || '#';
+    changes.forEach(({ node }) => {
+        if (lowestPointer.includes(node.pointer)) {
+            lowestPointer = node.pointer;
+        }
+    });
+    return lowestPointer;
+}
+
 function runPlugins(plugins: PluginObserver[], oldState: Node, newState: Node, changes: Change[]) {
     // @notify change
     changes.forEach((change) => {
@@ -88,7 +98,7 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        updateErrors(this.draft, state, pointer);
+        updateErrors(this.draft, state, getRootChange(changes));
         // console.log('new state', state);
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
