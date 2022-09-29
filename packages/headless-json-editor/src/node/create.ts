@@ -1,27 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import {
-    getTypeOf,
-    Interface as Core,
-    JSONSchema,
-    JSONPointer,
-} from 'json-schema-library';
-import {
-    Node,
-    NodeType,
-    ArrayNode,
-    ObjectNode,
-    StringNode,
-    NumberNode,
-    BooleanNode,
-    NullNode,
-} from './types';
+import { getTypeOf, Interface as Core, JSONSchema, JSONPointer } from 'json-schema-library';
+import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode } from './types';
 
-type CreateNode = (
-    core: Core,
-    data: any,
-    schema: JSONSchema,
-    pointer: JSONPointer
-) => Node;
+type CreateNode = (core: Core, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 
 function getOptions(schema: JSONSchema) {
     return {
@@ -29,7 +10,7 @@ function getOptions(schema: JSONSchema) {
         description: schema.description,
         disabled: false,
         hidden: false,
-        ...(schema.options ?? {}),
+        ...(schema.options ?? {})
     };
 }
 
@@ -47,22 +28,15 @@ export const NODES: Record<NodeType, CreateNode> = {
             schema,
             options: getOptions(schema),
             children: [],
-            errors: [],
+            errors: []
         };
         data.forEach((next, key) => {
             const nextSchema = core.step(key, schema, data, pointer); // not save
-            node.children.push(
-                create(core, next, nextSchema, `${pointer}/${key}`)
-            );
+            node.children.push(create(core, next, nextSchema, `${pointer}/${key}`));
         });
         return node;
     },
-    object: (
-        core,
-        data: Record<string, unknown>,
-        schema,
-        pointer
-    ): ObjectNode => {
+    object: (core, data: Record<string, unknown>, schema, pointer): ObjectNode => {
         const node: ObjectNode = {
             id: uuid(),
             type: 'object',
@@ -71,21 +45,17 @@ export const NODES: Record<NodeType, CreateNode> = {
             schema,
             options: getOptions(schema),
             children: [],
-            errors: [],
+            errors: []
         };
         Object.keys(data).forEach((key) => {
             const nextSchema = core.step(key, schema, data, pointer); // not save
-            node.children.push(
-                create(core, data[key], nextSchema, `${pointer}/${key}`)
-            );
+            node.children.push(create(core, data[key], nextSchema, `${pointer}/${key}`));
         });
         if (schema.properties) {
             // simplified solution to maintain order as is given by json-schema
             // should probably use combination of additionalProperties, dependencies, etc
             const props = Object.keys(schema.properties);
-            node.children.sort(
-                (a, b) => props.indexOf(a.property) - props.indexOf(b.property)
-            );
+            node.children.sort((a, b) => props.indexOf(a.property) - props.indexOf(b.property));
         }
         return node;
     },
@@ -98,7 +68,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             options: getOptions(schema),
             schema,
             value,
-            errors: [],
+            errors: []
         };
         return node;
     },
@@ -111,7 +81,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             options: getOptions(schema),
             schema,
             value,
-            errors: [],
+            errors: []
         };
         return node;
     },
@@ -124,7 +94,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             options: getOptions(schema),
             schema,
             value,
-            errors: [],
+            errors: []
         };
         return node;
     },
@@ -137,10 +107,10 @@ export const NODES: Record<NodeType, CreateNode> = {
             options: getOptions(schema),
             schema,
             value,
-            errors: [],
+            errors: []
         };
         return node;
-    },
+    }
 };
 
 export function create<T = Node>(

@@ -45,7 +45,7 @@ export function unlinkPath(
             expectedType: 'array or object',
             type: previousRoot?.type,
             reason: `root node must be of type array or object or else there is nothing to delete`,
-            where: `transform: 'remove' data at '${pointer}'`,
+            where: `transform: 'remove' data at '${pointer}'`
         });
     }
 
@@ -62,7 +62,7 @@ export function unlinkPath(
             return invalidPathError({
                 pointer: pointer,
                 reason: `path does not lead to valid destination in data/tree at ${targetNode.pointer}`,
-                where: `transform: 'remove' data at '${pointer}'`,
+                where: `transform: 'remove' data at '${pointer}'`
             });
         }
         // unlink next node

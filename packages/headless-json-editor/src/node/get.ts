@@ -11,11 +11,7 @@ export function get(node: Node, pointer: string): Node | JSONError {
     return step(node, frags, []);
 }
 
-function step(
-    node: Node,
-    frags: string[],
-    pointer: string[]
-): Node | JSONError {
+function step(node: Node, frags: string[], pointer: string[]): Node | JSONError {
     if (frags.length === 0) {
         return node;
     }

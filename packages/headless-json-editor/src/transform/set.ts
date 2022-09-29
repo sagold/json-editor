@@ -1,10 +1,4 @@
-import {
-    Interface as Core,
-    JSONPointer,
-    JSONSchema,
-    JSONError,
-    createSchemaOf,
-} from 'json-schema-library';
+import { Interface as Core, JSONPointer, JSONSchema, JSONError, createSchemaOf } from 'json-schema-library';
 import {
     Node,
     ObjectNode,
@@ -14,7 +8,7 @@ import {
     isJsonError,
     ParentNode,
     isNode,
-    Change,
+    Change
 } from '../node/types';
 import { create } from '../node/create';
 import { json } from '../node/json';
@@ -23,26 +17,14 @@ import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
-function getSchemaOfChild(
-    core: Core,
-    parentNode: Node,
-    childProperty: string,
-    value: any
-): JSONSchema | JSONError {
+function getSchemaOfChild(core: Core, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
     const data = json(parentNode);
     data[childProperty] = value;
-    const schema = core.step(
-        childProperty,
-        parentNode.schema,
-        data,
-        parentNode.pointer
-    );
+    const schema = core.step(childProperty, parentNode.schema, data, parentNode.pointer);
     // unknown property in schema
     if (isJsonError(schema)) {
         if (schema.code !== 'unknown-property-error') {
-            console.log(
-                `failed retrieving schema for '${parentNode.pointer}/${childProperty}'`
-            );
+            console.log(`failed retrieving schema for '${parentNode.pointer}/${childProperty}'`);
             console.log(schema);
             return schema;
         }
@@ -73,8 +55,8 @@ export function set(
                 invalidPathError({
                     pointer,
                     reason: 'expected parent data to be object or array',
-                    where: 'resolving json pointer to node in transform.change',
-                }),
+                    where: 'resolving json pointer to node in transform.change'
+                })
             ];
         }
 
@@ -87,31 +69,20 @@ export function set(
             // we know that the previoius node has to be a parent
             const parent = parentNode as ObjectNode | ArrayNode;
             // from parent retrieve the new oneOf schema
-            const childSchema = core.step(
-                childProperty,
-                parentNode.schema,
-                dataFromParentNode,
-                parentNode.pointer
-            );
+            const childSchema = core.step(childProperty, parentNode.schema, dataFromParentNode, parentNode.pointer);
             // in case the schema is different, replace the subtree and return
             let index = getChildNodeIndex(parentNode, childProperty);
             if (index === -1) {
-                index =
-                    parent.type === 'array'
-                        ? parseInt(childProperty)
-                        : parent.children.length;
+                index = parent.type === 'array' ? parseInt(childProperty) : parent.children.length;
             }
 
             const currentSchema = parent.children[index]?.schema;
-            if (
-                currentSchema == null ||
-                !deepEqual(childSchema, currentSchema)
-            ) {
+            if (currentSchema == null || !deepEqual(childSchema, currentSchema)) {
                 // @change replace node
                 if (isNode(parent.children[index])) {
                     changeSet.push({
                         type: 'delete',
-                        node: parent.children[index],
+                        node: parent.children[index]
                     });
                 }
                 parent.children[index] = create(
@@ -123,7 +94,7 @@ export function set(
                 // @change create node
                 changeSet.push({
                     type: 'create',
-                    node: parent.children[index],
+                    node: parent.children[index]
                 });
                 return [newRootNode, changeSet];
             }
@@ -138,7 +109,7 @@ export function set(
             // unlink and assign next child node
             // @todo unnecessary unlink for last target node
             targetNode.children[targetIndex] = {
-                ...targetNode.children[targetIndex],
+                ...targetNode.children[targetIndex]
             };
             // update nodes for next iteration of end result
             parentNode = targetNode;
@@ -156,25 +127,17 @@ export function set(
             const dataFromParentNode = json(parentNode);
             setPointer(dataFromParentNode, join(childProperty, frags), value);
             // from parent retrieve the new oneOf schema
-            const childSchema = core.step(
-                childProperty,
-                parentNode.schema,
-                dataFromParentNode,
-                parentNode.pointer
-            );
+            const childSchema = core.step(childProperty, parentNode.schema, dataFromParentNode, parentNode.pointer);
 
             // we know that the previoius node has to be a array parent
             const parent = parentNode as ArrayNode;
             const currentSchema = parent.children[childProperty]?.schema;
-            if (
-                currentSchema == null ||
-                !deepEqual(childSchema, currentSchema)
-            ) {
+            if (currentSchema == null || !deepEqual(childSchema, currentSchema)) {
                 // @change replace node
                 if (isNode(parent.children[childProperty])) {
                     changeSet.push({
                         type: 'delete',
-                        node: parent.children[childProperty],
+                        node: parent.children[childProperty]
                     });
                 }
                 parent.children[childProperty] = create(
@@ -186,7 +149,7 @@ export function set(
                 // @change create node
                 changeSet.push({
                     type: 'create',
-                    node: parent.children[childProperty],
+                    node: parent.children[childProperty]
                 });
                 return [newRootNode, changeSet];
             }
@@ -195,16 +158,13 @@ export function set(
 
     // new property or item
     if (targetNode == null) {
-        if (
-            parentNode.type === 'array' &&
-            `${parseInt(childProperty)}` !== childProperty
-        ) {
+        if (parentNode.type === 'array' && `${parseInt(childProperty)}` !== childProperty) {
             return [
                 invalidPathError({
                     pointer,
                     reason: `child property '${childProperty}' to array is not a number`,
-                    where: 'resolving target node in transform.change',
-                }),
+                    where: 'resolving target node in transform.change'
+                })
             ];
         }
 
@@ -214,20 +174,12 @@ export function set(
         }
 
         const childPointer = `${parentNode.pointer}/${childProperty}`;
-        const childIndex =
-            parentNode.type === 'object'
-                ? parentNode.children.length
-                : childProperty;
-        (parentNode as ObjectNode).children[childIndex] = create(
-            core,
-            value,
-            schema,
-            childPointer
-        );
+        const childIndex = parentNode.type === 'object' ? parentNode.children.length : childProperty;
+        (parentNode as ObjectNode).children[childIndex] = create(core, value, schema, childPointer);
         // @change create node
         changeSet.push({
             type: 'create',
-            node: (parentNode as ObjectNode).children[childIndex],
+            node: (parentNode as ObjectNode).children[childIndex]
         });
         return [newRootNode, changeSet];
     }
@@ -258,18 +210,13 @@ export function set(
         if (isNode((parentNode as ObjectNode).children[targetIndex])) {
             changeSet.push({
                 type: 'delete',
-                node: (parentNode as ObjectNode).children[targetIndex],
+                node: (parentNode as ObjectNode).children[targetIndex]
             });
         }
-        (parentNode as ObjectNode).children[targetIndex] = create(
-            core,
-            value,
-            schema,
-            childPointer
-        );
+        (parentNode as ObjectNode).children[targetIndex] = create(core, value, schema, childPointer);
         changeSet.push({
             type: 'create',
-            node: (parentNode as ObjectNode).children[targetIndex],
+            node: (parentNode as ObjectNode).children[targetIndex]
         });
         return [newRootNode, changeSet];
     }
@@ -292,19 +239,15 @@ export function set(
             const next = nextNode as ParentNode;
             // @change update parent, replace children
             changeSet.push({ type: 'update', node: nextNode });
-            previousNode.children.forEach((childNode) =>
-                changeSet.push({ type: 'delete', node: childNode })
-            );
+            previousNode.children.forEach((childNode) => changeSet.push({ type: 'delete', node: childNode }));
             // @todo why can next node be missing children?
-            next.children?.forEach((childNode) =>
-                changeSet.push({ type: 'create', node: childNode })
-            );
+            next.children?.forEach((childNode) => changeSet.push({ type: 'create', node: childNode }));
         } else {
             // @change replace node
             changeSet.push({ type: 'delete', node: previousNode });
             changeSet.push({
                 type: 'create',
-                node: parent.children[targetIndex],
+                node: parent.children[targetIndex]
             });
         }
 

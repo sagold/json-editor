@@ -39,27 +39,19 @@ describe('create', () => {
             type: 'object',
             properties: {
                 first: { type: 'string', default: 'first' },
-                second: { type: 'string', default: 'second' },
-            },
+                second: { type: 'string', default: 'second' }
+            }
         });
 
         const root = create(core, {
             second: 'second',
-            first: 'first',
+            first: 'first'
         }) as ObjectNode;
 
         assert(root.children[0].type === 'string');
-        assert.equal(
-            root.children[0].value,
-            'first',
-            "'first' node should come first"
-        );
+        assert.equal(root.children[0].value, 'first', "'first' node should come first");
         assert(root.children[1].type === 'string');
-        assert.equal(
-            root.children[1].value,
-            'second',
-            "'second' node should come last"
-        );
+        assert.equal(root.children[1].value, 'second', "'second' node should come last");
     });
 
     describe('object errors', () => {
@@ -67,11 +59,11 @@ describe('create', () => {
             core.setSchema({
                 type: 'object',
                 properties: {},
-                additionalProperties: false,
+                additionalProperties: false
             });
 
             const root = create(core, {
-                unknownInvalid: 'property',
+                unknownInvalid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
             assert(isJsonError(root.children[0].schema));
@@ -82,11 +74,11 @@ describe('create', () => {
             core.setSchema({
                 type: 'object',
                 properties: {},
-                additionalProperties: true,
+                additionalProperties: true
             });
 
             const root = create(core, {
-                unknownValid: 'property',
+                unknownValid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
             assert(!isJsonError(root.children[0].schema));
