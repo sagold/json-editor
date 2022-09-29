@@ -20,13 +20,8 @@ export function JsonEditor({ schema, data, onChange }: JsonEditorProps) {
 
     const ChildEditor = getEditor(node);
     return (
-        <section id="editor">
-            <Form error style={{ paddingRight: '24px' }}>
-                <ChildEditor node={node} instance={instance} getEditor={getEditor} />
-            </Form>
-            <Form error>
-                <ChildEditor node={node} instance={instance} getEditor={getEditor} />
-            </Form>
-        </section>
+        <Form error>
+            <ChildEditor node={node} instance={instance} getEditor={getEditor} />
+        </Form>
     );
 }

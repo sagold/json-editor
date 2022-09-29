@@ -25,7 +25,7 @@ export const data = {
 
 export const schema = {
     type: 'object',
-    title: 'main',
+    title: 'Editors Overview',
     description: 'this is the root object',
     properties: {
         title: {
