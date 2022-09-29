@@ -9,7 +9,7 @@ export const schema = {
             required: ['theme', 'datePublished'],
             properties: {
                 theme: {
-                    title: 'Stil der Headerleiste (Süddeutsche Zeitung)',
+                    title: 'Stil der Headerleiste',
                     type: 'string',
                     enum: ['light', 'dark'],
                     options: {
@@ -935,7 +935,7 @@ export const schema = {
                                 type: 'string',
                                 title: 'Name',
                                 description:
-                                    'Ein eindeutiger Name für die Sprungmarke. Die Sprunkmarke kann durch anfügen von #Name in der Url aufgerufen werden. Z.B. http://gfx...9234/www/#kapitel2',
+                                    'Ein eindeutiger Name für die Sprungmarke. Die Sprunkmarke kann durch anfügen von #Name in der Url aufgerufen werden. Z.B. http://...9234/www/#kapitel2',
                                 minLength: 1
                             }
                         }
@@ -943,7 +943,7 @@ export const schema = {
                     {
                         id: 'embedModule',
                         type: 'object',
-                        title: 'SZ Embed-Script',
+                        title: 'Embed-Script',
                         additionalProperties: false,
                         required: ['partial', 'embed'],
                         options: {
@@ -959,7 +959,7 @@ export const schema = {
                                 pattern: '^app/src/modules/embed/embed'
                             },
                             embed: {
-                                title: 'SZ Embed-Script',
+                                title: 'Embed-Script',
                                 type: 'object',
                                 required: ['url', 'config', 'channel'],
                                 properties: {
@@ -967,7 +967,7 @@ export const schema = {
                                         title: 'URL zu dem Embed-Script.',
                                         type: 'string',
                                         description:
-                                            'embed.js wird automatisch hinzugefügt. Eingabe z.B. http://gfx.sueddeutsche.de/apps/5820c8ccf38f33fb247b5c4c/map-elector/'
+                                            'embed.js wird automatisch hinzugefügt. Eingabe z.B. http://image.company.de/apps/5820c8ccf38f33fb247b5c4c/map-elector/'
                                     },
                                     config: {
                                         title: 'Optionale Einstellungen',
@@ -1194,7 +1194,7 @@ export const schema = {
                         },
                         logo: {
                             type: 'string',
-                            default: 'szig-style/lib/assets/sz-small-black.png',
+                            default: 'style/lib/assets/small-black.png',
                             options: {
                                 hidden: true
                             }
@@ -1970,6 +1970,6 @@ export const data = {
         }
     },
     dev: {
-        customCSS: 'header.szig-header { background-color: hotpink; }'
+        customCSS: 'header { background-color: hotpink; }'
     }
 };
