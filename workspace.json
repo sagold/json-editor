@@ -1,5 +1,8 @@
 {
-  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
-  "version": 2,
-  "projects": {}
+    "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+    "version": 2,
+    "projects": {
+        "headless-json-editor": "packages/headless-json-editor",
+        "react-json-editor": "packages/react-json-editor"
+    }
 }

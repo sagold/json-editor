@@ -1,0 +1,29 @@
+{
+    "name": "@sagold/headless-json-editor",
+    "version": "0.5.0",
+    "type": "commonjs",
+    "author": {
+        "name": "Sascha Goldhofer",
+        "email": "github@saschagoldhofer.de",
+        "url": "https://github.com/sagold/"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/jest": "^28.1.1",
+        "@typescript-eslint/eslint-plugin": "^5.27.0",
+        "@typescript-eslint/parser": "^5.27.0",
+        "eslint": "^8.17.0",
+        "jest": "^28.1.1",
+        "ts-jest": "^28.0.4",
+        "ts-loader": "^9.3.0",
+        "ts-node": "^10.8.1",
+        "typescript": "^4.7.3"
+    },
+    "dependencies": {
+        "@types/uuid": "^8.3.4",
+        "fast-equals": "^4.0.1",
+        "gson-pointer": "^4.1.1",
+        "json-schema-library": "https://github.com/sagold/json-schema-library.git#develop",
+        "uuid": "^8.3.2"
+    }
+}

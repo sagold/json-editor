@@ -1,6 +1,4 @@
-
-
-# Sagold
+# @sagold/json-editor
 
 This project was generated using [Nx](https://nx.dev).
 

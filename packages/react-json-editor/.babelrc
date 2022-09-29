@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["@nrwl/web/babel", { "useBuiltIns": "usage" }],
+    [
+      "@nrwl/react/babel",
+      {
+        "runtime": "automatic",
+        "useBuiltIns": "usage"
+      }
+    ]
+  ],
+  "plugins": []
+}
