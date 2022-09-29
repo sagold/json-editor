@@ -19,7 +19,7 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
     }
 
     // @ts-ignore
-    window['rootNode'] = node;
+    window['tree'] = node;
 
     const ChildEditor = instance.getEditor(node);
     return (
