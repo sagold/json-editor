@@ -33,8 +33,8 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, setValue })
     }
 
     return (
-        <div data-type="string" className={node.options.disabled ? 'disabled' : 'enabled'}>
-            <Form.Field id={node.pointer} error={node.errors.length > 0} disabled={node.options.disabled}>
+        <div data-type="string" data-id={node.pointer} className={node.options.disabled ? 'disabled' : 'enabled'}>
+            <Form.Field id={node.id} error={node.errors.length > 0} disabled={node.options.disabled}>
                 <label>{node.options.title as string}</label>
                 <Dropdown
                     fluid

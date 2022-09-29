@@ -1,14 +1,21 @@
 import { ComponentStory } from '@storybook/react';
 import { JsonFormProps, useJsonEditor } from '../../index';
+import { defaultEditors } from '../../index';
 import { data, schema } from './data/features';
 import '../styles.scss';
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 
 function SideBySide({ schema, data, onChange }: JsonFormProps) {
-    const [node, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
+    const [node, instance] = useJsonEditor({
+        schema,
+        editors: defaultEditors,
+        onChange,
+        plugins: [RemoteEnumOptionsPlugin],
+        data
+    });
     if (node == null) {
-        return <></>;
+        return null;
     }
     const ChildEditor = instance.getEditor(node);
     return (

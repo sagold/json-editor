@@ -4,9 +4,9 @@ import { Form } from 'semantic-ui-react';
 import { editor } from './decorators';
 
 export const NumberEditor = editor<NumberNode, number>(({ node, setValue }) => (
-    <div data-type="number">
+    <div data-type="number" data-id={node.pointer}>
         <Form.Input
-            id={node.pointer}
+            id={node.id}
             type="number"
             value={node.value}
             error={node.errors.length > 0 && node.errors.map((e) => e.message)}

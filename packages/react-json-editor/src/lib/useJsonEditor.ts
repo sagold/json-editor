@@ -7,17 +7,16 @@ import {
     OnChangeListener,
     JSONSchema
 } from 'headless-json-editor';
-import { defaultEditors } from './editors';
 import { JsonEditor } from './JsonEditor';
 import { EditorPlugin } from './editors/decorators';
 
 export type UseJsonEditorOptions = {
+    editors: EditorPlugin[];
+    schema: JSONSchema;
     data?: unknown;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
-    editors?: EditorPlugin[];
     onChange?: OnChangeListener;
     plugins: Plugin[];
-    schema: JSONSchema;
 };
 
 /**
@@ -29,7 +28,7 @@ export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [No
     const [root, setState] = useState<Node>();
 
     useEffect(() => {
-        const { onChange, plugins = [], editors = defaultEditors } = settings;
+        const { onChange, plugins = [], editors } = settings;
         jsonEditor.current = new JsonEditor({
             schema,
             editors,
@@ -38,10 +37,8 @@ export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [No
                 ...plugins,
                 createOnChangePlugin((data, root) => {
                     setState(root);
-                    // @ts-ignore
-                    window['data'] = data;
-                    if (settings.onChange) {
-                        settings.onChange(data, root);
+                    if (onChange) {
+                        onChange(data, root);
                     }
                 })
             ]

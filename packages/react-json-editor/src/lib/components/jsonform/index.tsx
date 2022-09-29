@@ -1,6 +1,7 @@
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin, JSONSchema, Node, json } from 'headless-json-editor';
 import { useJsonEditor } from '../../useJsonEditor';
+import { defaultEditors } from '../../../index';
 
 export type JsonFormProps = {
     schema: JSONSchema;
@@ -9,7 +10,13 @@ export type JsonFormProps = {
 };
 
 export function JsonForm({ schema, data, onChange }: JsonFormProps) {
-    const [node, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
+    const [node, instance] = useJsonEditor({
+        schema,
+        editors: defaultEditors,
+        onChange,
+        plugins: [RemoteEnumOptionsPlugin],
+        data
+    });
     // @ts-ignore
     window['root'] = node;
     // @ts-ignore

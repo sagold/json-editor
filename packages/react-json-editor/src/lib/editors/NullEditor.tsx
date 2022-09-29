@@ -2,7 +2,7 @@ import { EditorPlugin } from './decorators';
 import { Node } from 'headless-json-editor';
 
 export const NullEditor = ({ node }: { node: Node }) => (
-    <div data-type="null">
+    <div data-type="null" data-id={node.pointer}>
         <div className="field">
             <label>{node.options.title as string}</label>
         </div>

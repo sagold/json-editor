@@ -9,7 +9,7 @@ export const ObjectEditor = editor<ObjectNode>(({ node, instance }) => {
     const Header = getEditorHeader(node);
 
     return (
-        <div data-type="object">
+        <div data-type="object" data-id={node.pointer}>
             <Header>{node.options.title}</Header>
             <p>{node.options.description as string}</p>
             {node.errors.length > 0 && (

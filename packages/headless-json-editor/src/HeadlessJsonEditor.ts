@@ -14,7 +14,7 @@ export interface Plugin {
 }
 export type DoneEvent = { type: 'done'; previous: Node; next: Node };
 export type PluginEvent = Change | DoneEvent;
-export type PluginObserver = (root: Node, change: PluginEvent) => void | [Node, Change[]];
+export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
 
 function isPluginObserver(p: unknown): p is PluginObserver {
     return typeof p === 'function';
@@ -159,6 +159,9 @@ export class HeadlessJsonEditor {
         return this.state;
     }
 
+    /**
+     * @returns a list of available json subschemas to insert
+     */
     getArrayAddOptions(node: ArrayNode) {
         const schema = this.draft.getSchema(node.pointer, json(this.state));
         return this.draft.getChildSchemaSelection(node.children.length, schema);

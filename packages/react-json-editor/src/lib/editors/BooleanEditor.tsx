@@ -3,8 +3,8 @@ import { BooleanNode } from 'headless-json-editor';
 import { EditorPlugin, editor } from './decorators';
 
 export const BooleanEditor = editor<BooleanNode, boolean>(({ node, setValue }) => (
-    <div data-type="boolean">
-        <Form.Field id={node.pointer} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
+    <div data-type="boolean" data-id={node.pointer}>
+        <Form.Field id={node.id} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
             <Checkbox
                 label={node.options.title as string}
                 checked={node.value}

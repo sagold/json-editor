@@ -1,4 +1,6 @@
-export const schema = {
+import { JSONSchema } from 'headless-json-editor';
+
+export const schema: JSONSchema = {
     title: 'Longform',
     type: 'object',
     required: ['header', 'intro', 'modules', 'furtherReading', 'seo', 'socialMedia', 'credits', 'dev'],
@@ -13,7 +15,7 @@ export const schema = {
                     type: 'string',
                     enum: ['light', 'dark'],
                     options: {
-                        enum_titles: ['Heller Headerbalken', 'Dunkler Headerbalken']
+                        enumTitles: ['Heller Headerbalken', 'Dunkler Headerbalken']
                     }
                 },
                 datePublished: {
@@ -61,7 +63,7 @@ export const schema = {
                     enum: ['top', 'middle', 'bottom'],
                     default: 'bottom',
                     options: {
-                        enum_titles: ['oben', 'mittig', 'unten']
+                        enumTitles: ['oben', 'mittig', 'unten']
                     }
                 },
                 image: {
@@ -168,7 +170,7 @@ export const schema = {
                     enum: ['parallax', 'inline'],
                     default: 'parallax',
                     options: {
-                        enum_titles: [
+                        enumTitles: [
                             'Bild und Video im Hintergrund als Parallaxe einblenden',
                             'Intro-Bild im Dokumentfluss anzeigen'
                         ]
@@ -332,7 +334,7 @@ export const schema = {
                                         default: 'text-wide',
                                         enum: ['float-left', 'float-right', 'text-wide', 'expanded', 'fullwidth'],
                                         options: {
-                                            enum_titles: [
+                                            enumTitles: [
                                                 'Bild links',
                                                 'Bild rechts',
                                                 'Textbreit',
@@ -372,7 +374,7 @@ export const schema = {
                                 default: 'light',
                                 options: {
                                     hidden: true,
-                                    enum_titles: ['hell', 'dunkel']
+                                    enumTitles: ['hell', 'dunkel']
                                 }
                             },
                             slides: {
@@ -389,7 +391,7 @@ export const schema = {
                                         enum: ['contain', 'cover'],
                                         default: 'contain',
                                         options: {
-                                            enum_titles: [
+                                            enumTitles: [
                                                 'Bilder so einbinden, dass sie komplett sichtbar sind',
                                                 'Bilder so einbinden, dass sie den kompletten Bildschirm abdecken'
                                             ]
@@ -675,7 +677,7 @@ export const schema = {
                                         type: 'string',
                                         enum: ['center', 'left', 'right'],
                                         options: {
-                                            enum_titles: ['Zentriert', 'Nach links versetzt', 'Nach rechts versetzt']
+                                            enumTitles: ['Zentriert', 'Nach links versetzt', 'Nach rechts versetzt']
                                         }
                                     }
                                 }
@@ -890,7 +892,7 @@ export const schema = {
                                         default: 'expanded',
                                         enum: ['float-left', 'float-right', 'text-wide', 'expanded', 'fullwidth'],
                                         options: {
-                                            enum_titles: [
+                                            enumTitles: [
                                                 'Video links',
                                                 'Video rechts',
                                                 'Textbreit',

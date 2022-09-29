@@ -4,7 +4,7 @@ import { ArrayEditorPlugin } from './ArrayEditor';
 import { BooleanEditorPlugin } from './BooleanEditor';
 import { NumberEditorPlugin } from './NumberEditor';
 import { ObjectEditorPlugin } from './ObjectEditor';
-import { StringEditorPlugin, SelectEditor } from './StringEditor';
+import { StringEditorPlugin, TextEditorPlugin, SelectEditor } from './StringEditor';
 import { NullEditorPlugin } from './NullEditor';
 import { ErrorEditorPlugin } from './ErrorEditor';
 import { UnknownEditorPlugin } from './UnknownEditor';
@@ -26,6 +26,7 @@ export const defaultEditors: EditorPlugin[] = [
         use: (node) => node.schema.type === 'string' && Array.isArray(node.schema.enum),
         Editor: SelectEditor
     },
+    TextEditorPlugin,
     StringEditorPlugin,
     NumberEditorPlugin,
     BooleanEditorPlugin,

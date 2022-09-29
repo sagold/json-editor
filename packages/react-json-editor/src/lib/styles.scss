@@ -50,6 +50,10 @@ h2 {
     transform: translateY(-50%);
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .description {
     color: #999;
     font-size: 12px;
@@ -88,9 +92,14 @@ h2 {
     }
 }
 
-[data-type='array-item'] > * {
-    margin-left: 12px;
-    margin-bottom: 12px;
+[data-type='array-item'] {
+    & > * ~ * {
+        margin-left: 12px;
+    }
+
+    & > * {
+        margin-bottom: 12px;
+    }
 }
 
 .ed-array-item__actions {

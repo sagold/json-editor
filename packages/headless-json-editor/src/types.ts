@@ -1,10 +1,24 @@
 import { JSONError } from 'json-schema-library';
-import { JSONSchema7 } from 'json-schema';
+import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
+
+export type JSONSchemaOptions = Record<string, unknown>;
+type JSONSchemaDefinition = JSONSchema7Definition & JSONSchemaOptions;
 
 export type JSONSchema =
     | JSONSchema7 & {
           oneOfSchema?: JSONSchema;
-          options?: Record<string, unknown>;
+          options?: JSONSchemaOptions;
+          properties?: { [key: string]: JSONSchemaDefinition };
+          patternProperties?: { [key: string]: JSONSchemaDefinition } | undefined;
+          additionalProperties?: JSONSchemaDefinition | undefined;
+          dependencies?: { [key: string]: JSONSchemaDefinition | string[] } | undefined;
+          definitions?: { [key: string]: JSONSchemaDefinition } | undefined;
+          allOf?: JSONSchemaDefinition[] | undefined;
+          anyOf?: JSONSchemaDefinition[] | undefined;
+          oneOf?: JSONSchemaDefinition[] | undefined;
+          not?: JSONSchemaDefinition | undefined;
+          items?: JSONSchemaDefinition | JSONSchemaDefinition[] | undefined;
+          additionalItems?: JSONSchemaDefinition | undefined;
       };
 
 export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;

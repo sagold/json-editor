@@ -8,9 +8,9 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: Headless
     const error = node.schema as unknown as JSONError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
     return (
-        <div data-type="error">
+        <div data-type="error" data-id={node.pointer}>
             <Form.Input
-                id={node.pointer}
+                id={node.id}
                 type="text"
                 readOnly
                 value={value}
