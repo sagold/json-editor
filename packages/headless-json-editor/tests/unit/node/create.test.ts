@@ -2,7 +2,7 @@ import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJSONError } from '../../../src/types';
+import { ObjectNode, StringNode, isJSONError, JSONSchema } from '../../../src/types';
 
 describe('create', () => {
     let core: Draft;
@@ -21,8 +21,8 @@ describe('create', () => {
         assert(root.type === 'null');
     });
 
-    it('should create a node tree with empty schema', () => {
-        core.setSchema({});
+    it('should create a node tree with additionalProperties set', () => {
+        core.setSchema({ type: 'object', additionalProperties: true });
         const root = create(core, { list: ['test-item'] });
 
         assert(root.type === 'object');
@@ -55,7 +55,7 @@ describe('create', () => {
     });
 
     describe('object errors', () => {
-        it('should return an error node for undefined and invalid data', () => {
+        it.skip('should return an error node for undefined and invalid data', () => {
             core.setSchema({
                 type: 'object',
                 properties: {},
@@ -87,69 +87,186 @@ describe('create', () => {
         });
     });
 
-    describe('dependencies', () => {
-        it('should return inactive dynamic schema for missing dependency', () => {
-            core.setSchema({
-                type: 'object',
-                properties: {},
-                dependencies: {
-                    test: {
-                        properties: {
-                            additionalValue: { description: 'added', type: 'string' }
+    describe('dynamic', () => {
+        describe('dependencies', () => {
+            it('should return inactive dynamic schema for missing dependency', () => {
+                core.setSchema({
+                    type: 'object',
+                    properties: {},
+                    dependencies: {
+                        test: {
+                            properties: {
+                                additionalValue: { description: 'added', type: 'string' }
+                            }
                         }
                     }
-                }
+                });
+
+                const root = create(core, {}) as ObjectNode;
+                assert.equal(root.children.length, 1);
+                assert.equal(root.children[0].schema.description, 'added');
+                assert.equal(root.children[0].schema.isDynamic, true);
+                assert.equal(root.children[0].schema.isActive, false);
             });
 
-            const root = create(core, {}) as ObjectNode;
-            assert.equal(root.children.length, 1);
-            assert.equal(root.children[0].schema.description, 'added');
-            assert.equal(root.children[0].schema.isDynamic, true);
-            assert.equal(root.children[0].schema.isActive, false);
+            it('should return active dynamic schema if dependency has value', () => {
+                core.setSchema({
+                    type: 'object',
+                    properties: {
+                        test: { type: 'string' }
+                    },
+                    dependencies: {
+                        test: {
+                            properties: {
+                                additionalValue: { description: 'added', type: 'string' }
+                            }
+                        }
+                    }
+                });
+
+                const root = create(core, { test: 'with value' }) as ObjectNode;
+                assert.equal(root.children.length, 2);
+                assert.equal(root.children[1].schema.description, 'added');
+                assert.equal(root.children[1].schema.isDynamic, true);
+                assert.equal(root.children[1].schema.isActive, true);
+            });
+
+            it('should return value of dependency', () => {
+                core.setSchema({
+                    type: 'object',
+                    properties: {
+                        test: { type: 'string' }
+                    },
+                    dependencies: {
+                        test: {
+                            properties: {
+                                additionalValue: { description: 'added', type: 'string' }
+                            }
+                        }
+                    }
+                });
+
+                const root = create<ObjectNode>(core, { test: 'with value', additionalValue: 'additional' });
+                assert.equal(root.children.length, 2);
+                assert.deepEqual(json(root), { test: 'with value', additionalValue: 'additional' });
+            });
         });
 
-        it('should return active dynamic schema if dependency has value', () => {
-            core.setSchema({
-                type: 'object',
-                properties: {
-                    test: { type: 'string' }
-                },
-                dependencies: {
-                    test: {
+        describe('if-else-then', () => {
+            let conditionalSchema: JSONSchema;
+            beforeEach(
+                () =>
+                    (conditionalSchema = {
+                        type: 'object',
+                        required: ['test'],
                         properties: {
-                            additionalValue: { description: 'added', type: 'string' }
+                            test: { type: 'string' }
+                        },
+                        if: {
+                            properties: {
+                                test: {
+                                    type: 'string',
+                                    minLength: 10
+                                }
+                            }
+                        },
+                        then: {
+                            required: ['additionalValue'],
+                            properties: {
+                                additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                            }
+                        },
+                        else: {
+                            required: ['additionalValue'],
+                            properties: {
+                                additionalValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                            }
                         }
-                    }
-                }
+                    })
+            );
+
+            it('should add then-schema for valid if-schema', () => {
+                core.setSchema(conditionalSchema);
+
+                const root = create<ObjectNode>(core, { test: 'with value' });
+                assert.equal(root.children.length, 2);
+                assert.deepEqual(json(root), { test: 'with value', additionalValue: 'dynamic then' });
             });
 
-            const root = create(core, { test: 'with value' }) as ObjectNode;
-            assert.equal(root.children.length, 2);
-            assert.equal(root.children[1].schema.description, 'added');
-            assert.equal(root.children[1].schema.isDynamic, true);
-            assert.equal(root.children[1].schema.isActive, true);
-        });
+            it('should add else-schema for invalid if-schema', () => {
+                core.setSchema(conditionalSchema);
 
-        it('should return value of dependency', () => {
-            core.setSchema({
-                type: 'object',
-                properties: {
-                    test: { type: 'string' }
-                },
-                dependencies: {
-                    test: {
-                        properties: {
-                            additionalValue: { description: 'added', type: 'string' }
-                        }
-                    }
-                }
+                const root = create<ObjectNode>(core, { test: '' });
+                assert.equal(root.children.length, 2);
+                assert.equal(root.children[1].schema.description, 'else');
+                assert.deepEqual(json(root), { test: '', additionalValue: 'dynamic else' });
             });
 
-            const root = create(core, { test: 'with value', additionalValue: 'additional' }) as ObjectNode;
-            assert.equal(root.children.length, 2);
-            assert.deepEqual(json(root), { test: 'with value', additionalValue: 'additional' });
+            it('should not add then-schema for invalid if-schema', () => {
+                core.setSchema({
+                    type: 'object',
+                    required: ['test'],
+                    properties: {
+                        test: { type: 'string', default: 'with-value' }
+                    },
+                    if: {
+                        properties: {
+                            test: {
+                                type: 'string',
+                                minLength: 100
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['additionalValue'],
+                        properties: {
+                            additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                        }
+                    }
+                });
+
+                const root = create<ObjectNode>(core, { test: 'with-value' });
+                assert.equal(root.children.length, 1);
+                assert.deepEqual(json(root), { test: 'with-value' });
+            });
+
+            it('should not create a node for non-matching else case', () => {
+                core.setSchema({
+                    type: 'object',
+                    required: ['test'],
+                    properties: {
+                        test: { type: 'string' }
+                    },
+                    if: {
+                        properties: {
+                            test: {
+                                type: 'string',
+                                minLength: 10
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['additionalValue'],
+                        properties: {
+                            thenValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                        }
+                    },
+                    else: {
+                        required: ['additionalValue'],
+                        properties: {
+                            elseValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                        }
+                    }
+                });
+
+                const root = create<ObjectNode>(core, {
+                    test: 'triggers then',
+                    thenValue: 'input then',
+                    elseValue: 'input else'
+                });
+                assert.equal(root.children.length, 2);
+                assert.deepEqual(json(root), { test: 'triggers then', thenValue: 'input then' });
+            });
         });
     });
-
-    describe('if-else-then', () => {});
 });

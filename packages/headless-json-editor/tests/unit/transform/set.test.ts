@@ -36,7 +36,8 @@ describe('set', () => {
                     }
                 },
                 list: { type: 'array', items: { type: 'string' } }
-            }
+            },
+            additionalProperties: true
         });
         template = core.getTemplate({});
     });
@@ -480,6 +481,91 @@ describe('set', () => {
 
             assert(after.type === 'object');
             assert.deepEqual(json(after), { test: '', additionalValue: 'before' });
+        });
+    });
+
+    describe('object if-then-else', () => {
+        let conditional: Draft;
+        beforeEach(() => {
+            conditional = new Draft07({
+                type: 'object',
+                properties: { test: { type: 'string' } },
+                if: {
+                    properties: {
+                        test: { minLength: 10 }
+                    }
+                },
+                then: {
+                    properties: {
+                        thenValue: { description: 'then', type: 'string', default: 'from then' }
+                    }
+                },
+                else: {
+                    properties: {
+                        elseValue: { description: 'else', type: 'string', default: 'from else' }
+                    }
+                }
+            });
+        });
+
+        it('should update conditional value', () => {
+            const before = create<ObjectNode>(conditional, { test: 'select then' });
+            assert.equal(before.children.length, 2);
+
+            const [after] = set<ObjectNode>(conditional, before, '/thenValue', 'updated value');
+            assert(after.type === 'object');
+            assert.equal(after.children.length, 2);
+            assert.deepEqual(json(after), { test: 'select then', thenValue: 'updated value' });
+        });
+
+        it('should change conditional value to "then" case', () => {
+            const before = create<ObjectNode>(conditional, { test: '' });
+            assert.equal(before.children.length, 2);
+            assert.equal(before.children[1].schema.description, 'else');
+
+            const [after] = set<ObjectNode>(conditional, before, '/test', 'select then');
+            assert(after.type === 'object');
+
+            assert.equal(after.children.length, 2);
+            assert.equal(after.children[1].schema.description, 'then');
+        });
+
+        it('should change conditional value to "else" case', () => {
+            const before = create<ObjectNode>(conditional, { test: 'selected then' });
+            assert.equal(before.children.length, 2);
+            assert.equal(before.children[1].schema.description, 'then');
+
+            const [after] = set<ObjectNode>(conditional, before, '/test', '');
+            assert(after.type === 'object');
+
+            assert.equal(after.children.length, 2);
+            assert.equal(after.children[1].schema.description, 'else');
+        });
+
+        it('should only remove "then"-schema on missing "else"', () => {
+            const thenOnlySchema = new Draft07({
+                type: 'object',
+                properties: { test: { type: 'string' } },
+                if: {
+                    properties: {
+                        test: { minLength: 10 }
+                    }
+                },
+                then: {
+                    properties: {
+                        thenValue: { description: 'then', type: 'string', default: 'from then' }
+                    }
+                }
+            });
+
+            const before = create<ObjectNode>(thenOnlySchema, { test: 'selected then' });
+            assert.equal(before.children.length, 2);
+            assert.equal(before.children[1].schema.description, 'then');
+
+            const [after] = set<ObjectNode>(thenOnlySchema, before, '/test', '');
+            assert(after.type === 'object');
+
+            assert.equal(after.children.length, 1);
         });
     });
 

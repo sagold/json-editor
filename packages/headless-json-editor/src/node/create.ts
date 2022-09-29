@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JSONPointer } from 'json-schema-library';
+import { getTypeOf, Draft, JSONPointer, isJSONError } from 'json-schema-library';
 import {
     Node,
     NodeType,
@@ -28,6 +28,10 @@ function getOptions(schema: JSONSchema) {
 
 function getPropertyName(pointer: string) {
     return pointer.split('/').pop() as string;
+}
+
+function isObject(v: unknown): v is Record<string, unknown> {
+    return getTypeOf(v) === 'object';
 }
 
 export const NODES: Record<NodeType, CreateNode> = {
@@ -70,15 +74,15 @@ export const NODES: Record<NodeType, CreateNode> = {
          */
         let totalData = data;
         let properties = schema.properties;
-        if (schema.dependencies) {
-            Object.keys(schema.dependencies).forEach((dependentKey) => {
-                const additionalSchema = schema.dependencies![dependentKey];
+        if (isObject(schema.dependencies)) {
+            const dependencies: JSONSchema['dependencies'] = schema.dependencies;
+            Object.keys(dependencies).forEach((dependentKey) => {
+                const additionalSchema = dependencies[dependentKey];
                 // ignore if its not a json-schema
-                if (getTypeOf(additionalSchema) !== 'object') {
+                if (!isObject(additionalSchema)) {
                     return;
                 }
 
-                // @ts-ignore
                 additionalSchema.type = 'object';
 
                 const testValue = data[dependentKey];
@@ -100,9 +104,26 @@ export const NODES: Record<NodeType, CreateNode> = {
             });
         }
 
+        if (isObject(schema.if) && (schema.then || schema.else)) {
+            const isValid = core.isValid(totalData, schema.if);
+            const dynamicSchema = (isValid && schema.then) || (!isValid && schema.else);
+
+            if (isObject(dynamicSchema)) {
+                const dynamicProperties = dynamicSchema.properties;
+                if (isObject(dynamicProperties)) {
+                    const additionalData = core.getTemplate({}, { type: 'object', ...dynamicSchema });
+                    totalData = { ...additionalData, ...totalData };
+                    // @ts-ignore
+                    properties = { ...properties, ...dynamicProperties };
+                }
+            }
+        }
+
         Object.keys(totalData).forEach((key) => {
             const nextSchema = core.step(key, schema, totalData, pointer); // not save
-            node.children.push(create(core, totalData[key], nextSchema, `${pointer}/${key}`));
+            if (!isJSONError(nextSchema)) {
+                node.children.push(create(core, totalData[key], nextSchema, `${pointer}/${key}`));
+            }
         });
 
         if (properties) {
@@ -112,10 +133,6 @@ export const NODES: Record<NodeType, CreateNode> = {
             node.children.sort((a, b) => {
                 return props.indexOf(a.property) - props.indexOf(b.property);
             });
-        }
-
-        if (schema.dependencies) {
-            // console.log(node);
         }
 
         return node;

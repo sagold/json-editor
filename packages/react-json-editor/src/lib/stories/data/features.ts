@@ -16,13 +16,6 @@ export const data = {
     // @todo no add.Props => returns error instead of schema. should be derived schema?
     // unknownProperty: 123,
     // unknownList: [{ title: 'super unknown' }],
-    // unknownNotAllowed: {
-    //     unknown: 'unknown property'
-    // },
-    // unknownAllowed: {
-    //     // @todo schema of parent is returned here (in node), but node type is string
-    //     unknown: 'unknown property'
-    // }
 };
 
 export const schema = {
@@ -124,27 +117,6 @@ export const schema = {
             title: 'Field of type "null"',
             description: 'from rjsf - use for extra information'
         },
-        schemaDependencies: {
-            title: 'schema dependencies',
-            type: 'object',
-            properties: {
-                surname: {
-                    title: 'first name',
-                    type: 'string',
-                    description: 'if a first name is entered, an input for last name is available'
-                }
-            },
-            dependentSchemas: {
-                surname: {
-                    properties: {
-                        lastname: {
-                            title: 'last name',
-                            type: 'string'
-                        }
-                    }
-                }
-            }
-        },
         remoteNestedEnum: {
             title: 'remote enum in array',
             type: 'array',
@@ -218,31 +190,104 @@ export const schema = {
         },
         dependency: {
             title: 'dependency',
+            description:
+                'support for schema dependencies, where an additional schema is activated if a given input has a value',
             type: 'object',
             properties: {
-                trigger: {
-                    title: 'trigger',
+                firstname: {
+                    title: 'first name',
+                    description: 'if a name is given, last name will be active',
                     type: 'string'
                 }
             },
             dependencies: {
-                trigger: {
+                firstname: {
                     properties: {
-                        additionalValue: {
-                            title: 'dynamic value',
-                            type: 'string'
+                        lastname: {
+                            title: 'last name',
+                            type: 'string',
+                            minLength: 1
                         }
                     }
                 }
             }
         },
-        unknownNotAllowed: {
+        ifthenelse: {
+            title: 'if-then-else',
+            description: 'switch schema based on schema validation. ',
             type: 'object',
-            additionalProperties: false
+            properties: {
+                toggle: {
+                    title: 'Toggle for conditional schema',
+                    description: 'if this content contains more than five characters another schema will be used',
+                    type: 'string',
+                    default: false
+                }
+            },
+            if: {
+                properties: {
+                    toggle: {
+                        type: 'string',
+                        maxLength: 5
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    toggleOn: {
+                        title: 'toggle off',
+                        description: 'the toggle has less than 5 characters',
+                        type: 'string'
+                    }
+                }
+            },
+            else: {
+                properties: {
+                    toggleOff: {
+                        title: 'toggle on',
+                        description: 'the toggle has more than 5 characters',
+                        type: 'string',
+                        enum: ['select 1', 'select 2', 'select 3']
+                    }
+                }
+            }
         },
-        unknownAllowed: {
+        ifthen: {
+            title: 'if-then',
+            description: 'switch schema based on schema validation. ',
             type: 'object',
-            additionalProperties: true
+            properties: {
+                toggle: {
+                    title: 'Toggle for conditional schema',
+                    description: 'if this content contains more than five characters an additional schema will be used',
+                    type: 'string'
+                }
+            },
+            if: {
+                properties: {
+                    toggle: {
+                        type: 'string',
+                        minLength: 6
+                    }
+                }
+            },
+            then: {
+                properties: {
+                    toggleOff: {
+                        title: 'dynamic schema',
+                        description: 'the toggle has more than 5 characters',
+                        type: 'string',
+                        enum: ['select 1', 'select 2', 'select 3']
+                    }
+                }
+            }
+        },
+        html: {
+            title: 'this could be an input field for html',
+            type: 'string',
+            format: 'html',
+            description: 'textarea for multiline contents',
+            minLength: 1
         }
     }
 };

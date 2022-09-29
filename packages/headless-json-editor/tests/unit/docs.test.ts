@@ -9,7 +9,7 @@ describe('docs', () => {
         const he = new HeadlessJsonEditor({ schema: jsonSchema, data: ['first item'] });
         let rootNode = he.getState();
         rootNode = he.setValue('#/1', 124);
-        console.log(JSON.stringify(rootNode, null, 2));
+        // console.log(JSON.stringify(rootNode, null, 2));
         // render(rootNode);
     });
 });

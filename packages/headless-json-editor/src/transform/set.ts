@@ -18,6 +18,8 @@ import { invalidPathError } from '../errors';
 import { getChildNodeIndex, getChildNode } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
+const cp = <T = any>(value: T): T => JSON.parse(JSON.stringify(value));
+
 function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
     const data = json(parentNode) as Record<string, unknown>;
     data[childProperty] = value;
@@ -98,6 +100,33 @@ export function set<T extends Node = Node>(
                     node: parent.children[index]
                 });
                 return [newRootNode, changeSet];
+            }
+        }
+
+        if (targetNode.schema.if && (targetNode.schema.then || targetNode.schema.else)) {
+            const thenSchema = { type: 'object', ...(targetNode.schema.then as JSONSchema) } as JSONSchema;
+            const elseSchema = { type: 'object', ...(targetNode.schema.else as JSONSchema) } as JSONSchema;
+
+            const currentTargetData = json(targetNode);
+            const currentIsValid = core.isValid(currentTargetData, targetNode.schema.if as JSONSchema);
+
+            let newTargetData = setPointer(cp(currentTargetData), join(frags), value);
+            const newTargetValid = core.isValid(newTargetData, targetNode.schema.if as JSONSchema);
+
+            // only update children on changed if-result
+            if (currentIsValid !== newTargetValid) {
+                const currentSchema = currentIsValid ? thenSchema : elseSchema;
+                const newSchema = newTargetValid ? thenSchema : elseSchema;
+
+                const currentNodes = create<ObjectNode>(core, currentTargetData, currentSchema, targetNode.pointer);
+                const currentPointers = currentNodes.children.map((c) => c.pointer);
+
+                // remove previous schema
+                targetNode.children = targetNode.children.filter((child) => !currentPointers.includes(child.pointer));
+
+                newTargetData = core.getTemplate(newTargetData, newSchema);
+                const newNodes = create<ObjectNode>(core, newTargetData, newSchema, targetNode.pointer).children;
+                targetNode.children = targetNode.children.concat(...newNodes);
             }
         }
 

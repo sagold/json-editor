@@ -17,6 +17,10 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
     if (node == null) {
         return null;
     }
+
+    // @ts-ignore
+    window['rootNode'] = node;
+
     const ChildEditor = instance.getEditor(node);
     return (
         <section id="side-by-side">
