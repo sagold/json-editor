@@ -36,6 +36,92 @@ function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string,
     return schema;
 }
 
+function resolveIfThenElse(
+    core: Draft,
+    targetNode: ObjectNode,
+    pointerToValue: string,
+    value: unknown
+): [ObjectNode, Change[]] {
+    if (!targetNode.schema.if || !(targetNode.schema.then || targetNode.schema.else)) {
+        return [targetNode, []];
+    }
+
+    const thenSchema = { type: 'object', ...(targetNode.schema.then as JSONSchema) } as JSONSchema;
+    const elseSchema = { type: 'object', ...(targetNode.schema.else as JSONSchema) } as JSONSchema;
+
+    const currentTargetData = json(targetNode);
+    const currentIsValid = core.isValid(currentTargetData, targetNode.schema.if as JSONSchema);
+
+    let newTargetData = setPointer(cp(currentTargetData), pointerToValue, value);
+    const newTargetValid = core.isValid(newTargetData, targetNode.schema.if as JSONSchema);
+
+    // only update children on changed if-result
+    if (currentIsValid === newTargetValid) {
+        return [targetNode, []];
+    }
+
+    const currentSchema = currentIsValid ? thenSchema : elseSchema;
+    const newSchema = newTargetValid ? thenSchema : elseSchema;
+
+    const currentNodes = create<ObjectNode>(core, currentTargetData, currentSchema, targetNode.pointer);
+    const currentPointers = currentNodes.children.map((c) => c.pointer);
+
+    // remove previous schema
+    targetNode.children = targetNode.children.filter((child) => !currentPointers.includes(child.pointer));
+
+    newTargetData = core.getTemplate(newTargetData, newSchema);
+    const newNodes = create<ObjectNode>(core, newTargetData, newSchema, targetNode.pointer).children;
+    targetNode.children = targetNode.children.concat(...newNodes);
+
+    // @todo add changeset
+    return [targetNode, []];
+}
+
+function resolveDependencies(
+    core: Draft,
+    targetNode: ObjectNode,
+    pointerToValue: string[],
+    value: unknown
+): [ObjectNode, Change[]] {
+    const changeSet: Change[] = [];
+
+    // replace whole object and reuse currently edited node
+    if (!targetNode.schema.dependencies) {
+        return [targetNode, changeSet];
+    }
+    // @todo improve diff
+    // if next key is a key in dependencies, recreate whole node and
+    // let `create` do the complex work
+    const changedProperty = pointerToValue[0];
+    const dependencyAffected = targetNode.schema.dependencies[changedProperty] != null;
+    if (!dependencyAffected) {
+        return [targetNode, changeSet];
+    }
+    // store current edited child for later, we have to reuse it
+    const currentlyEditedChild = getChildNode(targetNode, pointerToValue[0]);
+
+    // rebuild this object with updated data
+    const currentData = json(targetNode) as Record<string, unknown>;
+    setPointer(currentData, join(pointerToValue), value);
+    changeSet.push({
+        type: 'delete',
+        node: targetNode
+    });
+
+    // note: we may not replace edited child, but must update it
+    const newTargetNode = create<ObjectNode>(core, currentData, targetNode.schema, targetNode.pointer);
+    changeSet.push({
+        type: 'create',
+        node: newTargetNode
+    });
+
+    const nextChildIndex = getChildNodeIndex(newTargetNode, pointerToValue[0]);
+    // @ts-ignore
+    newTargetNode.children[nextChildIndex] = currentlyEditedChild;
+    targetNode.children = newTargetNode.children;
+    return [targetNode, changeSet];
+}
+
 /**
  * set (add, update) given data to location of json pointer
  */
@@ -103,64 +189,17 @@ export function set<T extends Node = Node>(
             }
         }
 
-        if (targetNode.schema.if && (targetNode.schema.then || targetNode.schema.else)) {
-            const thenSchema = { type: 'object', ...(targetNode.schema.then as JSONSchema) } as JSONSchema;
-            const elseSchema = { type: 'object', ...(targetNode.schema.else as JSONSchema) } as JSONSchema;
-
-            const currentTargetData = json(targetNode);
-            const currentIsValid = core.isValid(currentTargetData, targetNode.schema.if as JSONSchema);
-
-            let newTargetData = setPointer(cp(currentTargetData), join(frags), value);
-            const newTargetValid = core.isValid(newTargetData, targetNode.schema.if as JSONSchema);
-
-            // only update children on changed if-result
-            if (currentIsValid !== newTargetValid) {
-                const currentSchema = currentIsValid ? thenSchema : elseSchema;
-                const newSchema = newTargetValid ? thenSchema : elseSchema;
-
-                const currentNodes = create<ObjectNode>(core, currentTargetData, currentSchema, targetNode.pointer);
-                const currentPointers = currentNodes.children.map((c) => c.pointer);
-
-                // remove previous schema
-                targetNode.children = targetNode.children.filter((child) => !currentPointers.includes(child.pointer));
-
-                newTargetData = core.getTemplate(newTargetData, newSchema);
-                const newNodes = create<ObjectNode>(core, newTargetData, newSchema, targetNode.pointer).children;
-                targetNode.children = targetNode.children.concat(...newNodes);
-            }
+        if (targetNode?.type === 'object' && targetNode.schema.if) {
+            const [newTargetNode, changes] = resolveIfThenElse(core, targetNode, join(frags), value);
+            targetNode = newTargetNode;
+            changeSet.push(...changes);
         }
 
-        // replace whole object and reuse currently edited node
-        if (targetNode.schema.dependencies) {
-            // @todo improve diff
-            // if next key is a key in dependencies, recreate whole node and
-            // let `create` do the complex work
-            const changedProperty = frags[0];
-            const dependencyAffected = targetNode.schema.dependencies[changedProperty] != null;
-            if (dependencyAffected) {
-                // store current edited child for later, we have to reuse it
-                const currentlyEditedChild = getChildNode(targetNode, frags[0]);
-
-                // rebuild this object with updated data
-                const currentData = json(targetNode) as Record<string, unknown>;
-                setPointer(currentData, join(frags), value);
-                changeSet.push({
-                    type: 'delete',
-                    node: targetNode
-                });
-
-                // note: we may not replace edited child, but must update it
-                const newTargetNode = create<ObjectNode>(core, currentData, targetNode.schema, targetNode.pointer);
-                changeSet.push({
-                    type: 'create',
-                    node: newTargetNode
-                });
-
-                const nextChildIndex = getChildNodeIndex(newTargetNode, frags[0]);
-                // @ts-ignore
-                newTargetNode.children[nextChildIndex] = currentlyEditedChild;
-                targetNode.children = newTargetNode.children;
-            }
+        if (targetNode?.type === 'object' && targetNode.schema.dependencies) {
+            // replace whole object and reuse currently edited node
+            const [newTargetNode, changes] = resolveDependencies(core, targetNode, frags, value);
+            targetNode = newTargetNode;
+            changeSet.push(...changes);
         }
 
         // unlink children of current node
