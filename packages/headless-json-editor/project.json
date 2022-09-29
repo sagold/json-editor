@@ -13,6 +13,18 @@
                 "assets": ["packages/headless-json-editor/*.md"]
             }
         },
+        "publish": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "node tools/scripts/publish.mjs headless-json-editor {args.ver} {args.tag}"
+            },
+            "dependsOn": [
+                {
+                    "projects": "self",
+                    "target": "build"
+                }
+            ]
+        },
         "lint": {
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
@@ -25,7 +37,7 @@
             "outputs": ["coverage/packages/headless-json-editor"],
             "options": {
                 "jestConfig": "packages/headless-json-editor/jest.config.ts",
-                "passWithNoTests": false
+                "passWithNoTests": true
             }
         }
     },
