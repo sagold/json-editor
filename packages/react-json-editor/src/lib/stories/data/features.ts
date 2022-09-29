@@ -1,4 +1,5 @@
 export const data = {
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita multo sanguine profuso in laetitia et in victoria est mortuus. Graccho, eius fere, aequalí? Illum mallem levares, quo optimum atque humanissimum virum, Cn. Quod dicit Epicurus etiam de voluptate, quae minime sint voluptates, eas obscurari saepe et obrui. Duo Reges: constructio interrete. Sed mehercule pergrata mihi oratio tua. Omnis enim est natura diligens sui. Illa argumenta propria videamus, cur omnia sint paria peccata. Atque his de rebus et splendida est eorum et illustris oratio.',
     switch: [
         {
             type: 'header',
@@ -31,6 +32,12 @@ export const schema = {
         title: {
             type: 'string',
             description: 'string input with min length 1',
+            minLength: 1
+        },
+        text: {
+            type: 'string',
+            format: 'textarea',
+            description: 'textarea for multiline contents',
             minLength: 1
         },
         year: {

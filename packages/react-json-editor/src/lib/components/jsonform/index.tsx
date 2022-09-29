@@ -3,6 +3,9 @@ import { RemoteEnumOptionsPlugin, JSONSchema, Node, json } from 'headless-json-e
 import { useJsonEditor } from '../../useJsonEditor';
 import { defaultEditors } from '../../../index';
 
+// import { createContext } from 'react';
+// export const ModalContext = createContext({});
+
 export type JsonFormProps = {
     schema: JSONSchema;
     data: unknown;

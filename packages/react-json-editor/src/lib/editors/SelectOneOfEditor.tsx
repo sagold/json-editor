@@ -12,7 +12,7 @@ export function useSelectOneOfEditor(node, { skipSelectOneOf = false } = {}) {
     return !skipSelectOneOf && node.schema.oneOfSchema && node.schema.oneOfSchema.oneOf.length > 1;
 }
 
-export const SelectOneOfEditor = editor(({ node, instance }) => {
+export const SelectOneOfEditor = editor(({ instance, node }) => {
     const Editor = instance.getEditor(node, { skipSelectOneOf: true });
     const selectedSchema = node.schema as SelectedOneOfSchema;
 
@@ -22,7 +22,7 @@ export const SelectOneOfEditor = editor(({ node, instance }) => {
         instance.setValue(node.pointer, data);
     };
 
-    const options = selectedSchema.oneOfSchema.oneOf.map((s, index) => ({
+    const selectOptions = selectedSchema.oneOfSchema.oneOf.map((s, index) => ({
         key: index,
         value: index,
         text: s.title
@@ -31,7 +31,12 @@ export const SelectOneOfEditor = editor(({ node, instance }) => {
     return (
         <div className="ed-oneof">
             <Form.Field id={node.pointer} className="ed-oneof__selection">
-                <Dropdown selection onChange={onChange} value={selectedSchema.oneOfIndex as number} options={options} />
+                <Dropdown
+                    selection
+                    onChange={onChange}
+                    value={selectedSchema.oneOfIndex as number}
+                    options={selectOptions}
+                />
             </Form.Field>
             <Editor node={node} instance={instance} />
         </div>

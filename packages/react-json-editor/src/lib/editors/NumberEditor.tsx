@@ -3,14 +3,16 @@ import { EditorPlugin } from './decorators';
 import { Form } from 'semantic-ui-react';
 import { editor } from './decorators';
 
-export const NumberEditor = editor<NumberNode, number>(({ node, setValue }) => (
+export const NumberEditor = editor<NumberNode, number>(({ node, options, setValue }) => (
     <div data-type="number" data-id={node.pointer}>
         <Form.Input
+            error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
+            label={options.title}
             id={node.id}
             type="number"
+            // labelPosition="right"
+            // label={{ basic: true, content: '%' }}
             value={node.value}
-            error={node.errors.length > 0 && node.errors.map((e) => e.message)}
-            label={node.options.title}
             onChange={(e, { value }) => {
                 const number = parseFloat(value);
                 if (`${number}` === value) {
@@ -22,8 +24,19 @@ export const NumberEditor = editor<NumberNode, number>(({ node, setValue }) => (
                     setValue(value);
                 }
             }}
-        />
-        {<div className="description">{node.options.description as string}</div>}
+        >
+            {/*<Input />*/}
+        </Form.Input>
+        {/*{node.errors.length > 0 && (
+            <Message error>
+                <Message.List>
+                    {node.errors.map((e) => {
+                        return <Message.Item key={e.message}>{e.message}</Message.Item>;
+                    })}
+                </Message.List>
+            </Message>
+        )}*/}
+        {<div className="description">{options.description as string}</div>}
     </div>
 ));
 

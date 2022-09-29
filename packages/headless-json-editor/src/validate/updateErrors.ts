@@ -34,7 +34,6 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
     // retrieve errors
     const errors = draft.validate(json(startNode), startNode.schema, startNode.pointer).flat(Infinity);
     const [syncErrors, asyncErrors] = splitErrors(errors);
-    // console.log('syncErrors', syncErrors);
 
     // assign errors
     syncErrors.forEach((err: JSONError) => {

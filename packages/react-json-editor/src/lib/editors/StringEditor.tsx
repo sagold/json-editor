@@ -1,11 +1,10 @@
 import { StringNode } from 'headless-json-editor';
 import { Form, Dropdown } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
-import TextareaAutosize from 'react-textarea-autosize';
 
-export const StringEditor = editor<StringNode, string>(({ node, setValue }) => {
+export const StringEditor = editor<StringNode, string>(({ node, options, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
-    const disabled = node.options.disabled || isValidConst;
+    const disabled = options.disabled || isValidConst;
 
     return (
         <div data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
@@ -14,11 +13,20 @@ export const StringEditor = editor<StringNode, string>(({ node, setValue }) => {
                 type="text"
                 disabled={disabled}
                 value={node.value}
-                error={node.errors.length > 0 && node.errors.map((e) => e.message)}
-                label={node.options.title}
+                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
+                label={options.title}
                 onChange={(e, { value }) => setValue(value)}
             />
-            {<div className="description">{node.options.description as string}</div>}
+            {/*{node.errors.length > 0 && (
+                <Message error>
+                    <Message.List>
+                        {node.errors.map((e) => {
+                            return <Message.Item key={e.message}>{e.message}</Message.Item>;
+                        })}
+                    </Message.List>
+                </Message>
+            )}*/}
+            {<div className="description">{options.description as string}</div>}
         </div>
     );
 });
@@ -29,11 +37,11 @@ export const StringEditorPlugin: EditorPlugin = {
     Editor: StringEditor
 };
 
-export const SelectEditor = editor<StringNode, string>(({ node, setValue }) => {
+export const SelectEditor = editor<StringNode, string>(({ node, options, setValue }) => {
     const enumValues = (node.schema.enum || []) as string[];
 
-    const titles = (node.options.enum as string[]) ?? [];
-    const options = enumValues.map((value, index) => ({
+    const titles = (options.enum as string[]) ?? [];
+    const selectOptions = enumValues.map((value, index) => ({
         key: index,
         value,
         text: titles[index] ?? value
@@ -42,15 +50,15 @@ export const SelectEditor = editor<StringNode, string>(({ node, setValue }) => {
     return (
         <div data-type="string">
             <Form.Field id={node.pointer} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
-                <label>{node.options.title ?? node.property}</label>
+                <label>{options.title ?? node.property}</label>
                 <Dropdown
                     selection
                     onChange={(event, { value }) => setValue(value as string)}
                     value={node.value}
-                    options={options}
+                    options={selectOptions}
                 />
             </Form.Field>
-            {<div className="description">{node.options.description}</div>}
+            {<div className="description">{options.description}</div>}
         </div>
     );
 });

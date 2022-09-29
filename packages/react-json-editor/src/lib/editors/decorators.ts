@@ -2,28 +2,49 @@ import { Node } from 'headless-json-editor';
 import { memo } from 'react';
 import { JsonEditor } from '../JsonEditor';
 
-export type EditorProps<T> = {
+type AnyOption = Record<string, unknown>;
+
+export type EditorProps<T extends Node = Node> = {
     node: T;
     instance: JsonEditor;
+    options?: Partial<T['options']>;
 };
 
-const isEqual = (prev: { node: Node }, next: { node: Node }) => prev.node === next.node;
+/**
+ * interface of generic json editor component.
+ * it takes the current instance and the current node along with a localized option interface
+ */
+export type Editor<T extends Node = Node> = (props: EditorProps<T>) => JSX.Element | null;
 
+/**
+ * react memo node comparison
+ */
+const isEqual = (prev: EditorProps, next: EditorProps) => prev.node === next.node && prev.options === next.options;
+
+/**
+ * props of your decorated editor
+ */
 export type DecoratedEditorProps<T extends Node, V = unknown> = {
     node: T;
     instance: JsonEditor;
+    options: T['options'];
     setValue: (value: V) => void;
 };
 
-export type Editor<T extends Node = Node> = (props: EditorProps<T>) => JSX.Element | null;
-
+/**
+ * interface to your decorated editor
+ */
 export type DecoratedEditor<T extends Node, V = unknown> = (props: DecoratedEditorProps<T, V>) => JSX.Element | null;
 
-export function editor<T extends Node = Node, V = unknown>(EditorComponent: DecoratedEditor<T, V>): Editor<any> {
+/**
+ * add setValue helper to editor component and reduce update cycles
+ */
+export function editor<T extends Node = Node, V = unknown>(EditorComponent: DecoratedEditor<T, V>) {
     return memo(
         (props: EditorProps<T>) =>
             EditorComponent({
                 ...props,
+                options: { ...props.node.options, ...props.options },
                 setValue: (value: V) => props.instance.setValue(props.node.pointer, value)
             }),
         isEqual
@@ -32,6 +53,6 @@ export function editor<T extends Node = Node, V = unknown>(EditorComponent: Deco
 
 export type EditorPlugin = {
     readonly id: string;
-    use: (node: Node, options?: Record<string, unknown>) => boolean;
-    Editor: Editor;
+    use: (node: Node, options?: AnyOption) => boolean;
+    Editor: Editor<any>;
 };

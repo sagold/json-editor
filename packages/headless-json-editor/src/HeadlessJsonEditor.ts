@@ -54,15 +54,20 @@ export class HeadlessJsonEditor {
         this.draft = new JsonEditor(schema, draftConfig);
         this.plugins = plugins.map((p) => p.create(this)).filter(isPluginObserver);
         this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
+        this.validate();
     }
 
     create(data?: unknown): Node {
         const { draft } = this;
         const state = create<ParentNode>(draft, draft.getTemplate(data));
-        updateErrors(draft, state);
+        this.validate();
         const changes: Change[] = flat(state).map((node) => ({ type: 'create', node }));
         this.state = runPlugins(this.plugins, this.state, state, changes);
         return state;
+    }
+
+    validate() {
+        this.state && updateErrors(this.draft, this.state);
     }
 
     getState() {

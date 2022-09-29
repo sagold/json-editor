@@ -20,22 +20,22 @@ function hasEnumOptions(itemsSchema): itemsSchema is { enum: string[] } {
     return Array.isArray(itemsSchema?.enum);
 }
 
-export const MultiSelectEditor = editor<StringNode, string>(({ node, setValue }) => {
+export const MultiSelectEditor = editor<StringNode, string>(({ node, options, setValue }) => {
     const listData = json(node) as string[];
     // two modes: free strings or fixed enum
     let allowAdditions = true;
-    let options: DropdownItemProps[];
+    let dropdownOptions: DropdownItemProps[];
     if (hasEnumOptions(node.schema.items)) {
-        options = getEnumOptions(node);
+        dropdownOptions = getEnumOptions(node);
         allowAdditions = false;
     } else {
-        options = listData.map((value) => ({ value, text: value }));
+        dropdownOptions = listData.map((value) => ({ value, text: value }));
     }
 
     return (
-        <div data-type="string" data-id={node.pointer} className={node.options.disabled ? 'disabled' : 'enabled'}>
-            <Form.Field id={node.id} error={node.errors.length > 0} disabled={node.options.disabled}>
-                <label>{node.options.title as string}</label>
+        <div data-type="string" data-id={node.pointer} className={options.disabled ? 'disabled' : 'enabled'}>
+            <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
+                <label>{options.title as string}</label>
                 <Dropdown
                     fluid
                     multiple
@@ -44,7 +44,7 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, setValue })
                     allowAdditions={allowAdditions}
                     onChange={(e, { value }) => setValue(value as string)}
                     value={listData}
-                    options={options}
+                    options={dropdownOptions}
                 />
             </Form.Field>
             {node.errors.length > 0 && (
@@ -54,7 +54,7 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, setValue })
                     ))}
                 </Message>
             )}
-            {<div className="description">{node.options.description as string}</div>}
+            {<div className="description">{options.description as string}</div>}
         </div>
     );
 });

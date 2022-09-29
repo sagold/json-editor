@@ -22,10 +22,10 @@ export type UseJsonEditorOptions = {
 /**
  * add json editor capabilities to your functional component
  */
-export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [Node, JsonEditor] {
+export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [undefined] | [T, JsonEditor] {
     const { schema, data } = settings;
     const jsonEditor = useRef<JsonEditor>();
-    const [root, setState] = useState<Node>();
+    const [root, setState] = useState<T>();
 
     useEffect(() => {
         const { onChange, plugins = [], editors } = settings;
@@ -36,14 +36,16 @@ export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [No
             plugins: [
                 ...plugins,
                 createOnChangePlugin((data, root) => {
-                    setState(root);
+                    setState(root as T);
                     if (onChange) {
                         onChange(data, root);
                     }
                 })
             ]
         });
-        setState(jsonEditor.current.create(data));
+        const node = jsonEditor.current.create(data);
+        jsonEditor.current.validate();
+        setState(node as T);
     }, [schema, data]);
 
     if (root != null && jsonEditor.current != null) {

@@ -63,14 +63,14 @@ export type ArrayOptions = {
     sortable?: {
         // sortable options: https://github.com/SortableJS/Sortable
         enabled?: boolean;
-        group?: string; // name of sortable group, defaults to pointer
+        group?: string; // name of sortable group, defaults to json-pointer
     };
 } & DefaultNodeOptions;
 
-export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) => {
+export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
     const [openModal, setModalOpen] = useState<boolean>(false);
     const contextRef = createRef();
-    let sortable = node.options.sortable;
+    let sortable = options.sortable;
     if (sortable == null) {
         sortable = { enabled: false };
     }
@@ -151,7 +151,12 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) 
                         );
                     })}
                 </div>
-                <InsertItemModal instance={instance} node={node} isModalOpen={openModal} setModalOpen={setModalOpen} />
+                <InsertItemModal
+                    instance={instance}
+                    node={node}
+                    isOpen={openModal}
+                    onClose={() => setModalOpen(false)}
+                />
             </div>
         </Ref>
     );

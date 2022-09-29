@@ -5,13 +5,13 @@ import { editor, EditorPlugin } from './decorators';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/objecteditor/index.ts
 
-export const ObjectEditor = editor<ObjectNode>(({ node, instance }) => {
+export const ObjectEditor = editor<ObjectNode>(({ node, options, instance }) => {
     const Header = getEditorHeader(node);
 
     return (
         <div data-type="object" data-id={node.pointer}>
-            <Header>{node.options.title}</Header>
-            <p>{node.options.description as string}</p>
+            <Header>{options.title}</Header>
+            <p>{options.description as string}</p>
             {node.errors.length > 0 && (
                 <Message error>
                     {node.errors.map((e) => (

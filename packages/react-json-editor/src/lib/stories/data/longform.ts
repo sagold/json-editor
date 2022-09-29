@@ -184,6 +184,7 @@ export const schema: JSONSchema = {
             format: 'table',
             items: {
                 title: 'Modul',
+                // @ts-ignore
                 options: {
                     disable_collapse: true,
                     keep_oneof_values: false
@@ -199,6 +200,7 @@ export const schema: JSONSchema = {
                         properties: {
                             partial: {
                                 type: 'string',
+                                // @ts-ignore
                                 options: {
                                     hidden: true
                                 },
@@ -209,6 +211,7 @@ export const schema: JSONSchema = {
                                 type: 'object',
                                 required: ['withInitial', 'content'],
                                 additionalProperties: false,
+                                // @ts-ignore
                                 options: {
                                     hide_title: true
                                 },
@@ -239,6 +242,7 @@ export const schema: JSONSchema = {
                         title: 'Bild',
                         additionalProperties: false,
                         required: ['partial', 'image'],
+                        // @ts-ignore
                         options: {
                             disable_collapse: true
                         },
@@ -255,6 +259,7 @@ export const schema: JSONSchema = {
                                 type: 'object',
                                 additionalProperties: false,
                                 required: ['desktop', 'mobile', 'caption', 'source', 'displayMode', 'animated'],
+                                // @ts-ignore
                                 options: {
                                     hide_title: true
                                 },
@@ -265,6 +270,7 @@ export const schema: JSONSchema = {
                                         devicePixelRatio: 2,
                                         minWidth: 456,
                                         minHeight: 304,
+                                        // @ts-ignore
                                         options: {
                                             hide_title: true,
                                             maxWidth: 1320,
@@ -295,6 +301,7 @@ export const schema: JSONSchema = {
                                         devicePixelRatio: 2,
                                         minWidth: 456,
                                         minHeight: 304,
+                                        // @ts-ignore
                                         options: {
                                             hide_title: true,
                                             maxWidth: 750,
@@ -333,6 +340,7 @@ export const schema: JSONSchema = {
                                         type: 'string',
                                         default: 'text-wide',
                                         enum: ['float-left', 'float-right', 'text-wide', 'expanded', 'fullwidth'],
+                                        // @ts-ignore
                                         options: {
                                             enumTitles: [
                                                 'Bild links',
@@ -344,6 +352,7 @@ export const schema: JSONSchema = {
                                         }
                                     },
                                     animated: {
+                                        // @ts-ignore
                                         options: {
                                             hidden: true
                                         },
@@ -361,6 +370,7 @@ export const schema: JSONSchema = {
                         properties: {
                             partial: {
                                 type: 'string',
+                                // @ts-ignore
                                 options: {
                                     hidden: true
                                 },
@@ -372,6 +382,7 @@ export const schema: JSONSchema = {
                                 type: 'string',
                                 enum: ['light', 'dark'],
                                 default: 'light',
+                                // @ts-ignore
                                 options: {
                                     hidden: true,
                                     enumTitles: ['hell', 'dunkel']
@@ -380,6 +391,7 @@ export const schema: JSONSchema = {
                             slides: {
                                 type: 'object',
                                 title: '',
+                                // @ts-ignore
                                 options: {
                                     hide_title: true
                                 },
@@ -390,6 +402,7 @@ export const schema: JSONSchema = {
                                         type: 'string',
                                         enum: ['contain', 'cover'],
                                         default: 'contain',
+                                        // @ts-ignore
                                         options: {
                                             enumTitles: [
                                                 'Bilder so einbinden, dass sie komplett sichtbar sind',
@@ -400,6 +413,7 @@ export const schema: JSONSchema = {
                                     default: {
                                         type: 'array',
                                         title: 'Bildergalerie',
+                                        // @ts-ignore
                                         options: {
                                             hide_title: true
                                         },
@@ -416,6 +430,7 @@ export const schema: JSONSchema = {
                                                     devicePixelRatio: 2,
                                                     minWidth: 320,
                                                     minHeight: 320,
+                                                    // @ts-ignore
                                                     options: {
                                                         'max-height': '250px',
                                                         maxWidth: 1320,
@@ -444,6 +459,7 @@ export const schema: JSONSchema = {
                                                     devicePixelRatio: 2,
                                                     minWidth: 320,
                                                     minHeight: 320,
+                                                    // @ts-ignore
                                                     options: {
                                                         'max-height': '250px',
                                                         maxWidth: 750,
@@ -1045,10 +1061,17 @@ export const schema: JSONSchema = {
         furtherReading: {
             title: 'Weitere Artikel',
             type: 'array',
+            // @ts-ignore
+            options: {
+                editor: 'MasterDetail'
+            },
             items: {
                 type: 'object',
                 title: 'Artikel',
                 required: ['kicker', 'headline', 'link', 'image'],
+                options: {
+                    previewValue: 'headline'
+                },
                 properties: {
                     image: {
                         type: 'object',

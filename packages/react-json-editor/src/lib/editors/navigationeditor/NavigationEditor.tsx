@@ -4,7 +4,7 @@ import { editor } from '../decorators';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '../../JsonEditor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, isValueNode, ArrayNode, DefaultNodeOptions, Node } from 'headless-json-editor';
+import { ParentNode, isValueNode, ArrayNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
 import { useState, useRef, useEffect } from 'react';
 
 function scrollTo(node: Node) {
@@ -53,8 +53,7 @@ function onSortEnd(instance: JsonEditor, node: ArrayNode, event: Sortable.Sortab
 
 function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions>; instance: JsonEditor }) {
     const ref = useRef<HTMLDivElement>();
-    const [isModalOpen, setModalOpen] = useState(false);
-
+    const [isModalOpen, showSelectItemModal] = useState(false);
     const [toggleState, setToggleState] = useState<boolean>(false);
 
     const { sortable = {} } = node.options;
@@ -69,11 +68,24 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
         }
     }, [instance, node, sortable]);
 
+    function insertItem() {
+        const insertOptions = instance.getArrayAddOptions(node);
+        if (isJSONError(insertOptions)) {
+            console.log(insertOptions);
+            return;
+        }
+        if (insertOptions.length === 1) {
+            instance.appendItem(node, insertOptions[0]);
+            return;
+        }
+        showSelectItemModal(true);
+    }
+
     return (
         <Accordion>
             <Accordion.Title active={toggleState}>
                 <List.Content floated="right">
-                    <Icon name="add" link onClick={(event) => setModalOpen(true)} />
+                    <Icon name="add" link onClick={insertItem} />
                 </List.Content>
                 <List.Header className="clickable">
                     <Icon name="dropdown" link onClick={() => setToggleState(!toggleState)} />
@@ -82,10 +94,9 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
             </Accordion.Title>
             <Accordion.Content active={toggleState}>
                 <Ref innerRef={ref}>
-                    <List.List divided ref={ref} className="children">
+                    <List.List className="children">
                         {node.children.map((childchild: Node) => {
                             // @todo configurable title location for parent-nodes
-
                             return (
                                 <List.Item key={childchild.id + 'nav'} style={{ display: 'flex' }}>
                                     <List.Content
@@ -103,13 +114,13 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
                         })}
                     </List.List>
                 </Ref>
-                <InsertItemModal
-                    instance={instance}
-                    node={node}
-                    isModalOpen={isModalOpen}
-                    setModalOpen={setModalOpen}
-                />
             </Accordion.Content>
+            <InsertItemModal
+                instance={instance}
+                node={node}
+                isOpen={isModalOpen}
+                onClose={() => showSelectItemModal(false)}
+            />
         </Accordion>
     );
 }
@@ -143,11 +154,20 @@ function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor 
 }
 
 /**
- * index editor
+ * Navigation Editor
  *
- * - for overview + navigation
- * - inline as overview + detail?
- * - options: on node property or options property?
+ * Overview of current properties and array items. Mainly used as standalone
+ * editor to show a navigation of the current form in a sidebar panel.
+ *
+ * Usage:
+ *
+ * ```jsx
+ * <NavigationEditor
+ *      node={node}
+ *      instance={instance}
+ *      // options={{ withChildren: true }}
+ *  />
+ * ```
  */
 export const NavigationEditor = editor<ParentNode>(({ node, instance }) => {
     return (
