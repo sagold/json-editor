@@ -38,6 +38,8 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
     // assign errors
     syncErrors.forEach((err: JSONError) => {
         const pointer = err.data?.pointer ?? '#';
+        // schema may change
+        pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
         pointerToErrors[pointer].push(err);
     });
 

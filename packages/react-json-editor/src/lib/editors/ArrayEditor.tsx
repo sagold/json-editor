@@ -104,7 +104,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                         // readd removed child - we move it through data
                         from.insertBefore(event.item, from.childNodes[oldIndex]);
                     }
-
+                    // console.log('move item', `${node.pointer}/${event.oldIndex}`, targetIndex);
                     instance.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
                 }
             });
