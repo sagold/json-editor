@@ -2,6 +2,7 @@ import { JsonForm, JsonFormProps } from './lib/components/jsonform';
 import { useJsonEditor, UseJsonEditorOptions, JsonEditor, JsonEditorOptions } from './lib/useJsonEditor';
 
 export { JsonForm, JsonEditor, useJsonEditor };
+export { defaultEditors } from './lib/editors/index';
 export { ArrayEditor, ArrayEditorPlugin } from './lib/editors/ArrayEditor';
 export { ObjectEditor, ObjectEditorPlugin } from './lib/editors/ObjectEditor';
 export { NumberEditor, NumberEditorPlugin } from './lib/editors/NumberEditor';
