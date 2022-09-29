@@ -1,6 +1,6 @@
 import { Node } from 'headless-json-editor';
 import { memo } from 'react';
-import { JsonEditor } from '../useJsonEditor';
+import { JsonEditor } from '../JsonEditor';
 
 export type EditorProps<T> = {
     node: T;

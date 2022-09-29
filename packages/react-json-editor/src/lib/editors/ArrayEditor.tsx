@@ -1,28 +1,24 @@
-import { JSONSchema, isJSONError } from 'json-schema-library';
-import { useState, useRef, useEffect } from 'react';
+import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { getEditorHeader } from '../utils/getEditorHeader';
 import { Button, Icon, Modal, Dropdown, Message, Popup, DropdownProps } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
-import Sortable from 'sortablejs';
-import { JsonEditor } from '../useJsonEditor';
+import { getEditorHeader } from '../utils/getEditorHeader';
+import { JsonEditor } from '../JsonEditor';
+import { JSONSchema, isJSONError } from 'json-schema-library';
+import { useState, useRef, useEffect } from 'react';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
 
-function ArrayItem({
-    instance,
-    node,
-    withDragHandle,
-    size,
-    children
-}: {
+export type ArrayItemProps = {
     instance: JsonEditor;
     node: Node;
     size: number;
     children: JSX.Element;
     withDragHandle?: boolean;
-}) {
+};
+
+function ArrayItem({ instance, node, withDragHandle, size, children }: ArrayItemProps) {
     return (
         <div data-type="array-item">
             {withDragHandle && <div className="ed-array-item__handle"></div>}

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-    HeadlessJsonEditor,
     HeadlessJsonEditorOptions,
     Plugin,
     Node,
@@ -9,41 +8,31 @@ import {
     JSONSchema
 } from 'headless-json-editor';
 import { defaultEditors } from './editors';
-import { GetEditor, createGetEditor } from './getEditor';
+import { JsonEditor } from './JsonEditor';
 import { EditorPlugin } from './editors/decorators';
 
-export type JsonEditorOptions = HeadlessJsonEditorOptions & {
-    getEditor: GetEditor;
-};
-
-export class JsonEditor extends HeadlessJsonEditor {
-    getEditor: GetEditor;
-
-    constructor(settings: JsonEditorOptions) {
-        super(settings);
-        this.getEditor = settings.getEditor;
-    }
-}
-
 export type UseJsonEditorOptions = {
-    schema: JSONSchema;
-    onChange?: OnChangeListener;
-    plugins: Plugin[];
+    data?: unknown;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     editors?: EditorPlugin[];
-    data?: unknown;
+    onChange?: OnChangeListener;
+    plugins: Plugin[];
+    schema: JSONSchema;
 };
 
+/**
+ * add json editor capabilities to your functional component
+ */
 export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [Node, JsonEditor] {
     const { schema, data } = settings;
-    const he = useRef<JsonEditor>();
+    const jsonEditor = useRef<JsonEditor>();
     const [root, setState] = useState<Node>();
 
     useEffect(() => {
         const { onChange, plugins = [], editors = defaultEditors } = settings;
-        he.current = new JsonEditor({
+        jsonEditor.current = new JsonEditor({
             schema,
-            getEditor: createGetEditor(editors),
+            editors,
             draftConfig: settings.draftConfig,
             plugins: [
                 ...plugins,
@@ -55,11 +44,11 @@ export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [No
                 })
             ]
         });
-        setState(he.current.create(data));
+        setState(jsonEditor.current.create(data));
     }, [schema, data]);
 
-    if (root != null && he.current != null) {
-        return [root, he.current];
+    if (root != null && jsonEditor.current != null) {
+        return [root, jsonEditor.current];
     }
 
     return [undefined];

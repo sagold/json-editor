@@ -1,5 +1,6 @@
 import { JsonForm, JsonFormProps } from './lib/components/jsonform';
-import { useJsonEditor, UseJsonEditorOptions, JsonEditor, JsonEditorOptions } from './lib/useJsonEditor';
+import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
+import { JsonEditor, JsonEditorOptions } from './lib/JsonEditor';
 
 export { JsonForm, JsonEditor, useJsonEditor };
 export { defaultEditors } from './lib/editors/index';
