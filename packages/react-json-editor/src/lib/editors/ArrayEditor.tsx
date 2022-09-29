@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ArrayNode, Node, HeadlessJsonEditor, DefaultNodeOptions } from 'headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Button, Icon, Modal, Dropdown, Message, Popup, DropdownProps } from 'semantic-ui-react';
-import { parentEditor, EditorPlugin } from './decorators';
+import { editor, EditorPlugin } from './decorators';
 import Sortable from 'sortablejs';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
@@ -69,7 +69,7 @@ export type ArrayOptions = {
     };
 } & DefaultNodeOptions;
 
-export const ArrayEditor = parentEditor<ArrayNode<ArrayOptions>>(({ node, instance, getEditor }) => {
+export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance, getEditor }) => {
     const [modal, setModal] = useState<{ open: boolean; options: JSONSchema[]; selected: number }>({
         open: false,
         options: [],

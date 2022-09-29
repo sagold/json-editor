@@ -1,9 +1,9 @@
 import { NumberNode } from 'headless-json-editor';
 import { EditorPlugin } from './decorators';
 import { Form } from 'semantic-ui-react';
-import { valueEditor } from './decorators';
+import { editor } from './decorators';
 
-export const NumberEditor = valueEditor<NumberNode>(({ node, setValue }) => (
+export const NumberEditor = editor<NumberNode, number>(({ node, setValue }) => (
     <div data-type="number">
         <Form.Input
             id={node.pointer}

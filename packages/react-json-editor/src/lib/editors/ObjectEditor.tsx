@@ -1,11 +1,11 @@
 import { ObjectNode } from 'headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Message } from 'semantic-ui-react';
-import { parentEditor, EditorPlugin } from './decorators';
+import { editor, EditorPlugin } from './decorators';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/objecteditor/index.ts
 
-export const ObjectEditor = parentEditor<ObjectNode>(({ node, instance, getEditor }) => {
+export const ObjectEditor = editor<ObjectNode>(({ node, instance, getEditor }) => {
     const Header = getEditorHeader(node);
 
     return (
