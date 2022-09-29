@@ -1,10 +1,9 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonFormProps } from './components/jsonform';
+import { JsonFormProps, useJsonEditor } from '../../index';
 import { data, schema } from './data/features';
-import './styles.scss';
+import '../styles.scss';
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
-import { useJsonEditor } from './useJsonEditor';
 
 function SideBySide({ schema, data, onChange }: JsonFormProps) {
     const [node, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
@@ -26,7 +25,7 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Demos',
+    title: 'Example',
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: data },
@@ -51,4 +50,4 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 };
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-export const EditorsOverview = Template.bind({});
+export const DefaultEditors = Template.bind({});

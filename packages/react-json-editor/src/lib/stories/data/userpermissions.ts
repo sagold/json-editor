@@ -8,8 +8,8 @@ export const data = {
     ],
     users: [
         {
-            mail: 'it@asset-metrix.com',
-            firstName: 'super',
+            mail: 'admin@company.com',
+            firstName: '',
             lastName: 'admin',
             groups: ['everyone']
         }
@@ -28,8 +28,8 @@ export const data = {
             group_type: 'Access Group'
         },
         {
-            name: 'it_administrator_internal',
-            display_name: 'it_administrator_internal',
+            name: 'it_administrator',
+            display_name: 'it_administrator',
             description: 'permission group for portal admins',
             group_type: 'Access Group'
         }
@@ -37,7 +37,7 @@ export const data = {
 };
 
 export const schema = {
-    title: 'poco prototype',
+    title: 'user permissions',
     type: 'object',
     properties: {
         userview: {
@@ -75,7 +75,7 @@ export const schema = {
                     lastName: { type: 'string' },
                     internal: {
                         title: 'internal',
-                        description: 'check, if user is an AssetMetrix employee',
+                        description: 'check, if user is an employee',
                         type: 'boolean'
                     },
                     groups: {
@@ -83,7 +83,7 @@ export const schema = {
                         type: 'array',
                         items: {
                             type: 'string',
-                            enum: ['everyone', 'system', 'it_administrator_internal']
+                            enum: ['everyone', 'system', 'it_administrator']
                         },
                         uniqueItems: true
                     }

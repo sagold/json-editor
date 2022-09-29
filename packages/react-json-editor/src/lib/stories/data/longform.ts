@@ -1,6 +1,5 @@
 export const schema = {
-    version: '2.0.0',
-    title: 'Longread',
+    title: 'Longform',
     type: 'object',
     required: ['header', 'intro', 'modules', 'furtherReading', 'seo', 'socialMedia', 'credits', 'dev'],
     properties: {

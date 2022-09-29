@@ -5,7 +5,7 @@ import { useJsonEditor } from '../../useJsonEditor';
 export type JsonFormProps = {
     schema: JSONSchema;
     data: unknown;
-    onChange: (data: unknown, root: Node) => void;
+    onChange?: (data: unknown, root: Node) => void;
 };
 
 export function JsonForm({ schema, data, onChange }: JsonFormProps) {
