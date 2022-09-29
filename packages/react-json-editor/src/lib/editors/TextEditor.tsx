@@ -8,7 +8,7 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
     const disabled = options.disabled || isValidConst;
     return (
         <div data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
-            <Form.Field error={node.errors.length > 0 && node.errors.map((e) => e.message)} disabled={options.disabled}>
+            <Form.Field error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <TextareaAutosize
                     id={node.id}
