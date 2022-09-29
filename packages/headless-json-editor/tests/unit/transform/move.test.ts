@@ -60,4 +60,12 @@ describe('move', () => {
         assert.equal(get(before, '#/list/0'), get(after, '#/list/0'));
         assert.equal(get(before, '#/list/4'), get(after, '#/list/4'));
     });
+
+    it('should append item if target index is too large', () => {
+        const before = create(core, { list: ['1', '2', '3', '4', '5'] });
+
+        const [after] = move(core, before, '/list', 1, 90);
+        assert(after.type !== 'error');
+        assert.deepEqual(json(after), { list: ['1', '3', '4', '5', '2'] });
+    });
 });
