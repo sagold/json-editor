@@ -32,8 +32,6 @@ export const StringEditorPlugin: EditorPlugin = {
 export const TextEditor = editor<StringNode, string>(({ node, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = node.options.disabled || isValidConst;
-    console.log('textarea', node.pointer);
-
     return (
         <div data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
             <Form.Field
@@ -53,7 +51,6 @@ export const TextEditor = editor<StringNode, string>(({ node, setValue }) => {
                     onChange={(e) => {
                         setValue(e.target.value || '');
                     }}
-                    // useCacheForDOMMeasurements
                 />
             </Form.Field>
             {<div className="description">{node.options.description as string}</div>}
