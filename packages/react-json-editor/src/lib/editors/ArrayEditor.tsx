@@ -111,22 +111,26 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) 
                 swapThreshold: 4,
                 ...sortable,
                 // Element dragging ended
-                onEnd: function (/**Event*/ evt) {
-                    const targetIndex = parseInt(`${evt.newIndex}`);
+                onEnd: function (event) {
+                    const targetIndex = parseInt(`${event.newIndex}`);
                     if (isNaN(targetIndex)) {
                         return;
                     }
-                    instance.moveItem(`${node.pointer}/${evt.oldIndex}`, targetIndex);
-                    console.log('move', `${node.pointer}/${evt.oldIndex}`, evt.newIndex);
-                    // evt.to;    // target list
-                    // evt.from;  // previous list
-                    // evt.oldIndex;  // element's old index within old parent
-                    // evt.newIndex;  // element's new index within new parent
-                    // evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-                    // evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-                    // evt.clone // the clone element
-                    // evt.pullMode;  // when item is in
-                    // const itemEl = evt.item; // dragged HTMLElement
+
+                    const { to, from, oldIndex, newIndex, item } = event;
+                    // always remove node - we create it from data
+                    item?.parentNode?.removeChild(item);
+
+                    // 1. if container or pointer (different editors) are the same, its a move within a list
+                    // 2. if item is dragged to the same position, but to another editor. now, the dragged
+                    // element is removeChild from original list. We readd it here, to fix this
+
+                    if (oldIndex != null) {
+                        // readd removed child - we move it through data
+                        from.insertBefore(event.item, from.childNodes[oldIndex]);
+                    }
+
+                    instance.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
                 }
             });
         }
