@@ -1,8 +1,7 @@
 {
-    "name": "sagold",
-    "version": "0.0.0",
+    "name": "json-editor",
+    "version": "0.6.0",
     "license": "MIT",
-    "scripts": {},
     "private": true,
     "workspaces": [
         "packages/*"
