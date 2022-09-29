@@ -18,11 +18,11 @@ export type DefaultNodeOptions = {
 };
 
 export type ArrayType = 'array';
-export type ArrayNode = {
+export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ArrayType;
     children: Node[];
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     property: string;
     schema: JSONSchema;
@@ -31,11 +31,11 @@ export type ArrayNode = {
 
 export type ObjectType = 'object';
 
-export type ObjectNode = {
+export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ObjectType;
     children: Node[];
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     property: string;
     schema: JSONSchema;
@@ -43,10 +43,10 @@ export type ObjectNode = {
 };
 
 export type StringType = 'string';
-export type StringNode = {
+export type StringNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: StringType;
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
@@ -56,10 +56,10 @@ export type StringNode = {
 };
 
 export type NumberType = 'number';
-export type NumberNode = {
+export type NumberNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: NumberType;
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
@@ -69,10 +69,10 @@ export type NumberNode = {
 };
 
 export type BooleanType = 'boolean';
-export type BooleanNode = {
+export type BooleanNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: BooleanType;
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
@@ -82,10 +82,10 @@ export type BooleanNode = {
 };
 
 export type NullType = 'null';
-export type NullNode = {
+export type NullNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: NullType;
-    options: DefaultNodeOptions;
+    options: T;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;

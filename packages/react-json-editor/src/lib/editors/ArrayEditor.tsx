@@ -1,6 +1,6 @@
 import { JSONSchema, isJSONError } from 'json-schema-library';
 import { useState, useRef, useEffect } from 'react';
-import { ArrayNode, Node, HeadlessJsonEditor } from 'headless-json-editor';
+import { ArrayNode, Node, HeadlessJsonEditor, DefaultNodeOptions } from 'headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Button, Icon, Modal, Dropdown, Message, Popup, DropdownProps } from 'semantic-ui-react';
 import { parentEditor, EditorPlugin } from './decorators';
@@ -61,15 +61,15 @@ function ArrayItem({
     );
 }
 
-export type ArrayNodeOptions = {
+export type ArrayOptions = {
     sortable?: {
         // sortable options: https://github.com/SortableJS/Sortable
         disabled?: boolean;
         group?: string; // name of sortable group, defaults to pointer
     };
-};
+} & DefaultNodeOptions;
 
-export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor }) => {
+export const ArrayEditor = parentEditor<ArrayNode<ArrayOptions>>(({ node, instance, getEditor }) => {
     const [modal, setModal] = useState<{ open: boolean; options: JSONSchema[]; selected: number }>({
         open: false,
         options: [],
@@ -107,7 +107,7 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
 
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
-        if (!sortable.disabled && ref.current) {
+        if (sortable?.disabled && ref.current) {
             // const sortable = Sortable.create(ref.current, {
             Sortable.create(ref.current, {
                 handle: '.ed-array-item__handle',
@@ -133,7 +133,7 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                 }
             });
         }
-    }, []);
+    }, [sortable]);
 
     return (
         <div data-type="array">
@@ -163,7 +163,7 @@ export const ArrayEditor = parentEditor<ArrayNode>(({ node, instance, getEditor 
                             instance={instance}
                             size={node.children.length}
                             key={child.id}
-                            withDragHandle={!sortable.disabled}
+                            withDragHandle={sortable?.disabled}
                         >
                             <Node node={child} instance={instance} getEditor={getEditor} />
                         </ArrayItem>

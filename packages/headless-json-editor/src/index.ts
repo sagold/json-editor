@@ -59,5 +59,6 @@ export type {
     ObjectNode,
     ParentNode,
     StringNode,
-    ValueNode
+    ValueNode,
+    DefaultNodeOptions
 } from './node/types';

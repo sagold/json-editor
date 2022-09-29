@@ -1,19 +1,12 @@
-import {
-    Node,
-    ValueNode,
-    ParentNode,
-    HeadlessJsonEditor,
-    StringNode,
-    ObjectNode,
-    ArrayNode,
-    NumberNode,
-    NullNode,
-    BooleanNode
-} from 'headless-json-editor';
+import { Node, ValueNode, ParentNode, HeadlessJsonEditor } from 'headless-json-editor';
 import { memo } from 'react';
 import { GetEditor } from './index';
 
-export type EditorProps<T> = { node: T; instance: HeadlessJsonEditor; getEditor: GetEditor };
+export type EditorProps<T> = {
+    node: T;
+    instance: HeadlessJsonEditor;
+    getEditor: GetEditor;
+};
 
 const isEqual = (prev: { node: Node }, next: { node: Node }) => prev.node === next.node;
 
@@ -61,23 +54,30 @@ export function parentEditor<T extends ParentNode>(EditorComponent: ParentEditor
     );
 }
 
-export type DecoratedEditor =
-    | ParentEditor<ObjectNode>
-    | ParentEditor<ArrayNode>
-    | ValueEditor<StringNode>
-    | ValueEditor<NumberNode>
-    | ValueEditor<NullNode>
-    | ValueEditor<NumberNode>
-    | ValueEditor<BooleanNode>;
+export type DecoratedEditorProps<T extends Node> = {
+    node: T;
+    instance: HeadlessJsonEditor;
+    getEditor: GetEditor;
+    setValue: (value: unknown) => void;
+};
+
+export type Editor<T extends Node = Node> = (props: EditorProps<T>) => JSX.Element | null;
+
+export type DecoratedEditor<T extends Node> = (props: DecoratedEditorProps<T>) => JSX.Element | null;
+
+export function editor<T extends Node = Node>(EditorComponent: DecoratedEditor<T>): Editor<T> {
+    return memo(
+        (props: EditorProps<T>) =>
+            EditorComponent({
+                ...props,
+                setValue: (value: unknown) => props.instance.setValue(props.node.pointer, value)
+            }),
+        isEqual
+    );
+}
 
 export type EditorPlugin = {
     readonly id: string;
     use: (node: Node, options?: Record<string, unknown>) => boolean;
     Editor: Editor;
 };
-
-export type Editor<T extends Node = Node> = (props: EditorProps<T>) => JSX.Element | null;
-
-export function editor<T extends Node = Node>(EditorComponent: Editor<T>): Editor<T> {
-    return memo(EditorComponent, isEqual);
-}
