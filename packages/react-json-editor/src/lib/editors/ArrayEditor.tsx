@@ -65,7 +65,7 @@ function ArrayItem({
 export type ArrayOptions = {
     sortable?: {
         // sortable options: https://github.com/SortableJS/Sortable
-        disabled?: boolean;
+        enabled?: boolean;
         group?: string; // name of sortable group, defaults to pointer
     };
 } & DefaultNodeOptions;
@@ -99,16 +99,16 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) 
 
     const handleSelection = (event, { value }: DropdownProps) => setModal({ ...modal, selected: parseInt(`${value}`) });
     let sortable = node.options.sortable;
-    if (sortable === undefined) {
-        sortable = { disabled: true };
+    if (sortable == null) {
+        sortable = { enabled: true };
     }
 
-    sortable.disabled = sortable.disabled ?? false;
+    sortable.enabled = sortable.enabled ?? false;
     sortable.group = sortable.group ?? node.pointer;
 
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
-        if (sortable?.disabled && ref.current) {
+        if (sortable?.enabled && ref.current) {
             // const sortable = Sortable.create(ref.current, {
             Sortable.create(ref.current, {
                 handle: '.ed-array-item__handle',
@@ -164,7 +164,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) 
                             instance={instance}
                             size={node.children.length}
                             key={child.id}
-                            withDragHandle={sortable?.disabled}
+                            withDragHandle={sortable?.enabled}
                         >
                             <Node node={child} instance={instance} />
                         </ArrayItem>
