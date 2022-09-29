@@ -1,4 +1,4 @@
-import { JST, Plugin } from '../JST';
+import { HeadlessJsonEditor, Plugin } from '../HeadlessJsonEditor';
 import { json } from '../node/json';
 import { Node } from '../node/types';
 
@@ -13,7 +13,7 @@ export function createOnChangePlugin(onChangeListener: OnChangeListener): Plugin
     }
 
     return {
-        create(jst: JST) {
+        create(jst: HeadlessJsonEditor) {
             return function onChange(root, event) {
                 if (event.type === 'done') {
                     onChangeListener(json(root), root);

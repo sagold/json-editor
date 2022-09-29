@@ -1,4 +1,4 @@
-import { Draft07, Interface, addValidator, JSONValidator, JSONSchema, JSONError } from 'json-schema-library';
+import { Draft07, Draft, JSONValidator, JSONSchema, JSONError } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { create } from '../../../src/node/create';
 import { get } from '../../../src/node/get';
@@ -6,7 +6,7 @@ import { set } from '../../../src/transform/set';
 import { validate } from '../../../src/validate/validate';
 
 describe('validate', () => {
-    let core: Interface;
+    let core: Draft;
 
     beforeEach(() => {
         core = new Draft07({
@@ -58,35 +58,39 @@ describe('validate', () => {
     });
 
     describe('async validation', () => {
-        let async: Interface;
+        let async: Draft;
+        // @ts-ignore
+        const validator: JSONValidator = (core, schema, value, pointer) => {
+            const error: JSONError = {
+                type: 'error',
+                code: 'async-error',
+                message: 'an async error',
+                name: 'AsyncError',
+                data: { pointer }
+            };
+            return Promise.resolve(error);
+        };
 
         beforeEach(() => {
-            async = new Draft07({
-                type: 'object',
-                properties: {
-                    title: {
-                        type: 'string',
-                        format: 'async'
-                    },
-                    caption: {
-                        type: 'string'
+            async = new Draft07(
+                {
+                    type: 'object',
+                    properties: {
+                        title: {
+                            type: 'string',
+                            format: 'async'
+                        },
+                        caption: {
+                            type: 'string'
+                        }
+                    }
+                },
+                {
+                    validateFormat: {
+                        async: validator
                     }
                 }
-            });
-
-            // @todo jlib should support a way to easily use async validation
-            // @ts-ignore missing promise return type in JSONValidator type
-            const validator: JSONValidator = (core: Interface, schema: JSONSchema, value: any, pointer: string) => {
-                const error: JSONError = {
-                    type: 'error',
-                    code: 'async-error',
-                    message: 'an async error',
-                    name: 'AsyncError',
-                    data: { pointer }
-                };
-                return Promise.resolve(error);
-            };
-            addValidator.format(async, 'async', validator);
+            );
         });
 
         it('should perform async validation', async () => {

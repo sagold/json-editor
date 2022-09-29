@@ -2,7 +2,7 @@ yarn global add nx
 npx create-nx-workspace --preset=ts
 nx generate @nrwl/js:library --name=headless-json-editor --buildable --publishable --preset=ts --importPath=@sagold/headless-json-editor
 yarn add -D @nrwl/react
-nx g @nrwl/react:lib react-json-editor --publishable --preset=ts
+nx g @nrwl/react:lib react-json-editor --buildable --publishable --preset=ts
 
 ## changes to ts-config in headless-json-editor
 

@@ -1,13 +1,13 @@
-import { Interface, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJsonError } from '../node/types';
+import { Draft, JSONPointer, JSONError } from 'json-schema-library';
+import { Node, isJSONError } from '../node/types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 
 // function filterAllErrors(errors: any[]): (JSONError | Promise<JSONError | undefined>)[] {
-//     return errors.filter((item) => isJsonError(item) || item instanceof Promise);
+//     return errors.filter((item) => isJSONError(item) || item instanceof Promise);
 // }
 
-export function getErrors(core: Interface, root: Node, pointer: JSONPointer = '#') {
+export function getErrors(core: Draft, root: Node, pointer: JSONPointer = '#') {
     const startNode = get(root, pointer);
     if (startNode.type === 'error') {
         return startNode;
@@ -17,7 +17,7 @@ export function getErrors(core: Interface, root: Node, pointer: JSONPointer = '#
         .validate(json(startNode), startNode.schema, startNode.pointer)
         .flat(Infinity);
 
-    return errors.filter((item) => isJsonError(item) || item instanceof Promise);
+    return errors.filter((item) => isJSONError(item) || item instanceof Promise);
 }
 
 export function splitErrors(
@@ -26,7 +26,7 @@ export function splitErrors(
     const syncErrors: JSONError[] = [];
     const asyncErrors: Promise<JSONError[]>[] = [];
     for (let i = 0, l = errors.length; i < l; i += 1) {
-        if (isJsonError(errors[i])) {
+        if (isJSONError(errors[i])) {
             syncErrors.push(errors[i] as JSONError);
         } else if (errors[i] instanceof Promise) {
             // @ts-ignore

@@ -1,10 +1,10 @@
 import { JSONSchema } from 'json-schema-library';
 import { useState, useEffect, useRef } from 'react';
-import { JST, Plugin, Node, createOnChangePlugin, OnChangeListener } from '@sagold/headless-json-editor';
+import { HeadlessJsonEditor, Plugin, Node, createOnChangePlugin, OnChangeListener } from '@sagold/headless-json-editor';
 import { GetEditor, createGetEditor, defaultEditors } from './editors';
 import { EditorPlugin } from './types';
 
-export type JSTOptions = {
+export type JsonEditorOptions = {
     schema: JSONSchema;
     onChange?: OnChangeListener;
     plugins: Plugin[];
@@ -12,16 +12,16 @@ export type JSTOptions = {
     data?: unknown;
 };
 
-export function useJST(settings: JSTOptions): [Node | undefined, GetEditor, JST] {
+export function useJsonEditor(settings: JsonEditorOptions): [Node | undefined, GetEditor, HeadlessJsonEditor] {
     const { schema, data } = settings;
-    const jst = useRef<JST>();
+    const he = useRef<HeadlessJsonEditor>();
     const getEditor = useRef<GetEditor>();
     const [root, setState] = useState<Node>();
 
     useEffect(() => {
         const { onChange, plugins = [], editors = defaultEditors } = settings;
         getEditor.current = createGetEditor(editors);
-        jst.current = new JST({
+        he.current = new HeadlessJsonEditor({
             schema,
             plugins: [
                 ...plugins,
@@ -33,8 +33,8 @@ export function useJST(settings: JSTOptions): [Node | undefined, GetEditor, JST]
                 })
             ]
         });
-        setState(jst.current.create(data));
+        setState(he.current.create(data));
     }, [schema, data]);
 
-    return [root, getEditor.current, jst.current];
+    return [root, getEditor.current, he.current];
 }

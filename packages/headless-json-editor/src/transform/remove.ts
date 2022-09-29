@@ -1,5 +1,5 @@
 import { JSONPointer, JSONError } from 'json-schema-library';
-import { isParentNode, Node, isJsonError, Change } from '../node/types';
+import { isParentNode, Node, isJSONError, Change } from '../node/types';
 import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
@@ -11,7 +11,7 @@ export function remove(previousRoot: Node, pointer: JSONPointer): [JSONError] | 
     const property = frags.pop() as string;
 
     const result = unlinkPath(previousRoot, frags);
-    if (isJsonError(result)) {
+    if (isJSONError(result)) {
         return [result];
     }
 

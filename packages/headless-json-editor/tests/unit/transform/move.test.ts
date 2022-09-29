@@ -1,4 +1,4 @@
-import { Draft07, Interface } from 'json-schema-library';
+import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
@@ -20,7 +20,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 }
 
 describe('move', () => {
-    let core: Interface;
+    let core: Draft;
 
     beforeEach(() => {
         core = new Draft07({

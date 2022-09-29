@@ -2,7 +2,7 @@ import { JSONPointer, JSONError } from 'json-schema-library';
 import { ObjectNode, ArrayNode, isParentNode, Node } from '../node/types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
-import { split } from 'gson-pointer';
+import { split, join } from 'gson-pointer';
 
 export function buildPathsMap(paths: (JSONPointer | string[])[]) {
     const map: { [p: string]: any } = {};
@@ -39,9 +39,10 @@ export function unlinkPath(
     previousRoot: Node,
     pointer: JSONPointer | string[]
 ): JSONError | [ObjectNode | ArrayNode, Node] {
+    pointer = join(pointer);
     if (!isParentNode(previousRoot)) {
         return invalidNodeTypeError({
-            pointer: pointer,
+            pointer,
             expectedType: 'array or object',
             type: previousRoot?.type,
             reason: `root node must be of type array or object or else there is nothing to delete`,
@@ -60,7 +61,7 @@ export function unlinkPath(
         childIndex = getChildNodeIndex(targetNode, childProperty);
         if (!isParentNode(targetNode) || childIndex < 0) {
             return invalidPathError({
-                pointer: pointer,
+                pointer,
                 reason: `path does not lead to valid destination in data/tree at ${targetNode.pointer}`,
                 where: `transform: 'remove' data at '${pointer}'`
             });

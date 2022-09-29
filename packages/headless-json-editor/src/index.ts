@@ -2,6 +2,7 @@
 import { create } from './node/create';
 import { json } from './node/json';
 // traversal
+import { errors } from './node/errors';
 import { find } from './node/find';
 import { flat } from './node/flat';
 import { get } from './node/get';
@@ -15,8 +16,8 @@ import { move } from './transform/move';
 import { updateSchema, updateOptions } from './transform/update';
 // convenience: append, prepend, insert
 
-// jst
-export { JST, Plugin } from './JST';
+// hje
+export { HeadlessJsonEditor, Plugin } from './HeadlessJsonEditor';
 
 // plugins
 export { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
@@ -28,34 +29,35 @@ import { getErrors, splitErrors } from './validate/getErrors';
 
 export {
     create,
+    errors,
     find,
     flat,
     get,
     getChildNode,
+    getErrors,
     json,
-    trace,
     move,
     remove,
     set,
-    updateSchema,
+    splitErrors,
+    trace,
     updateOptions,
-    validate,
-    getErrors,
-    splitErrors
+    updateSchema,
+    validate
 };
-export { isNode, isParentNode, isValueNode, isJsonError } from './node/types';
+export { isNode, isParentNode, isValueNode, isJSONError } from './node/types';
 
 export type {
-    JSONSchema,
-    Node,
-    ParentNode,
-    ValueNode,
     ArrayNode,
-    ObjectNode,
-    StringNode,
-    NumberNode,
-    NullNode,
     BooleanNode,
     Change,
-    NodeType
+    JSONSchema,
+    Node,
+    NodeType,
+    NullNode,
+    NumberNode,
+    ObjectNode,
+    ParentNode,
+    StringNode,
+    ValueNode
 } from './node/types';

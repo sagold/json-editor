@@ -1,11 +1,11 @@
-import { Interface as Core, JSONPointer, JSONSchema, JSONError, createSchemaOf } from 'json-schema-library';
+import { Draft, JSONPointer, JSONSchema, JSONError } from 'json-schema-library';
 import {
     Node,
     ObjectNode,
     ArrayNode,
     isValueNode,
     isParentNode,
-    isJsonError,
+    isJSONError,
     ParentNode,
     isNode,
     Change
@@ -17,18 +17,18 @@ import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
-function getSchemaOfChild(core: Core, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
+function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string, value: any): JSONSchema | JSONError {
     const data = json(parentNode);
     data[childProperty] = value;
-    const schema = core.step(childProperty, parentNode.schema, data, parentNode.pointer);
+    const schema = draft.step(childProperty, parentNode.schema, data, parentNode.pointer);
     // unknown property in schema
-    if (isJsonError(schema)) {
+    if (isJSONError(schema)) {
         if (schema.code !== 'unknown-property-error') {
             console.log(`failed retrieving schema for '${parentNode.pointer}/${childProperty}'`);
             console.log(schema);
             return schema;
         }
-        return createSchemaOf(value);
+        return draft.createSchemaOf(value);
     }
     return schema;
 }
@@ -37,7 +37,7 @@ function getSchemaOfChild(core: Core, parentNode: Node, childProperty: string, v
  * set (add, update) given data to location of json pointer
  */
 export function set(
-    core: Core,
+    core: Draft,
     previousRoot: ParentNode,
     pointer: JSONPointer,
     value: any
@@ -169,7 +169,7 @@ export function set(
         }
 
         const schema = getSchemaOfChild(core, parentNode, childProperty, value);
-        if (isJsonError(schema)) {
+        if (isJSONError(schema)) {
             return [schema];
         }
 
@@ -194,7 +194,7 @@ export function set(
         }
 
         const schema = getSchemaOfChild(core, parentNode, childProperty, value);
-        if (isJsonError(schema)) {
+        if (isJSONError(schema)) {
             return [schema];
         }
 
@@ -224,7 +224,7 @@ export function set(
     // replace node, creating new object or array tree
     if (isParentNode(targetNode)) {
         const schema = getSchemaOfChild(core, parentNode, childProperty, value);
-        if (isJsonError(schema)) {
+        if (isJSONError(schema)) {
             return [schema];
         }
 

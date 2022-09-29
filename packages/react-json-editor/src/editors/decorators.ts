@@ -1,14 +1,14 @@
-import { Node, ValueNode, ParentNode, JST } from '@sagold/headless-json-editor';
+import { Node, ValueNode, ParentNode, HeadlessJsonEditor } from '@sagold/headless-json-editor';
 import { memo } from 'react';
 import { GetEditor } from './index';
 
-export type EditorProps<T> = { node: T; instance: JST; getEditor: GetEditor };
+export type EditorProps<T> = { node: T; instance: HeadlessJsonEditor; getEditor: GetEditor };
 const isEqual = (prev, next) => prev.node === next.node;
 
 export type SetValue<T extends ValueNode> = (value: T['value']) => void;
 export type ValueEditorProps<T extends ValueNode> = {
     node: T;
-    instance: JST;
+    instance: HeadlessJsonEditor;
     getEditor: GetEditor;
     setValue: SetValue<T>;
 };
@@ -27,7 +27,7 @@ export function valueEditor<T extends ValueNode>(EditorComponent: ValueEditor<T>
 export type SetParent = (value: unknown[] | Record<string, unknown>) => void;
 export type ParentEditorProps<T extends ParentNode> = {
     node: T;
-    instance: JST;
+    instance: HeadlessJsonEditor;
     getEditor: GetEditor;
     setValue: SetParent;
 };

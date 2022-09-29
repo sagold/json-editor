@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Interface as Core, JSONSchema, JSONPointer } from 'json-schema-library';
+import { getTypeOf, Draft, JSONSchema, JSONPointer } from 'json-schema-library';
 import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode } from './types';
 
-type CreateNode = (core: Core, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
+type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 
 function getOptions(schema: JSONSchema) {
     return {
@@ -114,15 +114,15 @@ export const NODES: Record<NodeType, CreateNode> = {
 };
 
 export function create<T = Node>(
-    core: Core,
+    draft: Draft,
     data: unknown,
-    schema: JSONSchema = core.rootSchema,
+    schema: JSONSchema = draft.rootSchema,
     pointer: JSONPointer = '#'
 ): T {
     const dataType = data == null ? 'null' : getTypeOf(data ?? schema.const);
 
     if (NODES[dataType]) {
-        return NODES[dataType](core, data, schema, pointer);
+        return NODES[dataType](draft, data, schema, pointer);
     }
     // e.g. null, undefined, etc
     throw new Error(`unsupported datatype '${dataType}' in create node`);

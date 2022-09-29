@@ -1,4 +1,4 @@
-import { Draft07, Interface } from 'json-schema-library';
+import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { set } from '../../../src/transform/set';
 import { json } from '../../../src/node/json';
@@ -19,7 +19,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 }
 
 describe('set', () => {
-    let core: Interface;
+    let core: Draft;
     let template;
 
     beforeEach(() => {
@@ -211,7 +211,7 @@ describe('set', () => {
     });
 
     describe('value oneOf', () => {
-        let oneOf: Interface;
+        let oneOf: Draft;
         beforeEach(() => {
             oneOf = new Draft07({
                 type: 'object',
@@ -237,7 +237,7 @@ describe('set', () => {
     });
 
     describe('object oneOf', () => {
-        let oneOf: Interface;
+        let oneOf: Draft;
         beforeEach(() => {
             oneOf = new Draft07({
                 type: 'object',
@@ -308,7 +308,7 @@ describe('set', () => {
     });
 
     describe('array oneOf', () => {
-        let oneOf: Interface;
+        let oneOf: Draft;
         beforeEach(() => {
             oneOf = new Draft07({
                 type: 'object',
@@ -404,7 +404,7 @@ describe('set', () => {
 
     describe('scenarios', () => {
         it('should not lose oneOf objects when setting a value', () => {
-            const core: Interface = new Draft07({
+            const core: Draft = new Draft07({
                 type: 'object',
                 properties: {
                     switch: {

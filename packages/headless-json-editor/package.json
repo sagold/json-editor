@@ -1,5 +1,5 @@
 {
-    "name": "@sagold/headless-json-editor",
+    "name": "headless-json-editor",
     "version": "0.5.0",
     "type": "commonjs",
     "author": {

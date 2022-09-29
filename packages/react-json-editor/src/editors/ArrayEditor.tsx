@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { EditorPlugin } from '../types';
-import { ArrayNode, Node, JST } from '@sagold/headless-json-editor';
+import { ArrayNode, Node, HeadlessJsonEditor } from '@sagold/headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Button, Icon, Modal, Dropdown, Message, Popup } from 'semantic-ui-react';
 import { parentEditor } from './decorators';
@@ -16,7 +16,7 @@ function ArrayItem({
     size,
     children
 }: {
-    instance: JST;
+    instance: HeadlessJsonEditor;
     node: Node;
     size: number;
     children;

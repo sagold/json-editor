@@ -1,5 +1,5 @@
-import { Interface as Core, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJsonError, Change } from '../node/types';
+import { Draft, JSONPointer, JSONError } from 'json-schema-library';
+import { Node, isJSONError, Change } from '../node/types';
 import gp from 'gson-pointer';
 import { invalidPathError } from '../errors';
 import { updatePath } from './updatePath';
@@ -9,14 +9,14 @@ import { unlinkPath } from './unlinkPath';
  * move array item to another index
  */
 export function move(
-    core: Core,
+    core: Draft,
     rootNode: Node,
     pointerToArray: JSONPointer,
     from: number,
     to: number
 ): [JSONError] | [Node, Change[]] {
     const result = unlinkPath(rootNode, pointerToArray);
-    if (isJsonError(result)) {
+    if (isJSONError(result)) {
         return [result];
     }
     const [newRoot, arrayNode] = result;

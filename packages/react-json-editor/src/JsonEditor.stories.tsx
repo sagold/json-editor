@@ -5,7 +5,7 @@ import './styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'examples/features',
+    title: 'Demo',
     // component: CashflowChart,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
@@ -27,7 +27,7 @@ const Template: ComponentStory<any> = (args) => (
 );
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-export const Hi = Template.bind({});
+export const BasicFeatures = Template.bind({});
 // CashflowPortfolio.args = {
 //     data: cashflowPorfolioData,
 //     barChartForecastOpacity: 0.8,

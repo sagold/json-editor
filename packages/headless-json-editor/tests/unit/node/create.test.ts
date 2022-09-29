@@ -1,11 +1,11 @@
-import { Draft07, Interface } from 'json-schema-library';
+import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJsonError } from '../../../src/node/types';
+import { ObjectNode, StringNode, isJSONError } from '../../../src/node/types';
 
 describe('create', () => {
-    let core: Interface;
+    let core: Draft;
 
     beforeEach(() => (core = new Draft07()));
 
@@ -66,7 +66,7 @@ describe('create', () => {
                 unknownInvalid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
-            assert(isJsonError(root.children[0].schema));
+            assert(isJSONError(root.children[0].schema));
             assert.deepEqual(json(root), { unknownInvalid: 'property' });
         });
 
@@ -81,7 +81,7 @@ describe('create', () => {
                 unknownValid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
-            assert(!isJsonError(root.children[0].schema));
+            assert(!isJSONError(root.children[0].schema));
             assert.equal((root.children[0] as StringNode).value, 'property');
             assert.deepEqual(json(root), { unknownValid: 'property' });
         });

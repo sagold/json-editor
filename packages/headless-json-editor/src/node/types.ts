@@ -110,7 +110,4 @@ export function isValueNode(node: Node | JSONError): node is StringNode | Number
     return node.type === 'string' || node.type === 'number' || node.type === 'null' || node.type === 'boolean';
 }
 
-// @todo add type guard to jlib export
-export function isJsonError(error): error is JSONError {
-    return error?.type === 'error';
-}
+export { isJSONError } from 'json-schema-library';

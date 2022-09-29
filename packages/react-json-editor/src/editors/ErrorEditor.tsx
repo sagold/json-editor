@@ -1,8 +1,8 @@
 import { EditorPlugin } from '../types';
-import { json, Node, isJsonError, JST } from '@sagold/headless-json-editor';
+import { json, Node, isJSONError, HeadlessJsonEditor } from '@sagold/headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-export const ErrorEditor = ({ node, instance }: { node: Node; instance: JST }) => {
+export const ErrorEditor = ({ node, instance }: { node: Node; instance: HeadlessJsonEditor }) => {
     const value = JSON.stringify(json(node));
     const description = `${node.schema.name} '${node.pointer}': ${node.schema.message}`;
     return (
@@ -32,6 +32,6 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: JST }) =
 
 export const ErrorEditorPlugin: EditorPlugin = {
     id: 'error-editor',
-    use: (node) => isJsonError(node.schema),
+    use: (node) => isJSONError(node.schema),
     Editor: ErrorEditor
 };

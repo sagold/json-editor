@@ -1,7 +1,14 @@
 # react-json-editor
 
-This library was generated with [Nx](https://nx.dev).
+> react implementation of headless-json-editor using semantic-ui
 
-## Running unit tests
 
-Run `nx test react-json-editor` to execute the unit tests via [Jest](https://jestjs.io).
+## usage
+
+```tsx
+import { JsonEditor } from "@sagold/react-json-editor";
+
+function MyForm({ schema, data}) {
+    return <JsonEditor schema={schema} data={data} onChange={() => {}} />
+}
+```

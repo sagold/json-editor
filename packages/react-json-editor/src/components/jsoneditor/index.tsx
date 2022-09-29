@@ -1,17 +1,15 @@
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin, JSONSchema, json } from '@sagold/headless-json-editor';
-import { useJST } from '../../useJST';
+import { useJsonEditor } from '../../useJsonEditor';
 
-export function JsonEditor({
-    schema,
-    data,
-    onChange
-}: {
+export type JsonEditorProps = {
     schema: JSONSchema;
-    data: any;
-    onChange: (data: any) => void;
-}) {
-    const [node, getEditor, instance] = useJST({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
+    data: unknown;
+    onChange: (data: unknown) => void;
+};
+
+export function JsonEditor({ schema, data, onChange }: JsonEditorProps) {
+    const [node, getEditor, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
     // @ts-ignore
     window['root'] = node;
     // @ts-ignore

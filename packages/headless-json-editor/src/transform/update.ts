@@ -1,5 +1,5 @@
 import { JSONError, JSONSchema } from 'json-schema-library';
-import { Node, isJsonError, Change, DefaultNodeOptions } from '../node/types';
+import { Node, isJSONError, Change, DefaultNodeOptions } from '../node/types';
 import { unlinkPath } from './unlinkPath';
 
 /**
@@ -7,7 +7,7 @@ import { unlinkPath } from './unlinkPath';
  */
 export function updateSchema(rootNode: Node, pointer: string, schema: JSONSchema): [JSONError] | [Node, Change[]] {
     const result = unlinkPath(rootNode, pointer);
-    if (isJsonError(result)) {
+    if (isJSONError(result)) {
         return [result];
     }
 
@@ -26,7 +26,7 @@ export function updateOptions(
     options: DefaultNodeOptions
 ): [JSONError] | [Node, Change[]] {
     const result = unlinkPath(rootNode, pointer);
-    if (isJsonError(result)) {
+    if (isJSONError(result)) {
         return [result];
     }
 

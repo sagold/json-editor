@@ -1,5 +1,5 @@
-import { Interface, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJsonError, isParentNode } from '../node/types';
+import { Draft, JSONPointer, JSONError } from 'json-schema-library';
+import { Node, isJSONError, isParentNode } from '../node/types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
@@ -12,13 +12,13 @@ function each(node: Node, cb: (node: Node) => void) {
 }
 
 function filterErrors(errors): JSONError[] {
-    return [errors].flat(Infinity).filter(isJsonError);
+    return [errors].flat(Infinity).filter(isJSONError);
 }
 
 /**
  * perform validation and assign errors to corresponding nodes
  */
-export async function validate(core: Interface, root: Node, pointer: JSONPointer = '#') {
+export async function validate(draft: Draft, root: Node, pointer: JSONPointer = '#') {
     const startNode = get(root, pointer);
     if (startNode.type === 'error') {
         return startNode;
@@ -32,7 +32,7 @@ export async function validate(core: Interface, root: Node, pointer: JSONPointer
     });
 
     // retrieve errors
-    const errors = core.validate(json(startNode), startNode.schema, startNode.pointer).flat(Infinity);
+    const errors = draft.validate(json(startNode), startNode.schema, startNode.pointer).flat(Infinity);
     const [syncErrors, asyncErrors] = splitErrors(errors);
     // console.log('syncErrors', syncErrors);
 

@@ -1,5 +1,5 @@
-import { JST, Plugin, PluginObserver, PluginEvent } from '../JST';
-import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
+import { HeadlessJsonEditor, Plugin, PluginObserver, PluginEvent } from '../HeadlessJsonEditor';
+import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
 
 /**
  * prototypical plugin to support a dynamic enum for a schema like
@@ -20,13 +20,13 @@ import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
  * ```
  */
 export const RemoteEnumOptionsPlugin: Plugin = {
-    create(jst: JST) {
+    create(jst: HeadlessJsonEditor) {
         const sources = {};
         const targets = {};
 
         function updateEnumInSchema(root: Node, changedNode: Node) {
             const sourceNode = get(root, targets[changedNode.pointer]);
-            if (isJsonError(sourceNode)) {
+            if (isJSONError(sourceNode)) {
                 return;
             }
             const enumValues = json(sourceNode).filter((v) => !(v == null || v === ''));
@@ -38,7 +38,7 @@ export const RemoteEnumOptionsPlugin: Plugin = {
                     enum: enumValues
                 }
             });
-            if (isJsonError(newRoot)) {
+            if (isJSONError(newRoot)) {
                 return undefined;
             }
             return [newRoot, additionalChanges] as [Node, Change[]];
@@ -47,7 +47,7 @@ export const RemoteEnumOptionsPlugin: Plugin = {
         const updateEnum: PluginObserver = (root: Node, event: PluginEvent) => {
             if (event.type === 'create' && event.node.options.syncEnum) {
                 const source = get(root, event.node.options.syncEnum.source);
-                if (!isJsonError(source)) {
+                if (!isJSONError(source)) {
                     sources[source.pointer] = event.node.pointer;
                     targets[event.node.pointer] = source.pointer;
                     return updateEnumInSchema(root, event.node);
@@ -60,7 +60,7 @@ export const RemoteEnumOptionsPlugin: Plugin = {
                     return updateEnumInSchema(root, event.node);
                 } else if (sources[parentPointer]) {
                     const targetNode = get(root, sources[parentPointer]);
-                    if (!isJsonError(targetNode)) {
+                    if (!isJSONError(targetNode)) {
                         return updateEnumInSchema(root, targetNode);
                     }
                 }
