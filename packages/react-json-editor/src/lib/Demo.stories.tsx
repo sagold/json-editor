@@ -39,7 +39,13 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     return (
         <div>
             <p>The following is the same editor rendered twice to test update mechanism</p>
-            <SideBySide schema={schema} data={data} onChange={() => console.log('change')} />
+            <SideBySide
+                schema={schema}
+                data={data}
+                onChange={(data, root) => {
+                    console.log('on change', root);
+                }}
+            />
         </div>
     );
 };

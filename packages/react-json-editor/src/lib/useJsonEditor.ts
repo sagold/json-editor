@@ -38,8 +38,10 @@ export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [No
                 ...plugins,
                 createOnChangePlugin((data, root) => {
                     setState(root);
-                    if (onChange) {
-                        onChange(data, root);
+                    // @ts-ignore
+                    window['data'] = data;
+                    if (settings.onChange) {
+                        settings.onChange(data, root);
                     }
                 })
             ]

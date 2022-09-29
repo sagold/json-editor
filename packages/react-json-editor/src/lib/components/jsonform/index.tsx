@@ -1,11 +1,11 @@
 import { Form } from 'semantic-ui-react';
-import { RemoteEnumOptionsPlugin, JSONSchema, json } from 'headless-json-editor';
+import { RemoteEnumOptionsPlugin, JSONSchema, Node, json } from 'headless-json-editor';
 import { useJsonEditor } from '../../useJsonEditor';
 
 export type JsonFormProps = {
     schema: JSONSchema;
     data: unknown;
-    onChange: (data: unknown) => void;
+    onChange: (data: unknown, root: Node) => void;
 };
 
 export function JsonForm({ schema, data, onChange }: JsonFormProps) {
