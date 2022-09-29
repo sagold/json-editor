@@ -1,7 +1,7 @@
-import { JsonEditor, JsonEditorProps } from './lib/components/jsoneditor';
-import { useJsonEditor, JsonEditorOptions } from './lib/useJsonEditor';
+import { JsonForm, JsonFormProps } from './lib/components/jsonform';
+import { useJsonEditor, UseJsonEditorOptions, JsonEditor, JsonEditorOptions } from './lib/useJsonEditor';
 
-export { JsonEditor, useJsonEditor };
+export { JsonForm, JsonEditor, useJsonEditor };
 export { ArrayEditor, ArrayEditorPlugin } from './lib/editors/ArrayEditor';
 export { ObjectEditor, ObjectEditorPlugin } from './lib/editors/ObjectEditor';
 export { NumberEditor, NumberEditorPlugin } from './lib/editors/NumberEditor';
@@ -12,4 +12,4 @@ export { SelectOneOfEditor, SelectOneOfEditorPlugin } from './lib/editors/Select
 export { StringEditor, StringEditorPlugin } from './lib/editors/StringEditor';
 export { UnknownEditor, UnknownEditorPlugin } from './lib/editors/UnknownEditor';
 
-export type { JsonEditorProps, JsonEditorOptions };
+export type { JsonFormProps, JsonEditorOptions, UseJsonEditorOptions };

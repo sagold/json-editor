@@ -2,14 +2,14 @@ import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin, JSONSchema, json } from 'headless-json-editor';
 import { useJsonEditor } from '../../useJsonEditor';
 
-export type JsonEditorProps = {
+export type JsonFormProps = {
     schema: JSONSchema;
     data: unknown;
     onChange: (data: unknown) => void;
 };
 
-export function JsonEditor({ schema, data, onChange }: JsonEditorProps) {
-    const [node, getEditor, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
+export function JsonForm({ schema, data, onChange }: JsonFormProps) {
+    const [node, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
     // @ts-ignore
     window['root'] = node;
     // @ts-ignore
@@ -18,10 +18,10 @@ export function JsonEditor({ schema, data, onChange }: JsonEditorProps) {
         return <></>;
     }
 
-    const ChildEditor = getEditor(node);
+    const ChildEditor = instance.getEditor(node);
     return (
         <Form error>
-            <ChildEditor node={node} instance={instance} getEditor={getEditor} />
+            <ChildEditor node={node} instance={instance} />
         </Form>
     );
 }

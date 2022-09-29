@@ -11,7 +11,20 @@ import {
 import { GetEditor, createGetEditor, defaultEditors } from './editors';
 import { EditorPlugin } from './editors/decorators';
 
-export type JsonEditorOptions = {
+export type JsonEditorOptions = HeadlessJsonEditorOptions & {
+    getEditor: GetEditor;
+};
+
+export class JsonEditor extends HeadlessJsonEditor {
+    getEditor: GetEditor;
+
+    constructor(settings: JsonEditorOptions) {
+        super(settings);
+        this.getEditor = settings.getEditor;
+    }
+}
+
+export type UseJsonEditorOptions = {
     schema: JSONSchema;
     onChange?: OnChangeListener;
     plugins: Plugin[];
@@ -20,17 +33,16 @@ export type JsonEditorOptions = {
     data?: unknown;
 };
 
-export function useJsonEditor(settings: JsonEditorOptions): [Node | undefined, GetEditor, HeadlessJsonEditor] {
+export function useJsonEditor(settings: UseJsonEditorOptions): [undefined] | [Node, JsonEditor] {
     const { schema, data } = settings;
-    const he = useRef<HeadlessJsonEditor>();
-    const getEditor = useRef<GetEditor>();
+    const he = useRef<JsonEditor>();
     const [root, setState] = useState<Node>();
 
     useEffect(() => {
         const { onChange, plugins = [], editors = defaultEditors } = settings;
-        getEditor.current = createGetEditor(editors);
-        he.current = new HeadlessJsonEditor({
+        he.current = new JsonEditor({
             schema,
+            getEditor: createGetEditor(editors),
             draftConfig: settings.draftConfig,
             plugins: [
                 ...plugins,
@@ -45,5 +57,9 @@ export function useJsonEditor(settings: JsonEditorOptions): [Node | undefined, G
         setState(he.current.create(data));
     }, [schema, data]);
 
-    return [root, getEditor.current as GetEditor, he.current as HeadlessJsonEditor];
+    if (root != null && he.current != null) {
+        return [root, he.current];
+    }
+
+    return [undefined];
 }

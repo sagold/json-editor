@@ -1,24 +1,24 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { JsonEditor, JsonEditorProps } from './components/jsoneditor';
+import { ComponentStory } from '@storybook/react';
+import { JsonFormProps } from './components/jsonform';
 import { data, schema } from './data/features';
 import './styles.scss';
 import { Form } from 'semantic-ui-react';
-import { RemoteEnumOptionsPlugin, JSONSchema, json } from 'headless-json-editor';
+import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import { useJsonEditor } from './useJsonEditor';
 
-function SideBySide({ schema, data, onChange }: JsonEditorProps) {
-    const [node, getEditor, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
+function SideBySide({ schema, data, onChange }: JsonFormProps) {
+    const [node, instance] = useJsonEditor({ schema, onChange, plugins: [RemoteEnumOptionsPlugin], data });
     if (node == null) {
         return <></>;
     }
-    const ChildEditor = getEditor(node);
+    const ChildEditor = instance.getEditor(node);
     return (
         <section id="side-by-side">
             <Form error style={{ paddingRight: '24px' }}>
-                <ChildEditor node={node} instance={instance} getEditor={getEditor} />
+                <ChildEditor node={node} instance={instance} />
             </Form>
             <Form error>
-                <ChildEditor node={node} instance={instance} getEditor={getEditor} />
+                <ChildEditor node={node} instance={instance} />
             </Form>
         </section>
     );

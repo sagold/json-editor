@@ -16,11 +16,11 @@ install
 usage using `JsonEditor` component
 
 ```tsx
-import { JsonEditor } from '@sagold/_react-json-editor';
+import { JsonForm } from '@sagold/react-json-editor';
 
 function MyForm({ schema, data }) {
     return (
-        <JsonEditor
+        <JsonForm
             schema={schema}
             data={data}
             onChange={(data) => {
@@ -35,7 +35,7 @@ usage using `useJsonEditor` hook
 
 ```tsx
 function MyForm() {
-    const [node, getEditor, instance] = useJsonEditor({
+    const [node, jsonEditor] = useJsonEditor({
         schema,
         onChange,
         plugins: [RemoteEnumOptionsPlugin],
@@ -46,11 +46,11 @@ function MyForm() {
         return <></>;
     }
 
-    const NodeComponent = getEditor(node);
+    const NodeComponent = jsonEditor.getEditor(node);
 
     return (
         <>
-            <NodeComponent node={node} instance={instance} getEditor={getEditor} />
+            <NodeComponent node={node} instance={jsonEditor} />
         </>
     );
 }

@@ -1,19 +1,18 @@
-import { Node, HeadlessJsonEditor } from 'headless-json-editor';
+import { Node } from 'headless-json-editor';
 import { memo } from 'react';
 import { GetEditor } from './index';
+import { JsonEditor } from '../useJsonEditor';
 
 export type EditorProps<T> = {
     node: T;
-    instance: HeadlessJsonEditor;
-    getEditor: GetEditor;
+    instance: JsonEditor;
 };
 
 const isEqual = (prev: { node: Node }, next: { node: Node }) => prev.node === next.node;
 
 export type DecoratedEditorProps<T extends Node, V = unknown> = {
     node: T;
-    instance: HeadlessJsonEditor;
-    getEditor: GetEditor;
+    instance: JsonEditor;
     setValue: (value: V) => void;
 };
 

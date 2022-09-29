@@ -12,8 +12,8 @@ export function useSelectOneOfEditor(node, { skipSelectOneOf = false } = {}) {
     return !skipSelectOneOf && node.schema.oneOfSchema && node.schema.oneOfSchema.oneOf.length > 1;
 }
 
-export const SelectOneOfEditor = editor(({ node, instance, getEditor }) => {
-    const Editor = getEditor(node, { skipSelectOneOf: true });
+export const SelectOneOfEditor = editor(({ node, instance }) => {
+    const Editor = instance.getEditor(node, { skipSelectOneOf: true });
     const selectedSchema = node.schema as SelectedOneOfSchema;
 
     const onChange = (e, { value }: DropdownProps) => {
@@ -33,7 +33,7 @@ export const SelectOneOfEditor = editor(({ node, instance, getEditor }) => {
             <Form.Field id={node.pointer} className="ed-oneof__selection">
                 <Dropdown selection onChange={onChange} value={selectedSchema.oneOfIndex as number} options={options} />
             </Form.Field>
-            <Editor node={node} instance={instance} getEditor={getEditor} />
+            <Editor node={node} instance={instance} />
         </div>
     );
 });

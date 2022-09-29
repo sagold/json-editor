@@ -5,7 +5,7 @@ import { editor, EditorPlugin } from './decorators';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/objecteditor/index.ts
 
-export const ObjectEditor = editor<ObjectNode>(({ node, instance, getEditor }) => {
+export const ObjectEditor = editor<ObjectNode>(({ node, instance }) => {
     const Header = getEditorHeader(node);
 
     return (
@@ -20,8 +20,8 @@ export const ObjectEditor = editor<ObjectNode>(({ node, instance, getEditor }) =
                 </Message>
             )}
             {node.children.map((child) => {
-                const Node = getEditor(child);
-                return <Node node={child} instance={instance} getEditor={getEditor} key={child.id} />;
+                const ChildEditor = instance.getEditor(child);
+                return <ChildEditor node={child} instance={instance} key={child.id} />;
             })}
         </div>
     );

@@ -1,10 +1,11 @@
 import { JSONSchema, isJSONError } from 'json-schema-library';
 import { useState, useRef, useEffect } from 'react';
-import { ArrayNode, Node, HeadlessJsonEditor, DefaultNodeOptions } from 'headless-json-editor';
+import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { Button, Icon, Modal, Dropdown, Message, Popup, DropdownProps } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 import Sortable from 'sortablejs';
+import { JsonEditor } from '../useJsonEditor';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -16,7 +17,7 @@ function ArrayItem({
     size,
     children
 }: {
-    instance: HeadlessJsonEditor;
+    instance: JsonEditor;
     node: Node;
     size: number;
     children: JSX.Element;
@@ -69,7 +70,7 @@ export type ArrayOptions = {
     };
 } & DefaultNodeOptions;
 
-export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance, getEditor }) => {
+export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance }) => {
     const [modal, setModal] = useState<{ open: boolean; options: JSONSchema[]; selected: number }>({
         open: false,
         options: [],
@@ -156,7 +157,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance, ge
             {/* @ts-ignore */}
             <div className="children" ref={ref}>
                 {node.children.map((child) => {
-                    const Node = getEditor(child);
+                    const Node = instance.getEditor(child);
                     return (
                         <ArrayItem
                             node={child}
@@ -165,7 +166,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ node, instance, ge
                             key={child.id}
                             withDragHandle={sortable?.disabled}
                         >
-                            <Node node={child} instance={instance} getEditor={getEditor} />
+                            <Node node={child} instance={instance} />
                         </ArrayItem>
                     );
                 })}
