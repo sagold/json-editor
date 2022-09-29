@@ -3,7 +3,7 @@ import { Form, Dropdown } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 
 export const StringEditor = editor<StringNode, string>(({ node, setValue }) => {
-    const isValidConst = node.schema.const !== null && node.errors.length === 0;
+    const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = node.options.disabled || isValidConst;
 
     return (
