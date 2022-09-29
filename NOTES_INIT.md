@@ -1,6 +1,6 @@
 yarn global add nx
 npx create-nx-workspace --preset=ts
-nx generate @nrwl/js:library --name=headless-json-editor --buildable --publishable --preset=ts
+nx generate @nrwl/js:library --name=headless-json-editor --buildable --publishable --preset=ts --importPath=@sagold/headless-json-editor
 yarn add -D @nrwl/react
 nx g @nrwl/react:lib react-json-editor --publishable --preset=ts
 
@@ -12,11 +12,18 @@ nx g @nrwl/react:lib react-json-editor --publishable --preset=ts
 
 ## actions
 
-rename repository: https://nx.dev/packages/workspace/generators/move
+**rename repository** https://nx.dev/packages/workspace/generators/move
 
 ```sh
 nx g @nrwl/workspace:move --project headless-json-editor _headless-json-editor
 ```
+
+**remove repository** https://nx.dev/packages/workspace/generators/remove
+
+```sh
+nx g @nrwl/workspace:remove _headless-json-editor --forceRemove
+```
+
 
 ## references
 
