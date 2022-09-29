@@ -1,4 +1,4 @@
-import { Node, isParentNode } from './types';
+import { Node, isParentNode } from '../types';
 
 /**
  * returns child item or property if found

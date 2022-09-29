@@ -1,5 +1,5 @@
 import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJSONError, Change } from '../node/types';
+import { Node, isJSONError, Change } from '../types';
 import gp from 'gson-pointer';
 import { invalidPathError } from '../errors';
 import { updatePath } from './updatePath';

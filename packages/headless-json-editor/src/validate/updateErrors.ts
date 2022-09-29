@@ -1,5 +1,5 @@
 import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJSONError, isParentNode } from '../node/types';
+import { Node, isJSONError, isParentNode } from '../types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
@@ -18,7 +18,7 @@ function filterErrors(errors: JSONError[]): JSONError[] {
 /**
  * perform validation and assign errors to corresponding nodes
  */
-export async function validate(draft: Draft, root: Node, pointer: JSONPointer = '#') {
+export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
     const startNode = get(root, pointer);
     if (startNode.type === 'error') {
         return startNode;

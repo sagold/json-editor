@@ -1,4 +1,4 @@
-import { Draft, JSONPointer, JSONSchema, JSONError } from 'json-schema-library';
+import { Draft, JSONPointer, JSONError } from 'json-schema-library';
 import {
     Node,
     ObjectNode,
@@ -8,8 +8,9 @@ import {
     isJSONError,
     ParentNode,
     isNode,
-    Change
-} from '../node/types';
+    Change,
+    JSONSchema
+} from '../types';
 import { create } from '../node/create';
 import { json } from '../node/json';
 import { split, set as setPointer, join } from 'gson-pointer';
@@ -36,12 +37,7 @@ function getSchemaOfChild(draft: Draft, parentNode: Node, childProperty: string,
 /**
  * set (add, update) given data to location of json pointer
  */
-export function set(
-    core: Draft,
-    previousRoot: ParentNode,
-    pointer: JSONPointer,
-    value: any
-): [JSONError] | [ParentNode, Change[]] {
+export function set(core: Draft, previousRoot: Node, pointer: JSONPointer, value: any): [JSONError] | [Node, Change[]] {
     const changeSet: Change[] = [];
     const frags = split(pointer);
     const newRootNode = { ...previousRoot };
@@ -121,41 +117,36 @@ export function set(
             targetNode = null;
         }
 
-        const itemsSchema: any = parentNode.schema?.items;
+        const itemsSchema = parentNode.schema?.items as JSONSchema;
         if (itemsSchema?.oneOf) {
             // build new data starting from parentNode
-            const dataFromParentNode = json(parentNode);
+            const dataFromParentNode = json(parentNode) as unknown[];
             setPointer(dataFromParentNode, join(childProperty, frags), value);
             // from parent retrieve the new oneOf schema
             const childSchema = core.step(childProperty, parentNode.schema, dataFromParentNode, parentNode.pointer);
 
             // we know that the previoius node has to be a array parent
             const parent = parentNode as ArrayNode;
-            // @ts-ignore
-            const currentSchema = parent.children[childProperty]?.schema;
+            const childIndex = parseInt(childProperty);
+            const currentSchema = parent.children[childIndex]?.schema;
             if (currentSchema == null || !deepEqual(childSchema, currentSchema)) {
                 // @change replace node
-                // @ts-ignore
-                if (isNode(parent.children[childProperty])) {
+                if (isNode(parent.children[childIndex])) {
                     changeSet.push({
                         type: 'delete',
-                        // @ts-ignore
-                        node: parent.children[childProperty]
+                        node: parent.children[childIndex]
                     });
                 }
-                // @ts-ignore
-                parent.children[childProperty] = create(
+                parent.children[childIndex] = create(
                     core,
-                    // @ts-ignore
-                    dataFromParentNode[childProperty],
+                    dataFromParentNode[childIndex],
                     childSchema,
                     `${parentNode.pointer}/${childProperty}`
                 );
                 // @change create node
                 changeSet.push({
                     type: 'create',
-                    // @ts-ignore
-                    node: parent.children[childProperty]
+                    node: parent.children[childIndex]
                 });
                 return [newRootNode, changeSet];
             }

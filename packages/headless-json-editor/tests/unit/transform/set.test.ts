@@ -5,7 +5,7 @@ import { json } from '../../../src/node/json';
 import { trace } from '../../../src/node/trace';
 import { get } from '../../../src/node/get';
 import { strict as assert } from 'assert';
-import { Node, ArrayNode, ObjectNode, StringNode } from '../../../src/node/types';
+import { Node, ArrayNode, ObjectNode, StringNode } from '../../../src/types';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');

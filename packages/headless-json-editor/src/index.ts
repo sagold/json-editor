@@ -24,7 +24,7 @@ export { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
 export { createOnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
 
 // validation
-import { validate } from './validate/validate';
+import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
 
 export {
@@ -43,9 +43,9 @@ export {
     trace,
     updateOptions,
     updateSchema,
-    validate
+    updateErrors
 };
-export { isNode, isParentNode, isValueNode, isJSONError } from './node/types';
+export { isNode, isParentNode, isValueNode, isJSONError } from './types';
 
 export type {
     ArrayNode,
@@ -61,4 +61,4 @@ export type {
     StringNode,
     ValueNode,
     DefaultNodeOptions
-} from './node/types';
+} from './types';

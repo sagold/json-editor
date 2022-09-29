@@ -1,6 +1,6 @@
 import { JSONPointer } from 'json-schema-library';
 import { getChildNode } from './getChildNode';
-import { Node } from './types';
+import { Node } from '../types';
 import { split } from 'gson-pointer';
 
 /**
@@ -13,8 +13,11 @@ export function trace(node: Node, pointer: JSONPointer) {
     let currentNode: Node = node;
     while (frags.length) {
         const property = frags.pop() as string;
-        // @ts-ignore
-        currentNode = getChildNode(currentNode, property);
+        const nextNode = getChildNode(currentNode, property);
+        if (nextNode === undefined) {
+            return selection;
+        }
+        currentNode = nextNode;
         selection.push(currentNode);
     }
 

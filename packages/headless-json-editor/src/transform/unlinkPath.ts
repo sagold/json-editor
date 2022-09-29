@@ -1,5 +1,5 @@
 import { JSONPointer, JSONError } from 'json-schema-library';
-import { ObjectNode, ArrayNode, isParentNode, Node } from '../node/types';
+import { ObjectNode, ArrayNode, isParentNode, Node } from '../types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { split, join } from 'gson-pointer';

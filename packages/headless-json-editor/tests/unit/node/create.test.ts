@@ -2,7 +2,7 @@ import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJSONError } from '../../../src/node/types';
+import { ObjectNode, StringNode, isJSONError } from '../../../src/types';
 
 describe('create', () => {
     let core: Draft;

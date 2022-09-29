@@ -1,5 +1,5 @@
-import { JSONError, JSONSchema } from 'json-schema-library';
-import { Node, isJSONError, Change, DefaultNodeOptions } from '../node/types';
+import { JSONError } from 'json-schema-library';
+import { Node, isJSONError, Change, DefaultNodeOptions, JSONSchema } from '../types';
 import { unlinkPath } from './unlinkPath';
 
 /**

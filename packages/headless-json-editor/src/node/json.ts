@@ -1,4 +1,4 @@
-import { Node } from './types';
+import { Node } from '../types';
 
 /**
  * reduces a schema tree to its contained json data

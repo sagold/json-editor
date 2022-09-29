@@ -1,5 +1,5 @@
 import { JSONPointer } from 'json-schema-library';
-import { Node } from '../node/types';
+import { Node } from '../types';
 import gp from 'gson-pointer';
 
 const POINTER_PREFIX = '#/';

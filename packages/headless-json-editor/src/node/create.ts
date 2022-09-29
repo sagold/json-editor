@@ -1,6 +1,16 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JSONSchema, JSONPointer } from 'json-schema-library';
-import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode } from './types';
+import { getTypeOf, Draft, JSONPointer } from 'json-schema-library';
+import {
+    Node,
+    NodeType,
+    ArrayNode,
+    ObjectNode,
+    StringNode,
+    NumberNode,
+    BooleanNode,
+    NullNode,
+    JSONSchema
+} from '../types';
 
 type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 

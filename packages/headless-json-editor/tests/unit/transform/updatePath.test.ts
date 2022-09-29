@@ -1,5 +1,5 @@
 import { updatePath } from '../../../src/transform/updatePath';
-import { Node, ArrayNode } from '../../../src/node/types';
+import { Node, ArrayNode } from '../../../src/types';
 import { strict as assert } from 'assert';
 
 describe('updatePath', () => {

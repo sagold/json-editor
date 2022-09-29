@@ -1,9 +1,9 @@
-import { Draft07, Draft, JSONValidator, JSONSchema, JSONError } from 'json-schema-library';
+import { Draft07, Draft, JSONValidator, JSONError } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { create } from '../../../src/node/create';
 import { get } from '../../../src/node/get';
 import { set } from '../../../src/transform/set';
-import { validate } from '../../../src/validate/validate';
+import { updateErrors as validate } from '../../../src/validate/updateErrors';
 
 describe('validate', () => {
     let core: Draft;

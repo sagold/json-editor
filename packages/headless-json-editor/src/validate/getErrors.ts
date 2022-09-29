@@ -1,5 +1,5 @@
 import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJSONError } from '../node/types';
+import { Node, isJSONError } from '../types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 
@@ -7,19 +7,25 @@ import { get } from '../node/get';
 //     return errors.filter((item) => isJSONError(item) || item instanceof Promise);
 // }
 
-export function getErrors(core: Draft, root: Node, pointer: JSONPointer = '#') {
+/**
+ * validate current node and return the validation errors
+ */
+export function getErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
     const startNode = get(root, pointer);
     if (startNode.type === 'error') {
         return startNode;
     }
 
-    const errors: (JSONError | Promise<JSONError | undefined>)[] = core
+    const errors: (JSONError | Promise<JSONError | undefined>)[] = draft
         .validate(json(startNode), startNode.schema, startNode.pointer)
         .flat(Infinity);
 
     return errors.filter((item) => isJSONError(item) || item instanceof Promise);
 }
 
+/**
+ * splits validation errors into errors and async errors
+ */
 export function splitErrors(
     errors: (JSONError | Promise<JSONError | undefined>)[]
 ): [JSONError[], Promise<JSONError[]>[]] {

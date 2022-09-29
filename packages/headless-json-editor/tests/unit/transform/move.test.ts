@@ -3,9 +3,9 @@ import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
-import { Node, StringNode, ArrayNode } from '../../../src/node/types';
+import { Node, StringNode, ArrayNode } from '../../../src/types';
 import { strict as assert } from 'assert';
-// import { ObjectNode, StringNode, NumberNode } from '../../../src/node/types';
+// import { ObjectNode, StringNode, NumberNode } from '../../../src/types';
 import { move } from '../../../src/transform/move';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {

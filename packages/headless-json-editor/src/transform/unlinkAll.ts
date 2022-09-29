@@ -1,4 +1,4 @@
-import { Node, isParentNode } from '../node/types';
+import { Node, isParentNode } from '../types';
 
 /**
  * Returns a clone of the node. Each node is a shallow clone so do not modify

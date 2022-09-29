@@ -2,7 +2,7 @@ import { create } from '../../../src/node/create';
 import { get } from '../../../src/node/get';
 import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
-import { Node } from '../../../src/node/types';
+import { Node } from '../../../src/types';
 
 describe('get', () => {
     let node: Node;

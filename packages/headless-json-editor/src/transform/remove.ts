@@ -1,5 +1,5 @@
 import { JSONPointer, JSONError } from 'json-schema-library';
-import { isParentNode, Node, isJSONError, Change } from '../node/types';
+import { isParentNode, Node, isJSONError, Change } from '../types';
 import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';

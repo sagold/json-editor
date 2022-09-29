@@ -1,6 +1,11 @@
 import { JSONError } from 'json-schema-library';
+import { JSONSchema7 } from 'json-schema';
 
-export type JSONSchema = Record<string, unknown>;
+export type JSONSchema =
+    | JSONSchema7 & {
+          oneOfSchema?: JSONSchema;
+          options?: Record<string, unknown>;
+      };
 
 export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;
 

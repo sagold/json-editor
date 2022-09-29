@@ -1,6 +1,6 @@
 import gp from 'gson-pointer';
 import { invalidPathError, JSONError } from '../errors';
-import { Node } from './types';
+import { Node } from '../types';
 import { getChildNode } from './getChildNode';
 
 /**

@@ -1,4 +1,4 @@
-import { Node, isParentNode } from './types';
+import { Node, isParentNode } from '../types';
 
 /**
  * returns all nodes in the tree as a flat list

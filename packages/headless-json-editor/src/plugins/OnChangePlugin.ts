@@ -1,6 +1,6 @@
 import { HeadlessJsonEditor, Plugin } from '../HeadlessJsonEditor';
 import { json } from '../node/json';
-import { Node } from '../node/types';
+import { Node } from '../types';
 
 export type OnChangeListener<T = any> = (data: T, root: Node) => void;
 

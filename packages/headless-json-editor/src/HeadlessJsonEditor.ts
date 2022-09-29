@@ -1,18 +1,18 @@
-import { Draft, JsonEditor, JSONSchema } from 'json-schema-library';
+import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
 import { create } from './node/create';
 import { json } from './node/json';
 import { set } from './transform/set';
 import { flat } from './node/flat';
 import { remove as removeTarget } from './transform/remove';
 import { move as moveItem } from './transform/move';
-import { validate } from './validate/validate';
-import { Change, Node, ParentNode, ArrayNode, isJSONError } from './node/types';
+import { updateErrors } from './validate/updateErrors';
+import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
 import { splitLastProperty } from './splitLastProperty';
 
 export interface Plugin {
     create(he: HeadlessJsonEditor): PluginObserver | false;
 }
-export type DoneEvent = { type: 'done'; previous: ParentNode; next: ParentNode };
+export type DoneEvent = { type: 'done'; previous: Node; next: Node };
 export type PluginEvent = Change | DoneEvent;
 export type PluginObserver = (root: Node, change: PluginEvent) => void | [Node, Change[]];
 
@@ -20,24 +20,48 @@ function isPluginObserver(p: unknown): p is PluginObserver {
     return typeof p === 'function';
 }
 
+function runPlugins(plugins: PluginObserver[], oldState: Node, newState: Node, changes: Change[]) {
+    // @notify change
+    changes.forEach((change) => {
+        plugins.forEach((p) => {
+            const returnValue = p(newState, change);
+            if (returnValue) {
+                newState = returnValue[0];
+                changes.push(...returnValue[1]);
+            }
+        });
+    });
+    // @notify done
+    const done: DoneEvent = { type: 'done', previous: oldState, next: newState };
+    plugins.forEach((p) => p(newState, done));
+    return newState;
+}
+
+export type HeadlessJsonEditorOptions = {
+    schema: JSONSchema;
+    data?: unknown;
+    draftConfig?: Partial<DraftConfig>;
+    plugins?: Plugin[];
+};
+
 export class HeadlessJsonEditor {
-    state: ParentNode;
+    state: Node;
     draft: Draft;
     changes: Change[] = [];
     plugins: PluginObserver[];
 
-    constructor({ schema, data = {}, plugins = [] }: { schema: JSONSchema; data?: unknown; plugins?: Plugin[] }) {
-        this.draft = new JsonEditor(schema);
+    constructor({ schema, data = {}, plugins = [], draftConfig }: HeadlessJsonEditorOptions) {
+        this.draft = new JsonEditor(schema, draftConfig);
         this.plugins = plugins.map((p) => p.create(this)).filter(isPluginObserver);
         this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
     }
 
-    create(data?: unknown) {
+    create(data?: unknown): Node {
         const { draft } = this;
         const state = create<ParentNode>(draft, draft.getTemplate(data));
-        validate(draft, state);
+        updateErrors(draft, state);
         const changes: Change[] = flat(state).map((node) => ({ type: 'create', node }));
-        this.state = this.runPlugins(state, changes);
+        this.state = runPlugins(this.plugins, this.state, state, changes);
         return state;
     }
 
@@ -45,7 +69,7 @@ export class HeadlessJsonEditor {
         return this.state;
     }
 
-    setValue(pointer: string, value: unknown) {
+    setValue(pointer: string, value: unknown): Node {
         const [state, changes] = set(this.draft, this.state, pointer, value);
         if (isJSONError(state)) {
             console.error(`error setting '${pointer}' = ${value}`);
@@ -59,19 +83,19 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validate(this.draft, state, pointer);
+        updateErrors(this.draft, state, pointer);
         // console.log('new state', state);
         this.changes.push(...changes);
-        this.state = this.runPlugins(state, changes);
+        this.state = runPlugins(this.plugins, this.state, state, changes);
         return this.state;
     }
 
-    remove(pointer: string) {
+    removeValue(pointer: string): Node {
         const [state, changes] = removeTarget(this.state, pointer);
         if (isJSONError(state)) {
             console.error(`error removing '${pointer}'`);
             console.log(state);
-            return state;
+            return this.state;
         }
 
         if (changes === undefined) {
@@ -81,19 +105,19 @@ export class HeadlessJsonEditor {
         const [parent] = splitLastProperty(pointer);
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using remove
-        validate(this.draft, state, parent);
+        updateErrors(this.draft, state, parent);
         this.changes.push(...changes);
-        this.state = this.runPlugins(state as ParentNode, changes);
+        this.state = runPlugins(this.plugins, this.state, state, changes);
         return this.state;
     }
 
-    moveItem(pointer: string, to: number) {
+    moveItem(pointer: string, to: number): Node {
         const [parent, from] = splitLastProperty(pointer);
         const [state, changes] = moveItem(this.draft, this.state, parent, parseInt(from), to);
         if (isJSONError(state)) {
             console.error(`error moving nodes in '${pointer}'`);
             console.log(state);
-            return state;
+            return this.state;
         }
 
         if (changes === undefined) {
@@ -102,13 +126,13 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validate(this.draft, state, pointer);
+        updateErrors(this.draft, state, pointer);
         this.changes.push(...changes);
-        this.state = this.runPlugins(state as ParentNode, changes);
+        this.state = runPlugins(this.plugins, this.state, state, changes);
         return this.state;
     }
 
-    appendItem(node: ArrayNode, itemSchema: JSONSchema): ParentNode {
+    appendItem(node: ArrayNode, itemSchema: JSONSchema): Node {
         const value = this.draft.getTemplate(null, itemSchema);
         const pointer = `${node.pointer}/${node.children.length}`;
         const [state, changes] = set(this.draft, this.state, pointer, value);
@@ -124,8 +148,8 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validate(this.draft, state, node.pointer);
-        let newState = this.runPlugins(state, changes);
+        updateErrors(this.draft, state, node.pointer);
+        let newState = runPlugins(this.plugins, this.state, state, changes);
         if (isJSONError(newState)) {
             console.error(`error from state returned by plugins '${node.pointer}'`);
             console.log(newState);
@@ -133,23 +157,6 @@ export class HeadlessJsonEditor {
         }
         this.state = newState;
         return this.state;
-    }
-
-    runPlugins(state: ParentNode, changes: Change[]) {
-        // @notify change
-        changes.forEach((change) => {
-            this.plugins.forEach((p) => {
-                const returnValue = p(state, change);
-                if (returnValue) {
-                    state = returnValue[0] as ParentNode;
-                    changes.push(...returnValue[1]);
-                }
-            });
-        });
-        // @notify done
-        const done: DoneEvent = { type: 'done', previous: this.state, next: state };
-        this.plugins.forEach((p) => p(state, done));
-        return state;
     }
 
     getArrayAddOptions(node: ArrayNode) {

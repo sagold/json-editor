@@ -122,7 +122,7 @@ const newRootNode = he.setValue("#/pages/0/title", data);
 remove value at specific location in data
 
 ```ts
-const newRootNode = he.setValue("#/pages/3");
+const newRootNode = he.removeValue("#/pages/3");
 ```
 
 move an array item to another index
