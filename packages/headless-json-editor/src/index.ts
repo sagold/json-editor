@@ -17,15 +17,35 @@ import { updateSchema, updateOptions } from './transform/update';
 // convenience: append, prepend, insert
 
 // hje
-export { HeadlessJsonEditor, Plugin } from './HeadlessJsonEditor';
+import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin } from './HeadlessJsonEditor';
 
 // plugins
-export { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
-export { createOnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
+import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
+import { createOnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
 
 // validation
 import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
+
+import {
+    ArrayNode,
+    BooleanNode,
+    Change,
+    DefaultNodeOptions,
+    JSONSchema,
+    Node,
+    NodeType,
+    NullNode,
+    NumberNode,
+    ObjectNode,
+    ParentNode,
+    StringNode,
+    ValueNode,
+    isNode,
+    isParentNode,
+    isValueNode,
+    isJSONError
+} from './types';
 
 export {
     create,
@@ -43,22 +63,31 @@ export {
     trace,
     updateOptions,
     updateSchema,
-    updateErrors
+    updateErrors,
+    HeadlessJsonEditor,
+    Plugin,
+    isNode,
+    isParentNode,
+    isValueNode,
+    isJSONError,
+    RemoteEnumOptionsPlugin,
+    createOnChangePlugin
 };
-export { isNode, isParentNode, isValueNode, isJSONError } from './types';
 
 export type {
     ArrayNode,
     BooleanNode,
     Change,
+    DefaultNodeOptions,
+    HeadlessJsonEditorOptions,
     JSONSchema,
     Node,
     NodeType,
     NullNode,
     NumberNode,
     ObjectNode,
+    OnChangeListener,
     ParentNode,
     StringNode,
-    ValueNode,
-    DefaultNodeOptions
-} from './types';
+    ValueNode
+};

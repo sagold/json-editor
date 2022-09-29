@@ -36,7 +36,7 @@ function ArrayItem({
                     flowing
                     hoverable
                 >
-                    <Button basic icon onClick={() => instance.remove(node.pointer)}>
+                    <Button basic icon onClick={() => instance.removeValue(node.pointer)}>
                         <Icon name="trash alternate outline" />
                     </Button>
                     <Button

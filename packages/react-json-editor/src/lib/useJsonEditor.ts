@@ -1,6 +1,13 @@
-import { JSONSchema } from 'json-schema-library';
 import { useState, useEffect, useRef } from 'react';
-import { HeadlessJsonEditor, Plugin, Node, createOnChangePlugin, OnChangeListener } from 'headless-json-editor';
+import {
+    HeadlessJsonEditor,
+    HeadlessJsonEditorOptions,
+    Plugin,
+    Node,
+    createOnChangePlugin,
+    OnChangeListener,
+    JSONSchema
+} from 'headless-json-editor';
 import { GetEditor, createGetEditor, defaultEditors } from './editors';
 import { EditorPlugin } from './editors/decorators';
 
@@ -8,6 +15,7 @@ export type JsonEditorOptions = {
     schema: JSONSchema;
     onChange?: OnChangeListener;
     plugins: Plugin[];
+    draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     editors?: EditorPlugin[];
     data?: unknown;
 };
@@ -23,6 +31,7 @@ export function useJsonEditor(settings: JsonEditorOptions): [Node | undefined, G
         getEditor.current = createGetEditor(editors);
         he.current = new HeadlessJsonEditor({
             schema,
+            draftConfig: settings.draftConfig,
             plugins: [
                 ...plugins,
                 createOnChangePlugin((data, root) => {
