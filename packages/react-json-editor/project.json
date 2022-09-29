@@ -39,7 +39,7 @@
             "outputs": ["{options.outputPath}"],
             "options": {
                 "uiFramework": "@storybook/react",
-                "outputPath": "dist/storybook/react-json-editor",
+                "outputPath": "docs/",
                 "config": {
                     "configFolder": "packages/react-json-editor/.storybook"
                 }

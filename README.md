@@ -4,8 +4,8 @@
 </p> -->
 
 <p align="center">
-    <img src="./docs/he-full-trans-2000x564.png" width="100%" alt="headless-json-editor"><br />
-    <img src="./docs/title-700x54.png" width="350px" alt="headless-json-editor">
+    <img src="./images/he-full-trans-2000x564.png" width="100%" alt="headless-json-editor"><br />
+    <img src="./images/title-700x54.png" width="350px" alt="headless-json-editor">
 </p>
 
 <!-- <p align="center">
