@@ -8,10 +8,7 @@ import { StringEditorPlugin, SelectEditor } from './StringEditor';
 import { NullEditorPlugin } from './NullEditor';
 import { ErrorEditorPlugin } from './ErrorEditor';
 import { UnknownEditorPlugin } from './UnknownEditor';
-import { Node } from 'headless-json-editor';
-import { Editor, EditorPlugin } from './decorators';
-
-export type { Editor };
+import { EditorPlugin } from './decorators';
 
 // @todo consider removing complex EditorPlugin type
 export const defaultEditors: EditorPlugin[] = [
@@ -36,15 +33,3 @@ export const defaultEditors: EditorPlugin[] = [
     ErrorEditorPlugin,
     UnknownEditorPlugin
 ];
-
-export type GetEditor = (node: Node, options?: Record<string, unknown>) => Editor;
-
-export function createGetEditor(editors: EditorPlugin[]): GetEditor {
-    return function getEditor(node: Node, options?: Record<string, unknown>): Editor {
-        const { Editor } = editors.find((ed) => ed.use(node, options)) || {};
-        if (Editor) {
-            return Editor;
-        }
-        throw new Error(`Failed retrieving an editor for '${node.pointer}'`);
-    };
-}

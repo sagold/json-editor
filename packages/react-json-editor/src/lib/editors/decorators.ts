@@ -1,6 +1,5 @@
 import { Node } from 'headless-json-editor';
 import { memo } from 'react';
-import { GetEditor } from './index';
 import { JsonEditor } from '../useJsonEditor';
 
 export type EditorProps<T> = {

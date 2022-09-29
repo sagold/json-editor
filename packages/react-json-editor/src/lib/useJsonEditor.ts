@@ -8,7 +8,8 @@ import {
     OnChangeListener,
     JSONSchema
 } from 'headless-json-editor';
-import { GetEditor, createGetEditor, defaultEditors } from './editors';
+import { defaultEditors } from './editors';
+import { GetEditor, createGetEditor } from './getEditor';
 import { EditorPlugin } from './editors/decorators';
 
 export type JsonEditorOptions = HeadlessJsonEditorOptions & {
