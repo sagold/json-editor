@@ -25,7 +25,7 @@ export function JsonForm({ schema, data, onChange }: JsonFormProps) {
     // @ts-ignore
     window['validate'] = () => instance.core.validate(json(node));
     if (node == null) {
-        return <></>;
+        return <Form error />;
     }
 
     const ChildEditor = instance.getEditor(node);

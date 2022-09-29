@@ -11,7 +11,7 @@
 
 install
 
-`yarn add @sagold/_react-json-editor`
+`yarn add @sagold/react-json-editor`
 
 usage using `JsonEditor` component
 
@@ -34,24 +34,28 @@ function MyForm({ schema, data }) {
 usage using `useJsonEditor` hook
 
 ```tsx
+import { Form } from 'semantic-ui-react';
+import { useJsonEditor } from '@sagold/react-json-editor';
+
 function MyForm() {
     const [node, jsonEditor] = useJsonEditor({
         schema,
-        onChange,
-        plugins: [RemoteEnumOptionsPlugin],
-        data
+        data,
+        onChange: (data) => {
+            console.log('data', data);
+        }
     });
 
     if (node == null) {
-        return <></>;
+        return <Form error />;
     }
 
-    const NodeComponent = jsonEditor.getEditor(node);
+    const Editor = jsonEditor.getEditor(node);
 
     return (
-        <>
-            <NodeComponent node={node} instance={jsonEditor} />
-        </>
+        <Form error>
+            <Editor node={node} instance={jsonEditor} />
+        </Form>
     );
 }
 ```
