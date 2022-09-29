@@ -3,6 +3,7 @@
     "version": 2,
     "projects": {
         "headless-json-editor": "packages/headless-json-editor",
-        "react-json-editor": "packages/react-json-editor"
+        "react-json-editor": "packages/react-json-editor",
+        "react-json-editor-e2e": "packages/react-json-editor-e2e"
     }
 }

@@ -15,8 +15,8 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@sagold/headless-json-editor": ["packages/headless-json-editor/src/index.ts"],
-            "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"]
+            "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"],
+            "headless-json-editor": ["packages/headless-json-editor/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

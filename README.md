@@ -16,3 +16,5 @@ Currently this repository includes packages
 - run tests `nx test headless-json-editor`
 - run storybook `nx run react-json-editor:storybook`
 - build storybook `nx run react-json-editor:build-storybook`
+- build packages `nx run-many --target=build`
+- build react-json-editor `nx run react-json-editor:build`

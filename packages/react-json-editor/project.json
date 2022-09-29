@@ -4,6 +4,26 @@
     "projectType": "library",
     "tags": [],
     "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/packages/react-json-editor",
+                "tsConfig": "packages/react-json-editor/tsconfig.lib.json",
+                "project": "packages/react-json-editor/package.json",
+                "entryFile": "packages/react-json-editor/src/index.ts",
+                "external": ["react/jsx-runtime"],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "assets": [
+                    {
+                        "glob": "packages/react-json-editor/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
         "lint": {
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],

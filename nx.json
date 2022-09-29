@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "npmScope": "sagold",
+    "npmScope": "",
     "affected": {
         "defaultBase": "main"
     },

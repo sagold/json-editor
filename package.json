@@ -7,6 +7,11 @@
     "workspaces": [
         "packages/*"
     ],
+    "scripts": {
+        "test": "nx run-many --target='test'",
+        "build": "nx run-many --target='build'; nx run react-json-editor:build-storybook",
+        "serve": "nx run react-json-editor:storybook"
+    },
     "dependencies": {
         "core-js": "^3.6.5",
         "react": "18.2.0",
@@ -18,6 +23,7 @@
         "@babel/core": "7.12.13",
         "@babel/preset-typescript": "7.12.13",
         "@nrwl/cli": "14.5.4",
+        "@nrwl/cypress": "14.5.4",
         "@nrwl/eslint-plugin-nx": "14.5.4",
         "@nrwl/jest": "14.5.4",
         "@nrwl/js": "14.5.4",
@@ -41,8 +47,10 @@
         "@typescript-eslint/parser": "^5.29.0",
         "babel-jest": "27.5.1",
         "babel-loader": "8.1.0",
+        "cypress": "^10.2.0",
         "eslint": "~8.15.0",
         "eslint-config-prettier": "8.1.0",
+        "eslint-plugin-cypress": "^2.10.3",
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-jsx-a11y": "6.6.1",
         "eslint-plugin-react": "7.30.1",
