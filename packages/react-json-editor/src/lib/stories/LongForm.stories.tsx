@@ -24,7 +24,7 @@ export const LongForm = () => {
         <div style={{ display: 'flex' }}>
             <div
                 style={{
-                    width: '400px',
+                    width: '20%',
                     position: 'fixed',
                     height: '100%',
                     paddingBottom: 48,
@@ -38,7 +38,7 @@ export const LongForm = () => {
                     <NavigationEditor node={node} instance={instance} />
                 </div>
             </div>
-            <div style={{ marginLeft: 448 }}>
+            <div style={{ marginLeft: '20%', paddingLeft: 48 }}>
                 <Form error>
                     <Editor node={node} instance={instance} />
                 </Form>
