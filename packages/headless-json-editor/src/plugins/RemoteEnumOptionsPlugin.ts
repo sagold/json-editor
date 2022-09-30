@@ -1,5 +1,5 @@
 import { JSONPointer } from 'json-schema-library';
-import { HeadlessJsonEditor, Plugin, PluginObserver, PluginEvent } from '../HeadlessJsonEditor';
+import { Plugin, PluginObserver, PluginEvent } from '../HeadlessJsonEditor';
 import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
 
 /**
@@ -21,6 +21,7 @@ import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
  * ```
  */
 export const RemoteEnumOptionsPlugin: Plugin = {
+    id: 'remoteEnumOptions',
     create() {
         const sources: Record<string, JSONPointer> = {};
         const targets: Record<string, JSONPointer> = {};
