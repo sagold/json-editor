@@ -76,8 +76,11 @@ h2 {
 
 // array header with + button
 [data-type='array'] > h2,
+[data-type='array'] > .title h2,
 [data-type='array'] > h3,
-[data-type='array'] > h4 {
+[data-type='array'] > .title h3,
+[data-type='array'] > h4,
+[data-type='array'] > .title h4 {
     display: flex;
     justify-content: space-between;
 }

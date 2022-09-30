@@ -1,6 +1,6 @@
 import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { Button, Icon, Message, Popup } from 'semantic-ui-react';
+import { Button, Icon, Message, Popup, Accordion } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 import { getEditorHeader } from '../utils/getEditorHeader';
 import { JsonEditor } from '../JsonEditor';
@@ -60,6 +60,8 @@ function ArrayItem({ instance, node, withDragHandle, size, children }: ArrayItem
 }
 
 export type ArrayOptions = {
+    /** if set, will add an accordion in the given toggle state */
+    collapsed?: boolean;
     sortable?: {
         // sortable options: https://github.com/SortableJS/Sortable
         enabled?: boolean;
@@ -68,6 +70,7 @@ export type ArrayOptions = {
 } & DefaultNodeOptions;
 
 export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
+    const [isOpen, setToggleState] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
     const contextRef = createRef();
     let sortable = options.sortable;
@@ -112,9 +115,39 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     }, [sortable]);
 
     const Header = getEditorHeader(node);
+    const content = (
+        <>
+            {node.errors.length > 0 && (
+                <Message error>
+                    <Message.List>
+                        {node.errors.map((e) => {
+                            return <Message.Item key={e.message}>{e.message}</Message.Item>;
+                        })}
+                    </Message.List>
+                </Message>
+            )}
+            {/* @ts-ignore */}
+            <div className="children" ref={ref}>
+                {node.children.map((child) => {
+                    const Node = instance.getEditor(child);
+                    return (
+                        <ArrayItem
+                            node={child}
+                            instance={instance}
+                            size={node.children.length}
+                            key={child.id}
+                            withDragHandle={sortable?.enabled}
+                        >
+                            <Node node={child} instance={instance} />
+                        </ArrayItem>
+                    );
+                })}
+            </div>
+        </>
+    );
 
-    return (
-        <Ref innerRef={contextRef}>
+    if (options.collapsed == null) {
+        return (
             <div data-type="array" data-id={node.pointer}>
                 <Header>
                     <div>{node.options.title}</div>
@@ -124,33 +157,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                         </Button>
                     </div>
                 </Header>
-                <p>{node.schema.description as string}</p>
-                {node.errors.length > 0 && (
-                    <Message error>
-                        <Message.List>
-                            {node.errors.map((e) => {
-                                return <Message.Item key={e.message}>{e.message}</Message.Item>;
-                            })}
-                        </Message.List>
-                    </Message>
-                )}
-                {/* @ts-ignore */}
-                <div className="children" ref={ref}>
-                    {node.children.map((child) => {
-                        const Node = instance.getEditor(child);
-                        return (
-                            <ArrayItem
-                                node={child}
-                                instance={instance}
-                                size={node.children.length}
-                                key={child.id}
-                                withDragHandle={sortable?.enabled}
-                            >
-                                <Node node={child} instance={instance} />
-                            </ArrayItem>
-                        );
-                    })}
-                </div>
+                {content}
                 <InsertItemModal
                     instance={instance}
                     node={node}
@@ -158,6 +165,32 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                     onClose={() => setModalOpen(false)}
                 />
             </div>
+        );
+    }
+
+    return (
+        <Ref innerRef={contextRef}>
+            <Accordion data-type="array" data-id={node.pointer}>
+                <Accordion.Title active={isOpen}>
+                    <Header onClick={() => setToggleState(!isOpen)}>
+                        <Icon name="dropdown" link />
+                        <div style={{ flexGrow: 1 }}>{node.options.title}</div>
+                        <div>
+                            <Button basic icon onClick={() => setModalOpen(true)}>
+                                <Icon name="add" />
+                            </Button>
+                        </div>
+                    </Header>
+                    <p>{options.description as string}</p>
+                </Accordion.Title>
+                <Accordion.Content active={isOpen}>{content}</Accordion.Content>
+                <InsertItemModal
+                    instance={instance}
+                    node={node}
+                    isOpen={openModal}
+                    onClose={() => setModalOpen(false)}
+                />
+            </Accordion>
         </Ref>
     );
 });
