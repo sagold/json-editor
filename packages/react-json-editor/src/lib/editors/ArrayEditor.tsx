@@ -80,6 +80,15 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     sortable.enabled = sortable.enabled ?? false;
     sortable.group = sortable.group ?? node.pointer;
 
+    function insertItem() {
+        const options = instance.getArrayAddOptions(node);
+        if (options.length === 1) {
+            instance.appendItem(node, options[0]);
+        } else {
+            setModalOpen(true);
+        }
+    }
+
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
         if (sortable?.enabled && ref.current) {
@@ -150,14 +159,15 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
         return (
             <div data-type="array" data-id={node.pointer}>
                 <Header>
-                    <div>{node.options.title}</div>
+                    {node.options.title && <div>{node.options.title}</div>}
                     <div>
-                        <Button basic icon onClick={() => setModalOpen(true)}>
+                        <Button basic icon onClick={insertItem}>
                             <Icon name="add" />
                         </Button>
                     </div>
                 </Header>
                 {content}
+                {options.description && <p>{options.description as string}</p>}
                 <InsertItemModal
                     instance={instance}
                     node={node}
@@ -174,14 +184,14 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                 <Accordion.Title active={isOpen}>
                     <Header onClick={() => setToggleState(!isOpen)}>
                         <Icon name="dropdown" link />
-                        <div style={{ flexGrow: 1 }}>{node.options.title}</div>
+                        {node.options.title && <div style={{ flexGrow: 1 }}>{node.options.title}</div>}
                         <div>
-                            <Button basic icon onClick={() => setModalOpen(true)}>
+                            <Button basic icon onClick={insertItem}>
                                 <Icon name="add" />
                             </Button>
                         </div>
                     </Header>
-                    <p>{options.description as string}</p>
+                    {options.description && <p>{options.description as string}</p>}
                 </Accordion.Title>
                 <Accordion.Content active={isOpen}>{content}</Accordion.Content>
                 <InsertItemModal
