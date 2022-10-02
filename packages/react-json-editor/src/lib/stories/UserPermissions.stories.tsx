@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 import { JsonForm } from '../../index';
-import { data, schema } from './data/userpermissions';
+import { data, schema } from './data/layout';
 import '../styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -23,4 +23,4 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 };
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-export const UserPermissions = Template.bind({});
+export const ObjectLayout = Template.bind({});
