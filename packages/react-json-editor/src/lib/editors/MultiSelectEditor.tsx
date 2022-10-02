@@ -37,7 +37,6 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
             <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <Dropdown
-                    fluid
                     multiple
                     search
                     selection
