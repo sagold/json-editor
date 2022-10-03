@@ -5,7 +5,7 @@ import { JsonEditor, JsonEditorOptions } from './lib/JsonEditor';
 export { JsonForm, JsonEditor, useJsonEditor };
 export { defaultEditors } from './lib/editors/index';
 export { ArrayEditor, ArrayEditorPlugin } from './lib/editors/ArrayEditor';
-export { ObjectEditor, ObjectEditorPlugin } from './lib/editors/ObjectEditor';
+export { ObjectEditor, ObjectEditorPlugin } from './lib/editors/objecteditor/ObjectEditor';
 export { NumberEditor, NumberEditorPlugin } from './lib/editors/NumberEditor';
 export { ErrorEditor, ErrorEditorPlugin } from './lib/editors/ErrorEditor';
 export { MultiSelectEditor, MultiSelectEditorPlugin } from './lib/editors/MultiSelectEditor';

@@ -22,6 +22,9 @@ export const schema = {
     type: 'object',
     title: 'Editors Overview',
     description: 'this is the root object',
+    options: {
+        editJson: { liveUpdate: true }
+    },
     properties: {
         title: {
             type: 'string',
@@ -87,6 +90,9 @@ export const schema = {
         anyOf: {
             title: 'any of simple value',
             type: 'object',
+            options: {
+                editJson: { liveUpdate: true }
+            },
             properties: {
                 staticProperty: {
                     title: 'static property',
@@ -145,7 +151,8 @@ export const schema = {
             title: 'array with oneOf object selection and sortable activated',
             minItems: 1,
             options: {
-                sortable: { enabled: true }
+                sortable: { enabled: true },
+                editJson: { liveUpdate: true }
             },
             default: [
                 {

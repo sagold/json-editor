@@ -43,6 +43,12 @@ export const schema = {
         userview: {
             title: 'mandatory filters',
             type: 'array',
+            options: {
+                collapsed: false,
+                editJson: {
+                    liveUpdate: true
+                }
+            },
             items: {
                 type: 'object',
                 required: ['key', 'op', 'value'],

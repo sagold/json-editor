@@ -6,7 +6,7 @@ import { MasterDetailEditorPlugin } from './masterdetaileditor/MasterDetailEdito
 import { MultiSelectEditorPlugin } from './MultiSelectEditor';
 import { NullEditorPlugin } from './NullEditor';
 import { NumberEditorPlugin } from './NumberEditor';
-import { ObjectEditorPlugin } from './ObjectEditor';
+import { ObjectEditorPlugin } from './objecteditor/ObjectEditor';
 import { SelectOneOfEditorPlugin } from './SelectOneOfEditor';
 import { StringEditorPlugin, SelectEditor } from './StringEditor';
 import { TextEditorPlugin } from './TextEditor';
