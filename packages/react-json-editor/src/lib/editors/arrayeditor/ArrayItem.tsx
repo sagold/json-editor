@@ -13,7 +13,7 @@ export type ArrayItemProps = {
 export function ArrayItemGrid({ instance, node, withDragHandle, size }: ArrayItemProps) {
     const Editor = instance.getEditor(node);
     return (
-        <Segment compact>
+        <Segment>
             <Grid data-type="array-item" key={node.id}>
                 <Grid.Column width="15" key="item">
                     {withDragHandle && <Icon link name="expand arrows alternate" className="ed-array-item__handle" />}

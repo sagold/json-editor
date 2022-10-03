@@ -37,11 +37,12 @@ export type ArrayOptions = {
     };
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
     editJson?: {
+        enabled?: boolean;
         /** if true, will update on each change if input is a valid json format */
         liveUpdate?: boolean;
     };
     /** ui layout options for array */
-    layout: {
+    layout?: {
         /** layout of array children, defaults */
         type?: 'cards' | 'grid';
     };
@@ -106,14 +107,14 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
         }
     }, [sortable, instance]);
 
-    const { title, description, collapsed, editJson } = options;
+    const { title, description, collapsed, editJson = {} } = options;
     const { inverted = false, color } = options.header ?? {};
 
     const ArrayItem = options.layout?.type === 'cards' ? ArrayItemCard : ArrayItemGrid;
 
     return (
         <Accordion data-type="array" data-id={node.pointer}>
-            {(title || description || editJson || collapsed != null) && (
+            {(title || description || editJson.enabled || collapsed != null) && (
                 <Accordion.Title inverted={inverted} active={isOpen}>
                     <Segment basic inverted={inverted} color={color}>
                         <Grid columns="equal">
@@ -130,7 +131,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                             </Grid.Column>
                             <Grid.Column width="1" textAlign="right">
                                 <Icon link name="add" onClick={insertItem} />
-                                {editJson && <Icon link name="edit" onClick={() => openEditModal(true)} />}
+                                {editJson.enabled && <Icon link name="edit" onClick={() => openEditModal(true)} />}
                             </Grid.Column>
                         </Grid>
                     </Segment>
@@ -163,7 +164,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
 
             <InsertItemModal instance={instance} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
 
-            {editJson && (
+            {editJson.enabled && (
                 <EditJsonModal
                     instance={instance}
                     node={node}

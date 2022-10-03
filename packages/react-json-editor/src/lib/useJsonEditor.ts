@@ -16,7 +16,7 @@ export type UseJsonEditorOptions = {
     data?: unknown;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     onChange?: OnChangeListener;
-    plugins: Plugin[];
+    plugins?: Plugin[];
 };
 
 /**
