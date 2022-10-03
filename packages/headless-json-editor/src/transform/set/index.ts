@@ -1,4 +1,5 @@
 import { Draft, JSONPointer, JSONError } from 'json-schema-library';
+import { create } from 'headless-json-editor';
 import { split, join } from 'gson-pointer';
 import { Node, ArrayNode, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
 import { invalidPathError } from '../../errors';
@@ -30,6 +31,14 @@ export function set<T extends Node = Node>(
     const changeSet: Change[] = [];
     /** list of properties pointing to targetNode = node to add value to */
     const frags = split(pointer);
+    if (frags.length === 0) {
+        const newRootNode = create<T>(core, value);
+        changeSet.push({ type: 'delete', node: previousRoot });
+        changeSet.push({ type: 'create', node: newRootNode });
+        newRootNode.id = previousRoot.id;
+        return [newRootNode, changeSet];
+    }
+
     /** new root node to return */
     const newRootNode = { ...previousRoot };
     /** previous node, never being target node. If this is not a ParentNode it is an error */

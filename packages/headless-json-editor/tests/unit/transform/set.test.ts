@@ -84,6 +84,14 @@ describe('set', () => {
         ]);
     });
 
+    it('should replace existing object on root', () => {
+        const before = create(core, core.getTemplate({})) as ObjectNode;
+        const [after, changes] = set(core, before, '#', { title: 'new', size: {}, list: [99] });
+
+        assert(after.type !== 'error');
+        assert.deepEqual(json(after), { title: 'new', size: {}, list: [99] });
+    });
+
     it('should add new property to existing parent object', () => {
         const before = create(core, {}) as ObjectNode;
         const beforeString = JSON.stringify(before);
@@ -114,7 +122,6 @@ describe('set', () => {
 
     it('should return error if target parent was not found', () => {
         const before = create(core, core.getTemplate({})) as ObjectNode;
-
         // also testing undefined changes destructuring
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [after, changes] = set(core, before, '/parent/child', 'testpaths value');

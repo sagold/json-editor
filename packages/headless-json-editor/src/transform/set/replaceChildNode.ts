@@ -20,6 +20,12 @@ export function replaceChildNode(core: Draft, parent: ParentNode, child: ParentN
     // replace change - @todo sync old subtree with new subtree
     parent.children[targetIndex] = nextNode;
 
+    if (nextNode.type === child.type) {
+        // reuse parent if the type has not changeda
+        // currently this keeps modals stable that modify the current object (EditJsonModal)
+        nextNode.id = child.id;
+    }
+
     if (!deepEqual(child.schema, nextNode.schema)) {
         // @change replace node
         changeSet.push({ type: 'delete', node: child });
