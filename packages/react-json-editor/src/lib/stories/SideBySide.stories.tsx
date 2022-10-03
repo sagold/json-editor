@@ -20,11 +20,18 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
 
     const ChildEditor = instance.getEditor(node);
     return (
-        <section id="side-by-side">
-            <Form error style={{ paddingRight: '24px' }}>
+        <section
+            id="side-by-side"
+            style={{
+                padding: 12,
+                display: 'flex',
+                justifyContent: 'space-evenly'
+            }}
+        >
+            <Form error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
                 <ChildEditor node={node} instance={instance} />
             </Form>
-            <Form error>
+            <Form error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
                 <ChildEditor node={node} instance={instance} />
             </Form>
         </section>
