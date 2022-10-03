@@ -1,12 +1,30 @@
 import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { Button, Icon, Message, Popup, Accordion } from 'semantic-ui-react';
+import {
+    Button,
+    Container,
+    Rail,
+    Icon,
+    Message,
+    Popup,
+    Accordion,
+    Segment,
+    Header,
+    Grid,
+    Menu
+} from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
-import { getEditorHeader } from '../utils/getEditorHeader';
 import { JsonEditor } from '../JsonEditor';
 import { useState, useRef, useEffect, createRef } from 'react';
 import { InsertItemModal } from '../components/insertitemmodal/InsertItemModal';
+import { EditJsonModal } from '../components/editjsonmodal/EditJsonModal';
+import { split } from 'gson-pointer';
 import Ref from '@semantic-ui-react/component-ref';
+
+function getNodeDepth(node: Node, max = 6) {
+    const depth = split(node.pointer).length;
+    return Math.min(max, depth + 1);
+}
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -21,41 +39,30 @@ export type ArrayItemProps = {
 
 function ArrayItem({ instance, node, withDragHandle, size, children }: ArrayItemProps) {
     return (
-        <div data-type="array-item">
-            {withDragHandle && <div className="ed-array-item__handle"></div>}
-            {children}
-            <div className="ed-array-item__actions">
-                <Popup
-                    trigger={
-                        <Button basic icon>
-                            <Icon name="ellipsis horizontal" />
-                        </Button>
-                    }
-                    flowing
-                    hoverable
-                >
-                    <Button basic icon onClick={() => instance.removeValue(node.pointer)}>
-                        <Icon name="trash alternate outline" />
-                    </Button>
+        <Grid data-type="array-item">
+            <Grid.Column width="14">
+                {withDragHandle && <div className="ed-array-item__handle"></div>}
+                {children}
+            </Grid.Column>
+            <Grid.Column width="2" className="ed-array-item__actions" textAlign="right">
+                <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
+                    <Button basic icon="trash alternate outline" onClick={() => instance.removeValue(node.pointer)} />
                     <Button
                         basic
-                        icon
+                        icon="caret up"
                         disabled={node.property === '0'}
                         onClick={() => instance.moveItem(node.pointer, parseInt(node.property) - 1)}
-                    >
-                        <Icon name="caret up" />
-                    </Button>
+                    />
+
                     <Button
                         basic
-                        icon
+                        icon="caret down"
                         disabled={node.property === `${size - 1}`}
                         onClick={() => instance.moveItem(node.pointer, parseInt(node.property) + 1)}
-                    >
-                        <Icon name="caret down" />
-                    </Button>
+                    />
                 </Popup>
-            </div>
-        </div>
+            </Grid.Column>
+        </Grid>
     );
 }
 
@@ -67,11 +74,17 @@ export type ArrayOptions = {
         enabled?: boolean;
         group?: string; // name of sortable group, defaults to json-pointer
     };
+    /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
+    editJson?: {
+        /** if true, will update on each change if input is a valid json format */
+        liveUpdate?: boolean;
+    };
 } & DefaultNodeOptions;
 
 export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
     const [isOpen, setToggleState] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
+    const [isEditModalOpen, openEditModal] = useState<boolean>(false);
     const contextRef = createRef();
     let sortable = options.sortable;
     if (sortable == null) {
@@ -123,7 +136,6 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
         }
     }, [sortable]);
 
-    const Header = getEditorHeader(node);
     const content = (
         <>
             {node.errors.length > 0 && (
@@ -152,22 +164,47 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                     );
                 })}
             </div>
+            {options?.editJson && (
+                <EditJsonModal
+                    instance={instance}
+                    node={node}
+                    liveUpdate={options?.editJson?.liveUpdate}
+                    isOpen={isEditModalOpen}
+                    openEditModal={openEditModal}
+                />
+            )}
         </>
+    );
+
+    const header = (
+        <Grid>
+            <Grid.Column width="14">
+                <Header as={`h${getNodeDepth(node)}`}>
+                    {options.collapsed != null ? (
+                        <Accordion.Title active={isOpen}>
+                            <Icon name="dropdown" onClick={() => setToggleState(!isOpen)} />
+                            <Header.Content>{options.title}</Header.Content>
+                        </Accordion.Title>
+                    ) : (
+                        <Header.Content>{options.title}</Header.Content>
+                    )}
+                </Header>
+            </Grid.Column>
+            <Grid.Column width="2" textAlign="right">
+                <Button.Group>
+                    <Button icon="add" />
+                    {options.editJson && <Button link icon="edit" onClick={() => openEditModal(true)} />}
+                </Button.Group>
+            </Grid.Column>
+        </Grid>
     );
 
     if (options.collapsed == null) {
         return (
             <div data-type="array" data-id={node.pointer}>
-                <Header>
-                    {node.options.title && <div>{node.options.title}</div>}
-                    <div>
-                        <Button basic icon onClick={insertItem}>
-                            <Icon name="add" />
-                        </Button>
-                    </div>
-                </Header>
-                {content}
+                {header}
                 {options.description && <p>{options.description as string}</p>}
+                {content}
                 <InsertItemModal
                     instance={instance}
                     node={node}
@@ -181,18 +218,8 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     return (
         <Ref innerRef={contextRef}>
             <Accordion data-type="array" data-id={node.pointer}>
-                <Accordion.Title active={isOpen}>
-                    <Header onClick={() => setToggleState(!isOpen)}>
-                        <Icon name="dropdown" link />
-                        {node.options.title && <div style={{ flexGrow: 1 }}>{node.options.title}</div>}
-                        <div>
-                            <Button basic icon onClick={insertItem}>
-                                <Icon name="add" />
-                            </Button>
-                        </div>
-                    </Header>
-                    {options.description && <p>{options.description as string}</p>}
-                </Accordion.Title>
+                {header}
+                {options.description && <p>{options.description as string}</p>}
                 <Accordion.Content active={isOpen}>{content}</Accordion.Content>
                 <InsertItemModal
                     instance={instance}
@@ -200,6 +227,15 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                     isOpen={openModal}
                     onClose={() => setModalOpen(false)}
                 />
+                {options?.editJson && (
+                    <EditJsonModal
+                        instance={instance}
+                        node={node}
+                        liveUpdate={options?.editJson?.liveUpdate}
+                        isOpen={isEditModalOpen}
+                        openEditModal={openEditModal}
+                    />
+                )}
             </Accordion>
         </Ref>
     );

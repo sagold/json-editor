@@ -21,7 +21,7 @@ export function JsonForm({ schema, data, onChange }: JsonFormProps) {
         data
     });
     // @ts-ignore
-    window['root'] = node;
+    window['jsonNode'] = node;
     // @ts-ignore
     window['validate'] = () => instance.core.validate(json(node));
     if (node == null) {

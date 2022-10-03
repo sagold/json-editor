@@ -2,11 +2,16 @@
 // import Sortable from 'sortablejs';
 import { editor, EditorPlugin } from '../decorators';
 import { get as getPointer } from 'gson-pointer';
-import { getEditorHeader } from '../../utils/getEditorHeader';
-import { Icon, Button, Popup } from 'semantic-ui-react';
+import { Icon, Button, Popup, Header } from 'semantic-ui-react';
 import { ParentNode, Node, json, errors, get } from 'headless-json-editor';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
+
+import { split } from 'gson-pointer';
+function getNodeDepth(node: Node, max = 6) {
+    const depth = split(node.pointer).length;
+    return Math.min(max, depth + 1);
+}
 
 function getPreviewText(node: Node) {
     if (typeof node.options.previewValue !== 'string') {
@@ -26,11 +31,10 @@ function getPreviewText(node: Node) {
  */
 export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options }) => {
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
-    const Header = getEditorHeader(node);
 
     return (
         <div data-type={node.schema.type} data-id={node.pointer}>
-            <Header style={{ display: 'flex' }}>
+            <Header as={`h${getNodeDepth(node)}`} style={{ display: 'flex' }}>
                 {errors(node).length > 0 && (
                     <Popup
                         content={errors(node)
@@ -47,15 +51,13 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
                 )}
                 <Button
                     basic
-                    icon
+                    icon="edit"
                     className="clickable"
                     onClick={() => {
                         console.log('open edit modal', node.pointer);
                         setEditModal({ open: true, pointer: node.pointer });
                     }}
-                >
-                    <Icon name="edit" link />
-                </Button>
+                />
             </Header>
             {editModal.open && editModal.pointer && (
                 <EditModal
