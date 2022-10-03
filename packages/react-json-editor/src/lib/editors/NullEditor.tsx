@@ -1,14 +1,18 @@
 import { EditorPlugin } from './decorators';
 import { Node } from 'headless-json-editor';
+import { Segment } from 'semantic-ui-react';
 
-export const NullEditor = ({ node }: { node: Node }) => (
-    <div data-type="null" data-id={node.pointer}>
-        <div className="field">
-            <label>{node.options.title as string}</label>
-        </div>
-        <div className="description">{node.options.description as string}</div>
-    </div>
-);
+export const NullEditor = ({ node }: { node: Node }) => {
+    const { description, title, pointer } = node.options;
+    return (
+        <Segment basic data-type="null" data-id={pointer}>
+            <div className="field">
+                <label>{title as string}</label>
+            </div>
+            {description && <em>{description}</em>}
+        </Segment>
+    );
+};
 
 export const NullEditorPlugin: EditorPlugin = {
     id: 'null-editor',

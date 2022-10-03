@@ -1,7 +1,7 @@
 import { ComponentStory } from '@storybook/react';
 import { JsonForm } from '../../index';
 import { data, schema } from './data/layout';
-import '../styles.scss';
+// import '../styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

@@ -2,7 +2,7 @@
 // import Sortable from 'sortablejs';
 import { editor, EditorPlugin } from '../decorators';
 import { get as getPointer } from 'gson-pointer';
-import { Icon, Button, Popup, Header } from 'semantic-ui-react';
+import { Icon, Button, Grid, Popup, Header, Segment } from 'semantic-ui-react';
 import { ParentNode, Node, json, errors, get } from 'headless-json-editor';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
@@ -31,34 +31,46 @@ function getPreviewText(node: Node) {
  */
 export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options }) => {
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
-
+    const { title } = options;
     return (
-        <div data-type={node.schema.type} data-id={node.pointer}>
-            <Header as={`h${getNodeDepth(node)}`} style={{ display: 'flex' }}>
-                {errors(node).length > 0 && (
-                    <Popup
-                        content={errors(node)
-                            .map((e) => e.message)
-                            .join(',\n')}
-                        trigger={<Icon name="warning sign" color="red" />}
+        <Segment basic inverted data-type={node.schema.type} data-id={node.pointer}>
+            <Grid columns="equal">
+                <Grid.Column width="15">
+                    <Header as={`h${getNodeDepth(node)}`} inverted>
+                        <Header.Content floated="left">
+                            {errors(node).length > 0 && (
+                                <Popup
+                                    content={errors(node)
+                                        .map((e) => e.message)
+                                        .join(',\n')}
+                                    trigger={<Icon name="warning sign" color="red" />}
+                                />
+                            )}
+                        </Header.Content>
+                        <Header.Content>{title}</Header.Content>
+                    </Header>
+                </Grid.Column>
+                <Grid.Column width="1" textAlign="right">
+                    <Button
+                        basic
+                        inverted
+                        icon="edit"
+                        className="clickable"
+                        onClick={() => {
+                            console.log('open edit modal', node.pointer);
+                            setEditModal({ open: true, pointer: node.pointer });
+                        }}
                     />
-                )}
-                {node.type === 'array' && (
-                    <div style={{ flexGrow: 1 }}>
-                        <span>{options.title}</span>
-                        <span>{getPreviewText(node)}</span>
-                    </div>
-                )}
-                <Button
-                    basic
-                    icon="edit"
-                    className="clickable"
-                    onClick={() => {
-                        console.log('open edit modal', node.pointer);
-                        setEditModal({ open: true, pointer: node.pointer });
-                    }}
-                />
-            </Header>
+                </Grid.Column>
+            </Grid>
+
+            {node.type === 'array' && (
+                <div style={{ flexGrow: 1 }}>
+                    <span>{options.title}</span>
+                    <span>{getPreviewText(node)}</span>
+                </div>
+            )}
+
             {editModal.open && editModal.pointer && (
                 <EditModal
                     instance={instance}
@@ -68,7 +80,7 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
                     closeModal={() => setEditModal({ open: false })}
                 />
             )}
-        </div>
+        </Segment>
     );
 });
 

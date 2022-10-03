@@ -27,8 +27,10 @@ export const schema = {
     },
     properties: {
         title: {
+            title: 'Required string input',
             type: 'string',
-            description: 'string input with min length 1',
+            description:
+                'set an input field as required by adding it to the "required" list of properties and add a "minLength: 1" validation',
             minLength: 1
         },
         text: {
@@ -68,6 +70,7 @@ export const schema = {
         typeSelection: {
             type: 'object',
             oneOfProperty: 'type',
+            description: 'description only for object typeSelection',
             oneOf: [
                 {
                     type: 'object',
@@ -91,7 +94,10 @@ export const schema = {
             title: 'any of simple value',
             type: 'object',
             options: {
-                editJson: { liveUpdate: true }
+                editJson: { liveUpdate: true },
+                layout: {
+                    type: 'card'
+                }
             },
             properties: {
                 staticProperty: {
@@ -196,6 +202,11 @@ export const schema = {
             }
         },
         dependency: {
+            options: {
+                layout: {
+                    type: 'card'
+                }
+            },
             title: 'dependency',
             description:
                 'support for schema dependencies, where an additional schema is activated if a given input has a value',
@@ -223,6 +234,11 @@ export const schema = {
             title: 'if-then-else',
             description: 'switch schema based on schema validation. ',
             type: 'object',
+            options: {
+                header: {
+                    color: 'blue'
+                }
+            },
             properties: {
                 toggle: {
                     title: 'Toggle for conditional schema',
@@ -263,6 +279,12 @@ export const schema = {
             title: 'if-then',
             description: 'switch schema based on schema validation. ',
             type: 'object',
+            options: {
+                header: {
+                    inverted: false,
+                    color: 'blue'
+                }
+            },
             properties: {
                 toggle: {
                     title: 'Toggle for conditional schema',

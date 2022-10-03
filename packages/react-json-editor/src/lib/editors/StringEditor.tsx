@@ -1,5 +1,5 @@
 import { StringNode } from 'headless-json-editor';
-import { Form, Dropdown } from 'semantic-ui-react';
+import { Form, Dropdown, Segment } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 
 export const StringEditor = editor<StringNode, string>(({ node, options, setValue }) => {
@@ -7,7 +7,7 @@ export const StringEditor = editor<StringNode, string>(({ node, options, setValu
     const disabled = options.disabled || isValidConst;
 
     return (
-        <div data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
+        <Segment basic data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
             <Form.Input
                 id={node.id}
                 type="text"
@@ -26,8 +26,8 @@ export const StringEditor = editor<StringNode, string>(({ node, options, setValu
                     </Message.List>
                 </Message>
             )}*/}
-            {<div className="description">{options.description as string}</div>}
-        </div>
+            {options.description && <em>{options.description}</em>}
+        </Segment>
     );
 });
 
@@ -48,7 +48,7 @@ export const SelectEditor = editor<StringNode, string>(({ node, options, setValu
     }));
 
     return (
-        <div data-type="string">
+        <Segment basic data-type="string">
             <Form.Field id={node.pointer} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
                 <label>{options.title ?? node.property}</label>
                 <Dropdown
@@ -58,7 +58,7 @@ export const SelectEditor = editor<StringNode, string>(({ node, options, setValu
                     options={selectOptions}
                 />
             </Form.Field>
-            {<div className="description">{options.description}</div>}
-        </div>
+            {options.description && <em>{options.description}</em>}
+        </Segment>
     );
 });

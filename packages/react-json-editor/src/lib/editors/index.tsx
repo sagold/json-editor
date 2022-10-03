@@ -1,4 +1,4 @@
-import { ArrayEditorPlugin } from './ArrayEditor';
+import { ArrayEditorPlugin } from './arrayeditor/ArrayEditor';
 import { BooleanEditorPlugin } from './BooleanEditor';
 import { EditorPlugin } from './decorators';
 import { ErrorEditorPlugin } from './ErrorEditor';

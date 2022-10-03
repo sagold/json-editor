@@ -1,4 +1,4 @@
-import { Form, Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Form, Dropdown, DropdownProps, Segment } from 'semantic-ui-react';
 import { JSONSchema } from 'json-schema-library';
 import { editor, EditorPlugin } from './decorators';
 
@@ -29,7 +29,7 @@ export const SelectOneOfEditor = editor(({ instance, node }) => {
     }));
 
     return (
-        <div className="ed-oneof">
+        <Segment basic className="ed-oneof">
             <Form.Field id={node.pointer} className="ed-oneof__selection">
                 <Dropdown
                     selection
@@ -39,7 +39,7 @@ export const SelectOneOfEditor = editor(({ instance, node }) => {
                 />
             </Form.Field>
             <Editor node={node} instance={instance} />
-        </div>
+        </Segment>
     );
 });
 

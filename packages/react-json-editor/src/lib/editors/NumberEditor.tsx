@@ -1,10 +1,10 @@
 import { NumberNode } from 'headless-json-editor';
 import { EditorPlugin } from './decorators';
-import { Form } from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import { editor } from './decorators';
 
 export const NumberEditor = editor<NumberNode, number>(({ node, options, setValue }) => (
-    <div data-type="number" data-id={node.pointer}>
+    <Segment basic data-type="number" data-id={node.pointer}>
         <Form.Input
             error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
             label={options.title}
@@ -24,9 +24,7 @@ export const NumberEditor = editor<NumberNode, number>(({ node, options, setValu
                     setValue(value);
                 }
             }}
-        >
-            {/*<Input />*/}
-        </Form.Input>
+        ></Form.Input>
         {/*{node.errors.length > 0 && (
             <Message error>
                 <Message.List>
@@ -36,8 +34,8 @@ export const NumberEditor = editor<NumberNode, number>(({ node, options, setValu
                 </Message.List>
             </Message>
         )}*/}
-        {<div className="description">{options.description as string}</div>}
-    </div>
+        {options.description && <em>{options.description}</em>}
+    </Segment>
 ));
 
 export const NumberEditorPlugin: EditorPlugin = {

@@ -71,14 +71,14 @@ export const schema: JSONSchema = {
                     additionalProperties: false,
                     required: ['desktop', 'mobile'],
                     options: {
-                        hide_title: true
+                        showTitle: false
                     },
                     properties: {
                         desktop: {
                             type: 'object',
                             required: ['url', 'quality'],
                             options: {
-                                hide_title: true,
+                                showTitle: false,
                                 'max-height': '250px',
                                 maxWidth: 1920,
                                 maxHeight: 1080
@@ -108,7 +108,8 @@ export const schema: JSONSchema = {
                             type: 'object',
                             required: ['url', 'quality'],
                             options: {
-                                hide_title: true,
+                                collapsed: true,
+                                showTitle: false,
                                 'max-height': '120px',
                                 maxWidth: 750,
                                 maxHeight: 750
@@ -139,7 +140,7 @@ export const schema: JSONSchema = {
                     type: 'object',
                     required: ['url', 'loop', 'type'],
                     options: {
-                        hide_title: true
+                        showTitle: false
                     },
                     properties: {
                         url: {
@@ -182,6 +183,11 @@ export const schema: JSONSchema = {
             type: 'array',
             title: 'Artikelinhalt',
             format: 'table',
+            options: {
+                layout: {
+                    type: 'cards'
+                }
+            },
             items: {
                 title: 'Modul',
                 // @ts-ignore
@@ -213,7 +219,7 @@ export const schema: JSONSchema = {
                                 additionalProperties: false,
                                 // @ts-ignore
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 properties: {
                                     withInitial: {
@@ -261,7 +267,7 @@ export const schema: JSONSchema = {
                                 required: ['desktop', 'mobile', 'caption', 'source', 'displayMode', 'animated'],
                                 // @ts-ignore
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 properties: {
                                     desktop: {
@@ -272,7 +278,7 @@ export const schema: JSONSchema = {
                                         minHeight: 304,
                                         // @ts-ignore
                                         options: {
-                                            hide_title: true,
+                                            showTitle: false,
                                             maxWidth: 1320,
                                             maxHeight: 1320
                                         },
@@ -303,7 +309,7 @@ export const schema: JSONSchema = {
                                         minHeight: 304,
                                         // @ts-ignore
                                         options: {
-                                            hide_title: true,
+                                            showTitle: false,
                                             maxWidth: 750,
                                             maxHeight: 750
                                         },
@@ -393,7 +399,7 @@ export const schema: JSONSchema = {
                                 title: '',
                                 // @ts-ignore
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 required: ['displayMode', 'default', 'fallback'],
                                 properties: {
@@ -415,12 +421,15 @@ export const schema: JSONSchema = {
                                         title: 'Bildergalerie',
                                         // @ts-ignore
                                         options: {
-                                            hide_title: true
+                                            collapsed: true
                                         },
                                         minItems: 1,
                                         items: {
                                             type: 'object',
                                             title: 'Bild',
+                                            options: {
+                                                showTitle: false
+                                            },
                                             required: ['desktop', 'mobile'],
                                             properties: {
                                                 desktop: {
@@ -484,6 +493,9 @@ export const schema: JSONSchema = {
                                         }
                                     },
                                     fallback: {
+                                        options: {
+                                            collapsed: true
+                                        },
                                         type: 'array',
                                         title: 'Alternative Galerie für mobile Geräte und andere schmale Fenstergrößen',
                                         description:
@@ -560,7 +572,7 @@ export const schema: JSONSchema = {
                                         additionalProperties: false,
                                         required: ['desktop', 'mobile'],
                                         options: {
-                                            hide_title: true
+                                            showTitle: false
                                         },
                                         properties: {
                                             desktop: {
@@ -571,7 +583,7 @@ export const schema: JSONSchema = {
                                                 minWidth: 300,
                                                 minHeight: 400,
                                                 options: {
-                                                    hide_title: true,
+                                                    showTitle: false,
                                                     maxWidth: 1320,
                                                     maxHeight: 1320
                                                 },
@@ -601,7 +613,7 @@ export const schema: JSONSchema = {
                                                 minHeight: 400,
                                                 options: {
                                                     'max-height': '120px',
-                                                    hide_title: true,
+                                                    showTitle: false,
                                                     maxWidth: 750,
                                                     maxHeight: 750
                                                 },
@@ -627,7 +639,7 @@ export const schema: JSONSchema = {
                                         type: 'object',
                                         required: ['url', 'type', 'loop'],
                                         options: {
-                                            hide_title: true
+                                            showTitle: false
                                         },
                                         properties: {
                                             url: {
@@ -677,7 +689,7 @@ export const schema: JSONSchema = {
                                 required: ['headline', 'content', 'position'],
                                 additionalProperties: false,
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 properties: {
                                     headline: {
@@ -723,7 +735,7 @@ export const schema: JSONSchema = {
                                 require: ['content', 'image', 'caption', 'source'],
                                 additionalProperties: false,
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 properties: {
                                     withInitial: {
@@ -831,7 +843,7 @@ export const schema: JSONSchema = {
                     {
                         id: 'videoModule',
                         type: 'object',
-                        title: 'Video',
+                        title: 'Video Modul',
                         additionalProperties: false,
                         required: ['partial', 'video'],
                         properties: {
@@ -844,10 +856,11 @@ export const schema: JSONSchema = {
                                 pattern: '^app/src/modules/video/video'
                             },
                             video: {
+                                title: 'videosettings',
                                 type: 'object',
                                 required: ['url', 'source', 'type', 'previewImage', 'autoplay', 'displayMode'],
                                 options: {
-                                    hide_title: true
+                                    showTitle: false
                                 },
                                 properties: {
                                     url: {
@@ -860,7 +873,7 @@ export const schema: JSONSchema = {
                                         type: 'object',
                                         required: ['url', 'quality'],
                                         options: {
-                                            hide_title: true,
+                                            showTitle: false,
                                             'max-height': '120px',
                                             maxWidth: 750,
                                             maxHeight: 750
@@ -1078,7 +1091,7 @@ export const schema: JSONSchema = {
                         required: ['url', 'quality'],
                         format: 'mediaImage',
                         options: {
-                            hide_title: true,
+                            showTitle: false,
                             maxWidth: 1320,
                             maxHeight: 1320
                         },
@@ -1192,7 +1205,7 @@ export const schema: JSONSchema = {
                             type: 'object',
                             required: ['url', 'quality'],
                             options: {
-                                hide_title: true,
+                                showTitle: false,
                                 'max-height': '150px',
                                 maxWidth: 600,
                                 maxHeight: 600
@@ -1278,7 +1291,7 @@ export const schema: JSONSchema = {
                             type: 'object',
                             required: ['url', 'quality'],
                             options: {
-                                hide_title: true,
+                                showTitle: false,
                                 'max-height': '150px',
                                 maxWidth: 600,
                                 maxHeight: 600
@@ -1327,7 +1340,7 @@ export const schema: JSONSchema = {
                             type: 'object',
                             required: ['url', 'quality'],
                             options: {
-                                hide_title: true,
+                                showTitle: false,
                                 'max-height': '150px',
                                 maxWidth: 600,
                                 maxHeight: 600

@@ -1,5 +1,5 @@
 import { StringNode, Node, json } from 'headless-json-editor';
-import { Form, Dropdown, DropdownItemProps, Message } from 'semantic-ui-react';
+import { Form, Dropdown, DropdownItemProps, Message, Segment } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 
 // @todo is building enum options job of syntax-tree?
@@ -33,7 +33,7 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
     }
 
     return (
-        <div data-type="string" data-id={node.pointer} className={options.disabled ? 'disabled' : 'enabled'}>
+        <Segment basic data-type="string" data-id={node.pointer} className={options.disabled ? 'disabled' : 'enabled'}>
             <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <Dropdown
@@ -53,8 +53,8 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
                     ))}
                 </Message>
             )}
-            {<div className="description">{options.description as string}</div>}
-        </div>
+            {options.description && <em>{options.description}</em>}
+        </Segment>
     );
 });
 

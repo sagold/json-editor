@@ -1,5 +1,5 @@
 import { StringNode } from 'headless-json-editor';
-import { Form, Message } from 'semantic-ui-react';
+import { Form, Message, Segment } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -7,7 +7,7 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
     return (
-        <div data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
+        <Segment basic data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
             <Form.Field error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <TextareaAutosize
@@ -31,8 +31,8 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
                     ))}
                 </Message>
             )}
-            {<div className="description">{options.description as string}</div>}
-        </div>
+            {options.description && <em>{options.description}</em>}
+        </Segment>
     );
 });
 

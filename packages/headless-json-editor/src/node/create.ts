@@ -9,21 +9,28 @@ import {
     NumberNode,
     BooleanNode,
     NullNode,
-    JSONSchema
+    JSONSchema,
+    DefaultNodeOptions
 } from '../types';
-import query from 'gson-query';
 
 type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 
-function getOptions(schema: JSONSchema) {
-    return {
-        title: schema.title,
+function getOptions(schema: JSONSchema, property: string) {
+    const uiOptions = schema.options ?? {};
+    const options: DefaultNodeOptions = {
+        title: schema.title || property,
         description: schema.description,
-        // @ts-ignore
         disabled: schema.isActive === false || false,
         hidden: false,
-        ...(schema.options ?? {})
+        ...uiOptions
     };
+    if (uiOptions.showTitle === false) {
+        delete options.title;
+    }
+    if (uiOptions.showDescription === false) {
+        delete options.description;
+    }
+    return options;
 }
 
 function getPropertyName(pointer: string) {
@@ -36,13 +43,14 @@ function isObject(v: unknown): v is Record<string, unknown> {
 
 export const NODES: Record<NodeType, CreateNode> = {
     array: (core, data: unknown[], schema, pointer): ArrayNode => {
+        const property = getPropertyName(pointer);
         const node: ArrayNode = {
             id: uuid(),
             type: 'array',
             pointer,
-            property: getPropertyName(pointer),
+            property,
             schema,
-            options: getOptions(schema),
+            options: getOptions(schema, property),
             children: [],
             errors: []
         };
@@ -53,13 +61,14 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     object: (core, data: Record<string, unknown>, schema, pointer): ObjectNode => {
+        const property = getPropertyName(pointer);
         const node: ObjectNode = {
             id: uuid(),
             type: 'object',
             pointer,
-            property: getPropertyName(pointer),
+            property,
             schema,
-            options: getOptions(schema),
+            options: getOptions(schema, property),
             children: [],
             errors: []
         };
@@ -138,12 +147,13 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     string: (core, value: string, schema, pointer): StringNode => {
+        const property = getPropertyName(pointer);
         const node: StringNode = {
             id: uuid(),
             type: 'string',
             pointer,
-            property: getPropertyName(pointer),
-            options: getOptions(schema),
+            property,
+            options: getOptions(schema, property),
             schema,
             value,
             errors: []
@@ -151,12 +161,13 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     number: (core, value: number, schema, pointer): NumberNode => {
+        const property = getPropertyName(pointer);
         const node: NumberNode = {
             id: uuid(),
             type: 'number',
             pointer,
-            property: getPropertyName(pointer),
-            options: getOptions(schema),
+            property,
+            options: getOptions(schema, property),
             schema,
             value,
             errors: []
@@ -164,12 +175,13 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     boolean: (core, value: boolean, schema, pointer): BooleanNode => {
+        const property = getPropertyName(pointer);
         const node: BooleanNode = {
             id: uuid(),
             type: 'boolean',
             pointer,
-            property: getPropertyName(pointer),
-            options: getOptions(schema),
+            property,
+            options: getOptions(schema, property),
             schema,
             value,
             errors: []
@@ -177,12 +189,13 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     null: (core, value: null, schema, pointer): NullNode => {
+        const property = getPropertyName(pointer);
         const node: NullNode = {
             id: uuid(),
             type: 'null',
             pointer,
-            property: getPropertyName(pointer),
-            options: getOptions(schema),
+            property,
+            options: getOptions(schema, property),
             schema,
             value,
             errors: []
