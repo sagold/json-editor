@@ -83,16 +83,24 @@
     padding: 1em;
 }
 
+.ed-array__items--default .with-drag-handle {
+    padding-left: 10px;
+}
+
 .ed-drag__container {
+    z-index: 99;
     position: absolute;
+    width: 24px;
     left: 0;
-    margin-top: 3.3em;
+    padding-top: 3.3em;
+    padding-bottom: 1.5em;
     color: #999;
+    cursor: pointer;
+    text-align: center;
     i.icon {
         width: auto;
         margin: 0;
         padding: 0;
-        cursor: pointer;
     }
 }
 
@@ -102,7 +110,6 @@
 }
 
 /* feature: sortable */
-
 .sortable-drag {
     .ed-array-item__divider {
         visibility: hidden;
