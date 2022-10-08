@@ -89,6 +89,20 @@
     padding-top: 2em;
 }
 
+/* feature: sortable */
+
+.sortable-ghost {
+}
+.sortable-drag {
+    .ed-array-item__divider {
+        visibility: hidden;
+    }
+}
+
+.sortable-chosen {
+    background: rgba(0, 181, 173, 0.5);
+}
+
 // .ed-oneof .ed-children .ed-form--parent > .ed-header {
 //     padding-top: 0;
 // }
