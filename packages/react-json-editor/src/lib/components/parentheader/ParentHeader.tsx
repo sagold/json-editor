@@ -1,5 +1,5 @@
 import { Segment, Header, SemanticCOLORS } from 'semantic-ui-react';
-import { ParentNode, DefaultNodeOptions, Node } from 'headless-json-editor';
+import { DefaultNodeOptions, Node } from 'headless-json-editor';
 import { split } from 'gson-pointer';
 import { classNames } from '../../classNames';
 
@@ -8,7 +8,7 @@ function getNodeDepth(node: Node, max = 4) {
     return Math.min(max, depth + 1);
 }
 
-export type ParentNodeOptions = {
+export type NodeOptions = {
     header?: {
         inverted?: boolean;
         color?: SemanticCOLORS;
@@ -16,10 +16,10 @@ export type ParentNodeOptions = {
 } & DefaultNodeOptions;
 
 export type ParentHeaderProps = {
-    node: ParentNode;
-    options: ParentNodeOptions;
+    node: Node;
+    options: NodeOptions;
     icon?: React.ReactNode;
-    children: React.ReactNode | React.ReactNodeArray;
+    children?: React.ReactNode | React.ReactNodeArray;
 };
 
 export function ParentHeader({ node, icon, options, children }: ParentHeaderProps) {

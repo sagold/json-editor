@@ -10,7 +10,7 @@ export type ArrayItemProps = {
     withDragHandle?: boolean;
 };
 
-export function ArrayItemGrid({ instance, node, withDragHandle, size }: ArrayItemProps) {
+export function ArrayItemDefault({ instance, node, withDragHandle, size }: ArrayItemProps) {
     const Editor = instance.getEditor(node);
     return (
         <>

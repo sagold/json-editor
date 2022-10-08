@@ -28,7 +28,7 @@ export type DefaultNodeOptions = {
 
 type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 
-function getOptions(schema: JSONSchema, property: string) {
+export function getOptions(schema: JSONSchema, property: string) {
     const uiOptions = schema.options ?? {};
     const options: DefaultNodeOptions = {
         title: schema.title || property,

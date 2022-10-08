@@ -10,7 +10,7 @@ export { NumberEditor, NumberEditorPlugin } from './lib/editors/NumberEditor';
 export { ErrorEditor, ErrorEditorPlugin } from './lib/editors/ErrorEditor';
 export { MultiSelectEditor, MultiSelectEditorPlugin } from './lib/editors/MultiSelectEditor';
 export { NullEditor, NullEditorPlugin } from './lib/editors/NullEditor';
-export { SelectOneOfEditor, SelectOneOfEditorPlugin } from './lib/editors/SelectOneOfEditor';
+export { SelectOneOfEditor, SelectOneOfEditorPlugin } from './lib/editors/selectoneofeditor/SelectOneOfEditor';
 export { StringEditor, StringEditorPlugin } from './lib/editors/StringEditor';
 export { UnknownEditor, UnknownEditorPlugin } from './lib/editors/UnknownEditor';
 

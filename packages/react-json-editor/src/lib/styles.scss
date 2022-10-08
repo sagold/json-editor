@@ -1,7 +1,7 @@
 @import 'semantic-ui-css/semantic.min.css';
 
 /* fix: semantic ui dropdown within grid */
-.ui.grid .ui.dropdown {
+.ui.dropdown {
     min-width: auto;
 }
 
@@ -34,13 +34,17 @@
 }
 
 /* feature: array item actions on right side */
-.ui.form > [data-type] {
-    padding-right: 48px;
+.ui.form .ed-array__items--default {
+    padding-right: 64px;
+}
+
+.ui.form .ed-array__items .ed-array__items {
+    padding-right: 0;
 }
 
 .ed-array-item__actions {
     position: absolute;
-    right: 0;
+    right: 10px;
     margin-top: 2.75em;
 }
 
@@ -68,14 +72,23 @@
     color: #999;
 }
 
+.ed-form.disabled .ed-description {
+    opacity: 0.45;
+}
+
 /* layout: value forms have same padding to align with segments */
 .ed-value,
 // .ed-parent__items--cards,
-.ed-parent__items--grid {
+.ed-object__items--grid,
+.ed-array__items--grid {
     padding: 1em;
 }
 
 /* layout: inline headers should have more padding to above content then below */
-.ed-parent .ed-parent > .ed-header {
+.ed-form ~ .ed-form--parent > .ed-header {
     padding-top: 2em;
 }
+
+// .ed-oneof .ed-children .ed-form--parent > .ed-header {
+//     padding-top: 0;
+// }

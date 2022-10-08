@@ -7,7 +7,7 @@ import { MultiSelectEditorPlugin } from './MultiSelectEditor';
 import { NullEditorPlugin } from './NullEditor';
 import { NumberEditorPlugin } from './NumberEditor';
 import { ObjectEditorPlugin } from './objecteditor/ObjectEditor';
-import { SelectOneOfEditorPlugin } from './SelectOneOfEditor';
+import { SelectOneOfEditorPlugin } from './selectoneofeditor/SelectOneOfEditor';
 import { StringEditorPlugin, SelectEditor } from './StringEditor';
 import { TextEditorPlugin } from './TextEditor';
 import { UnknownEditorPlugin } from './UnknownEditor';

@@ -1,5 +1,5 @@
 // create
-import { create, DefaultNodeOptions } from './node/create';
+import { create, getOptions, DefaultNodeOptions } from './node/create';
 import { json } from './node/json';
 // traversal
 import { errors } from './node/errors';
@@ -55,6 +55,7 @@ export {
     get,
     getChildNode,
     getErrors,
+    getOptions,
     json,
     move,
     remove,

@@ -80,7 +80,7 @@ DefaultEditor.args = {
             liveUpdate: false
         },
         layout: {
-            type: 'grid'
+            type: 'default'
         }
     }
 };

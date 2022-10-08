@@ -38,7 +38,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
     if (options.layout && Array.isArray(options.layout.cells)) {
         const cells = buildObjectLayout(node, options.layout);
         children = (
-            <div className="ed-parent__items ed-parent__items--grid">
+            <div className="ed-object__items ed-object__items--grid">
                 <Grid stackable columns="equal">
                     {cells.map((cell) => {
                         const child = getChildNode(node, cell.prop);
@@ -57,7 +57,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
         );
     } else {
         children = (
-            <div className="ed-parent__items" style={{ boxShadow: 'none', border: 0 }}>
+            <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => {
                     const ChildEditor = instance.getEditor(child);
                     return <ChildEditor node={child} instance={instance} key={child.id} />;
@@ -105,7 +105,11 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
     }
 
     return (
-        <div className={classNames('ed-parent', options.classNames)} data-type="object" data-id={node.pointer}>
+        <div
+            className={classNames('ed-form ed-form--parent ed-object', options.classNames)}
+            data-type="object"
+            data-id={node.pointer}
+        >
             {(editJson || title || description || options.collapsed != null) && (
                 <ParentHeader
                     node={node}

@@ -1,0 +1,85 @@
+import { ComponentStory } from '@storybook/react';
+import { defaultEditors, useJsonEditor } from '../../../index';
+import { SelectOneOfEditor } from './SelectOneOfEditor';
+import { JSONSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-editor';
+import { Form } from 'semantic-ui-react';
+import '../../styles.scss';
+
+export default {
+    title: 'Editor/SelectOneOfEditor',
+    component: SelectOneOfEditor,
+    argTypes: {
+        data: { control: { type: 'object' } },
+        schema: { control: { type: 'object' } },
+        options: {
+            control: { type: 'object' }
+        }
+    }
+};
+
+type ComponentStoryProps = {
+    data: unknown[];
+    schema: JSONSchema;
+    options?: Partial<DefaultNodeOptions>;
+};
+
+const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
+    const [node, instance] = useJsonEditor<ParentNode>({
+        schema,
+        editors: defaultEditors,
+        data
+    });
+    if (node == null) {
+        return <></>;
+    }
+
+    instance.validate();
+
+    return (
+        // <div style={{ width: '400px' }}>
+        <Form error>
+            <SelectOneOfEditor node={node.children[0] as Node} instance={instance} options={options} />
+        </Form>
+    );
+};
+
+export const DefaultEditor = Template.bind({});
+DefaultEditor.args = {
+    data: {
+        // @todo error when using oneOf on root object
+        example: {
+            type: 'first',
+            title: ''
+        }
+    },
+    schema: {
+        type: 'object',
+        properties: {
+            example: {
+                type: 'object',
+                title: 'one of selection header',
+                oneOfProperty: 'type',
+                description: 'description only for object typeSelection',
+                oneOf: [
+                    {
+                        type: 'object',
+                        title: 'first option',
+                        properties: {
+                            type: { type: 'string', const: 'first' },
+                            title: { type: 'string', title: 'header 1' }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        title: 'second option',
+                        properties: {
+                            type: { type: 'string', const: 'second' },
+                            title: { type: 'string', title: 'header 2' }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    options: {}
+};

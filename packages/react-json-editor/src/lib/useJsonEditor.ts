@@ -31,6 +31,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
         const { onChange, plugins = [], editors } = settings;
         jsonEditor.current = new JsonEditor({
             schema,
+            data,
             editors,
             draftConfig: settings.draftConfig,
             plugins: [

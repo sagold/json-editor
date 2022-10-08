@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
-import { ArrayItemCard, ArrayItemGrid } from './ArrayItem';
+import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
 import { classNames } from '../../classNames';
 import Ref from '@semantic-ui-react/component-ref';
 
@@ -42,7 +42,7 @@ export type ArrayOptions = {
     /** ui layout options for array */
     layout?: {
         /** layout of array children, defaults */
-        type?: 'cards' | 'grid';
+        type?: 'cards' | 'default';
     };
     header?: {
         inverted?: boolean;
@@ -107,7 +107,11 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     const { title, description, collapsed, editJson = {} } = options;
 
     return (
-        <div className={classNames('ed-form ed-parent', options.classNames)} data-type="array" data-id={node.pointer}>
+        <div
+            className={classNames('ed-form ed-form--parent ed-array', options.classNames)}
+            data-type="array"
+            data-id={node.pointer}
+        >
             {(title || description || editJson.enabled || collapsed != null) && (
                 <ParentHeader
                     node={node}
@@ -139,7 +143,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
             )}
 
             <Ref innerRef={ref}>
-                <div className={`ed-parent__items ed-parent__items--${options.layout?.type ?? 'default'}`}>
+                <div className={`ed-array__items ed-array__items--${options.layout?.type ?? 'default'}`}>
                     {showContent &&
                         (options.layout?.type === 'cards'
                             ? node.children.map((child) => (
@@ -152,7 +156,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                                   />
                               ))
                             : node.children.map((child) => (
-                                  <ArrayItemGrid
+                                  <ArrayItemDefault
                                       instance={instance}
                                       node={child}
                                       size={node.children.length}
