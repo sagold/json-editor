@@ -147,7 +147,8 @@ export const schema = {
             uniqueItems: true
         },
         list: {
-            title: 'array of strings',
+            title: 'List of strings',
+            description: 'Array with string items only. At least one item is required.',
             type: 'array',
             items: {
                 type: 'string'
@@ -157,7 +158,8 @@ export const schema = {
         },
         switch: {
             type: 'array',
-            title: 'array with oneOf object selection and sortable activated',
+            title: 'Array with item selection',
+            description: 'Array with items.oneOf statement and activated drag&drop support.',
             minItems: 1,
             options: {
                 sortable: { enabled: true },
@@ -247,7 +249,7 @@ export const schema = {
                     title: 'Toggle for conditional schema',
                     description: 'if this content contains more than five characters another schema will be used',
                     type: 'string',
-                    default: false
+                    default: '123456'
                 }
             },
             if: {

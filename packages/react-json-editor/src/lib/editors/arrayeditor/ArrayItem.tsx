@@ -1,5 +1,5 @@
 import { Node } from 'headless-json-editor';
-import { Button, Card, Popup } from 'semantic-ui-react';
+import { Button, Card, Popup, Icon } from 'semantic-ui-react';
 import { JsonEditor } from '../../JsonEditor';
 
 export type ArrayItemProps = {
@@ -13,25 +13,29 @@ export type ArrayItemProps = {
 export function ArrayItemDefault({ instance, node, withDragHandle, size }: ArrayItemProps) {
     const Editor = instance.getEditor(node);
     return (
-        <>
-            <div data-type="array-item" className="ed-array-item__handle">
-                <div className="ed-array-item__actions">
-                    <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
-                        <ArrayItemActions instance={instance} node={node} size={size} />
-                    </Popup>
+        <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
+            {withDragHandle && (
+                <div className="ed-drag__handle ed-drag__container">
+                    <Icon name="ellipsis vertical" />
+                    <Icon name="ellipsis vertical" />
                 </div>
-                <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
-                {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
+            )}
+            <div className="ed-array-item__actions">
+                <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
+                    <ArrayItemActions instance={instance} node={node} size={size} />
+                </Popup>
             </div>
-        </>
+            <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+            {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
+        </div>
     );
 }
 
 export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayItemProps) {
     const Editor = instance.getEditor(node);
     return (
-        <Card fluid data-type="array-item" key={node.id}>
-            <Card.Content key="header">
+        <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
+            <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
                 {/*<Grid.Column width="15">{withDragHandle && <div className="ed-array-item__handle"></div>}</Grid.Column>*/}
                 <Popup trigger={<Button basic floated="right" icon="ellipsis vertical" />} flowing hoverable>
                     <ArrayItemActions instance={instance} node={node} size={size} />

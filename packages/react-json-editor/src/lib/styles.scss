@@ -35,7 +35,7 @@
 
 /* feature: array item actions on right side */
 .ui.form .ed-array__items--default {
-    padding-right: 64px;
+    padding-right: 48px;
 }
 
 .ui.form .ed-array__items .ed-array__items {
@@ -78,10 +78,22 @@
 
 /* layout: value forms have same padding to align with segments */
 .ed-value,
-// .ed-parent__items--cards,
 .ed-object__items--grid,
 .ed-array__items--grid {
     padding: 1em;
+}
+
+.ed-drag__container {
+    position: absolute;
+    left: 0;
+    margin-top: 3.3em;
+    color: #999;
+    i.icon {
+        width: auto;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+    }
 }
 
 /* layout: inline headers should have more padding to above content then below */
@@ -91,8 +103,6 @@
 
 /* feature: sortable */
 
-.sortable-ghost {
-}
 .sortable-drag {
     .ed-array-item__divider {
         visibility: hidden;
@@ -102,7 +112,3 @@
 .sortable-chosen {
     background: rgba(0, 181, 173, 0.5);
 }
-
-// .ed-oneof .ed-children .ed-form--parent > .ed-header {
-//     padding-top: 0;
-// }

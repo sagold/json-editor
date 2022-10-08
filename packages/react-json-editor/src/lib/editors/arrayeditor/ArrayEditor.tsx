@@ -96,8 +96,9 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     useEffect(() => {
         if (sortable?.enabled && ref.current) {
             Sortable.create(ref.current, {
-                handle: '.ed-array-item__handle',
+                handle: '.ed-drag__handle',
                 swapThreshold: 4,
+                delay: 250,
                 ...sortable,
                 onEnd: createOnSortEnd(instance, node)
             });
