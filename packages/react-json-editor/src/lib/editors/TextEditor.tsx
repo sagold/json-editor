@@ -7,7 +7,11 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
     return (
-        <Segment basic data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
+        <div
+            className={`ed-form ed-value ${disabled ? 'disabled' : 'enabled'}`}
+            data-type="string"
+            data-id={node.pointer}
+        >
             <Form.Field error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <TextareaAutosize
@@ -31,8 +35,8 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
                     ))}
                 </Message>
             )}
-            {options.description && <em>{options.description}</em>}
-        </Segment>
+            {options.description && <em className="ed-description">{options.description}</em>}
+        </div>
     );
 });
 

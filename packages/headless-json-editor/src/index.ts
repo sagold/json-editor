@@ -1,5 +1,5 @@
 // create
-import { create } from './node/create';
+import { create, DefaultNodeOptions } from './node/create';
 import { json } from './node/json';
 // traversal
 import { errors } from './node/errors';
@@ -32,7 +32,6 @@ import {
     ArrayNode,
     BooleanNode,
     Change,
-    DefaultNodeOptions,
     JSONSchema,
     Node,
     NodeType,

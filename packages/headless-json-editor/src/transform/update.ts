@@ -1,6 +1,7 @@
 import { JSONError } from 'json-schema-library';
-import { Node, isJSONError, Change, DefaultNodeOptions, JSONSchema } from '../types';
+import { Node, isJSONError, Change, JSONSchema } from '../types';
 import { unlinkPath } from './unlinkPath';
+import { DefaultNodeOptions } from '../node/create';
 
 /**
  * updates schema of a node

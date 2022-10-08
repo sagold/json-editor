@@ -89,7 +89,7 @@ export const schema: JSONSchema = {
                             minHeight: 320,
                             properties: {
                                 url: {
-                                    title: 'Introbild. Comyan-ID *',
+                                    title: 'Introbild. BildService-ID *',
                                     description: 'Ein hochauflösendes Bild im Querformat als Titelbild',
                                     type: 'string',
                                     minLength: 1
@@ -120,7 +120,7 @@ export const schema: JSONSchema = {
                             minHeight: 320,
                             properties: {
                                 url: {
-                                    title: 'Alternatives Bild für mobiles Layout. Comyan-ID',
+                                    title: 'Alternatives Bild für mobiles Layout. BildService-ID',
                                     type: 'string'
                                 },
                                 quality: {
@@ -144,7 +144,7 @@ export const schema: JSONSchema = {
                     },
                     properties: {
                         url: {
-                            title: 'Comyan-ID des Videos',
+                            title: 'BildService-ID des Videos',
                             type: 'string',
                             format: 'mediaVideo',
                             description: 'Ein Introvideo das automatisch auf Desktop-Geräten abgespielt wird.'
@@ -285,7 +285,7 @@ export const schema: JSONSchema = {
                                         required: ['url', 'quality'],
                                         properties: {
                                             url: {
-                                                title: 'Comyan-ID *',
+                                                title: 'BildService-ID *',
                                                 type: 'string',
                                                 minLength: 1
                                             },
@@ -303,7 +303,7 @@ export const schema: JSONSchema = {
                                         media: 'image',
                                         type: 'object',
                                         format: 'mediaImage',
-                                        title: 'Comyan-ID *',
+                                        title: 'BildService-ID *',
                                         devicePixelRatio: 2,
                                         minWidth: 456,
                                         minHeight: 304,
@@ -316,7 +316,7 @@ export const schema: JSONSchema = {
                                         required: ['url', 'quality'],
                                         properties: {
                                             url: {
-                                                title: 'Alternatives Bild für mobiles Layout. Comyan-ID',
+                                                title: 'Alternatives Bild für mobiles Layout. BildService-ID',
                                                 type: 'string'
                                             },
                                             quality: {
@@ -337,7 +337,8 @@ export const schema: JSONSchema = {
                                         title: 'Quellenangabe',
                                         type: 'string',
                                         format: 'html',
-                                        description: 'Wird automatisch aus Comyan befüllt wenn nichts angegeben wurde.'
+                                        description:
+                                            'Wird automatisch aus BildService befüllt wenn nichts angegeben wurde.'
                                     },
                                     displayMode: {
                                         title: 'Anzeigemodus',
@@ -447,7 +448,7 @@ export const schema: JSONSchema = {
                                                     },
                                                     properties: {
                                                         url: {
-                                                            title: 'Bild. Comyan-ID *',
+                                                            title: 'Bild. BildService-ID *',
                                                             type: 'string',
                                                             minLength: 1
                                                         },
@@ -476,7 +477,7 @@ export const schema: JSONSchema = {
                                                     },
                                                     properties: {
                                                         url: {
-                                                            title: 'Alternatives Bild für schmale Bildschirmgrößen. Comyan-ID',
+                                                            title: 'Alternatives Bild für schmale Bildschirmgrößen. BildService-ID',
                                                             type: 'string'
                                                         },
                                                         quality: {
@@ -518,7 +519,7 @@ export const schema: JSONSchema = {
                                                     },
                                                     properties: {
                                                         url: {
-                                                            title: 'Schmales Bild. Comyan-ID *',
+                                                            title: 'Schmales Bild. BildService-ID *',
                                                             type: 'string',
                                                             minLength: 1
                                                         },
@@ -578,7 +579,7 @@ export const schema: JSONSchema = {
                                             desktop: {
                                                 type: 'object',
                                                 format: 'mediaImage',
-                                                title: 'Comyan-ID *',
+                                                title: 'BildService-ID *',
                                                 devicePixelRatio: 2,
                                                 minWidth: 300,
                                                 minHeight: 400,
@@ -590,7 +591,7 @@ export const schema: JSONSchema = {
                                                 required: ['url', 'quality'],
                                                 properties: {
                                                     url: {
-                                                        title: 'Hintergrundbild. Comyan-ID *',
+                                                        title: 'Hintergrundbild. BildService-ID *',
                                                         type: 'string',
                                                         minLength: 1
                                                     },
@@ -607,7 +608,7 @@ export const schema: JSONSchema = {
                                             mobile: {
                                                 type: 'object',
                                                 format: 'mediaImage',
-                                                title: 'Comyan-ID *',
+                                                title: 'BildService-ID *',
                                                 devicePixelRatio: 2,
                                                 minWidth: 300,
                                                 minHeight: 400,
@@ -620,7 +621,7 @@ export const schema: JSONSchema = {
                                                 required: ['url', 'quality'],
                                                 properties: {
                                                     url: {
-                                                        title: 'Alternatives Bild für mobiles Layout. Comyan-ID',
+                                                        title: 'Alternatives Bild für mobiles Layout. BildService-ID',
                                                         type: 'string'
                                                     },
                                                     quality: {
@@ -643,7 +644,7 @@ export const schema: JSONSchema = {
                                         },
                                         properties: {
                                             url: {
-                                                title: 'Hintergrundvideo. Comyan-ID',
+                                                title: 'Hintergrundvideo. BildService-ID',
                                                 description:
                                                     'Videos werden nur auf Desktop Rechnern abgespielt. Mobil wird nur das Bild angezeigt',
                                                 type: 'string',
@@ -783,7 +784,7 @@ export const schema: JSONSchema = {
                                                 minHeight: 320,
                                                 properties: {
                                                     url: {
-                                                        title: 'Das verlinkte Bild. Comyan-ID *',
+                                                        title: 'Das verlinkte Bild. BildService-ID *',
                                                         type: 'string',
                                                         minLength: 1
                                                     },
@@ -811,7 +812,7 @@ export const schema: JSONSchema = {
                                                 minHeight: 320,
                                                 properties: {
                                                     url: {
-                                                        title: 'Alternatives Bild für mobiles Layout. Comyan-ID',
+                                                        title: 'Alternatives Bild für mobiles Layout. BildService-ID',
                                                         type: 'string',
                                                         minLength: 1
                                                     },
@@ -834,7 +835,8 @@ export const schema: JSONSchema = {
                                     source: {
                                         title: 'Quellenangabe',
                                         type: 'string',
-                                        description: 'Wird aus Comyan automatisch befüllt wenn nichts angegeben wurde.'
+                                        description:
+                                            'Wird aus BildService automatisch befüllt wenn nichts angegeben wurde.'
                                     }
                                 }
                             }
@@ -864,7 +866,7 @@ export const schema: JSONSchema = {
                                 },
                                 properties: {
                                     url: {
-                                        title: 'Video-URL als Comyan-ID',
+                                        title: 'Video-URL als BildService-ID',
                                         type: 'string',
                                         format: 'mediaVideo'
                                     },
@@ -884,9 +886,9 @@ export const schema: JSONSchema = {
                                         minHeight: 320,
                                         properties: {
                                             url: {
-                                                title: 'Vorschaubild-URL als Comyan-ID *',
+                                                title: 'Vorschaubild-URL als BildService-ID *',
                                                 description:
-                                                    'Vorschaubild für den Video-Player. Dieses Feld muss nur ausgefüllt werden wenn nicht das für das Video hinterlegte Vorschaubild aus Comyan verwendet werden soll. Erwartet wird eine Comyan-ID.',
+                                                    'Vorschaubild für den Video-Player. Dieses Feld muss nur ausgefüllt werden wenn nicht das für das Video hinterlegte Vorschaubild aus BildService verwendet werden soll. Erwartet wird eine BildService-ID.',
                                                 type: 'string',
                                                 minLength: 1
                                             },
@@ -903,7 +905,8 @@ export const schema: JSONSchema = {
                                     source: {
                                         title: 'Quellenangabe',
                                         type: 'string',
-                                        description: 'Wird aus Comyan automatisch befüllt wenn nichts angegeben wurde.'
+                                        description:
+                                            'Wird aus BildService automatisch befüllt wenn nichts angegeben wurde.'
                                     },
                                     autoplay: {
                                         title: 'Autoplay',
@@ -1076,7 +1079,10 @@ export const schema: JSONSchema = {
             type: 'array',
             // @ts-ignore
             options: {
-                editor: 'MasterDetail'
+                editor: 'MasterDetail',
+                header: {
+                    inverted: true
+                }
             },
             items: {
                 type: 'object',
@@ -1105,7 +1111,7 @@ export const schema: JSONSchema = {
                             },
                             url: {
                                 title: 'Bild-URL *',
-                                description: 'Erwartet wird eine Comyan ID',
+                                description: 'Erwartet wird eine BildService ID',
                                 minLength: 1,
                                 type: 'string'
                             },
@@ -1218,7 +1224,7 @@ export const schema: JSONSchema = {
                                 url: {
                                     title: 'Vorschaubild',
                                     type: 'string',
-                                    description: 'Teaserbild als Comyan-Id'
+                                    description: 'Teaserbild als BildService-Id'
                                 },
                                 quality: {
                                     title: 'Bildqualität',
@@ -1304,7 +1310,7 @@ export const schema: JSONSchema = {
                                 url: {
                                     title: 'Vorschaubild',
                                     type: 'string',
-                                    description: 'Teaserbild als Comyan-Id'
+                                    description: 'Teaserbild als BildService-Id'
                                 },
                                 quality: {
                                     title: 'Bildqualität',
@@ -1353,7 +1359,7 @@ export const schema: JSONSchema = {
                                 url: {
                                     title: 'Vorschaubild',
                                     type: 'string',
-                                    description: 'Teaserbild als Comyan-Id'
+                                    description: 'Teaserbild als BildService-Id'
                                 },
                                 quality: {
                                     title: 'Bildqualität',

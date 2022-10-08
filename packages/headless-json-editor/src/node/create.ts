@@ -9,9 +9,22 @@ import {
     NumberNode,
     BooleanNode,
     NullNode,
-    JSONSchema,
-    DefaultNodeOptions
+    JSONSchema
 } from '../types';
+
+export type DefaultNodeOptions = {
+    /** additional classnames the ui should add to the root of this data point */
+    classNames?: string[];
+    /** description of this data point */
+    description?: string;
+    /** if changes to this data point are disabled */
+    disabled: boolean;
+    /** if this data point should be hidden from display */
+    hidden: boolean;
+    /** title of this data point */
+    title?: string;
+    [o: string]: unknown;
+};
 
 type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer) => Node;
 

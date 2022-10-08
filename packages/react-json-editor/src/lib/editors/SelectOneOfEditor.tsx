@@ -29,7 +29,7 @@ export const SelectOneOfEditor = editor(({ instance, node }) => {
     }));
 
     return (
-        <Segment basic className="ed-oneof">
+        <div className="ed-form ed-value ed-oneof">
             <Form.Field id={node.pointer} className="ed-oneof__selection">
                 <Dropdown
                     selection
@@ -39,7 +39,7 @@ export const SelectOneOfEditor = editor(({ instance, node }) => {
                 />
             </Form.Field>
             <Editor node={node} instance={instance} />
-        </Segment>
+        </div>
     );
 });
 

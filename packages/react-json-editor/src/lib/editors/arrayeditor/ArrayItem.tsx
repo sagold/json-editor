@@ -1,5 +1,5 @@
 import { Node } from 'headless-json-editor';
-import { Button, Card, Icon, Popup, Grid, Segment } from 'semantic-ui-react';
+import { Button, Card, Popup } from 'semantic-ui-react';
 import { JsonEditor } from '../../JsonEditor';
 
 export type ArrayItemProps = {
@@ -13,19 +13,17 @@ export type ArrayItemProps = {
 export function ArrayItemGrid({ instance, node, withDragHandle, size }: ArrayItemProps) {
     const Editor = instance.getEditor(node);
     return (
-        <Segment>
-            <Grid data-type="array-item" key={node.id}>
-                <Grid.Column width="15" key="item">
-                    {withDragHandle && <Icon link name="expand arrows alternate" className="ed-array-item__handle" />}
-                    <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
-                </Grid.Column>
-                <Grid.Column width="1" textAlign="right" key="actions">
-                    <Popup trigger={<Icon link name="ellipsis vertical" />} flowing hoverable>
+        <>
+            <div data-type="array-item" className="ed-array-item__handle">
+                <div className="ed-array-item__actions">
+                    <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
                         <ArrayItemActions instance={instance} node={node} size={size} />
                     </Popup>
-                </Grid.Column>
-            </Grid>
-        </Segment>
+                </div>
+                <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+                {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
+            </div>
+        </>
     );
 }
 
@@ -35,7 +33,7 @@ export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayIte
         <Card fluid data-type="array-item" key={node.id}>
             <Card.Content key="header">
                 {/*<Grid.Column width="15">{withDragHandle && <div className="ed-array-item__handle"></div>}</Grid.Column>*/}
-                <Popup trigger={<Button link basic floated="right" icon="ellipsis vertical" />} flowing hoverable>
+                <Popup trigger={<Button basic floated="right" icon="ellipsis vertical" />} flowing hoverable>
                     <ArrayItemActions instance={instance} node={node} size={size} />
                 </Popup>
                 <Card.Header>{node.options.title}</Card.Header>

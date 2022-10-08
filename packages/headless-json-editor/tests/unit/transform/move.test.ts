@@ -3,9 +3,8 @@ import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
-import { Node, StringNode, ArrayNode } from '../../../src/types';
+import { Node, ArrayNode } from '../../../src/types';
 import { strict as assert } from 'assert';
-// import { ObjectNode, StringNode, NumberNode } from '../../../src/types';
 import { move } from '../../../src/transform/move';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
@@ -59,6 +58,16 @@ describe('move', () => {
         assertUnlinkedNodes(before, after, '/list/3');
         assert.equal(get(before, '#/list/0'), get(after, '#/list/0'));
         assert.equal(get(before, '#/list/4'), get(after, '#/list/4'));
+    });
+
+    it('should move item in root array', () => {
+        core.setSchema({ type: 'array', items: { type: 'string' } });
+        const before = create(core, ['1', '2', '3', '4', '5']);
+
+        const [after] = move(core, before, '#', 3, 1);
+
+        assert(after.type !== 'error');
+        assert.deepEqual(json(after), ['1', '4', '2', '3', '5']);
     });
 
     it('should append item if target index is too large', () => {

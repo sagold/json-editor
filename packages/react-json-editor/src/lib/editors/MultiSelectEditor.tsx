@@ -33,7 +33,11 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
     }
 
     return (
-        <Segment basic data-type="string" data-id={node.pointer} className={options.disabled ? 'disabled' : 'enabled'}>
+        <div
+            className={`ed-form ed-value ${options.disabled ? 'disabled' : 'enabled'}`}
+            data-type="string"
+            data-id={node.pointer}
+        >
             <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <Dropdown
@@ -53,8 +57,8 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
                     ))}
                 </Message>
             )}
-            {options.description && <em>{options.description}</em>}
-        </Segment>
+            {options.description && <em className="ed-description">{options.description}</em>}
+        </div>
     );
 });
 

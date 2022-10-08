@@ -1,19 +1,15 @@
 import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { Icon, Message, Accordion, Segment, Header, Grid, SemanticCOLORS } from 'semantic-ui-react';
+import { Button, Icon, Message, SemanticCOLORS } from 'semantic-ui-react';
 import { editor, EditorPlugin } from '../decorators';
 import { JsonEditor } from '../../JsonEditor';
 import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
-import { split } from 'gson-pointer';
+import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { ArrayItemCard, ArrayItemGrid } from './ArrayItem';
+import { classNames } from '../../classNames';
 import Ref from '@semantic-ui-react/component-ref';
-
-function getNodeDepth(node: Node, max = 6) {
-    const depth = split(node.pointer).length;
-    return Math.min(max, depth + 1);
-}
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -28,6 +24,8 @@ export type ArrayItemProps = {
 };
 
 export type ArrayOptions = {
+    /** additional classnames for array editor */
+    classNames?: string[];
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
     sortable?: {
@@ -54,7 +52,6 @@ export type ArrayOptions = {
 
 function createOnSortEnd(instance: JsonEditor, node: Node) {
     return function onSortEnd(event: Sortable.SortableEvent) {
-        console.log('end sorting');
         const targetIndex = parseInt(`${event.newIndex}`);
         if (isNaN(targetIndex)) {
             return;
@@ -75,7 +72,7 @@ function createOnSortEnd(instance: JsonEditor, node: Node) {
 }
 
 export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
-    const [isOpen, setToggleState] = useState<boolean>(options.collapsed ? !options.collapsed : true);
+    const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
     let sortable = options.sortable;
@@ -92,12 +89,12 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
         } else {
             setModalOpen(true);
         }
+        setShowContent(true);
     }
 
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
         if (sortable?.enabled && ref.current) {
-            console.log('init sortable', node);
             Sortable.create(ref.current, {
                 handle: '.ed-array-item__handle',
                 swapThreshold: 4,
@@ -108,58 +105,62 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     }, [sortable, instance]);
 
     const { title, description, collapsed, editJson = {} } = options;
-    const { inverted = false, color } = options.header ?? {};
-
-    const ArrayItem = options.layout?.type === 'cards' ? ArrayItemCard : ArrayItemGrid;
 
     return (
-        <Accordion data-type="array" data-id={node.pointer}>
+        <div className={classNames('ed-form ed-parent', options.classNames)} data-type="array" data-id={node.pointer}>
             {(title || description || editJson.enabled || collapsed != null) && (
-                <Accordion.Title inverted={inverted} active={isOpen}>
-                    <Segment basic inverted={inverted} color={color}>
-                        <Grid columns="equal">
-                            <Grid.Column>
-                                <Header as={`h${getNodeDepth(node)}`} inverted={inverted}>
-                                    {collapsed != null && (
-                                        <Header.Content floated="left">
-                                            <Icon name="dropdown" onClick={() => setToggleState(!isOpen)} />
-                                        </Header.Content>
-                                    )}
-                                    <Header.Content>{title}</Header.Content>
-                                    <Header.Subheader>{description}</Header.Subheader>
-                                </Header>
-                            </Grid.Column>
-                            <Grid.Column width="1" textAlign="right">
-                                <Icon link name="add" onClick={insertItem} />
-                                {editJson.enabled && <Icon link name="edit" onClick={() => openEditModal(true)} />}
-                            </Grid.Column>
-                        </Grid>
-                    </Segment>
-                </Accordion.Title>
+                <ParentHeader
+                    node={node}
+                    options={options}
+                    icon={
+                        options.collapsed != null && (
+                            <Icon
+                                link
+                                rotated={!showContent ? 'counterclockwise' : undefined}
+                                name="dropdown"
+                                onClick={() => setShowContent(!showContent)}
+                            />
+                        )
+                    }
+                >
+                    <Button basic icon="add" onClick={insertItem} />
+                    {editJson.enabled && <Button basic icon="edit" onClick={() => openEditModal(true)} />}
+                </ParentHeader>
             )}
 
             {node.errors.length > 0 && (
                 <Message error>
                     <Message.List>
-                        {node.errors.map((e) => {
-                            return <Message.Item key={e.message}>{e.message}</Message.Item>;
-                        })}
+                        {node.errors.map((e) => (
+                            <Message.Item key={e.message}>{e.message}</Message.Item>
+                        ))}
                     </Message.List>
                 </Message>
             )}
 
             <Ref innerRef={ref}>
-                <Accordion.Content active={isOpen} className="children">
-                    {node.children.map((child) => (
-                        <ArrayItem
-                            instance={instance}
-                            node={child}
-                            size={node.children.length}
-                            key={child.id}
-                            withDragHandle={sortable?.enabled}
-                        />
-                    ))}
-                </Accordion.Content>
+                <div className={`ed-parent__items ed-parent__items--${options.layout?.type ?? 'default'}`}>
+                    {showContent &&
+                        (options.layout?.type === 'cards'
+                            ? node.children.map((child) => (
+                                  <ArrayItemCard
+                                      instance={instance}
+                                      node={child}
+                                      size={node.children.length}
+                                      key={child.id}
+                                      withDragHandle={sortable?.enabled}
+                                  />
+                              ))
+                            : node.children.map((child) => (
+                                  <ArrayItemGrid
+                                      instance={instance}
+                                      node={child}
+                                      size={node.children.length}
+                                      key={child.id}
+                                      withDragHandle={sortable?.enabled}
+                                  />
+                              )))}
+                </div>
             </Ref>
 
             <InsertItemModal instance={instance} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
@@ -173,7 +174,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                     openEditModal={openEditModal}
                 />
             )}
-        </Accordion>
+        </div>
     );
 });
 

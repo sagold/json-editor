@@ -1,6 +1,81 @@
 @import 'semantic-ui-css/semantic.min.css';
 
-// @fix semantic ui dropdown within grid
+/* fix: semantic ui dropdown within grid */
 .ui.grid .ui.dropdown {
     min-width: auto;
+}
+
+/* fix: rotated icon in header */
+.icon.rotated.counterclockwise {
+    margin-top: 0.15em;
+}
+
+/* fix: button in header */
+.ed-header__actions button:last-child {
+    margin-right: 0;
+}
+
+/* fix: padding in header */
+.ed-header .header {
+    margin-bottom: 0;
+}
+
+/* adjust: header with icon to be aligned with other contents */
+.ed-header .segment.with-icon {
+    padding-left: 0.3em;
+    .sub.header {
+        padding-left: 2.7em;
+    }
+}
+
+/* adjust: description following form field */
+.ui.form .ed-value .field {
+    margin-bottom: 0;
+}
+
+/* feature: array item actions on right side */
+.ui.form > [data-type] {
+    padding-right: 48px;
+}
+
+.ed-array-item__actions {
+    position: absolute;
+    right: 0;
+    margin-top: 2.75em;
+}
+
+.ui.form .ui.card {
+    position: static;
+}
+
+/* feature: array item separator */
+.ed-array-item__divider {
+    width: 33%;
+    border: 1px solid #333;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+// temp for above
+.ui.form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* style: form description */
+.ed-description {
+    font-style: italic;
+    color: #999;
+}
+
+/* layout: value forms have same padding to align with segments */
+.ed-value,
+// .ed-parent__items--cards,
+.ed-parent__items--grid {
+    padding: 1em;
+}
+
+/* layout: inline headers should have more padding to above content then below */
+.ed-parent .ed-parent > .ed-header {
+    padding-top: 2em;
 }

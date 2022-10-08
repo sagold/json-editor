@@ -2,16 +2,12 @@
 // import Sortable from 'sortablejs';
 import { editor, EditorPlugin } from '../decorators';
 import { get as getPointer } from 'gson-pointer';
-import { Icon, Button, Grid, Popup, Header, Segment } from 'semantic-ui-react';
-import { ParentNode, Node, json, errors, get } from 'headless-json-editor';
+import { Button } from 'semantic-ui-react';
+import { ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
-
+import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { split } from 'gson-pointer';
-function getNodeDepth(node: Node, max = 6) {
-    const depth = split(node.pointer).length;
-    return Math.min(max, depth + 1);
-}
 
 function getPreviewText(node: Node) {
     if (typeof node.options.previewValue !== 'string') {
@@ -33,40 +29,27 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
     const { title } = options;
     return (
-        <Segment basic inverted data-type={node.schema.type} data-id={node.pointer}>
-            <Grid columns="equal">
-                <Grid.Column width="15">
-                    <Header as={`h${getNodeDepth(node)}`} inverted>
-                        <Header.Content floated="left">
-                            {errors(node).length > 0 && (
-                                <Popup
-                                    content={errors(node)
-                                        .map((e) => e.message)
-                                        .join(',\n')}
-                                    trigger={<Icon name="warning sign" color="red" />}
-                                />
-                            )}
-                        </Header.Content>
-                        <Header.Content>{title}</Header.Content>
-                    </Header>
-                </Grid.Column>
-                <Grid.Column width="1" textAlign="right">
-                    <Button
-                        basic
-                        inverted
-                        icon="edit"
-                        className="clickable"
-                        onClick={() => {
-                            console.log('open edit modal', node.pointer);
-                            setEditModal({ open: true, pointer: node.pointer });
-                        }}
-                    />
-                </Grid.Column>
-            </Grid>
+        <div
+            className={`ed-form ${isParentNode(node) ? 'ed-parent' : 'ed-value'}`}
+            data-type={node.schema.type}
+            data-id={node.pointer}
+        >
+            <ParentHeader node={node} options={options}>
+                <Button
+                    basic
+                    inverted
+                    icon="edit"
+                    className="clickable"
+                    onClick={() => {
+                        console.log('open edit modal', node.pointer);
+                        setEditModal({ open: true, pointer: node.pointer });
+                    }}
+                />
+            </ParentHeader>
 
             {node.type === 'array' && (
                 <div style={{ flexGrow: 1 }}>
-                    <span>{options.title}</span>
+                    <span>{title}</span>
                     <span>{getPreviewText(node)}</span>
                 </div>
             )}
@@ -80,7 +63,7 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
                     closeModal={() => setEditModal({ open: false })}
                 />
             )}
-        </Segment>
+        </div>
     );
 });
 

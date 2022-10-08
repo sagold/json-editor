@@ -1,5 +1,5 @@
 import { StringNode } from 'headless-json-editor';
-import { Form, Dropdown, Segment } from 'semantic-ui-react';
+import { Form, Dropdown } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 
 export const StringEditor = editor<StringNode, string>(({ node, options, setValue }) => {
@@ -7,7 +7,11 @@ export const StringEditor = editor<StringNode, string>(({ node, options, setValu
     const disabled = options.disabled || isValidConst;
 
     return (
-        <Segment basic data-type="string" data-id={node.pointer} className={disabled ? 'disabled' : 'enabled'}>
+        <div
+            className={`ed-form ed-value ${disabled ? 'disabled' : 'enabled'}`}
+            data-type="string"
+            data-id={node.pointer}
+        >
             <Form.Input
                 id={node.id}
                 type="text"
@@ -26,8 +30,8 @@ export const StringEditor = editor<StringNode, string>(({ node, options, setValu
                     </Message.List>
                 </Message>
             )}*/}
-            {options.description && <em>{options.description}</em>}
-        </Segment>
+            {options.description && <em className="ed-description">{options.description}</em>}
+        </div>
     );
 });
 
@@ -48,7 +52,7 @@ export const SelectEditor = editor<StringNode, string>(({ node, options, setValu
     }));
 
     return (
-        <Segment basic data-type="string">
+        <div className="ed-form ed-value" data-type="string">
             <Form.Field id={node.pointer} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
                 <label>{options.title ?? node.property}</label>
                 <Dropdown
@@ -58,7 +62,7 @@ export const SelectEditor = editor<StringNode, string>(({ node, options, setValu
                     options={selectOptions}
                 />
             </Form.Field>
-            {options.description && <em>{options.description}</em>}
-        </Segment>
+            {options.description && <em className="ed-description">{options.description}</em>}
+        </div>
     );
 });

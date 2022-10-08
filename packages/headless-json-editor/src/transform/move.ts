@@ -31,6 +31,7 @@ export function move(
     }
 
     to = Math.min(to, arrayNode.children.length - 1);
+    from = Math.min(from, arrayNode.children.length - 1);
 
     const list = [...arrayNode.children];
     list.splice(to, 0, list.splice(from, 1)[0]);

@@ -144,7 +144,9 @@ export class HeadlessJsonEditor {
 
     moveItem(pointer: string, to: number): Node {
         const [parent, from] = splitLastProperty(pointer);
+        console.log('move', parent, from, to);
         const [state, changes] = moveItem(this.draft, this.state, parent, parseInt(from), to);
+        console.log(changes, state);
         if (isJSONError(state)) {
             console.error(`error moving nodes in '${pointer}'`);
             console.log(state);

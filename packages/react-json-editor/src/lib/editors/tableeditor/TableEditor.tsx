@@ -25,7 +25,7 @@ export const TableEditor = editor<ArrayNode<TableOptions>>(({ node, instance }) 
     const [edit, setEdit] = useState<{ isOpen: boolean; pointer?: string; cell?: Node }>({ isOpen: false });
 
     return (
-        <div data-type="table">
+        <div className="ed-form ed-parent" data-type="array">
             <Table celled definition>
                 <Table.Header>
                     <Table.Row>

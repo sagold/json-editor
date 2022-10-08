@@ -8,7 +8,7 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: Headless
     const error = node.schema as unknown as JSONError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
     return (
-        <div data-type="error" data-id={node.pointer}>
+        <div className="ed-form" data-type="error" data-id={node.pointer}>
             <Form.Input
                 id={node.id}
                 type="text"
@@ -20,9 +20,7 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: Headless
             <Button basic icon onClick={() => instance.removeValue(node.pointer)}>
                 <Icon name="trash alternate outline" />
             </Button>
-            <p style={{ color: 'rgb(208, 120, 132)', marginTop: 0 }} className="description">
-                {description}
-            </p>
+            {description && <em className="ed-description">{description}</em>}
             {
                 <p style={{ background: 'rgb(208, 120, 132)', padding: '8px' }}>
                     {JSON.stringify({ ...node.schema }, null, 2)}

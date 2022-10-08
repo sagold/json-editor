@@ -92,9 +92,12 @@ export const schema = {
         },
         anyOf: {
             title: 'any of simple value',
+            description:
+                'This example uses card layout and editJson options. @todo any of is not yet supported in user interface.',
             type: 'object',
             options: {
-                editJson: { liveUpdate: true },
+                classNames: ['my-custom-class'],
+                editJson: { enabled: true, liveUpdate: true },
                 layout: {
                     type: 'card'
                 }

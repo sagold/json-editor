@@ -53,6 +53,7 @@ DefaultEditor.args = {
     ],
     schema: {
         title: 'Array Example',
+        description: 'description displayed as subheader',
         type: 'array',
         items: {
             title: 'content item',

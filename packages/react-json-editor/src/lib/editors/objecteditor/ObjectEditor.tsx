@@ -1,17 +1,15 @@
-import { ObjectNode, Node, DefaultNodeOptions, getChildNode } from 'headless-json-editor';
-import { Button, Card, Segment, Header, Message, Accordion, Icon, Grid, SemanticCOLORS } from 'semantic-ui-react';
+import { ObjectNode, DefaultNodeOptions, getChildNode } from 'headless-json-editor';
+import { Button, Card, Segment, Message, Icon, Grid, SemanticCOLORS } from 'semantic-ui-react';
 import { useState } from 'react';
-import { split } from 'gson-pointer';
 import { buildObjectLayout, ObjectLayout } from './buildObjectLayout';
 import { editor, EditorPlugin } from '../decorators';
 import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
-
-function getNodeDepth(node: Node, max = 6) {
-    const depth = split(node.pointer).length;
-    return Math.min(max, depth + 1);
-}
+import { ParentHeader } from '../../components/parentheader/ParentHeader';
+import { classNames } from '../../classNames';
 
 export type ObjectOptions = {
+    /** additional classnames for object editor */
+    classNames?: string[];
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
@@ -33,36 +31,38 @@ export type ObjectOptions = {
 } & DefaultNodeOptions;
 
 export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, instance }) => {
-    const [isOpen, setToggleState] = useState<boolean>(options.collapsed ? !options.collapsed : true);
+    const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
     let children: JSX.Element;
     if (options.layout && Array.isArray(options.layout.cells)) {
         const cells = buildObjectLayout(node, options.layout);
         children = (
-            <Grid stackable columns="equal">
-                {cells.map((cell) => {
-                    const child = getChildNode(node, cell.prop);
-                    if (child == null) {
-                        return null;
-                    }
-                    const ChildEditor = instance.getEditor(child);
-                    return (
-                        <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
-                            <ChildEditor node={child} instance={instance} key={child.id} />
-                        </Grid.Column>
-                    );
-                })}
-            </Grid>
+            <div className="ed-parent__items ed-parent__items--grid">
+                <Grid stackable columns="equal">
+                    {cells.map((cell) => {
+                        const child = getChildNode(node, cell.prop);
+                        if (child == null) {
+                            return null;
+                        }
+                        const ChildEditor = instance.getEditor(child);
+                        return (
+                            <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
+                                <ChildEditor node={child} instance={instance} key={child.id} />
+                            </Grid.Column>
+                        );
+                    })}
+                </Grid>
+            </div>
         );
     } else {
         children = (
-            <Segment.Group style={{ boxShadow: 'none', border: 0 }}>
+            <div className="ed-parent__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => {
                     const ChildEditor = instance.getEditor(child);
                     return <ChildEditor node={child} instance={instance} key={child.id} />;
                 })}
-            </Segment.Group>
+            </div>
         );
     }
 
@@ -70,10 +70,10 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
     const inverted = header?.inverted ?? false;
     if (layout?.type === 'card') {
         return (
-            <Card fluid data-type="object" data-id={node.pointer}>
+            <Card fluid data-type="object" data-id={node.pointer} className={options.classNames?.join(' ')}>
                 <Card.Content key="header" style={{ background: header?.color }}>
                     {editJson && (
-                        <Button floated="right" link icon="ellipsis vertical" onClick={() => openEditModal(true)} />
+                        <Button basic floated="right" icon="ellipsis vertical" onClick={() => openEditModal(true)} />
                     )}
                     <Card.Header>{title}</Card.Header>
                     <Card.Meta>{description}</Card.Meta>
@@ -105,35 +105,31 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
     }
 
     return (
-        <Accordion data-type="object" data-id={node.pointer}>
+        <div className={classNames('ed-parent', options.classNames)} data-type="object" data-id={node.pointer}>
             {(editJson || title || description || options.collapsed != null) && (
-                <Accordion.Title active={isOpen}>
-                    <Segment basic color={header?.color} inverted={inverted}>
-                        <Grid columns="equal">
-                            <Grid.Column>
-                                <Header as={`h${getNodeDepth(node)}`} inverted={inverted}>
-                                    {options.collapsed != null && (
-                                        <Header.Content floated="left">
-                                            <Icon name="dropdown" onClick={() => setToggleState(!isOpen)} />
-                                        </Header.Content>
-                                    )}
-                                    <Header.Content>{title}</Header.Content>
-                                    <Header.Subheader>{description}</Header.Subheader>
-                                </Header>
-                            </Grid.Column>
-                            {editJson && (
-                                <Grid.Column textAlign="right">
-                                    <Icon
-                                        inverted={inverted}
-                                        link
-                                        name="ellipsis vertical"
-                                        onClick={() => openEditModal(true)}
-                                    />
-                                </Grid.Column>
-                            )}
-                        </Grid>
-                    </Segment>
-                </Accordion.Title>
+                <ParentHeader
+                    node={node}
+                    options={options}
+                    icon={
+                        options.collapsed != null && (
+                            <Icon
+                                link
+                                rotated={!showContent ? 'counterclockwise' : undefined}
+                                name="dropdown"
+                                onClick={() => setShowContent(!showContent)}
+                            />
+                        )
+                    }
+                >
+                    {editJson && (
+                        <Button
+                            basic
+                            inverted={inverted}
+                            icon="ellipsis vertical"
+                            onClick={() => openEditModal(true)}
+                        />
+                    )}
+                </ParentHeader>
             )}
             {node.errors.length > 0 && (
                 <Segment basic>
@@ -144,7 +140,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
                     </Message>
                 </Segment>
             )}
-            <Accordion.Content active={isOpen}>{children}</Accordion.Content>
+            {showContent && children}
             {options.editJson && (
                 <EditJsonModal
                     instance={instance}
@@ -155,7 +151,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
                     liveUpdate={options.editJson?.liveUpdate}
                 />
             )}
-        </Accordion>
+        </div>
     );
 });
 

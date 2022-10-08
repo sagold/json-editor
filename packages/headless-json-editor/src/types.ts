@@ -1,5 +1,6 @@
 import { JSONError } from 'json-schema-library';
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
+import { DefaultNodeOptions } from './node/create';
 
 export type JSONSchemaOptions = Record<string, unknown>;
 type JSONSchemaDefinition = JSONSchema7Definition & JSONSchemaOptions;
@@ -29,14 +30,6 @@ export type Change = { type: 'update' | 'create' | 'delete'; node: Node };
 
 /** node type refers to the actual data value - it is not the expected schema type */
 export type NodeType = ArrayType | ObjectType | StringType | NumberType | BooleanType | NullType;
-
-export type DefaultNodeOptions = {
-    description?: string;
-    disabled: boolean;
-    hidden: boolean;
-    title?: string;
-    [o: string]: unknown;
-};
 
 export type ArrayType = 'array';
 export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
