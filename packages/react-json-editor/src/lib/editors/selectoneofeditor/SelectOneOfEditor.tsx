@@ -46,7 +46,7 @@ export const SelectOneOfEditor = editor(({ instance, node, options }) => {
             </Divider>
 
             <div className="ed-children">
-                <Editor node={node} instance={instance} />
+                <Editor node={node} instance={instance} options={{ title: undefined }} />
             </div>
         </div>
     );
