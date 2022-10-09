@@ -1,5 +1,5 @@
 import { StringNode, Node, json } from 'headless-json-editor';
-import { Form, Dropdown, DropdownItemProps, Message, Segment } from 'semantic-ui-react';
+import { Form, Dropdown, DropdownItemProps, Message } from 'semantic-ui-react';
 import { editor, EditorPlugin } from './decorators';
 
 // @todo is building enum options job of syntax-tree?
