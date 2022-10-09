@@ -73,7 +73,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
             <Card fluid data-type="object" data-id={node.pointer} className={options.classNames?.join(' ')}>
                 <Card.Content key="header" style={{ background: header?.color }}>
                     {editJson && (
-                        <Button basic floated="right" icon="ellipsis vertical" onClick={() => openEditModal(true)} />
+                        <Button basic floated="right" icon="edit outline" onClick={() => openEditModal(true)} />
                     )}
                     <Card.Header>{title}</Card.Header>
                     <Card.Meta>{description}</Card.Meta>
@@ -126,12 +126,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
                     }
                 >
                     {editJson && (
-                        <Button
-                            basic
-                            inverted={inverted}
-                            icon="ellipsis vertical"
-                            onClick={() => openEditModal(true)}
-                        />
+                        <Button basic inverted={inverted} icon="edit outline" onClick={() => openEditModal(true)} />
                     )}
                 </ParentHeader>
             )}

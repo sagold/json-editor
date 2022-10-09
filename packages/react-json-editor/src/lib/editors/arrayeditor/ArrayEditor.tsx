@@ -129,7 +129,7 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
                     }
                 >
                     <Button basic icon="add" onClick={insertItem} />
-                    {editJson.enabled && <Button basic icon="edit" onClick={() => openEditModal(true)} />}
+                    {editJson.enabled && <Button basic icon="edit outline" onClick={() => openEditModal(true)} />}
                 </ParentHeader>
             )}
 
