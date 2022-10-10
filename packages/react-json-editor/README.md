@@ -53,7 +53,7 @@ function MyForm({ schema, data }) {
 
 ## widget options
 
-> For individual widget options please refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
+> For individual widget options please refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/widget-arraywidget--default-widget)
 
 You can pass options to an widget instance using the `options` object on its sub schema. e.g.
 
@@ -115,7 +115,7 @@ type DefaultNodeOptions = {
 };
 ```
 
-In addition, each widget exposes its own options. For more details refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
+In addition, each widget exposes its own options. For more details refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/widget-arraywidget--default-widget)
 
 
 ## widgets
