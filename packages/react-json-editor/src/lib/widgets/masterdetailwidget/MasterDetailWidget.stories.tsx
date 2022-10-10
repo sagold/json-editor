@@ -32,11 +32,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <div style={{ width: '400px' }}>
-            <MasterDetailWidget
-                node={node}
-                instance={instance}
-                // options={{ withChildren: true }}
-            />
+            <MasterDetailWidget node={node} instance={instance} options={{ header: { inverted: true } }} />
         </div>
     );
 };

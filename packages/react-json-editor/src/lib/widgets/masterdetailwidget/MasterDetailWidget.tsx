@@ -2,8 +2,8 @@
 // import Sortable from 'sortablejs';
 import { widget, WidgetPlugin } from '../decorators';
 import { get as getPointer } from 'gson-pointer';
-import { Button } from 'semantic-ui-react';
-import { ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
+import { Button, SemanticCOLORS } from 'semantic-ui-react';
+import { DefaultNodeOptions, ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
@@ -21,10 +21,17 @@ function getPreviewText(node: Node) {
     return `${previewText}`;
 }
 
+export type MasterDetailOptions = {
+    header?: {
+        inverted?: boolean;
+        color?: SemanticCOLORS;
+    };
+} & DefaultNodeOptions;
+
 /**
  * Master-Detail Editor for object or array values
  */
-export const MasterDetailWidget = widget<ParentNode>(({ instance, node, options }) => {
+export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ instance, node, options }) => {
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
     const { title } = options;
     return (
@@ -36,7 +43,7 @@ export const MasterDetailWidget = widget<ParentNode>(({ instance, node, options 
             <ParentHeader node={node} options={options}>
                 <Button
                     basic
-                    inverted
+                    inverted={options.header?.inverted === true}
                     icon="edit outline"
                     className="clickable"
                     onClick={() => {

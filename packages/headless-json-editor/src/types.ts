@@ -108,8 +108,12 @@ export type NullNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     errors: JSONError[];
 };
 
-export type ParentNode = ArrayNode | ObjectNode;
-export type ValueNode = StringNode | NumberNode | NullNode | BooleanNode;
+export type ParentNode<T extends DefaultNodeOptions = DefaultNodeOptions> = ArrayNode<T> | ObjectNode<T>;
+export type ValueNode<T extends DefaultNodeOptions = DefaultNodeOptions> =
+    | StringNode<T>
+    | NumberNode<T>
+    | NullNode<T>
+    | BooleanNode<T>;
 
 const NodeTypes = ['array', 'object', 'string', 'number', 'null', 'boolean'] as const;
 export function isNode(node: any): node is Node {
