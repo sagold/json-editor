@@ -1,12 +1,12 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultEditors, useJsonEditor } from '../../../index';
-import { TableEditor } from './TableEditor';
+import { defaultWidgets, useJsonEditor } from '../../../index';
+import { TableWidget } from './TableWidget';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import '../../styles.scss';
 
 export default {
     title: 'Editor/TableEditor',
-    component: TableEditor,
+    component: TableWidget,
     argTypes: {
         data: { control: { type: 'object' } },
         schema: { control: { type: 'object' } }
@@ -16,7 +16,7 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema }) => {
     const [node, instance] = useJsonEditor({
         schema,
-        editors: defaultEditors,
+        widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
         data
     });
@@ -29,7 +29,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <div style={{ width: '400px' }}>
-            <TableEditor
+            <TableWidget
                 node={node}
                 instance={instance}
                 // options={{ withChildren: true }}

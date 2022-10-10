@@ -1,8 +1,8 @@
-import { Form, Dropdown, DropdownProps, MenuItemProps, Card, Divider, Menu } from 'semantic-ui-react';
+import { Dropdown, DropdownProps, Divider } from 'semantic-ui-react';
+import { getOptions } from 'headless-json-editor';
 import { JSONSchema } from 'json-schema-library';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
-import { editor, EditorPlugin } from '../decorators';
-import { getOptions } from 'headless-json-editor';
+import { widget, WidgetPlugin } from '../decorators';
 
 type SelectedOneOfSchema = JSONSchema & {
     variableSchema: true;
@@ -10,12 +10,12 @@ type SelectedOneOfSchema = JSONSchema & {
     oneOfSchema: JSONSchema;
 };
 
-export function useSelectOneOfEditor(node, { skipSelectOneOf = false } = {}) {
+export function useSelectOneOfWidget(node, { skipSelectOneOf = false } = {}) {
     return !skipSelectOneOf && node.schema.oneOfSchema && node.schema.oneOfSchema.oneOf.length > 1;
 }
 
-export const SelectOneOfEditor = editor(({ instance, node, options }) => {
-    const Editor = instance.getEditor(node, { skipSelectOneOf: true });
+export const SelectOneOfWidget = widget(({ instance, node, options }) => {
+    const WidgetComponent = instance.getWidget(node, { skipSelectOneOf: true });
     const selectedSchema = node.schema as SelectedOneOfSchema;
 
     const onChange = (e, { value }: DropdownProps) => {
@@ -46,7 +46,7 @@ export const SelectOneOfEditor = editor(({ instance, node, options }) => {
             </Divider>
 
             <div className="ed-children">
-                <Editor node={node} instance={instance} options={{ title: undefined }} />
+                <WidgetComponent node={node} instance={instance} options={{ title: undefined }} />
             </div>
         </div>
     );
@@ -74,8 +74,8 @@ export const SelectOneOfEditor = editor(({ instance, node, options }) => {
     // );
 });
 
-export const SelectOneOfEditorPlugin: EditorPlugin = {
-    id: 'select-oneof-editor',
-    use: useSelectOneOfEditor,
-    Editor: SelectOneOfEditor
+export const SelectOneOfWidgetPlugin: WidgetPlugin = {
+    id: 'select-oneof-widget',
+    use: useSelectOneOfWidget,
+    Widget: SelectOneOfWidget
 };

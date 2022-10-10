@@ -1,28 +1,28 @@
 import { Node } from 'headless-json-editor';
-import { ErrorEditor } from './editors/ErrorEditor';
+import { ErrorWidget } from './widgets/ErrorWidget';
 import { HeadlessJsonEditor, HeadlessJsonEditorOptions, isNode } from 'headless-json-editor';
-import { Editor, EditorPlugin } from './editors/decorators';
+import { Widget, WidgetPlugin } from './widgets/decorators';
 
 export type JsonEditorOptions = HeadlessJsonEditorOptions & {
-    editors: EditorPlugin[];
+    widgets: WidgetPlugin[];
 };
 
 export class JsonEditor extends HeadlessJsonEditor {
-    editors: EditorPlugin[];
+    widgets: WidgetPlugin[];
 
     constructor(options: JsonEditorOptions) {
         super(options);
-        this.editors = options.editors;
+        this.widgets = options.widgets;
     }
 
-    getEditor(node: Node, options?: Record<string, unknown>): Editor {
+    getWidget(node: Node, options?: Record<string, unknown>): Widget {
         if (!isNode(node)) {
-            console.log('invalid node passed to getEditor', node);
-            return ErrorEditor;
+            console.log('invalid node passed to getWidget', node);
+            return ErrorWidget;
         }
-        const { Editor } = this.editors.find((ed) => ed.use(node, options)) || {};
-        if (Editor) {
-            return Editor;
+        const { Widget } = this.widgets.find((ed) => ed.use(node, options)) || {};
+        if (Widget) {
+            return Widget;
         }
         throw new Error(`Failed retrieving an editor for '${node.pointer}'`);
     }

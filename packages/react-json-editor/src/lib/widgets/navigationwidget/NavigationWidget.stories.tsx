@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultEditors, useJsonEditor } from '../../../index';
-import { NavigationEditor } from './NavigationEditor';
+import { defaultWidgets, useJsonEditor } from '../../../index';
+import { NavigationWidget } from './NavigationWidget';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import '../../styles.scss';
 
@@ -47,7 +47,7 @@ const data = {
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
     title: 'Editor/NavigationEditor',
-    component: NavigationEditor,
+    component: NavigationWidget,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: data },
@@ -59,7 +59,7 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema }) => {
     const [node, instance] = useJsonEditor({
         schema,
-        editors: defaultEditors,
+        widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
         data
     });
@@ -71,7 +71,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <div style={{ width: '400px' }}>
-            <NavigationEditor
+            <NavigationWidget
                 node={node}
                 instance={instance}
                 // options={{ withChildren: true }}

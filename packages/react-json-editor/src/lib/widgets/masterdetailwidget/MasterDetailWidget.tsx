@@ -1,13 +1,12 @@
 // import Ref from '@semantic-ui-react/component-ref';
 // import Sortable from 'sortablejs';
-import { editor, EditorPlugin } from '../decorators';
+import { widget, WidgetPlugin } from '../decorators';
 import { get as getPointer } from 'gson-pointer';
 import { Button } from 'semantic-ui-react';
 import { ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
-import { split } from 'gson-pointer';
 
 function getPreviewText(node: Node) {
     if (typeof node.options.previewValue !== 'string') {
@@ -25,7 +24,7 @@ function getPreviewText(node: Node) {
 /**
  * Master-Detail Editor for object or array values
  */
-export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options }) => {
+export const MasterDetailWidget = widget<ParentNode>(({ instance, node, options }) => {
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
     const { title } = options;
     return (
@@ -38,7 +37,7 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
                 <Button
                     basic
                     inverted
-                    icon="edit"
+                    icon="edit outline"
                     className="clickable"
                     onClick={() => {
                         console.log('open edit modal', node.pointer);
@@ -67,11 +66,11 @@ export const MasterDetailEditor = editor<ParentNode>(({ instance, node, options 
     );
 });
 
-export const MasterDetailEditorPlugin: EditorPlugin = {
-    id: 'master-detail-editor',
+export const MasterDetailWidgetPlugin: WidgetPlugin = {
+    id: 'master-detail-widget',
     use: (node, options) =>
         options?.skipMaster !== true &&
         (node.schema.type === 'object' || node.schema.type === 'array') &&
         node.options.editor === 'MasterDetail',
-    Editor: MasterDetailEditor
+    Widget: MasterDetailWidget
 };

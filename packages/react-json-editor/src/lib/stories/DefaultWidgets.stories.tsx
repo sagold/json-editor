@@ -15,4 +15,4 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     return <JsonForm data={data} schema={schema} />;
 };
 
-export const DefaultEditors = Template.bind({});
+export const DefaultWidgets = Template.bind({});

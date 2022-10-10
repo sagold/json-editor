@@ -1,9 +1,9 @@
 import { NumberNode } from 'headless-json-editor';
-import { EditorPlugin } from './decorators';
+import { WidgetPlugin } from './decorators';
 import { Form } from 'semantic-ui-react';
-import { editor } from './decorators';
+import { widget } from './decorators';
 
-export const NumberEditor = editor<NumberNode, number>(({ node, options, setValue }) => (
+export const NumberWidget = widget<NumberNode, number>(({ node, options, setValue }) => (
     <div className="ed-form ed-value" data-type="number" data-id={node.pointer}>
         <Form.Input
             error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
@@ -38,8 +38,8 @@ export const NumberEditor = editor<NumberNode, number>(({ node, options, setValu
     </div>
 ));
 
-export const NumberEditorPlugin: EditorPlugin = {
-    id: 'number-editor',
+export const NumberWidgetPlugin: WidgetPlugin = {
+    id: 'number-widget',
     use: (node) => node.schema.type === 'number',
-    Editor: NumberEditor
+    Widget: NumberWidget
 };

@@ -1,7 +1,6 @@
-import Sortable from 'sortablejs';
 import { get, ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { Table } from 'semantic-ui-react';
-import { editor, EditorPlugin } from '../decorators';
+import { widget, WidgetPlugin } from '../decorators';
 import { useState } from 'react';
 import { EditModal } from '../../components/editmodal/EditModal';
 import { getTypeOf } from 'json-schema-library';
@@ -20,7 +19,7 @@ export type TableOptions = {
 /**
  * @todo maybe better to use ag-grid
  */
-export const TableEditor = editor<ArrayNode<TableOptions>>(({ node, instance }) => {
+export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, instance }) => {
     const columns = Object.keys(node.schema.items.properties);
     const [edit, setEdit] = useState<{ isOpen: boolean; pointer?: string; cell?: Node }>({ isOpen: false });
 
@@ -40,7 +39,9 @@ export const TableEditor = editor<ArrayNode<TableOptions>>(({ node, instance }) 
                         return (
                             <Table.Row key={row.id}>
                                 {row.children.map((cell) => {
-                                    const Editor = instance.getEditor(cell);
+                                    {
+                                        /*const WidgetComponent = instance.getWidget(cell);*/
+                                    }
                                     return (
                                         <Table.Cell selectable key={cell.id} error={cell.errors.length > 0}>
                                             {/*<Editor instance={instance} node={cell} />*/}
@@ -70,8 +71,8 @@ export const TableEditor = editor<ArrayNode<TableOptions>>(({ node, instance }) 
     );
 });
 
-export const TableEditorPlugin: EditorPlugin = {
-    id: 'array-editor',
+export const TableWidgetPlugin: WidgetPlugin = {
+    id: 'array-widget',
     use: (node) => node.schema.type === 'array' && getTypeOf(node.schema.items) === 'object',
-    Editor: TableEditor
+    Widget: TableWidget
 };

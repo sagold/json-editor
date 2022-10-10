@@ -1,6 +1,6 @@
 import Ref from '@semantic-ui-react/component-ref';
 import Sortable from 'sortablejs';
-import { editor } from '../decorators';
+import { widget } from '../decorators';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '../../JsonEditor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
@@ -38,8 +38,8 @@ function onSortEnd(instance: JsonEditor, node: ArrayNode, event: Sortable.Sortab
     // always remove node - we create it from data
     item?.parentNode?.removeChild(item);
 
-    // 1. if container or pointer (different editors) are the same, its a move within a list
-    // 2. if item is dragged to the same position, but to another editor. now, the dragged
+    // 1. if container or pointer (different widgets) are the same, its a move within a list
+    // 2. if item is dragged to the same position, but to another widget. now, the dragged
     // element is removeChild from original list. We readd it here, to fix this
 
     if (oldIndex != null) {
@@ -135,14 +135,6 @@ function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor 
                 <List.Header className="clickable" onClick={() => scrollTo(node)}>
                     {getNavigationTitle(node)}
                 </List.Header>
-                {/*<List.List divided>
-                    {node.children.map((child: Node) => (
-                        <List.Item key={child.id} style={{ display: 'flex' }}>
-                            <List.Icon />
-                            <List.Content onClick={() => scrollTo(child)}>{child.property}</List.Content>
-                        </List.Item>
-                    ))}
-                </List.List>*/}
             </>
         );
     }
@@ -169,7 +161,7 @@ function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor 
  *  />
  * ```
  */
-export const NavigationEditor = editor<ParentNode>(({ node, instance }) => {
+export const NavigationWidget = widget<ParentNode>(({ node, instance }) => {
     return (
         <List divided relaxed="very">
             {node.children.map((child: Node) => (
@@ -182,7 +174,7 @@ export const NavigationEditor = editor<ParentNode>(({ node, instance }) => {
 });
 
 // export const NavigationEditorPlugin: EditorPlugin = {
-//     id: 'navigation-editor',
+//     id: 'navigation-widget',
 //     use: (node) => node.schema.type === 'object',
 //     Editor: NavigationEditor
 // };

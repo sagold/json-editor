@@ -1,9 +1,9 @@
 import { StringNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
-import { editor, EditorPlugin } from './decorators';
+import { widget, WidgetPlugin } from './decorators';
 import TextareaAutosize from 'react-textarea-autosize';
 
-export const TextEditor = editor<StringNode, string>(({ node, options, setValue }) => {
+export const TextWidget = widget<StringNode, string>(({ node, options, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
     return (
@@ -32,9 +32,9 @@ export const TextEditor = editor<StringNode, string>(({ node, options, setValue 
     );
 });
 
-export const TextEditorPlugin: EditorPlugin = {
-    id: 'text-editor',
+export const TextWidgetPlugin: WidgetPlugin = {
+    id: 'text-widget',
     use: (node) =>
         node.schema.type === 'string' && (node.schema.format === 'html' || node.schema.format === 'textarea'),
-    Editor: TextEditor
+    Widget: TextWidget
 };

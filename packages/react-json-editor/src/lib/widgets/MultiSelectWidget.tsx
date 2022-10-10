@@ -1,6 +1,6 @@
 import { StringNode, Node, json } from 'headless-json-editor';
 import { Form, Dropdown, DropdownItemProps, Message } from 'semantic-ui-react';
-import { editor, EditorPlugin } from './decorators';
+import { widget, WidgetPlugin } from './decorators';
 
 // @todo is building enum options job of syntax-tree?
 // options format might is dependent on ui implementation
@@ -20,7 +20,7 @@ function hasEnumOptions(itemsSchema): itemsSchema is { enum: string[] } {
     return Array.isArray(itemsSchema?.enum);
 }
 
-export const MultiSelectEditor = editor<StringNode, string>(({ node, options, setValue }) => {
+export const MultiSelectWidget = widget<StringNode, string>(({ node, options, setValue }) => {
     const listData = json(node) as string[];
     // two modes: free strings or fixed enum
     let allowAdditions = true;
@@ -62,12 +62,12 @@ export const MultiSelectEditor = editor<StringNode, string>(({ node, options, se
     );
 });
 
-export function useMultiSelectEditor(node: Node) {
+export function useMultiSelectWidget(node: Node) {
     return isArraySchema(node.schema) && node.schema.items.type === 'string';
 }
 
-export const MultiSelectEditorPlugin: EditorPlugin = {
-    id: 'multi-select-editor',
-    use: useMultiSelectEditor,
-    Editor: MultiSelectEditor
+export const MultiSelectWidgetPlugin: WidgetPlugin = {
+    id: 'multi-select-widget',
+    use: useMultiSelectWidget,
+    Widget: MultiSelectWidget
 };

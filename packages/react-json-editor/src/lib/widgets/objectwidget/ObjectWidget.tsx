@@ -2,7 +2,7 @@ import { ObjectNode, DefaultNodeOptions, getChildNode } from 'headless-json-edit
 import { Button, Card, Segment, Message, Icon, Grid, SemanticCOLORS } from 'semantic-ui-react';
 import { useState } from 'react';
 import { buildObjectLayout, ObjectLayout } from './buildObjectLayout';
-import { editor, EditorPlugin } from '../decorators';
+import { widget, WidgetPlugin } from '../decorators';
 import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { classNames } from '../../classNames';
@@ -30,7 +30,7 @@ export type ObjectOptions = {
     };
 } & DefaultNodeOptions;
 
-export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, instance }) => {
+export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, instance }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
@@ -45,7 +45,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
                         if (child == null) {
                             return null;
                         }
-                        const ChildEditor = instance.getEditor(child);
+                        const ChildEditor = instance.getWidget(child);
                         return (
                             <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
                                 <ChildEditor node={child} instance={instance} key={child.id} />
@@ -59,7 +59,7 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
         children = (
             <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => {
-                    const ChildEditor = instance.getEditor(child);
+                    const ChildEditor = instance.getWidget(child);
                     return <ChildEditor node={child} instance={instance} key={child.id} />;
                 })}
             </div>
@@ -154,8 +154,8 @@ export const ObjectEditor = editor<ObjectNode<ObjectOptions>>(({ node, options, 
     );
 });
 
-export const ObjectEditorPlugin: EditorPlugin = {
-    id: 'object-editor',
+export const ObjectWidgetPlugin: WidgetPlugin = {
+    id: 'object-widget',
     use: (node) => node.schema.type === 'object',
-    Editor: ObjectEditor
+    Widget: ObjectWidget
 };

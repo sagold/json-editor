@@ -3,15 +3,15 @@ import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
 import { JsonEditor, JsonEditorOptions } from './lib/JsonEditor';
 
 export { JsonForm, JsonEditor, useJsonEditor };
-export { defaultEditors } from './lib/editors/index';
-export { ArrayEditor, ArrayEditorPlugin } from './lib/editors/arrayeditor/ArrayEditor';
-export { ObjectEditor, ObjectEditorPlugin } from './lib/editors/objecteditor/ObjectEditor';
-export { NumberEditor, NumberEditorPlugin } from './lib/editors/NumberEditor';
-export { ErrorEditor, ErrorEditorPlugin } from './lib/editors/ErrorEditor';
-export { MultiSelectEditor, MultiSelectEditorPlugin } from './lib/editors/MultiSelectEditor';
-export { NullEditor, NullEditorPlugin } from './lib/editors/NullEditor';
-export { SelectOneOfEditor, SelectOneOfEditorPlugin } from './lib/editors/selectoneofeditor/SelectOneOfEditor';
-export { StringEditor, StringEditorPlugin } from './lib/editors/StringEditor';
-export { UnknownEditor, UnknownEditorPlugin } from './lib/editors/UnknownEditor';
+export { defaultWidgets } from './lib/widgets/index';
+export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
+export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
+export { NumberWidget, NumberWidgetPlugin } from './lib/widgets/NumberWidget';
+export { ErrorWidget, ErrorWidgetPlugin } from './lib/widgets/ErrorWidget';
+export { MultiSelectWidget, MultiSelectWidgetPlugin } from './lib/widgets/MultiSelectWidget';
+export { NullWidget, NullWidgetPlugin } from './lib/widgets/NullWidget';
+export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
+export { StringWidget, StringWidgetPlugin } from './lib/widgets/StringWidget';
+export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/UnknownWidget';
 
 export type { JsonFormProps, JsonEditorOptions, UseJsonEditorOptions };

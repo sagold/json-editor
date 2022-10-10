@@ -1,7 +1,7 @@
-import { EditorPlugin } from './decorators';
+import { WidgetPlugin } from './decorators';
 import { Node } from 'headless-json-editor';
 
-export const NullEditor = ({ node }: { node: Node }) => {
+export const NullWidget = ({ node }: { node: Node }) => {
     const { description, title, pointer } = node.options;
     return (
         <div className="ed-form ed-value" data-type="null" data-id={pointer}>
@@ -13,8 +13,8 @@ export const NullEditor = ({ node }: { node: Node }) => {
     );
 };
 
-export const NullEditorPlugin: EditorPlugin = {
-    id: 'null-editor',
+export const NullWidgetPlugin: WidgetPlugin = {
+    id: 'null-widget',
     use: (node) => node.schema.type === 'null',
-    Editor: NullEditor
+    Widget: NullWidget
 };

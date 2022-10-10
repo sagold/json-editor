@@ -1,13 +1,13 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultEditors, useJsonEditor } from '../../../index';
-import { MasterDetailEditor } from './MasterDetailEditor';
+import { defaultWidgets, useJsonEditor } from '../../../index';
+import { MasterDetailWidget } from './MasterDetailWidget';
 import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
 import '../../styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
     title: 'Editor/MasterDetailEditor',
-    component: MasterDetailEditor,
+    component: MasterDetailWidget,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         data: { control: { type: 'object' } },
@@ -19,7 +19,7 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema }) => {
     const [node, instance] = useJsonEditor<ParentNode>({
         schema,
-        editors: defaultEditors,
+        widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
         data
     });
@@ -32,7 +32,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <div style={{ width: '400px' }}>
-            <MasterDetailEditor
+            <MasterDetailWidget
                 node={node}
                 instance={instance}
                 // options={{ withChildren: true }}

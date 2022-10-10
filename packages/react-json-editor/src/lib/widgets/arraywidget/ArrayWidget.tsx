@@ -1,7 +1,7 @@
 import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { Button, Icon, Message, SemanticCOLORS } from 'semantic-ui-react';
-import { editor, EditorPlugin } from '../decorators';
+import { widget, WidgetPlugin } from '../decorators';
 import { JsonEditor } from '../../JsonEditor';
 import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
@@ -71,7 +71,7 @@ function createOnSortEnd(instance: JsonEditor, node: Node) {
     };
 }
 
-export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
+export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
@@ -183,8 +183,8 @@ export const ArrayEditor = editor<ArrayNode<ArrayOptions>>(({ instance, node, op
     );
 });
 
-export const ArrayEditorPlugin: EditorPlugin = {
-    id: 'array-editor',
+export const ArrayWidgetPlugin: WidgetPlugin = {
+    id: 'array-widget',
     use: (node) => node.schema.type === 'array',
-    Editor: ArrayEditor
+    Widget: ArrayWidget
 };

@@ -20,7 +20,7 @@ export const data = {
 
 export const schema = {
     type: 'object',
-    title: 'Editors Overview',
+    title: 'Widgets Overview',
     description: 'this is the root object',
     options: {
         editJson: { liveUpdate: true }

@@ -1,13 +1,13 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultEditors, useJsonEditor } from '../../../index';
-import { ArrayEditor, ArrayOptions } from './ArrayEditor';
+import { defaultWidgets, useJsonEditor } from '../../../index';
+import { ArrayWidget, ArrayOptions } from './ArrayWidget';
 import { JSONSchema, ArrayNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
 import '../../styles.scss';
 
 export default {
-    title: 'Editor/ArrayEditor',
-    component: ArrayEditor,
+    title: 'Widget/ArrayWidget',
+    component: ArrayWidget,
     argTypes: {
         data: { control: { type: 'object' } },
         schema: { control: { type: 'object' } },
@@ -26,7 +26,7 @@ type ComponentStoryProps = {
 const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
     const [node, instance] = useJsonEditor<ArrayNode<ArrayOptions>>({
         schema,
-        editors: defaultEditors,
+        widgets: defaultWidgets,
         data
     });
     if (node == null) {
@@ -38,13 +38,13 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     return (
         // <div style={{ width: '400px' }}>
         <Form error>
-            <ArrayEditor node={node} instance={instance} options={options} />
+            <ArrayWidget node={node} instance={instance} options={options} />
         </Form>
     );
 };
 
-export const DefaultEditor = Template.bind({});
-DefaultEditor.args = {
+export const DefaultWidget = Template.bind({});
+DefaultWidget.args = {
     data: [
         { title: 'first value', value: 1 },
         { title: 'wrong value type', value: 'four' },
@@ -87,7 +87,7 @@ DefaultEditor.args = {
 
 export const DragAndDrop = Template.bind({});
 DragAndDrop.args = {
-    ...DefaultEditor.args,
+    ...DefaultWidget.args,
     options: {
         sortable: {
             enabled: true
@@ -97,7 +97,7 @@ DragAndDrop.args = {
 
 export const Collapsible = Template.bind({});
 Collapsible.args = {
-    ...DefaultEditor.args,
+    ...DefaultWidget.args,
     options: {
         collapsed: true
     }
@@ -105,7 +105,7 @@ Collapsible.args = {
 
 export const LayoutOptions = Template.bind({});
 LayoutOptions.args = {
-    ...DefaultEditor.args,
+    ...DefaultWidget.args,
     options: {
         layout: {
             type: 'cards'
@@ -115,7 +115,7 @@ LayoutOptions.args = {
 
 export const HeaderOptions = Template.bind({});
 HeaderOptions.args = {
-    ...DefaultEditor.args,
+    ...DefaultWidget.args,
     options: {
         header: {
             inverted: true
@@ -125,7 +125,7 @@ HeaderOptions.args = {
 
 export const EditJsonOptions = Template.bind({});
 EditJsonOptions.args = {
-    ...DefaultEditor.args,
+    ...DefaultWidget.args,
     options: {
         editJson: {
             enabled: true,

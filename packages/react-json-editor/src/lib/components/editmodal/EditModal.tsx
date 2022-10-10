@@ -16,13 +16,13 @@ export function EditModal({ isOpen, closeModal, instance, node, options }: EditM
         console.log(node);
         return null;
     }
-    const Editor = instance.getEditor(node, options);
+    const Widget = instance.getWidget(node, options);
     return (
         <Modal open={isOpen} onClose={closeModal}>
             <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>
             <Modal.Content>
                 <Form error>
-                    <Editor node={node} instance={instance} options={{ ...options, title: undefined }} />
+                    <Widget node={node} instance={instance} options={{ ...options, title: undefined }} />
                 </Form>
             </Modal.Content>
             <Modal.Actions>

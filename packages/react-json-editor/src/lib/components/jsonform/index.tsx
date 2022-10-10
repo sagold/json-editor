@@ -8,8 +8,8 @@ import {
     HeadlessJsonEditorOptions
 } from 'headless-json-editor';
 import { useJsonEditor } from '../../useJsonEditor';
-import { defaultEditors } from '../../../index';
-import { EditorPlugin } from '../../editors/decorators';
+import { defaultWidgets } from '../../../index';
+import { WidgetPlugin } from '../../widgets/decorators';
 
 // import { createContext } from 'react';
 // export const ModalContext = createContext({});
@@ -17,7 +17,7 @@ import { EditorPlugin } from '../../editors/decorators';
 export type JsonFormProps = {
     schema: JSONSchema;
     data?: unknown;
-    editors?: EditorPlugin[];
+    widgets?: WidgetPlugin[];
     plugins?: Plugin[];
     draft?: HeadlessJsonEditorOptions['draftConfig'];
     onChange?: (data: unknown, root: Node) => void;
@@ -26,14 +26,14 @@ export type JsonFormProps = {
 export function JsonForm({
     schema,
     data,
-    editors = defaultEditors,
+    widgets = defaultWidgets,
     plugins = [RemoteEnumOptionsPlugin],
     onChange,
     draft
 }: JsonFormProps) {
     const [node, instance] = useJsonEditor({
         schema,
-        editors,
+        widgets,
         onChange,
         plugins,
         draftConfig: draft,
@@ -49,7 +49,7 @@ export function JsonForm({
         return <Form error />;
     }
 
-    const ChildEditor = instance.getEditor(node);
+    const ChildEditor = instance.getWidget(node);
     return (
         <Form error>
             <ChildEditor node={node} instance={instance} />

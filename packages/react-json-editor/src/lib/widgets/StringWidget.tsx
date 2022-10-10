@@ -1,8 +1,8 @@
 import { StringNode } from 'headless-json-editor';
 import { Form, Dropdown } from 'semantic-ui-react';
-import { editor, EditorPlugin } from './decorators';
+import { widget, WidgetPlugin } from './decorators';
 
-export const StringEditor = editor<StringNode, string>(({ node, options, setValue }) => {
+export const StringWidget = widget<StringNode, string>(({ node, options, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
 
@@ -35,13 +35,13 @@ export const StringEditor = editor<StringNode, string>(({ node, options, setValu
     );
 });
 
-export const StringEditorPlugin: EditorPlugin = {
-    id: 'string-editor',
+export const StringWidgetPlugin: WidgetPlugin = {
+    id: 'string-widget',
     use: (node) => node.schema.type === 'string',
-    Editor: StringEditor
+    Widget: StringWidget
 };
 
-export const SelectEditor = editor<StringNode, string>(({ node, options, setValue }) => {
+export const SelectWidget = widget<StringNode, string>(({ node, options, setValue }) => {
     const enumValues = (node.schema.enum || []) as string[];
 
     const titles = (options.enum as string[]) ?? [];

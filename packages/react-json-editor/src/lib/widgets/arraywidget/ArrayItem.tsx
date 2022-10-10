@@ -11,7 +11,7 @@ export type ArrayItemProps = {
 };
 
 export function ArrayItemDefault({ instance, node, withDragHandle, size }: ArrayItemProps) {
-    const Editor = instance.getEditor(node);
+    const Widget = instance.getWidget(node);
     return (
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
@@ -25,14 +25,14 @@ export function ArrayItemDefault({ instance, node, withDragHandle, size }: Array
                     <ArrayItemActions instance={instance} node={node} size={size} />
                 </Popup>
             </div>
-            <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+            <Widget instance={instance} node={node} options={{ title: undefined, description: undefined }} />
             {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
         </div>
     );
 }
 
 export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayItemProps) {
-    const Editor = instance.getEditor(node);
+    const Widget = instance.getWidget(node);
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
             <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
@@ -44,7 +44,7 @@ export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayIte
                 <Card.Meta>{node.options.description}</Card.Meta>
             </Card.Content>
             <Card.Content key="item">
-                <Editor instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+                <Widget instance={instance} node={node} options={{ title: undefined, description: undefined }} />
             </Card.Content>
         </Card>
     );

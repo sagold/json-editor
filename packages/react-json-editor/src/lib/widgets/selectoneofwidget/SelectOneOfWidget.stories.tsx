@@ -1,13 +1,13 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultEditors, useJsonEditor } from '../../../index';
-import { SelectOneOfEditor } from './SelectOneOfEditor';
+import { defaultWidgets, useJsonEditor } from '../../../index';
+import { SelectOneOfWidget } from './SelectOneOfWidget';
 import { JSONSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
 import '../../styles.scss';
 
 export default {
-    title: 'Editor/SelectOneOfEditor',
-    component: SelectOneOfEditor,
+    title: 'Editor/SelectOneOfWidget',
+    component: SelectOneOfWidget,
     argTypes: {
         data: { control: { type: 'object' } },
         schema: { control: { type: 'object' } },
@@ -26,7 +26,7 @@ type ComponentStoryProps = {
 const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
     const [node, instance] = useJsonEditor<ParentNode>({
         schema,
-        editors: defaultEditors,
+        widgets: defaultWidgets,
         data
     });
     if (node == null) {
@@ -38,7 +38,7 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     return (
         // <div style={{ width: '400px' }}>
         <Form error>
-            <SelectOneOfEditor node={node.children[0] as Node} instance={instance} options={options} />
+            <SelectOneOfWidget node={node.children[0] as Node} instance={instance} options={options} />
         </Form>
     );
 };

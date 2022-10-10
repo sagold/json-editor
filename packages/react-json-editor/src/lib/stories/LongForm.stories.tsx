@@ -1,6 +1,6 @@
-import { useJsonEditor, defaultEditors } from '../../index';
+import { useJsonEditor, defaultWidgets } from '../../index';
 import { Form } from 'semantic-ui-react';
-import { NavigationEditor } from '../editors/navigationeditor/NavigationEditor';
+import { NavigationWidget } from '../widgets/navigationwidget/NavigationWidget';
 import { data, schema } from './data/longform';
 import '../styles.scss';
 
@@ -13,12 +13,12 @@ export default {
 };
 
 export const LongForm = () => {
-    const [node, instance] = useJsonEditor({ data, schema, editors: defaultEditors, plugins: [] });
+    const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
     if (node == null) {
         return;
     }
 
-    const Editor = instance.getEditor(node);
+    const WidgetComponent = instance.getWidget(node);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -35,12 +35,12 @@ export const LongForm = () => {
                 }}
             >
                 <div style={{ paddingRight: 24 }}>
-                    <NavigationEditor node={node} instance={instance} />
+                    <NavigationWidget node={node} instance={instance} />
                 </div>
             </div>
             <div style={{ marginLeft: '20%', paddingLeft: 48 }}>
                 <Form error>
-                    <Editor node={node} instance={instance} />
+                    <WidgetComponent node={node} instance={instance} />
                 </Form>
             </div>
         </div>

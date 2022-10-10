@@ -1,9 +1,9 @@
 import { JSONError } from 'json-schema-library';
-import { EditorPlugin } from './decorators';
+import { WidgetPlugin } from './decorators';
 import { json, Node, isJSONError, HeadlessJsonEditor } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-export const ErrorEditor = ({ node, instance }: { node: Node; instance: HeadlessJsonEditor }) => {
+export const ErrorWidget = ({ node, instance }: { node: Node; instance: HeadlessJsonEditor }) => {
     const value = JSON.stringify(json(node));
     const error = node.schema as unknown as JSONError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
@@ -30,8 +30,8 @@ export const ErrorEditor = ({ node, instance }: { node: Node; instance: Headless
     );
 };
 
-export const ErrorEditorPlugin: EditorPlugin = {
-    id: 'error-editor',
+export const ErrorWidgetPlugin: WidgetPlugin = {
+    id: 'error-widget',
     use: (node) => isJSONError(node.schema),
-    Editor: ErrorEditor
+    Widget: ErrorWidget
 };

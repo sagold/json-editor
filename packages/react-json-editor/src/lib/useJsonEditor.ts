@@ -8,10 +8,10 @@ import {
     JSONSchema
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
-import { EditorPlugin } from './editors/decorators';
+import { WidgetPlugin } from './widgets/decorators';
 
 export type UseJsonEditorOptions = {
-    editors: EditorPlugin[];
+    widgets: WidgetPlugin[];
     schema: JSONSchema;
     data?: unknown;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
@@ -20,7 +20,7 @@ export type UseJsonEditorOptions = {
 };
 
 /**
- * add json editor capabilities to your functional component
+ * add json editor widget capabilities to your functional component
  */
 export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [undefined] | [T, JsonEditor] {
     const { schema, data } = settings;
@@ -28,11 +28,11 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
     const [root, setState] = useState<T>();
 
     useEffect(() => {
-        const { onChange, plugins = [], editors } = settings;
+        const { onChange, plugins = [], widgets } = settings;
         jsonEditor.current = new JsonEditor({
             schema,
             data,
-            editors,
+            widgets,
             draftConfig: settings.draftConfig,
             plugins: [
                 ...plugins,
