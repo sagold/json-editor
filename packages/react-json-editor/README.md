@@ -2,11 +2,10 @@
     <img src="./docs/he-full-2000x564.png" width="100%" alt="_react-json-editor"><br />
     <img src="./docs/title-react-700x76.png" width="350px" alt="_react-json-editor">
 </p>
-
 <p align="center">
     <a href="https://sagold.github.io/json-editor/">demo</a> |
-    <a href="#editor-options">editor options</a> |
-    <a href="#editors">editors</a> |
+    <a href="#widget-options">widget options</a> |
+    <a href="#widgets">widgets</a> |
     <a href="#validators">validators</a> |
     <a href="#plugins">plugins</a> |
     <a href="#advanced">advanced</a>
@@ -41,7 +40,7 @@ function MyForm({ schema, data }) {
 | schema    | JsonSchema            | json schema describing data                       |
 | data      | any                   | initial data matching json schema                 |
 | onChange  | (data, node) => void  | change listener for data updates                  |
-| editors   | EditorPlugin[]        | list of editors used to create user form          |
+| widgets   | WidgetPlugin[]        | list of widgets used to create user form          |
 | plugins   | Plugin[]              | list of plugins for headless json editor          |
 | draft     | DraftConfig           | json schema draft config (json-schema-library)    |
 
@@ -52,11 +51,11 @@ function MyForm({ schema, data }) {
 
 > react implementation of [headless-json-editor](../headless-json-editor) using [semantic-ui](https://semantic-ui.com/)
 
-## editor options
+## widget options
 
-> For individual editor options please refer to the [storybook editor section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
+> For individual widget options please refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
 
-You can pass options to an editor instance using the `options` object on its sub schema. e.g.
+You can pass options to an widget instance using the `options` object on its sub schema. e.g.
 
 ```json
 {
@@ -68,14 +67,14 @@ You can pass options to an editor instance using the `options` object on its sub
 }
 ```
 
-What follows are options that are supported by each editor in this repository and should be supported by a custom editor:
+What follows are options that are supported by each widget in this repository and should be supported by a custom widget:
 
 ```ts
 type DefaultNodeOptions = { 
   /** 
    * Pass in a list of _css classes_ that should be added on the root 
-   * element of this editor. Use this to easily identify or style a specific 
-   * editor instance. 
+   * element of this widget. Use this to easily identify or style a specific 
+   * widget instance. 
    */
   classNames?: string[];
 
@@ -103,27 +102,39 @@ type DefaultNodeOptions = {
   title?: string;
   
   /** 
-   * If set to false, will not render a title for this editor.
+   * If set to false, will not render a title for this widget.
    * Defaults to `true` 
    */
   showTitle: boolean;
 
   /** 
-   * If set to false, will not render a description for this editor.
+   * If set to false, will not render a description for this widget.
    * Defaults to `true` 
    */
   showDescription: boolean;
 };
 ```
 
-In addition, each editor exposes its own options. For more details refer to the [storybook editor section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
+In addition, each widget exposes its own options. For more details refer to the [storybook widget section](https://sagold.github.io/json-editor/?path=/story/editor-arrayeditor--default-editor)
 
 
-## editors
+## widgets
 
-> - default editors
-> - add new editors
-> - create custom editors
+> - default ~~editors~~ widgets
+> - add new ~~editors~~ widgets
+> - create custom ~~editors~~ widgets
+
+**list of widgets that test a schema**
+json-editor works on a list of widgets that are used to render each json sub-schema. Thus, to fully support a user form for any json-schema we will need to have a widget for any of those types, be it for a simple string `{ "type": "string" }` or a complex object `{ "type": "object", "properties": { ... } }`. You can also have specialized widgets for compound sub schemas, e.g. an array of strings `{ "type": "array", "items": { "type": "string" }}`. To make this work, json-editor scans the list until of widgets until one widgets registers for the given schema. 
+
+**return first matching schema**
+With this, very general widgets (string, number, etc) are on the bottom of this list, specialized schemas (image, coordinates, etc) are on top. The first widget returning `true` on `widget.use` will be instantiated with the corresponding schema. Note that, very specialized schemas can encompass multiple subschemas and generic schemas only describe the object or array but pass actual children back to the list of widgets for rendering.
+
+**can modify test of a widget**
+json-editor comes with a set of widgets exposed as _defaultWidgets_. These can completely build a user form for any possible json-data. In addtion, some more specialized widgets are exposed and some complex widgets can be added to this list. Just remember that the order is important: first to test `true` will be used to render the user form. 
+
+**can modify list of widgets**
+Assembling the list of widgets on your own, you can select the widgets available, the order they should be taken and also modify the actual test-function test-function for when to use a widget:
 
 
 ## validation
@@ -161,10 +172,10 @@ function MyForm({ schema, data }) {
     return <Form error />;
   }
 
-  const Editor = jsonEditor.getEditor(node);
+  const Widget = jsonEditor.getEditor(node);
   return (
     <Form error>
-      <Editor node={node} instance={jsonEditor} />
+      <Widget node={node} instance={jsonEditor} />
     </Form>
   );
 }
