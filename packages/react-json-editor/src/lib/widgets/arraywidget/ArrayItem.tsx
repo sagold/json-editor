@@ -1,6 +1,7 @@
 import { Node } from 'headless-json-editor';
 import { Button, Card, Popup, Icon } from 'semantic-ui-react';
 import { JsonEditor } from '../../JsonEditor';
+import { Widget } from '../../components/widget/Widget';
 
 export type ArrayItemProps = {
     instance: JsonEditor;
@@ -11,7 +12,6 @@ export type ArrayItemProps = {
 };
 
 export function ArrayItemDefault({ instance, node, withDragHandle, size }: ArrayItemProps) {
-    const Widget = instance.getWidget(node);
     return (
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
@@ -32,7 +32,6 @@ export function ArrayItemDefault({ instance, node, withDragHandle, size }: Array
 }
 
 export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayItemProps) {
-    const Widget = instance.getWidget(node);
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
             <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>

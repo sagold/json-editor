@@ -6,6 +6,7 @@ import { widget, WidgetPlugin } from '../decorators';
 import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { classNames } from '../../classNames';
+import { Widget } from '../../components/widget/Widget';
 
 export type ObjectOptions = {
     /** additional classnames for object editor */
@@ -45,10 +46,9 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         if (child == null) {
                             return null;
                         }
-                        const ChildEditor = instance.getWidget(child);
                         return (
                             <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
-                                <ChildEditor node={child} instance={instance} key={child.id} />
+                                <Widget node={child} instance={instance} key={child.id} />
                             </Grid.Column>
                         );
                     })}
@@ -58,10 +58,9 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     } else {
         children = (
             <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
-                {node.children.map((child) => {
-                    const ChildEditor = instance.getWidget(child);
-                    return <ChildEditor node={child} instance={instance} key={child.id} />;
-                })}
+                {node.children.map((child) => (
+                    <Widget node={child} instance={instance} key={child.id} />
+                ))}
             </div>
         );
     }

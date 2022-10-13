@@ -6,7 +6,7 @@ import { Form } from 'semantic-ui-react';
 import '../../styles.scss';
 
 export default {
-    title: 'Editor/SelectOneOfWidget',
+    title: 'Widget/SelectOneOfWidget',
     component: SelectOneOfWidget,
     argTypes: {
         data: { control: { type: 'object' } },

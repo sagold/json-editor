@@ -6,7 +6,7 @@ import '../../styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Editor/MasterDetailEditor',
+    title: 'Widget/MasterDetailWidget',
     component: MasterDetailWidget,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {

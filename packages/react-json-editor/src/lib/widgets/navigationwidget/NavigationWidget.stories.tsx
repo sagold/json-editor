@@ -46,7 +46,7 @@ const data = {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Editor/NavigationEditor',
+    title: 'Widget/NavigationWidget',
     component: NavigationWidget,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {

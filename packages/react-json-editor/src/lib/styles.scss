@@ -97,6 +97,7 @@
     color: #999;
     cursor: pointer;
     i.icon {
+        pointer-events: none;
         width: auto;
         margin: 0;
         padding: 0;

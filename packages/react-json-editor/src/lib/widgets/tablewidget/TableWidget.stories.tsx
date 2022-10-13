@@ -5,7 +5,7 @@ import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import '../../styles.scss';
 
 export default {
-    title: 'Editor/TableEditor',
+    title: 'Widget/TableWidget',
     component: TableWidget,
     argTypes: {
         data: { control: { type: 'object' } },

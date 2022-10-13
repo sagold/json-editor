@@ -3,6 +3,7 @@ import { getOptions } from 'headless-json-editor';
 import { JSONSchema } from 'json-schema-library';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { widget, WidgetPlugin } from '../decorators';
+import { Widget } from '../../components/widget/Widget';
 
 type SelectedOneOfSchema = JSONSchema & {
     variableSchema: true;
@@ -15,7 +16,6 @@ export function useSelectOneOfWidget(node, { skipSelectOneOf = false } = {}) {
 }
 
 export const SelectOneOfWidget = widget(({ instance, node, options }) => {
-    const WidgetComponent = instance.getWidget(node, { skipSelectOneOf: true });
     const selectedSchema = node.schema as SelectedOneOfSchema;
 
     const onChange = (e, { value }: DropdownProps) => {
@@ -36,7 +36,7 @@ export const SelectOneOfWidget = widget(({ instance, node, options }) => {
         <div className="ed-form ed-form--parent ed-oneof">
             <ParentHeader node={node} options={getOptions(oneOfSchema as JSONSchema, node.property)} />
 
-            <Divider horizontal fitted>
+            <Divider horizontal>
                 <Dropdown
                     compact
                     onChange={onChange}
@@ -46,32 +46,10 @@ export const SelectOneOfWidget = widget(({ instance, node, options }) => {
             </Divider>
 
             <div className="ed-children">
-                <WidgetComponent node={node} instance={instance} options={{ title: undefined }} />
+                <Widget node={node} instance={instance} options={{ title: undefined, skipSelectOneOf: true }} />
             </div>
         </div>
     );
-    // return (
-    //     <div className="ed-form ed-form--parent ed-oneof">
-    //         <Card fluid>
-    //             <Card.Content>
-    //                 <ParentHeader node={node} options={getOptions(oneOfSchema as JSONSchema, node.property)}>
-    //                     <Form.Field id={node.pointer} className="ed-oneof__selection">
-    //                         <Dropdown
-    //                             selection
-    //                             onChange={onChange}
-    //                             value={selectedSchema.oneOfIndex as number}
-    //                             options={selectOptions}
-    //                         />
-    //                     </Form.Field>
-    //                 </ParentHeader>
-    //             </Card.Content>
-
-    //             <Card.Content className="ed-children">
-    //                 <Editor node={node} instance={instance} />
-    //             </Card.Content>
-    //         </Card>
-    //     </div>
-    // );
 });
 
 export const SelectOneOfWidgetPlugin: WidgetPlugin = {
