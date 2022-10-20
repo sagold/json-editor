@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import {
     HeadlessJsonEditorOptions,
     Plugin,
@@ -14,6 +14,7 @@ export type UseJsonEditorOptions = {
     widgets: WidgetPlugin[];
     schema: JSONSchema;
     data?: unknown;
+    validate?: boolean;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     onChange?: OnChangeListener;
     plugins?: Plugin[];
@@ -22,14 +23,12 @@ export type UseJsonEditorOptions = {
 /**
  * add json editor widget capabilities to your functional component
  */
-export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [undefined] | [T, JsonEditor] {
-    const { schema, data } = settings;
-    const jsonEditor = useRef<JsonEditor>();
-    const [root, setState] = useState<T>();
+export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
+    const { schema, data, validate = true } = settings;
 
-    useEffect(() => {
+    const editor = useMemo(() => {
         const { onChange, plugins = [], widgets } = settings;
-        jsonEditor.current = new JsonEditor({
+        const editor = new JsonEditor({
             schema,
             data,
             widgets,
@@ -44,14 +43,13 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
                 })
             ]
         });
-        const node = jsonEditor.current.create(data);
-        jsonEditor.current.validate();
-        setState(node as T);
+        // const node = editor.create(data);
+        if (validate === true) {
+            editor.validate();
+        }
+        return editor;
     }, [schema, data]);
 
-    if (root != null && jsonEditor.current != null) {
-        return [root, jsonEditor.current];
-    }
-
-    return [undefined];
+    const [root, setState] = useState<T>(editor.getState() as T);
+    return [root, editor];
 }

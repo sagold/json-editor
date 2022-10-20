@@ -14,9 +14,6 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
         plugins: [RemoteEnumOptionsPlugin],
         data
     });
-    if (node == null) {
-        return null;
-    }
 
     const ChildWidget = instance.getWidget(node);
     return (

@@ -164,11 +164,16 @@ function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor 
 export const NavigationWidget = widget<ParentNode>(({ node, instance }) => {
     return (
         <List divided relaxed="very">
-            {node.children.map((child: Node) => (
-                <List.Item key={child.id}>
-                    <ChildNavigation node={child} instance={instance} />
-                </List.Item>
-            ))}
+            {node.children.map((child: Node) => {
+                if (child.options.hidden) {
+                    return null;
+                }
+                return (
+                    <List.Item key={child.id}>
+                        <ChildNavigation node={child} instance={instance} />
+                    </List.Item>
+                );
+            })}
         </List>
     );
 });
