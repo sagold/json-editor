@@ -24,7 +24,7 @@ export type UseJsonEditorOptions = {
  * add json editor widget capabilities to your functional component
  */
 export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
-    const { schema, data, validate = true } = settings;
+    const { schema, data } = settings;
 
     const editor = useMemo(() => {
         const { onChange, plugins = [], widgets } = settings;
@@ -32,6 +32,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
             schema,
             data,
             widgets,
+            validate: settings.validate,
             draftConfig: settings.draftConfig,
             plugins: [
                 ...plugins,
@@ -43,10 +44,6 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
                 })
             ]
         });
-        // const node = editor.create(data);
-        if (validate === true) {
-            editor.validate();
-        }
         return editor;
     }, [schema, data]);
 

@@ -56,6 +56,7 @@ export type HeadlessJsonEditorOptions = {
     data?: unknown;
     draftConfig?: Partial<DraftConfig>;
     plugins?: Plugin[];
+    validate?: boolean;
 };
 
 export class HeadlessJsonEditor {
@@ -64,11 +65,11 @@ export class HeadlessJsonEditor {
     changes: Change[] = [];
     plugins: PluginObserver[] = [];
 
-    constructor({ schema, data = {}, plugins = [], draftConfig }: HeadlessJsonEditorOptions) {
+    constructor({ schema, data = {}, plugins = [], draftConfig, validate = false }: HeadlessJsonEditorOptions) {
         this.draft = new JsonEditor(schema, draftConfig);
         plugins.map((p) => this.addPlugin(p));
         this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
-        this.validate();
+        validate && this.validate();
     }
 
     create(data?: unknown): Node {
