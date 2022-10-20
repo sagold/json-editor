@@ -1,6 +1,6 @@
 {
     "name": "headless-json-editor",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "type": "commonjs",
     "author": {
         "name": "Sascha Goldhofer",
@@ -25,7 +25,7 @@
         "@types/uuid": "^8.3.4",
         "fast-equals": "^4.0.1",
         "gson-pointer": "^4.1.1",
-        "json-schema-library": "https://github.com/sagold/json-schema-library.git#develop",
+        "json-schema-library": "^7.1.0",
         "uuid": "^8.3.2"
     }
 }
