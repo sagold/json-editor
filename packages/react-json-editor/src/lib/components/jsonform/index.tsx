@@ -14,6 +14,8 @@ import { useJsonEditor } from '../../useJsonEditor';
 import { defaultWidgets } from '../../../index';
 import { WidgetPlugin } from '../../widgets/decorators';
 import { Widget } from '../widget/Widget';
+import { JsonEditor } from '../../JsonEditor';
+import { MutableRefObject } from 'react';
 
 // import { createContext } from 'react';
 // export const ModalContext = createContext({});
@@ -28,6 +30,7 @@ export type JsonFormProps = {
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
     onChange?: (data: unknown, root: Node) => void;
+    editor?: MutableRefObject<JsonEditor>;
 };
 
 export function JsonForm({
@@ -38,7 +41,8 @@ export function JsonForm({
     plugins = [RemoteEnumOptionsPlugin],
     onChange,
     options,
-    draft
+    draft,
+    editor
 }: JsonFormProps) {
     const [rootNode, instance] = useJsonEditor({
         schema,
@@ -54,8 +58,8 @@ export function JsonForm({
     // @ts-ignore
     window['validate'] = () => instance.core.validate(json(rootNode));
 
-    if (rootNode == null) {
-        return <Form error />;
+    if (editor) {
+        editor.current = instance;
     }
 
     let node = rootNode;
