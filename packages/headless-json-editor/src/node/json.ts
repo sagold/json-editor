@@ -3,7 +3,7 @@ import { Node } from '../types';
 /**
  * reduces a schema tree to its contained json data
  */
-export function json<T = unknown>(node: Node): T {
+export function json(node: Node): unknown {
     if (node == null) {
         return null;
     }
