@@ -1,11 +1,16 @@
 import { Form, Checkbox } from 'semantic-ui-react';
-import { BooleanNode } from 'headless-json-editor';
+import { BooleanNode, DefaultNodeOptions } from 'headless-json-editor';
 import { WidgetPlugin, widget } from './decorators';
 
-export const BooleanWidget = widget<BooleanNode, boolean>(({ node, options, setValue }) => (
+export type BooleanOptions = {
+    type?: 'checkbox' | 'toggle';
+} & DefaultNodeOptions;
+
+export const BooleanWidget = widget<BooleanNode<BooleanOptions>, boolean>(({ node, options, setValue }) => (
     <div className="ed-form ed-value" data-type="boolean" data-id={node.pointer}>
         <Form.Field id={node.id} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
             <Checkbox
+                toggle={options.type === 'toggle'}
                 label={options.title as string}
                 checked={node.value}
                 onChange={(e, { checked }) => setValue(checked === true)}

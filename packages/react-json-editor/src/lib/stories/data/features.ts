@@ -45,10 +45,19 @@ export const schema = {
             maximum: 2020,
             description: 'number input with maximum 2020'
         },
+        boolean: {
+            title: 'True if should be interactive',
+            description: 'default boolean checkbox',
+            type: 'boolean',
+            default: true
+        },
         isInteractive: {
             title: 'True if should be interactive',
-            description: 'boolean checkbox, usually checkboxes are ambigious',
+            description: 'boolean with options: { type: "toggle"}',
             type: 'boolean',
+            options: {
+                type: 'toggle'
+            },
             default: true
         },
         selection: {

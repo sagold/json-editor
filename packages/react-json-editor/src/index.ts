@@ -8,6 +8,8 @@ import { Widget, WidgetProps } from './lib/components/widget/Widget';
 import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/widgets/decorators';
 
 export { JsonForm, Widget, widget, JsonEditor, useJsonEditor };
+
+// widgets
 export { defaultWidgets } from './lib/widgets/index';
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
 export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
@@ -20,6 +22,7 @@ export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/select
 export { StringWidget, StringWidgetPlugin } from './lib/widgets/StringWidget';
 export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/UnknownWidget';
 
+// types
 export type {
     JSONSchema,
     JsonFormProps,

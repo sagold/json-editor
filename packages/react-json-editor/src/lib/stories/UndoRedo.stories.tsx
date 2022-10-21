@@ -43,7 +43,7 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
     const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [HistoryPlugin] });
-    const historyPlugin = useRef<HistoryPluginInstance>(instance.plugin('history'));
+    const historyPlugin = useRef<HistoryPluginInstance>(instance.plugin('history') as HistoryPluginInstance);
     const Widget = instance.getWidget(node);
     const history = historyPlugin.current;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;

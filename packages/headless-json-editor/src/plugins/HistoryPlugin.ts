@@ -1,7 +1,8 @@
-import { HeadlessJsonEditor, HeadlessJsonEditorOptions, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
+import { HeadlessJsonEditor, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
 import { Node } from '../types';
 
 const UPDATES_TO_COLLECT: number = 12 as const;
+export const historyPluginId = 'history' as const;
 
 export interface HistoryPluginInstance extends PluginInstance {
     undo(): void;
@@ -32,20 +33,18 @@ function isSameNodeUpdated(commit: Commit, changes: PluginEvent[]) {
 }
 
 /**
- * onChange((data) => do something)
+ *
  */
-export function HistoryPlugin(he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions): HistoryPluginInstance {
+export function HistoryPlugin(he: HeadlessJsonEditor): HistoryPluginInstance {
     const past: Commit[] = [{ root: he.getState(), changes: [], updateCount: 0 }];
     const future: Commit[] = [];
-
-    console.log('initial state', past[0]);
 
     function getCurrentState() {
         return past[past.length - 1];
     }
 
     const plugin: HistoryPluginInstance = {
-        id: 'history',
+        id: historyPluginId,
 
         onEvent(root, event) {
             const currentState = getCurrentState();
