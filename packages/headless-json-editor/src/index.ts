@@ -21,8 +21,8 @@ import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin } from './Headles
 
 // plugins
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
-import { createOnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
-import { createHistoryPlugin, HistoryPlugin } from './plugins/HistoryPlugin';
+import { OnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
+import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
 
 // validation
 import { updateErrors } from './validate/updateErrors';
@@ -72,8 +72,8 @@ export {
     isValueNode,
     isJSONError,
     RemoteEnumOptionsPlugin,
-    createOnChangePlugin,
-    createHistoryPlugin
+    OnChangePlugin,
+    HistoryPlugin
 };
 
 export type {
@@ -82,7 +82,7 @@ export type {
     Change,
     DefaultNodeOptions,
     HeadlessJsonEditorOptions,
-    HistoryPlugin,
+    HistoryPluginInstance,
     JSONSchema,
     Node,
     NodeType,

@@ -1,5 +1,5 @@
 import { JSONPointer } from 'json-schema-library';
-import { Plugin, PluginObserver, PluginEvent } from '../HeadlessJsonEditor';
+import { Plugin, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
 import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
 
 /**
@@ -20,33 +20,33 @@ import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
  * }
  * ```
  */
-export const RemoteEnumOptionsPlugin: Plugin = {
-    id: 'remoteEnumOptions',
-    create() {
-        const sources: Record<string, JSONPointer> = {};
-        const targets: Record<string, JSONPointer> = {};
+export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
+    const sources: Record<string, JSONPointer> = {};
+    const targets: Record<string, JSONPointer> = {};
 
-        function updateEnumInSchema(root: Node, changedNode: Node) {
-            const sourceNode = get(root, targets[changedNode.pointer]);
-            if (isJSONError(sourceNode)) {
-                return;
-            }
-            const enumValues = (json(sourceNode) as string[]).filter((v: unknown) => !(v == null || v === ''));
-            const [newRoot, additionalChanges] = updateSchema(root, changedNode.pointer, {
-                ...changedNode.schema,
-                items: {
-                    // @ts-ignore
-                    ...changedNode.schema.items,
-                    enum: enumValues
-                }
-            });
-            if (isJSONError(newRoot)) {
-                return undefined;
-            }
-            return [newRoot, additionalChanges] as [Node, Change[]];
+    function updateEnumInSchema(root: Node, changedNode: Node) {
+        const sourceNode = get(root, targets[changedNode.pointer]);
+        if (isJSONError(sourceNode)) {
+            return;
         }
+        const enumValues = (json(sourceNode) as string[]).filter((v: unknown) => !(v == null || v === ''));
+        const [newRoot, additionalChanges] = updateSchema(root, changedNode.pointer, {
+            ...changedNode.schema,
+            items: {
+                // @ts-ignore
+                ...changedNode.schema.items,
+                enum: enumValues
+            }
+        });
+        if (isJSONError(newRoot)) {
+            return undefined;
+        }
+        return [newRoot, additionalChanges] as [Node, Change[]];
+    }
 
-        const updateEnum: PluginObserver = (root: Node, event: PluginEvent) => {
+    const plugin: PluginInstance = {
+        id: 'remoteEnumOptions',
+        onEvent(root: Node, event: PluginEvent) {
             if (event.type === 'create' && event.node.options.syncEnum) {
                 // @ts-ignore
                 const source = get(root, event.node.options.syncEnum.source);
@@ -68,10 +68,8 @@ export const RemoteEnumOptionsPlugin: Plugin = {
                     }
                 }
             }
-
             return undefined;
-        };
-
-        return updateEnum;
-    }
+        }
+    };
+    return plugin;
 };

@@ -9,20 +9,19 @@ import { updateErrors } from './validate/updateErrors';
 import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
 import { splitLastProperty } from './splitLastProperty';
 
-export interface Plugin {
+export interface PluginInstance {
     id: string;
-    create(he: HeadlessJsonEditor): PluginObserver | false;
+    onEvent: PluginObserver;
     [p: string]: unknown;
 }
+
+export type Plugin = (he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions) => PluginInstance | undefined;
+
 export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
 export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
 export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
 export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent;
 export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
-
-function isPluginObserver(p: unknown): p is PluginObserver {
-    return typeof p === 'function';
-}
 
 function getRootChange(changes: Change[]) {
     let lowestPointer: string = changes[0]?.node.pointer || '#';
@@ -34,11 +33,11 @@ function getRootChange(changes: Change[]) {
     return lowestPointer;
 }
 
-function runPlugins(plugins: PluginObserver[], oldState: Node, newState: Node, changes: PluginEvent[]) {
+function runPlugins(plugins: PluginInstance[], oldState: Node, newState: Node, changes: PluginEvent[]) {
     // @notify change
     changes.forEach((change) => {
         plugins.forEach((p) => {
-            const returnValue = p(newState, change);
+            const returnValue = p.onEvent(newState, change);
             if (returnValue) {
                 newState = returnValue[0];
                 changes.push(...returnValue[1]);
@@ -47,7 +46,7 @@ function runPlugins(plugins: PluginObserver[], oldState: Node, newState: Node, c
     });
     // @notify done
     const done: DoneEvent = { type: 'done', previous: oldState, next: newState, changes };
-    plugins.forEach((p) => p(newState, done));
+    plugins.forEach((p) => p.onEvent(newState, done));
     return newState;
 }
 
@@ -57,18 +56,22 @@ export type HeadlessJsonEditorOptions = {
     draftConfig?: Partial<DraftConfig>;
     plugins?: Plugin[];
     validate?: boolean;
+    [p: string]: unknown;
 };
 
 export class HeadlessJsonEditor {
     state: Node;
     draft: Draft;
     changes: Change[] = [];
-    plugins: PluginObserver[] = [];
+    plugins: PluginInstance[] = [];
+    options: HeadlessJsonEditorOptions;
 
-    constructor({ schema, data = {}, plugins = [], draftConfig, validate = false }: HeadlessJsonEditorOptions) {
+    constructor(options: HeadlessJsonEditorOptions) {
+        const { schema, data = {}, plugins = [], draftConfig, validate = false } = options;
+        this.options = options;
         this.draft = new JsonEditor(schema, draftConfig);
-        plugins.map((p) => this.addPlugin(p));
         this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
+        plugins.map((p) => this.addPlugin(p));
         validate && this.validate();
     }
 
@@ -94,9 +97,13 @@ export class HeadlessJsonEditor {
         return this.state;
     }
 
+    plugin(pluginId: string) {
+        return this.plugins.find((p) => p.id === pluginId);
+    }
+
     addPlugin(plugin: Plugin) {
-        const p = plugin.create(this);
-        if (isPluginObserver(p)) {
+        const p = plugin(this, this.options);
+        if (p && p.id) {
             this.plugins.push(p);
         }
     }

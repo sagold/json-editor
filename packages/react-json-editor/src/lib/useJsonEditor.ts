@@ -3,7 +3,7 @@ import {
     HeadlessJsonEditorOptions,
     Plugin,
     Node,
-    createOnChangePlugin,
+    OnChangePlugin,
     OnChangeListener,
     JSONSchema
 } from 'headless-json-editor';
@@ -34,15 +34,13 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
             widgets,
             validate: settings.validate,
             draftConfig: settings.draftConfig,
-            plugins: [
-                ...plugins,
-                createOnChangePlugin((data, root) => {
-                    setState(root as T);
-                    if (onChange) {
-                        onChange(data, root);
-                    }
-                })
-            ]
+            plugins: [...plugins, OnChangePlugin],
+            onChange(data, root) {
+                setState(root as T);
+                if (onChange) {
+                    onChange(data, root);
+                }
+            }
         });
         return editor;
     }, [schema, data]);

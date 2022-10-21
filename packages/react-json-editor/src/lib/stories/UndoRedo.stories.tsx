@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useJsonEditor, defaultWidgets } from '../../index';
-import { createHistoryPlugin, HistoryPlugin } from 'headless-json-editor';
+import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
 import '../styles.scss';
@@ -42,20 +42,8 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
-    const historyPlugin = useRef<HistoryPlugin>();
-    useEffect(() => {
-        if (instance && historyPlugin.current == null) {
-            const history = createHistoryPlugin();
-            historyPlugin.current = history;
-            instance.addPlugin(history);
-        }
-    });
-
-    if (node == null) {
-        return <></>;
-    }
-
+    const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [HistoryPlugin] });
+    const historyPlugin = useRef<HistoryPluginInstance>(instance.plugin('history'));
     const Widget = instance.getWidget(node);
     const history = historyPlugin.current;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;

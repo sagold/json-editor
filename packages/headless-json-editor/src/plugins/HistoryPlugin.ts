@@ -1,9 +1,9 @@
-import { HeadlessJsonEditor, Plugin, PluginEvent } from '../HeadlessJsonEditor';
+import { HeadlessJsonEditor, HeadlessJsonEditorOptions, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
 import { Node } from '../types';
 
 const UPDATES_TO_COLLECT: number = 12 as const;
 
-export interface HistoryPlugin extends Plugin {
+export interface HistoryPluginInstance extends PluginInstance {
     undo(): void;
     redo(): void;
     getUndoCount(): number;
@@ -34,47 +34,41 @@ function isSameNodeUpdated(commit: Commit, changes: PluginEvent[]) {
 /**
  * onChange((data) => do something)
  */
-export function createHistoryPlugin(): HistoryPlugin {
-    let he: HeadlessJsonEditor;
-    // let current: Commit;
-    const past: Commit[] = [];
+export function HistoryPlugin(he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions): HistoryPluginInstance {
+    const past: Commit[] = [{ root: he.getState(), changes: [], updateCount: 0 }];
     const future: Commit[] = [];
+
+    console.log('initial state', past[0]);
 
     function getCurrentState() {
         return past[past.length - 1];
     }
 
-    const plugin: HistoryPlugin = {
+    const plugin: HistoryPluginInstance = {
         id: 'history',
 
-        create(instance) {
-            he = instance;
+        onEvent(root, event) {
+            const currentState = getCurrentState();
+            if (event.type === 'done' && root !== currentState?.root) {
+                const changes = event.changes;
 
-            past.push({ root: instance.getState(), changes: [], updateCount: 0 });
-
-            return function onChange(root, event) {
-                const currentState = getCurrentState();
-                if (event.type === 'done' && root !== currentState?.root) {
-                    const changes = event.changes;
-
-                    if (
-                        past.length > 0 &&
-                        isSameNodeUpdated(getCurrentState(), changes) &&
-                        currentState.updateCount <= UPDATES_TO_COLLECT
-                    ) {
-                        currentState.root = root;
-                        currentState.changes = event.changes;
-                        currentState.updateCount++;
-                    } else {
-                        past.push({ root, changes, updateCount: 0 });
-                    }
-                    future.length = 0;
+                if (
+                    past.length > 0 &&
+                    isSameNodeUpdated(getCurrentState(), changes) &&
+                    currentState.updateCount <= UPDATES_TO_COLLECT
+                ) {
+                    currentState.root = root;
+                    currentState.changes = event.changes;
+                    currentState.updateCount++;
+                } else {
+                    past.push({ root, changes, updateCount: 0 });
                 }
-            };
+                future.length = 0;
+            }
         },
 
         undo() {
-            if (he && past.length > 1) {
+            if (past.length > 1) {
                 const current = past.pop() as Commit;
                 future.unshift(current);
                 const nextState = getCurrentState();
@@ -83,7 +77,7 @@ export function createHistoryPlugin(): HistoryPlugin {
         },
 
         redo() {
-            if (he && future.length > 0) {
+            if (future.length > 0) {
                 const previous = getCurrentState();
                 const nextState = future.shift() as Commit;
                 past.push(nextState);

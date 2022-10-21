@@ -1,4 +1,4 @@
-import { HeadlessJsonEditor, Plugin } from '../HeadlessJsonEditor';
+import { Plugin, PluginInstance } from '../HeadlessJsonEditor';
 import { json } from '../node/json';
 import { Node } from '../types';
 
@@ -7,22 +7,18 @@ export type OnChangeListener<T = any> = (data: T, root: Node) => void;
 /**
  * onChange((data) => do something)
  */
-export function createOnChangePlugin(onChangeListener: OnChangeListener): Plugin {
-    if (onChangeListener == null) {
-        return {
-            id: 'onChange',
-            create: () => false
-        };
+export const OnChangePlugin: Plugin = (he, options) => {
+    const onChange = options.onChange;
+    if (typeof onChange !== 'function') {
+        return undefined;
     }
-
-    return {
+    const plugin: PluginInstance = {
         id: 'onChange',
-        create() {
-            return function onChange(root, event) {
-                if (event.type === 'done') {
-                    onChangeListener(json(root), root);
-                }
-            };
+        onEvent(root, event) {
+            if (event.type === 'done') {
+                onChange(json(root), root);
+            }
         }
     };
-}
+    return plugin;
+};
