@@ -12,7 +12,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    return <JsonForm data={data} schema={schema} />;
+    return <JsonForm data={data} schema={schema} validate={true} />;
 };
 
 export const DefaultWidgets = Template.bind({});

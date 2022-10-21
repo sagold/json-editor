@@ -31,6 +31,8 @@ export type JsonFormProps = {
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
     onChange?: (data: unknown, root: Node) => void;
     editor?: MutableRefObject<JsonEditor>;
+    /** set to true to initially validate complete data */
+    validate?: boolean;
 };
 
 export function JsonForm({
@@ -42,7 +44,8 @@ export function JsonForm({
     onChange,
     options,
     draft,
-    editor
+    editor,
+    validate
 }: JsonFormProps) {
     const [rootNode, instance] = useJsonEditor({
         schema,
@@ -50,7 +53,8 @@ export function JsonForm({
         onChange,
         plugins,
         draftConfig: draft,
-        data
+        data,
+        validate
     });
 
     // @ts-ignore

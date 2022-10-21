@@ -1,8 +1,16 @@
-import { StringNode } from 'headless-json-editor';
-import { Form, Dropdown } from 'semantic-ui-react';
+import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
+import { Form, Dropdown, SemanticICONS, LabelProps, SemanticShorthandItem } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from './decorators';
 
-export const StringWidget = widget<StringNode, string>(({ node, options, setValue }) => {
+export type StringOptions = {
+    icon?: SemanticICONS;
+    iconPosition?: 'left';
+    inline?: true;
+    // label?: SemanticShorthandItem<LabelProps>;
+    // labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
+} & DefaultNodeOptions;
+
+export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
 
@@ -15,21 +23,18 @@ export const StringWidget = widget<StringNode, string>(({ node, options, setValu
             <Form.Input
                 id={node.id}
                 type="text"
+                icon={options.icon}
+                iconPosition={options.iconPosition}
+                inline={options.inline === true}
+                placeholder={options.placeholder}
                 disabled={disabled}
                 value={node.value}
                 error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
                 label={options.title}
+                // label={options.label ?? options.title}
+                // labelPosition={options.labelPosition}
                 onChange={(e, { value }) => setValue(value)}
             />
-            {/*{node.errors.length > 0 && (
-                <Message error>
-                    <Message.List>
-                        {node.errors.map((e) => {
-                            return <Message.Item key={e.message}>{e.message}</Message.Item>;
-                        })}
-                    </Message.List>
-                </Message>
-            )}*/}
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );

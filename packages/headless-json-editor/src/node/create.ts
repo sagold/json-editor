@@ -19,6 +19,8 @@ export type DefaultNodeOptions = {
     description?: string;
     /** if changes to this data point are disabled */
     disabled: boolean;
+    /** if supported, will add a placeholder for the input element */
+    placeholder?: string;
     /** if this data point should be hidden from display */
     hidden: boolean;
     /** title of this data point */

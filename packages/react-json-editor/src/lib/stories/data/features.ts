@@ -26,24 +26,52 @@ export const schema = {
         editJson: { liveUpdate: true }
     },
     properties: {
-        title: {
+        string: {
             title: 'Required string input',
             type: 'string',
             description:
                 'set an input field as required by adding it to the "required" list of properties and add a "minLength: 1" validation',
             minLength: 1
         },
+        stringPlaceholder: {
+            title: 'Text input with placeholder',
+            type: 'string',
+            options: {
+                icon: 'user',
+                iconPosition: 'left',
+                placeholder: 'your last name'
+            },
+            description: 'text inputs can have a placeholder and icon'
+        },
+        // stringLabel: {
+        //     title: 'Text with semantic ui label',
+        //     type: 'string',
+        //     options: {
+        //         label: { content: 'kg' },
+        //         labelPosition: 'left corner'
+        //     },
+        //     description: 'text inputs can have a placeholder and icon'
+        // },
         text: {
             type: 'string',
             format: 'textarea',
             description: 'textarea for multiline contents',
             minLength: 1
         },
-        year: {
+        number: {
             type: 'number',
             default: 2019,
             maximum: 2020,
             description: 'number input with maximum 2020'
+        },
+        numberIcons: {
+            type: 'number',
+            options: {
+                icon: 'birthday',
+                placeholder: 'your last name'
+            },
+            defaultValue: null,
+            description: 'also numbers can have icons'
         },
         boolean: {
             title: 'True if should be interactive',
