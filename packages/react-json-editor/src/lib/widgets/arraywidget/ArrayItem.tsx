@@ -16,8 +16,7 @@ export function ArrayItemDefault({ instance, node, withDragHandle, size }: Array
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
                 <div className="ed-drag__handle ed-drag__container">
-                    <Icon name="ellipsis vertical" />
-                    <Icon name="ellipsis vertical" />
+                    <Icon name="bars" />
                 </div>
             )}
             <div className="ed-array-item__actions">
