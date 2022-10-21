@@ -1,7 +1,8 @@
 @import 'semantic-ui-css/semantic.min.css';
 
 /* fix: semantic ui dropdown within grid */
-.ui.dropdown {
+.ui.dropdown,
+.ui.dropdown.selection {
     min-width: auto;
 }
 
