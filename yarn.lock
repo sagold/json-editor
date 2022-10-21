@@ -10124,9 +10124,10 @@ json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
   integrity sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==
 
-"json-schema-library@https://github.com/sagold/json-schema-library.git#develop":
-  version "6.0.0"
-  resolved "https://github.com/sagold/json-schema-library.git#6428fff4c16b046aff46b0b743da0db37983bfa5"
+json-schema-library@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/json-schema-library/-/json-schema-library-7.2.0.tgz#ddaa104d83011049af362dec847e700d488a5f19"
+  integrity sha512-jlDNceLO7BL7g1CZpyiJLwgEf9S7sDm08BJnZU60I/8DpQUif8Hq6g+Rw2kMhx9V0eXNazFVtAexT0acOauMKQ==
   dependencies:
     deepmerge "^4.2.2"
     fast-deep-equal "^3.1.3"
