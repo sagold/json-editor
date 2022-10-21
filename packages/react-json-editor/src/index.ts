@@ -1,3 +1,4 @@
+import './lib/styles.scss';
 import { JSONSchema } from 'headless-json-editor';
 
 import { JsonForm, JsonFormProps } from './lib/components/jsonform';
