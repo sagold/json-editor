@@ -1,17 +1,28 @@
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
 import { Form, Button, Message, Input, Icon, Label, Item, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '../decorators';
+import { render } from '../../../render';
 import { deepEqual } from 'fast-equals';
 import { useState } from 'react';
 
 const isFile = (v): v is File => Object.prototype.toString.call(v) === '[object File]';
 
-export type FileOptions = {
+export type FileWidgetOptions = {
     /**
      * mime types to accept for this file selection
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
      */
     accept?: string;
+    /**
+     * if set will add a download option for this file. The given url needs to
+     * contain a {{value}} placeholder which will be replaced by the actual input value
+     */
+    downloadUrlTemplate?: string;
+    /**
+     * if set will add an image preview for this file. The given url needs to
+     * contain a {{value}} placeholder which will be replaced by the actual input value
+     */
+    imageUrlTemplate?: string;
 } & DefaultNodeOptions;
 
 const MIME_TO_ICON: Record<string, SemanticICONS> = {
@@ -65,9 +76,9 @@ async function getDataUrl(file: File): Promise<string | undefined> {
  * and then an object is created. this has to be support thouroughly. Until then,
  * single files using strings do work.
  */
-export const FileWidget = widget<StringNode<FileOptions>, string | File>(({ node, options, setValue }) => {
+export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>(({ node, options, setValue }) => {
     const { value } = node;
-    const { disabled } = options;
+    const { disabled, imageUrlTemplate, downloadUrlTemplate } = options;
     const [imageData, setImageData] = useState<string | undefined>();
 
     let status: 'empty' | 'file' | 'filename' | 'imageUrl' | 'imageData' = 'empty';
@@ -172,11 +183,44 @@ export const FileWidget = widget<StringNode<FileOptions>, string | File>(({ node
                 )}
 
                 {status === 'filename' && (
-                    <Message icon>
-                        <Icon name="file" />
+                    <Message icon={!imageUrlTemplate}>
+                        {!imageUrlTemplate && <Icon name={getFileIcon({ type: options.accept || '' } as File)} />}
                         <Message.Content>
-                            <Message.Header>{node.value}</Message.Header>
-                            {resetButton}
+                            <Item.Group unstackable style={{ margin: 0 }}>
+                                <Item>
+                                    {imageUrlTemplate && (
+                                        <Item.Image
+                                            style={{ maxHeight: 76, overflow: 'hidden' }}
+                                            size="tiny"
+                                            src={render(imageUrlTemplate, { value })}
+                                        />
+                                    )}
+                                    <Item.Content verticalAlign="middle">
+                                        <Item.Header>{value}</Item.Header>
+                                        {downloadUrlTemplate && (
+                                            <div
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '50%',
+                                                    transform: 'translateY(-50%)',
+                                                    right: 16,
+                                                    zIndex: 19
+                                                }}
+                                            >
+                                                <Button
+                                                    as="a"
+                                                    icon="download"
+                                                    target="_blank"
+                                                    download
+                                                    href={render(downloadUrlTemplate, { value })}
+                                                />
+                                                <Button icon="trash" onClick={reset} />
+                                            </div>
+                                        )}
+                                        {resetButton}
+                                    </Item.Content>
+                                </Item>
+                            </Item.Group>
                         </Message.Content>
                     </Message>
                 )}
