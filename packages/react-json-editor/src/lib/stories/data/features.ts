@@ -108,7 +108,8 @@ export const schema = {
             title: 'file selection',
             description: 'file selection with preview of selected value',
             type: ['string', 'object'],
-            format: 'file'
+            format: 'file',
+            minLength: 1
         },
         imageFile: {
             title: 'image file selection',

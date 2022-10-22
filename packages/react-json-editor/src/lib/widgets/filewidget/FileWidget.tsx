@@ -118,9 +118,6 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         imageData && setImageData(undefined);
     }
 
-    // @ts-ignore
-    // node.errors.push({ message: 'huhu' });
-
     const resetButton = (
         <Button
             icon="trash"
@@ -136,6 +133,8 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
     );
 
     const preventDefault = (event) => event.preventDefault();
+    const hasError = node.errors.length > 0;
+    const errors = node.errors?.map((e) => e.message).join(';');
 
     return (
         <div
@@ -145,7 +144,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         >
             <Form.Field
                 id={node.id}
-                error={node.errors?.length === 0 ? false : { content: node.errors?.map((e) => e.message).join(';') }}
+                error={hasError}
                 onDragOver={preventDefault}
                 onDragEnter={preventDefault}
                 onDrop={drop}
@@ -153,7 +152,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 <label htmlFor={node.id}>{options.title}</label>
 
                 {status === 'empty' && (
-                    <Message style={{ cursor: 'pointer' }}>
+                    <Message attached style={{ cursor: 'pointer' }} error={hasError}>
                         <Message.Content>
                             <Button icon labelPosition="left" size="large">
                                 <Icon name="folder open" />
@@ -172,7 +171,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                             }}
                             accept={options.accept}
                             type="file"
-                            error={false}
+                            error={hasError}
                             id={node.id}
                             disabled={disabled}
                             onChange={change}
@@ -183,7 +182,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 )}
 
                 {status === 'filename' && (
-                    <Message icon={!imageUrlTemplate}>
+                    <Message attached icon={!imageUrlTemplate} error={hasError}>
                         {!imageUrlTemplate && <Icon name={getFileIcon({ type: options.accept || '' } as File)} />}
                         <Message.Content>
                             <Item.Group unstackable style={{ margin: 0 }}>
@@ -226,7 +225,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 )}
 
                 {isFile(value) && (
-                    <Message icon={status === 'file'}>
+                    <Message attached icon={status === 'file'} error={hasError}>
                         {status === 'file' && isFile(value) && <Icon name={getFileIcon(value)} />}
                         <Message.Content>
                             <Item.Group unstackable style={{ margin: 0 }}>
@@ -254,6 +253,11 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                             </Item.Group>
                         </Message.Content>
                     </Message>
+                )}
+                {hasError && (
+                    <Label color="red" basic prompt pointing="above">
+                        {errors}
+                    </Label>
                 )}
             </Form.Field>
             {options.description && <em className="ed-description">{options.description}</em>}

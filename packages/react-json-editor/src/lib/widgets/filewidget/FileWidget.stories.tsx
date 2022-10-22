@@ -44,7 +44,8 @@ SingleFileFilename.args = {
                 title: 'File',
                 type: ['string', 'object'],
                 format: 'file',
-                options: {}
+                options: {},
+                minLength: 1
             }
         }
     }
