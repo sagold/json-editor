@@ -1,7 +1,9 @@
-import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
+import { Draft, DraftConfig, JsonEditor, JSONError } from 'json-schema-library';
 import { create } from './node/create';
 import { json } from './node/json';
+import { errors } from './node/errors';
 import { set } from './transform/set';
+import { unlinkAll } from './transform/unlinkAll';
 import { flat } from './node/flat';
 import { remove as removeTarget } from './transform/remove';
 import { move as moveItem } from './transform/move';
@@ -20,7 +22,8 @@ export type Plugin = (he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions
 export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
 export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
 export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
-export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent;
+export type ValidationEvent = { type: 'validation'; previous: Node; next: Node; errors: JSONError[] };
+export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | ValidationEvent;
 export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
 
 function getRootChange(changes: Change[]) {
@@ -67,25 +70,34 @@ export class HeadlessJsonEditor {
     options: HeadlessJsonEditorOptions;
 
     constructor(options: HeadlessJsonEditorOptions) {
-        const { schema, data = {}, plugins = [], draftConfig, validate = false } = options;
+        const { schema, data = {}, plugins = [], draftConfig } = options;
         this.options = options;
         this.draft = new JsonEditor(schema, draftConfig);
         this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
         plugins.map((p) => this.addPlugin(p));
-        validate && this.validate();
+        setTimeout(() => options.validate && this.validate());
     }
 
     create(data?: unknown): Node {
         const { draft } = this;
-        const state = create<ParentNode>(draft, draft.getTemplate(data));
-        this.validate();
-        const changes: Change[] = flat(state).map((node) => ({ type: 'create', node }));
-        this.state = runPlugins(this.plugins, this.state, state, changes);
-        return state;
+        const previousState = this.state;
+        this.state = create<ParentNode>(draft, draft.getTemplate(data));
+        this.options.validate === true && this.validate();
+        const changes: Change[] = flat(this.state).map((node) => ({ type: 'create', node }));
+        this.state = runPlugins(this.plugins, previousState, this.state, changes);
+        return this.state;
     }
 
     validate() {
-        this.state && updateErrors(this.draft, this.state);
+        if (this.state == null) {
+            return;
+        }
+        const state = unlinkAll(this.state);
+        updateErrors(this.draft, state);
+        const validationErrors = errors(this.state);
+        this.state = runPlugins(this.plugins, this.state, state, [
+            { type: 'validation', previous: this.state, next: state, errors: validationErrors }
+        ]);
     }
 
     setState(state: Node, changes: PluginEvent[]) {

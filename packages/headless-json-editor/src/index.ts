@@ -14,6 +14,7 @@ import { set } from './transform/set';
 import { remove } from './transform/remove';
 import { move } from './transform/move';
 import { updateSchema, updateOptions } from './transform/update';
+import { unlinkAll } from './transform/unlinkAll';
 // convenience: append, prepend, insert
 
 // hje
