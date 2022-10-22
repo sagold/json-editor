@@ -14,10 +14,6 @@ export default {
 
 export const LongForm = () => {
     const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
-    if (node == null) {
-        return;
-    }
-
     const WidgetComponent = instance.getWidget(node);
 
     return (

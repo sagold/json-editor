@@ -61,14 +61,9 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
-        data
+        data,
+        validate: true
     });
-    if (node == null) {
-        return <></>;
-    }
-    // @ts-ignore
-    window['node'] = node;
-
     return (
         <div style={{ width: '400px' }}>
             <NavigationWidget

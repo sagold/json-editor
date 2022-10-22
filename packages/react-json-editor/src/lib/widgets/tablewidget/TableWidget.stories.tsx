@@ -18,22 +18,12 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
-        data
+        data,
+        validate: true
     });
-    if (node == null) {
-        return <></>;
-    }
-    // @ts-ignore
-    window['rootNode'] = node;
-    instance.validate();
-
     return (
         <div style={{ width: '400px' }}>
-            <TableWidget
-                node={node}
-                instance={instance}
-                // options={{ withChildren: true }}
-            />
+            <TableWidget node={node} instance={instance} />
         </div>
     );
 };

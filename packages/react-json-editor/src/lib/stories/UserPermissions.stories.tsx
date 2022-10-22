@@ -15,11 +15,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    return (
-        <div>
-            <JsonForm data={data} schema={schema} />
-        </div>
-    );
+    return <JsonForm data={data} schema={schema} />;
 };
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

@@ -12,12 +12,13 @@ export { JsonForm, Widget, widget, JsonEditor, useJsonEditor };
 // widgets
 export { defaultWidgets } from './lib/widgets/index';
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
-export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
-export { NavigationWidget } from './lib/widgets/navigationwidget/NavigationWidget';
-export { NumberWidget, NumberWidgetPlugin } from './lib/widgets/NumberWidget';
 export { ErrorWidget, ErrorWidgetPlugin } from './lib/widgets/ErrorWidget';
+export { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
 export { MultiSelectWidget, MultiSelectWidgetPlugin } from './lib/widgets/MultiSelectWidget';
+export { NavigationWidget } from './lib/widgets/navigationwidget/NavigationWidget';
 export { NullWidget, NullWidgetPlugin } from './lib/widgets/NullWidget';
+export { NumberWidget, NumberWidgetPlugin } from './lib/widgets/NumberWidget';
+export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
 export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
 export { StringWidget, StringWidgetPlugin } from './lib/widgets/StringWidget';
 export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/UnknownWidget';

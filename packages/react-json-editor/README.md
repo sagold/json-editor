@@ -198,15 +198,9 @@ function MyForm({ schema, data }) {
   const [node, jsonEditor] = useJsonEditor({
     schema,
     data,
-    onChange: (data) => {
-      console.log('data', data);
-    }
+    onChange: (data, state) => { console.log('data', data, "root", state); }
   });
-  if (node == null) {
-    return <Form error />;
-  }
-
-  const Widget = jsonEditor.getEditor(node);
+  const Widget = jsonEditor.getWidget(node);
   return (
     <Form error>
       <Widget node={node} instance={jsonEditor} />

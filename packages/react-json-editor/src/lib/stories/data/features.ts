@@ -104,6 +104,21 @@ export const schema = {
             const: 'schema form tree',
             description: 'probably to be disabled when correct (or autocorrect)'
         },
+        file: {
+            title: 'file selection',
+            description: 'file selection with preview of selected value',
+            type: ['string', 'object'],
+            format: 'file'
+        },
+        imageFile: {
+            title: 'image file selection',
+            description: 'file selection can have valid types restricted, e.g. to images',
+            options: {
+                accept: 'image/*'
+            },
+            type: ['string', 'object'],
+            format: 'file'
+        },
         typeSelection: {
             type: 'object',
             oneOfProperty: 'type',

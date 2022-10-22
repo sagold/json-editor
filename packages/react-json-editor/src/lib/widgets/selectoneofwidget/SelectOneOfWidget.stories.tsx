@@ -27,16 +27,10 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     const [node, instance] = useJsonEditor<ParentNode>({
         schema,
         widgets: defaultWidgets,
-        data
+        data,
+        validate: true
     });
-    if (node == null) {
-        return <></>;
-    }
-
-    instance.validate();
-
     return (
-        // <div style={{ width: '400px' }}>
         <Form error>
             <SelectOneOfWidget node={node.children[0] as Node} instance={instance} options={options} />
         </Form>

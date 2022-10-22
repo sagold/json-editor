@@ -21,15 +21,9 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
-        data
+        data,
+        validate: true
     });
-    if (node == null) {
-        return <></>;
-    }
-    // @ts-ignore
-    window['rootNode'] = node;
-    instance.validate();
-
     return (
         <div style={{ width: '400px' }}>
             <MasterDetailWidget node={node} instance={instance} options={{ header: { inverted: true } }} />
