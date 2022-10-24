@@ -30,7 +30,7 @@ export type JsonFormProps = {
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
     onChange?: (data: unknown, root: Node) => void;
-    editor?: MutableRefObject<JsonEditor>;
+    editor?: MutableRefObject<JsonEditor | undefined>;
     /** set to true to initially validate complete data */
     validate?: boolean;
 };
