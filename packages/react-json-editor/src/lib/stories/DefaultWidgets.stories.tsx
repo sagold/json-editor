@@ -1,6 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonForm } from '../../index';
+import { JsonForm, useEditor } from '../../index';
 import { data, schema } from './data/features';
+import { useEffect, useState } from 'react';
 // import '../styles.scss';
 
 export default {
@@ -12,7 +13,27 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    return <JsonForm data={data} schema={schema} validate={true} />;
+    const editor = useEditor();
+    const [editorData, setEditorData] = useState(data);
+
+    useEffect(() => {
+        console.log('editor ref', editor.current);
+        // @ts-ignore
+        window.changeData = () => setEditorData({ text: 'mimimi' });
+    }, [data]);
+
+    return (
+        <JsonForm
+            editor={editor}
+            data={editorData}
+            schema={schema}
+            validate={true}
+            onChange={(data) => {
+                // console.log('change data in editor');
+                // setEditorData({ text: 'mimimi' });
+            }}
+        />
+    );
 };
 
 export const DefaultWidgets = Template.bind({});

@@ -15,7 +15,11 @@ import { defaultWidgets } from '../../../index';
 import { WidgetPlugin } from '../../widgets/decorators';
 import { Widget } from '../widget/Widget';
 import { JsonEditor } from '../../JsonEditor';
-import { MutableRefObject } from 'react';
+import { MutableRefObject, useRef } from 'react';
+
+export function useEditor() {
+    return useRef<JsonEditor>();
+}
 
 // import { createContext } from 'react';
 // export const ModalContext = createContext({});
