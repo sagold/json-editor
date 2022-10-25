@@ -20,13 +20,14 @@ export type UseJsonEditorOptions = {
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     onChange?: OnChangeListener;
     plugins?: Plugin[];
+    cacheKey?: string | number;
 };
 
 /**
  * add json editor widget capabilities to your functional component
  */
 export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
-    const { schema, data } = settings;
+    const { schema, data, cacheKey } = settings;
     const [currentData, setCurrentData] = useState(data);
     const [previousInput, updatePreviousInput] = useState(data);
     const [previousSchema, updatePreviousSchema] = useState(schema);
@@ -49,7 +50,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
                 }
             }
         });
-    }, []);
+    }, [cacheKey]);
 
     if (data !== previousInput && !deepEqual(data, previousInput)) {
         editor.setData(data);

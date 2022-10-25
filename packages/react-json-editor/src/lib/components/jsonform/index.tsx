@@ -30,6 +30,7 @@ export type JsonFormProps = {
     pointer?: string;
     widgets?: WidgetPlugin[];
     plugins?: Plugin[];
+    cacheKey?: string | number;
     draft?: HeadlessJsonEditorOptions['draftConfig'];
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
@@ -48,6 +49,7 @@ export function JsonForm({
     onChange,
     options,
     draft,
+    cacheKey,
     editor,
     validate
 }: JsonFormProps) {
@@ -58,6 +60,7 @@ export function JsonForm({
         plugins,
         draftConfig: draft,
         data,
+        cacheKey,
         validate
     });
 
