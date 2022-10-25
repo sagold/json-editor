@@ -10,7 +10,6 @@ import {
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './widgets/decorators';
 import { deepEqual } from 'fast-equals';
-// import diff from 'microdiff';
 
 export type UseJsonEditorOptions = {
     widgets: WidgetPlugin[];
@@ -29,14 +28,23 @@ export type UseJsonEditorOptions = {
 export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
     const { schema, data, cacheKey } = settings;
     const [currentData, setCurrentData] = useState(data);
-    const [previousInput, updatePreviousInput] = useState(data);
-    const [previousSchema, updatePreviousSchema] = useState(schema);
+
+    // track previous inputs - set data to instance if input values have changed
+    const [previousData, setPreviousData] = useState(data);
+    const [previousSchema, setPreviousSchema] = useState(schema);
+
     // @ts-ignore
     // console.log('<previous value>', previousInput.string, '<current value>', data.string);
 
+    const now = Date.now();
     const editor = useMemo(() => {
         const { onChange, plugins = [], widgets } = settings;
-        return new JsonEditor({
+        // store last used input data - prevents an additional rerender where
+        // last change is lost. this is required in update loops where input
+        // data has changed
+        setPreviousData(data);
+        setPreviousSchema(schema);
+        const editor = new JsonEditor({
             schema,
             data,
             widgets,
@@ -50,16 +58,30 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
                 }
             }
         });
+        // local flag to track if memo was exceuted
+        // (and data already up to date)
+        // @ts-ignore
+        editor.createdAt = now;
+        return editor;
+
+        // a change of cacheKey completely recreates editor - resetting any
+        // changes made
     }, [cacheKey]);
 
-    if (data !== previousInput && !deepEqual(data, previousInput)) {
+    // @ts-ignore
+    const editorWasCreatedNow = editor.createdAt === now;
+    if (editorWasCreatedNow) {
+        return [editor.getState() as T, editor];
+    }
+
+    if (data !== previousData && !deepEqual(data, previousData)) {
         editor.setData(data);
-        updatePreviousInput(data);
+        setPreviousData(data);
     }
 
     if (schema !== previousSchema && !deepEqual(schema, previousSchema)) {
         editor.setSchema(schema);
-        updatePreviousSchema(schema);
+        setPreviousSchema(schema);
     }
 
     return [editor.getState() as T, editor];

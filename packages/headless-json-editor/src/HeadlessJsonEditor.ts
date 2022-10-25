@@ -80,6 +80,7 @@ export class HeadlessJsonEditor {
         setTimeout(() => options.validate && this.validate());
     }
 
+    // import diff from 'microdiff';
     setData(data?: unknown): Node {
         const { draft } = this;
         const previousState = this.state;
