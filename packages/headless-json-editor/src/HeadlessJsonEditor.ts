@@ -1,6 +1,7 @@
 import { Draft, DraftConfig, JsonEditor, JSONError } from 'json-schema-library';
 import { create } from './node/create';
 import { json } from './node/json';
+import { get } from './node/get';
 import { errors } from './node/errors';
 import { set } from './transform/set';
 import { unlinkAll } from './transform/unlinkAll';
@@ -115,6 +116,13 @@ export class HeadlessJsonEditor {
 
     getState() {
         return this.state;
+    }
+
+    getNode<T extends Node = Node>(pointer?: string): T {
+        if (pointer && typeof pointer === 'string' && pointer.replace(/^[/#]+/, '') !== '') {
+            return get(this.state, pointer) as T;
+        }
+        return this.state as T;
     }
 
     plugin(pluginId: string) {
