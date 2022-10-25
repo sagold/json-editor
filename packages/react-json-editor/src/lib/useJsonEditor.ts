@@ -9,6 +9,8 @@ import {
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './widgets/decorators';
+import { deepEqual } from 'fast-equals';
+// import diff from 'microdiff';
 
 export type UseJsonEditorOptions = {
     widgets: WidgetPlugin[];
@@ -25,10 +27,15 @@ export type UseJsonEditorOptions = {
  */
 export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
     const { schema, data } = settings;
+    const [currentData, setCurrentData] = useState(data);
+    const [previousInput, updatePreviousInput] = useState(data);
+    const [previousSchema, updatePreviousSchema] = useState(schema);
+    // @ts-ignore
+    // console.log('<previous value>', previousInput.string, '<current value>', data.string);
 
     const editor = useMemo(() => {
         const { onChange, plugins = [], widgets } = settings;
-        const editor = new JsonEditor({
+        return new JsonEditor({
             schema,
             data,
             widgets,
@@ -36,15 +43,23 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
             draftConfig: settings.draftConfig,
             plugins: [...plugins, OnChangePlugin],
             onChange(data, root) {
-                setState(root as T);
+                setCurrentData(data);
                 if (onChange) {
                     onChange(data, root);
                 }
             }
         });
-        return editor;
-    }, [schema, data]);
+    }, []);
 
-    const [root, setState] = useState<T>(editor.getState() as T);
-    return [root, editor];
+    if (data !== previousInput && !deepEqual(data, previousInput)) {
+        editor.setData(data);
+        updatePreviousInput(data);
+    }
+
+    if (schema !== previousSchema && !deepEqual(schema, previousSchema)) {
+        editor.setSchema(schema);
+        updatePreviousSchema(schema);
+    }
+
+    return [editor.getState() as T, editor];
 }
