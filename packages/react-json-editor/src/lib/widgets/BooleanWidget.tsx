@@ -10,10 +10,11 @@ export const BooleanWidget = widget<BooleanNode<BooleanOptions>, boolean>(({ nod
     <div className="ed-form ed-value" data-type="boolean" data-id={node.pointer}>
         <Form.Field id={node.id} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
             <Checkbox
-                toggle={options.type === 'toggle'}
-                label={options.title as string}
                 checked={node.value}
+                label={options.title as string}
                 onChange={(e, { checked }) => setValue(checked === true)}
+                readOnly={options.readOnly === true}
+                toggle={options.type === 'toggle'}
             />
         </Form.Field>
         {options.description && <em className="ed-description">{options.description}</em>}

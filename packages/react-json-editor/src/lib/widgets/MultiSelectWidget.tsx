@@ -41,13 +41,14 @@ export const MultiSelectWidget = widget<StringNode, string>(({ node, options, se
             <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 <Dropdown
+                    allowAdditions={allowAdditions}
                     multiple
+                    onChange={(e, { value }) => setValue(value as string)}
+                    options={dropdownOptions}
+                    readOnly={options.readOnly === true}
                     search
                     selection
-                    allowAdditions={allowAdditions}
-                    onChange={(e, { value }) => setValue(value as string)}
                     value={listData}
-                    options={dropdownOptions}
                 />
             </Form.Field>
             {node.errors.length > 0 && (

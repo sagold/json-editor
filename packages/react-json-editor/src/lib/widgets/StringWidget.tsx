@@ -23,14 +23,15 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
             <Form.Input
                 id={node.id}
                 type="text"
+                disabled={disabled}
+                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
                 icon={options.icon}
                 iconPosition={options.iconPosition}
                 inline={options.inline === true}
-                placeholder={options.placeholder}
-                disabled={disabled}
-                value={node.value}
-                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
                 label={options.title}
+                placeholder={options.placeholder}
+                readOnly={options.readOnly === true}
+                value={node.value}
                 // label={options.label ?? options.title}
                 // labelPosition={options.labelPosition}
                 onChange={(e, { value }) => setValue(value)}

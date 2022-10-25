@@ -40,8 +40,9 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
                 <Dropdown
                     compact
                     onChange={onChange}
-                    value={selectedSchema.oneOfIndex as number}
                     options={selectOptions}
+                    readOnly={options.readOnly === true}
+                    value={selectedSchema.oneOfIndex as number}
                 />
             </Divider>
 

@@ -9,9 +9,10 @@ export type ArrayItemProps = {
     node: Node;
     size: number;
     withDragHandle?: boolean;
+    disabled?: boolean;
 };
 
-export function ArrayItemDefault({ editor, node, withDragHandle, size }: ArrayItemProps) {
+export function ArrayItemDefault({ editor, node, withDragHandle, disabled, size }: ArrayItemProps) {
     return (
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
@@ -20,7 +21,7 @@ export function ArrayItemDefault({ editor, node, withDragHandle, size }: ArrayIt
                 </div>
             )}
             <div className="ed-array-item__actions">
-                <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
+                <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable disabled={disabled}>
                     <ArrayItemActions editor={editor} node={node} size={size} />
                 </Popup>
             </div>
@@ -30,12 +31,17 @@ export function ArrayItemDefault({ editor, node, withDragHandle, size }: ArrayIt
     );
 }
 
-export function ArrayItemCard({ editor, node, withDragHandle, size }: ArrayItemProps) {
+export function ArrayItemCard({ editor, node, withDragHandle, disabled, size }: ArrayItemProps) {
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
             <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
                 {/*<Grid.Column width="15">{withDragHandle && <div className="ed-array-item__handle"></div>}</Grid.Column>*/}
-                <Popup trigger={<Button basic floated="right" icon="ellipsis vertical" />} flowing hoverable>
+                <Popup
+                    trigger={<Button basic floated="right" icon="ellipsis vertical" />}
+                    disabled={disabled}
+                    flowing
+                    hoverable
+                >
                     <ArrayItemActions editor={editor} node={node} size={size} />
                 </Popup>
                 <Card.Header>{node.options.title}</Card.Header>

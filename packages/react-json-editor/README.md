@@ -41,12 +41,15 @@ the only required property is a valid json-schema passed to `schema`.
 |:----------|:----------------------|:--------------------------------------------------|
 | schema    | JsonSchema            | json schema describing data                       |
 | data      | any                   | initial data matching json schema                 |
-| pointer   | string                | json-pointer to root node. Defaults to root ('#') |
-| options   | {}&DefaultNodeOptions | options to override for root widget               |
-| onChange  | (data, node) => void  | change listener for data updates                  |
-| widgets   | WidgetPlugin[]        | list of widgets used to create user form          |
-| plugins   | Plugin[]              | list of plugins for json editor                   |
+| cacheKey  | number|string         | optionally change key to completely recreate form |
 | draft     | DraftConfig           | json schema draft config (json-schema-library)    |
+| editor    | React.Ref<JsonEditor> | get instance of json editor after first render    |
+| onChange  | (data, node) => void  | change listener for data updates                  |
+| options   | {}&DefaultNodeOptions | options to override for root widget               |
+| plugins   | Plugin[]              | list of plugins for json editor                   |
+| pointer   | string                | json-pointer to root node. Defaults to root ('#') |
+| validate  | boolean               | set to true to validate and show errors on create |
+| widgets   | WidgetPlugin[]        | list of widgets used to create user form          |
 
 </details>
 

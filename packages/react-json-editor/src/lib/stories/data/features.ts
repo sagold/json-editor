@@ -43,6 +43,22 @@ export const schema = {
             },
             description: 'text inputs can have a placeholder and icon'
         },
+        stringReadonly: {
+            options: {
+                readOnly: true
+            },
+            title: 'Text input set to readonly',
+            type: 'string',
+            default: 'value that can be selected'
+        },
+        stringDisabled: {
+            options: {
+                disabled: true
+            },
+            title: 'Disabled text input',
+            type: 'string',
+            default: 'some value that cannot be interacted with'
+        },
         // stringLabel: {
         //     title: 'Text with semantic ui label',
         //     type: 'string',
@@ -119,6 +135,19 @@ export const schema = {
             },
             type: ['string', 'object'],
             format: 'file'
+        },
+        readOnlyFile: {
+            title: 'image set to readonly',
+            description: 'file selection can have an imageUrlTemplate to render images',
+            options: {
+                accept: 'image/*',
+                readOnly: true,
+                imageUrlTemplate:
+                    'https://images.unsplash.com/{{value}}?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60'
+            },
+            type: ['string', 'object'],
+            format: 'file',
+            default: 'photo-1666694421187-75957423ee77'
         },
         typeSelection: {
             type: 'object',

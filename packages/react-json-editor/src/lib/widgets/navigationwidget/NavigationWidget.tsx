@@ -56,9 +56,10 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
     const [isModalOpen, showSelectItemModal] = useState(false);
     const [toggleState, setToggleState] = useState<boolean>(false);
 
-    const { sortable = {} } = node.options;
+    const { sortable = {}, disabled = false, readOnly = false } = node.options;
+    const useActions = !disabled && !readOnly;
     useEffect(() => {
-        if (ref.current) {
+        if (ref.current && !disabled && !readOnly) {
             Sortable.create(ref.current, {
                 handle: '.ed-nav-item__handle',
                 swapThreshold: 4,
@@ -66,9 +67,12 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
                 onEnd: (event) => onSortEnd(editor, node, event)
             });
         }
-    }, [editor, node, sortable]);
+    }, [editor, node, sortable, disabled, readOnly]);
 
     function insertItem() {
+        if (useActions === false) {
+            return;
+        }
         const insertOptions = editor.getArrayAddOptions(node);
         if (isJSONError(insertOptions)) {
             console.log(insertOptions);

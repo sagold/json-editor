@@ -25,6 +25,8 @@ export type DefaultNodeOptions = {
     hidden: boolean;
     /** title of this data point */
     title?: string;
+    /** disable edit of form, but allow selection and copy of value */
+    readOnly?: boolean;
     [o: string]: unknown;
 };
 

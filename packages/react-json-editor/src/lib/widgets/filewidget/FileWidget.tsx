@@ -128,6 +128,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 right: 16,
                 zIndex: 19
             }}
+            disabled={options.readOnly || disabled}
             onClick={reset}
         />
     );
@@ -148,6 +149,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 onDragOver={preventDefault}
                 onDragEnter={preventDefault}
                 onDrop={drop}
+                readOnly={options.readOnly === true}
             >
                 <label htmlFor={node.id}>{options.title}</label>
 
@@ -173,7 +175,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                             type="file"
                             error={hasError}
                             id={node.id}
-                            disabled={disabled}
+                            disabled={disabled || options.readOnly}
                             onChange={change}
                         >
                             <input style={{ cursor: 'pointer' }} />
@@ -213,7 +215,11 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                                                     download
                                                     href={render(downloadUrlTemplate, { value })}
                                                 />
-                                                <Button icon="trash" onClick={reset} />
+                                                <Button
+                                                    icon="trash"
+                                                    onClick={reset}
+                                                    disabled={options.readOnly || disabled}
+                                                />
                                             </div>
                                         )}
                                         {resetButton}

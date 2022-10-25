@@ -20,10 +20,11 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
             // labelPosition={options.labelPosition}
             id={node.id}
             type="number"
-            inline={options.inline === true}
             icon={options.icon}
             iconPosition={options.iconPosition}
+            inline={options.inline === true}
             placeholder={options.placeholder}
+            readOnly={options.readOnly === true}
             value={node.value}
             onChange={(e, { value }) => {
                 const number = parseFloat(value);

@@ -35,6 +35,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
+    console.log('object', options.disabled, options.readOnly);
+
     let children: JSX.Element;
     if (options.layout && Array.isArray(options.layout.cells)) {
         const cells = buildObjectLayout(node, options.layout);
@@ -92,6 +94,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         <EditJsonModal
                             editor={editor}
                             node={node}
+                            disabled={options.disabled}
+                            readOnly={options.readOnly}
                             isOpen={isEditModalOpen}
                             title={options.title}
                             openEditModal={openEditModal}
@@ -143,6 +147,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 <EditJsonModal
                     editor={editor}
                     node={node}
+                    disabled={options.disabled}
+                    readOnly={options.readOnly}
                     isOpen={isEditModalOpen}
                     title={options.title}
                     openEditModal={openEditModal}

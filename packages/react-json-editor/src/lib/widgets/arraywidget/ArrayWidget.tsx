@@ -94,7 +94,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
     const ref = useRef<HTMLDivElement>();
     useEffect(() => {
-        if (sortable?.enabled && ref.current) {
+        if (sortable?.enabled && ref.current && !options.disabled && !options.readOnly) {
             Sortable.create(ref.current, {
                 handle: '.ed-drag__handle',
                 swapThreshold: 4,
@@ -149,19 +149,21 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         (options.layout?.type === 'cards'
                             ? node.children.map((child) => (
                                   <ArrayItemCard
+                                      disabled={options.disabled || options.readOnly}
                                       editor={editor}
+                                      key={child.id}
                                       node={child}
                                       size={node.children.length}
-                                      key={child.id}
                                       withDragHandle={sortable?.enabled}
                                   />
                               ))
                             : node.children.map((child) => (
                                   <ArrayItemDefault
+                                      disabled={options.disabled || options.readOnly}
                                       editor={editor}
+                                      key={child.id}
                                       node={child}
                                       size={node.children.length}
-                                      key={child.id}
                                       withDragHandle={sortable?.enabled}
                                   />
                               )))}
@@ -177,6 +179,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                     liveUpdate={editJson.liveUpdate}
                     isOpen={isEditModalOpen}
                     openEditModal={openEditModal}
+                    disabled={options.disabled}
+                    readOnly={options.readOnly}
                 />
             )}
         </div>

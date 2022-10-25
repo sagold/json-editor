@@ -8,12 +8,23 @@ export type EditJsonModalProps = {
     editor: JsonEditor;
     node: Node;
     isOpen: boolean;
+    disabled?: boolean;
+    readOnly?: boolean;
     openEditModal;
     title?: string;
     liveUpdate?: boolean;
 };
 
-export function EditJsonModal({ editor, node, isOpen, openEditModal, title, liveUpdate }: EditJsonModalProps) {
+export function EditJsonModal({
+    editor,
+    node,
+    isOpen,
+    openEditModal,
+    disabled,
+    readOnly,
+    title,
+    liveUpdate
+}: EditJsonModalProps) {
     const currentNode = get(editor.getState(), node.pointer);
     const [value, update] = useState(isJSONError(currentNode) ? {} : json(currentNode));
     const [error, setError] = useState(false);
@@ -34,6 +45,8 @@ export function EditJsonModal({ editor, node, isOpen, openEditModal, title, live
                 <Form error>
                     <Form.Field error={error}>
                         <TextareaAutosize
+                            readOnly={readOnly === true}
+                            disabled={disabled === true}
                             style={{ width: '100%' }}
                             rows={1}
                             minRows={10}
