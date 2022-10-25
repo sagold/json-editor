@@ -62,6 +62,8 @@ export type HeadlessJsonEditorOptions = {
     [p: string]: unknown;
 };
 
+// @todo test setSchema
+// @todo difference between setValue and setData (root?)?
 export class HeadlessJsonEditor {
     state: Node;
     draft: Draft;
@@ -78,7 +80,7 @@ export class HeadlessJsonEditor {
         setTimeout(() => options.validate && this.validate());
     }
 
-    create(data?: unknown): Node {
+    setData(data?: unknown): Node {
         const { draft } = this;
         const previousState = this.state;
         this.state = create<ParentNode>(draft, draft.getTemplate(data));
@@ -86,6 +88,11 @@ export class HeadlessJsonEditor {
         const changes: Change[] = flat(this.state).map((node) => ({ type: 'create', node }));
         this.state = runPlugins(this.plugins, previousState, this.state, changes);
         return this.state;
+    }
+
+    setSchema(schema: JSONSchema) {
+        this.draft.setSchema(schema);
+        return this.setData(json(this.state));
     }
 
     validate() {
