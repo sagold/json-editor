@@ -5,24 +5,24 @@ import { JSONError, isJSONError } from 'json-schema-library';
 
 export type EditModalProps = {
     isOpen: boolean;
-    instance: JsonEditor;
+    editor: JsonEditor;
     node: Node | JSONError;
     closeModal: () => void;
     options: Record<string, any>;
 };
 
-export function EditModal({ isOpen, closeModal, instance, node, options }: EditModalProps) {
+export function EditModal({ isOpen, closeModal, editor, node, options }: EditModalProps) {
     if (isJSONError(node)) {
         console.log(node);
         return null;
     }
-    const Widget = instance.getWidget(node, options);
+    const Widget = editor.getWidget(node, options);
     return (
         <Modal open={isOpen} onClose={closeModal}>
             <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>
             <Modal.Content>
                 <Form error>
-                    <Widget node={node} instance={instance} options={{ ...options, title: undefined }} />
+                    <Widget node={node} editor={editor} options={{ ...options, title: undefined }} />
                 </Form>
             </Modal.Content>
             <Modal.Actions>

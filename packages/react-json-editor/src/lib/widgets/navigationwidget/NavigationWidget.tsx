@@ -27,7 +27,7 @@ type ArrayOptions = {
     sortable?: { enabled?: boolean };
 } & DefaultNodeOptions;
 
-function onSortEnd(instance: JsonEditor, node: ArrayNode, event: Sortable.SortableEvent) {
+function onSortEnd(editor: JsonEditor, node: ArrayNode, event: Sortable.SortableEvent) {
     const targetIndex = parseInt(`${event.newIndex}`);
     if (isNaN(targetIndex)) {
         return;
@@ -48,10 +48,10 @@ function onSortEnd(instance: JsonEditor, node: ArrayNode, event: Sortable.Sortab
     }
 
     // change data
-    instance.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
+    editor.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
 }
 
-function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions>; instance: JsonEditor }) {
+function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>; editor: JsonEditor }) {
     const ref = useRef<HTMLDivElement>();
     const [isModalOpen, showSelectItemModal] = useState(false);
     const [toggleState, setToggleState] = useState<boolean>(false);
@@ -63,19 +63,19 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
                 handle: '.ed-nav-item__handle',
                 swapThreshold: 4,
                 ...sortable,
-                onEnd: (event) => onSortEnd(instance, node, event)
+                onEnd: (event) => onSortEnd(editor, node, event)
             });
         }
-    }, [instance, node, sortable]);
+    }, [editor, node, sortable]);
 
     function insertItem() {
-        const insertOptions = instance.getArrayAddOptions(node);
+        const insertOptions = editor.getArrayAddOptions(node);
         if (isJSONError(insertOptions)) {
             console.log(insertOptions);
             return;
         }
         if (insertOptions.length === 1) {
-            instance.appendItem(node, insertOptions[0]);
+            editor.appendItem(node, insertOptions[0]);
             return;
         }
         showSelectItemModal(true);
@@ -116,7 +116,7 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
                 </Ref>
             </Accordion.Content>
             <InsertItemModal
-                instance={instance}
+                editor={editor}
                 node={node}
                 isOpen={isModalOpen}
                 onClose={() => showSelectItemModal(false)}
@@ -125,9 +125,9 @@ function ArrayChildNavigation({ node, instance }: { node: ArrayNode<ArrayOptions
     );
 }
 
-function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor }) {
+function ChildNavigation({ node, editor }: { node: Node; editor: JsonEditor }) {
     if (node.type === 'array') {
-        return <ArrayChildNavigation node={node} instance={instance} />;
+        return <ArrayChildNavigation node={node} editor={editor} />;
     }
     if (node.type === 'object') {
         return (
@@ -156,12 +156,12 @@ function ChildNavigation({ node, instance }: { node: Node; instance: JsonEditor 
  * ```jsx
  * <NavigationEditor
  *      node={node}
- *      instance={instance}
+ *      editor={editor}
  *      // options={{ withChildren: true }}
  *  />
  * ```
  */
-export const NavigationWidget = widget<ParentNode>(({ node, instance }) => {
+export const NavigationWidget = widget<ParentNode>(({ node, editor }) => {
     return (
         <List divided relaxed="very">
             {node.children.map((child: Node) => {
@@ -170,7 +170,7 @@ export const NavigationWidget = widget<ParentNode>(({ node, instance }) => {
                 }
                 return (
                     <List.Item key={child.id}>
-                        <ChildNavigation node={child} instance={instance} />
+                        <ChildNavigation node={child} editor={editor} />
                     </List.Item>
                 );
             })}

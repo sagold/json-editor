@@ -3,7 +3,7 @@ import { WidgetPlugin } from './decorators';
 import { json, Node, isJSONError, HeadlessJsonEditor } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-export const ErrorWidget = ({ node, instance }: { node: Node; instance: HeadlessJsonEditor }) => {
+export const ErrorWidget = ({ node, editor }: { node: Node; editor: HeadlessJsonEditor }) => {
     const value = JSON.stringify(json(node));
     const error = node.schema as unknown as JSONError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
@@ -17,7 +17,7 @@ export const ErrorWidget = ({ node, instance }: { node: Node; instance: Headless
                 error={node.errors.length > 0 && node.errors.map((e) => e.message)}
                 label={`${node.property} (${error.name})`}
             />
-            <Button basic icon onClick={() => instance.removeValue(node.pointer)}>
+            <Button basic icon onClick={() => editor.removeValue(node.pointer)}>
                 <Icon name="trash alternate outline" />
             </Button>
             {description && <em className="ed-description">{description}</em>}

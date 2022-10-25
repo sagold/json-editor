@@ -31,7 +31,7 @@ export type ObjectOptions = {
     };
 } & DefaultNodeOptions;
 
-export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, instance }) => {
+export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
@@ -48,7 +48,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         }
                         return (
                             <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
-                                <Widget node={child} instance={instance} key={child.id} />
+                                <Widget node={child} editor={editor} key={child.id} />
                             </Grid.Column>
                         );
                     })}
@@ -59,7 +59,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         children = (
             <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => (
-                    <Widget node={child} instance={instance} key={child.id} />
+                    <Widget node={child} editor={editor} key={child.id} />
                 ))}
             </div>
         );
@@ -90,7 +90,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     {children}
                     {options.editJson && (
                         <EditJsonModal
-                            instance={instance}
+                            editor={editor}
                             node={node}
                             isOpen={isEditModalOpen}
                             title={options.title}
@@ -141,7 +141,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             {showContent && children}
             {options.editJson && (
                 <EditJsonModal
-                    instance={instance}
+                    editor={editor}
                     node={node}
                     isOpen={isEditModalOpen}
                     title={options.title}

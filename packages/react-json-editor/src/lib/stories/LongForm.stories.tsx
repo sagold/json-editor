@@ -13,8 +13,8 @@ export default {
 };
 
 export const LongForm = () => {
-    const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
-    const WidgetComponent = instance.getWidget(node);
+    const [node, editor] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
+    const WidgetComponent = editor.getWidget(node);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -31,12 +31,12 @@ export const LongForm = () => {
                 }}
             >
                 <div style={{ paddingRight: 24 }}>
-                    <NavigationWidget node={node} instance={instance} />
+                    <NavigationWidget node={node} editor={editor} />
                 </div>
             </div>
             <div style={{ marginLeft: '20%', paddingLeft: 48 }}>
                 <Form error>
-                    <WidgetComponent node={node} instance={instance} />
+                    <WidgetComponent node={node} editor={editor} />
                 </Form>
             </div>
         </div>

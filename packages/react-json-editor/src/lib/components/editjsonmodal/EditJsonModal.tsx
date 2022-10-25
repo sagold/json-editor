@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { JsonEditor } from '../../JsonEditor';
 
 export type EditJsonModalProps = {
-    instance: JsonEditor;
+    editor: JsonEditor;
     node: Node;
     isOpen: boolean;
     openEditModal;
@@ -13,8 +13,8 @@ export type EditJsonModalProps = {
     liveUpdate?: boolean;
 };
 
-export function EditJsonModal({ instance, node, isOpen, openEditModal, title, liveUpdate }: EditJsonModalProps) {
-    const currentNode = get(instance.getState(), node.pointer);
+export function EditJsonModal({ editor, node, isOpen, openEditModal, title, liveUpdate }: EditJsonModalProps) {
+    const currentNode = get(editor.getState(), node.pointer);
     const [value, update] = useState(isJSONError(currentNode) ? {} : json(currentNode));
     const [error, setError] = useState(false);
 
@@ -46,7 +46,7 @@ export function EditJsonModal({ instance, node, isOpen, openEditModal, title, li
                                     value = JSON.parse(value);
                                     update(value);
                                     setError(false);
-                                    liveUpdate && instance.setValue(node.pointer, value);
+                                    liveUpdate && editor.setValue(node.pointer, value);
                                 } catch (e) {
                                     setError(true);
                                 }
@@ -70,7 +70,7 @@ export function EditJsonModal({ instance, node, isOpen, openEditModal, title, li
                         disabled={error}
                         basic
                         onClick={() => {
-                            instance.setValue(node.pointer, value);
+                            editor.setValue(node.pointer, value);
                             openEditModal(false);
                         }}
                     >

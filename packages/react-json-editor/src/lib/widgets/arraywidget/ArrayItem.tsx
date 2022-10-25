@@ -4,14 +4,14 @@ import { JsonEditor } from '../../JsonEditor';
 import { Widget } from '../../components/widget/Widget';
 
 export type ArrayItemProps = {
-    instance: JsonEditor;
+    editor: JsonEditor;
     /** child node */
     node: Node;
     size: number;
     withDragHandle?: boolean;
 };
 
-export function ArrayItemDefault({ instance, node, withDragHandle, size }: ArrayItemProps) {
+export function ArrayItemDefault({ editor, node, withDragHandle, size }: ArrayItemProps) {
     return (
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
@@ -21,51 +21,51 @@ export function ArrayItemDefault({ instance, node, withDragHandle, size }: Array
             )}
             <div className="ed-array-item__actions">
                 <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable>
-                    <ArrayItemActions instance={instance} node={node} size={size} />
+                    <ArrayItemActions editor={editor} node={node} size={size} />
                 </Popup>
             </div>
-            <Widget instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+            <Widget editor={editor} node={node} options={{ title: undefined, description: undefined }} />
             {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
         </div>
     );
 }
 
-export function ArrayItemCard({ instance, node, withDragHandle, size }: ArrayItemProps) {
+export function ArrayItemCard({ editor, node, withDragHandle, size }: ArrayItemProps) {
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
             <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
                 {/*<Grid.Column width="15">{withDragHandle && <div className="ed-array-item__handle"></div>}</Grid.Column>*/}
                 <Popup trigger={<Button basic floated="right" icon="ellipsis vertical" />} flowing hoverable>
-                    <ArrayItemActions instance={instance} node={node} size={size} />
+                    <ArrayItemActions editor={editor} node={node} size={size} />
                 </Popup>
                 <Card.Header>{node.options.title}</Card.Header>
                 <Card.Meta>{node.options.description}</Card.Meta>
             </Card.Content>
             <Card.Content key="item">
-                <Widget instance={instance} node={node} options={{ title: undefined, description: undefined }} />
+                <Widget editor={editor} node={node} options={{ title: undefined, description: undefined }} />
             </Card.Content>
         </Card>
     );
 }
 
-export type ArrayItemActionProps = { node: Node; instance: JsonEditor; size: number };
+export type ArrayItemActionProps = { node: Node; editor: JsonEditor; size: number };
 
-export function ArrayItemActions({ node, instance, size }: ArrayItemActionProps) {
+export function ArrayItemActions({ node, editor, size }: ArrayItemActionProps) {
     return (
         <>
-            <Button basic icon="trash alternate outline" onClick={() => instance.removeValue(node.pointer)} />
+            <Button basic icon="trash alternate outline" onClick={() => editor.removeValue(node.pointer)} />
             <Button
                 basic
                 icon="caret up"
                 disabled={node.property === '0'}
-                onClick={() => instance.moveItem(node.pointer, parseInt(node.property) - 1)}
+                onClick={() => editor.moveItem(node.pointer, parseInt(node.property) - 1)}
             />
 
             <Button
                 basic
                 icon="caret down"
                 disabled={node.property === `${size - 1}`}
-                onClick={() => instance.moveItem(node.pointer, parseInt(node.property) + 1)}
+                onClick={() => editor.moveItem(node.pointer, parseInt(node.property) + 1)}
             />
         </>
     );

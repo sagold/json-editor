@@ -24,7 +24,7 @@ type ComponentStoryProps = {
 };
 
 const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
-    const [node, instance] = useJsonEditor<ArrayNode<ArrayOptions>>({
+    const [node, editor] = useJsonEditor<ArrayNode<ArrayOptions>>({
         schema,
         widgets: defaultWidgets,
         data,
@@ -32,7 +32,7 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     });
     return (
         <Form error>
-            <ArrayWidget node={node} instance={instance} options={options} />
+            <ArrayWidget node={node} editor={editor} options={options} />
         </Form>
     );
 };

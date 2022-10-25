@@ -19,7 +19,7 @@ export type TableOptions = {
 /**
  * @todo maybe better to use ag-grid
  */
-export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, instance }) => {
+export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor }) => {
     const columns = Object.keys(node.schema.items.properties);
     const [edit, setEdit] = useState<{ isOpen: boolean; pointer?: string; cell?: Node }>({ isOpen: false });
 
@@ -40,11 +40,11 @@ export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, instance }) 
                             <Table.Row key={row.id}>
                                 {row.children.map((cell) => {
                                     {
-                                        /*const WidgetComponent = instance.getWidget(cell);*/
+                                        /*const WidgetComponent = editor.getWidget(cell);*/
                                     }
                                     return (
                                         <Table.Cell selectable key={cell.id} error={cell.errors.length > 0}>
-                                            {/*<Editor instance={instance} node={cell} />*/}
+                                            {/*<Editor editor={editor} node={cell} />*/}
                                             <a
                                                 className="clickable"
                                                 onClick={() => setEdit({ isOpen: true, pointer: row.pointer, cell })}
@@ -61,7 +61,7 @@ export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, instance }) 
             </Table>
             {edit.pointer && (
                 <EditModal
-                    instance={instance}
+                    editor={editor}
                     node={get(node, edit.pointer)}
                     isOpen={edit.isOpen}
                     closeModal={() => setEdit({ isOpen: false })}

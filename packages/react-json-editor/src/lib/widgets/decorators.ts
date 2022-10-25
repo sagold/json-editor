@@ -6,13 +6,13 @@ type AnyOption = Record<string, unknown>;
 
 export type WidgetProps<T extends Node = Node> = {
     node: T;
-    instance: JsonEditor;
+    editor: JsonEditor;
     options?: Partial<T['options']>;
 };
 
 /**
  * interface of generic json editor component.
- * it takes the current instance and the current node along with a localized option interface
+ * it takes the current editor and the current node along with a localized option interface
  */
 export type Widget<T extends Node = Node> = (props: WidgetProps<T>) => JSX.Element | null;
 
@@ -26,7 +26,7 @@ const isEqual = (prev: WidgetProps, next: WidgetProps) => prev.node === next.nod
  */
 export type DecoratedWidgetProps<T extends Node, V = unknown> = {
     node: T;
-    instance: JsonEditor;
+    editor: JsonEditor;
     options: T['options'];
     setValue: (value: V) => void;
 };
@@ -45,7 +45,7 @@ export function widget<T extends Node = Node, V = unknown>(WidgetComponent: Deco
             WidgetComponent({
                 ...props,
                 options: { ...props.node.options, ...props.options },
-                setValue: (value: V) => props.instance.setValue(props.node.pointer, value)
+                setValue: (value: V) => props.editor.setValue(props.node.pointer, value)
             }),
         isEqual
     );

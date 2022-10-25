@@ -203,7 +203,7 @@ function MyForm({ schema, data }) {
   const Widget = jsonEditor.getWidget(node);
   return (
     <Form error>
-      <Widget node={node} instance={jsonEditor} />
+      <Widget node={node} editor={jsonEditor} />
     </Form>
   );
 }

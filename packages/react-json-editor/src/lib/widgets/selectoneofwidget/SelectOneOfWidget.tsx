@@ -15,13 +15,13 @@ export function useSelectOneOfWidget(node, { skipSelectOneOf = false } = {}) {
     return !skipSelectOneOf && node.schema.oneOfSchema && node.schema.oneOfSchema.oneOf.length > 1;
 }
 
-export const SelectOneOfWidget = widget(({ instance, node, options }) => {
+export const SelectOneOfWidget = widget(({ editor, node, options }) => {
     const selectedSchema = node.schema as SelectedOneOfSchema;
 
     const onChange = (e, { value }: DropdownProps) => {
         const schema = selectedSchema.oneOfSchema?.oneOf[`${value}`];
-        const data = instance.getTemplateData(schema);
-        instance.setValue(node.pointer, data);
+        const data = editor.getTemplateData(schema);
+        editor.setValue(node.pointer, data);
     };
 
     const selectOptions = selectedSchema.oneOfSchema?.oneOf.map((s, index) => ({
@@ -46,7 +46,7 @@ export const SelectOneOfWidget = widget(({ instance, node, options }) => {
             </Divider>
 
             <div className="ed-children">
-                <Widget node={node} instance={instance} options={{ title: undefined, skipSelectOneOf: true }} />
+                <Widget node={node} editor={editor} options={{ title: undefined, skipSelectOneOf: true }} />
             </div>
         </div>
     );

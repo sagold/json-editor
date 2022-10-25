@@ -15,7 +15,7 @@ import Ref from '@semantic-ui-react/component-ref';
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
 
 export type ArrayItemProps = {
-    instance: JsonEditor;
+    editor: JsonEditor;
     node: ArrayNode;
     child: Node;
     size: number;
@@ -50,7 +50,7 @@ export type ArrayOptions = {
     };
 } & DefaultNodeOptions;
 
-function createOnSortEnd(instance: JsonEditor, node: Node) {
+function createOnSortEnd(editor: JsonEditor, node: Node) {
     return function onSortEnd(event: Sortable.SortableEvent) {
         const targetIndex = parseInt(`${event.newIndex}`);
         if (isNaN(targetIndex)) {
@@ -67,11 +67,11 @@ function createOnSortEnd(instance: JsonEditor, node: Node) {
             from.insertBefore(event.item, from.childNodes[oldIndex]);
         }
         // console.log('move item', `${node.pointer}/${event.oldIndex}`, targetIndex);
-        instance.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
+        editor.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
     };
 }
 
-export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, options }) => {
+export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
@@ -83,9 +83,9 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, op
     sortable.group = sortable.group ?? node.pointer;
 
     function insertItem() {
-        const options = instance.getArrayAddOptions(node);
+        const options = editor.getArrayAddOptions(node);
         if (options.length === 1) {
-            instance.appendItem(node, options[0]);
+            editor.appendItem(node, options[0]);
         } else {
             setModalOpen(true);
         }
@@ -100,10 +100,10 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, op
                 swapThreshold: 4,
                 delay: 250,
                 ...sortable,
-                onEnd: createOnSortEnd(instance, node)
+                onEnd: createOnSortEnd(editor, node)
             });
         }
-    }, [sortable, instance]);
+    }, [sortable, editor]);
 
     const { title, description, collapsed, editJson = {} } = options;
 
@@ -149,7 +149,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, op
                         (options.layout?.type === 'cards'
                             ? node.children.map((child) => (
                                   <ArrayItemCard
-                                      instance={instance}
+                                      editor={editor}
                                       node={child}
                                       size={node.children.length}
                                       key={child.id}
@@ -158,7 +158,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, op
                               ))
                             : node.children.map((child) => (
                                   <ArrayItemDefault
-                                      instance={instance}
+                                      editor={editor}
                                       node={child}
                                       size={node.children.length}
                                       key={child.id}
@@ -168,11 +168,11 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ instance, node, op
                 </div>
             </Ref>
 
-            <InsertItemModal instance={instance} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
+            <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
 
             {editJson.enabled && (
                 <EditJsonModal
-                    instance={instance}
+                    editor={editor}
                     node={node}
                     liveUpdate={editJson.liveUpdate}
                     isOpen={isEditModalOpen}

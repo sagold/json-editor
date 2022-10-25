@@ -4,21 +4,21 @@ import { JsonEditor } from '../../JsonEditor';
 import { useState } from 'react';
 
 export type InsertItemModalProps = {
-    instance: JsonEditor;
+    editor: JsonEditor;
     node: ArrayNode;
     isOpen: boolean;
     onClose: () => void;
 };
 
-export function InsertItemModal({ instance, node, isOpen, onClose }: InsertItemModalProps) {
-    const options = instance.getArrayAddOptions(node);
+export function InsertItemModal({ editor, node, isOpen, onClose }: InsertItemModalProps) {
+    const options = editor.getArrayAddOptions(node);
     const [modal, setModal] = useState<{ selected: number }>({
         selected: 0
     });
 
     const handleSelection = (event, { value }: DropdownProps) => setModal({ ...modal, selected: parseInt(`${value}`) });
     function addSelectedItem() {
-        instance.appendItem(node, options[modal.selected]);
+        editor.appendItem(node, options[modal.selected]);
         onClose();
     }
 

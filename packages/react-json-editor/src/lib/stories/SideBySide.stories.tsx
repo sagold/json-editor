@@ -7,7 +7,7 @@ import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 
 function SideBySide({ schema, data, onChange }: JsonFormProps) {
-    const [node, instance] = useJsonEditor({
+    const [node, editor] = useJsonEditor({
         schema,
         widgets: defaultWidgets,
         onChange,
@@ -15,7 +15,7 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
         data
     });
 
-    const ChildWidget = instance.getWidget(node);
+    const ChildWidget = editor.getWidget(node);
     return (
         <section
             id="side-by-side"
@@ -26,10 +26,10 @@ function SideBySide({ schema, data, onChange }: JsonFormProps) {
             }}
         >
             <Form error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
-                <ChildWidget node={node} instance={instance} />
+                <ChildWidget node={node} editor={editor} />
             </Form>
             <Form error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
-                <ChildWidget node={node} instance={instance} />
+                <ChildWidget node={node} editor={editor} />
             </Form>
         </section>
     );

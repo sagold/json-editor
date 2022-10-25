@@ -29,7 +29,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
     const { schema, data, cacheKey } = settings;
     const [currentData, setCurrentData] = useState(data);
 
-    // track previous inputs - set data to instance if input values have changed
+    // track previous inputs - set data to editor if input values have changed
     const [previousData, setPreviousData] = useState(data);
     const [previousSchema, setPreviousSchema] = useState(schema);
 

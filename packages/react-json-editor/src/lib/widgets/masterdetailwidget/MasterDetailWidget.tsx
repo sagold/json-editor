@@ -31,7 +31,7 @@ export type MasterDetailOptions = {
 /**
  * Master-Detail Editor for object or array values
  */
-export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ instance, node, options }) => {
+export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ editor, node, options }) => {
     const [editModal, setEditModal] = useState<{ open: boolean; pointer?: string }>({ open: false });
     const { title } = options;
     return (
@@ -62,8 +62,8 @@ export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ ins
 
             {editModal.open && editModal.pointer && (
                 <EditModal
-                    instance={instance}
-                    node={get(instance.state, editModal.pointer)}
+                    editor={editor}
+                    node={get(editor.state, editModal.pointer)}
                     options={{ skipMaster: true }}
                     isOpen={editModal.open}
                     closeModal={() => setEditModal({ open: false })}

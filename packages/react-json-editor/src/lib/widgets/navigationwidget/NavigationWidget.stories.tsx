@@ -57,7 +57,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, instance] = useJsonEditor({
+    const [node, editor] = useJsonEditor({
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
@@ -68,7 +68,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
         <div style={{ width: '400px' }}>
             <NavigationWidget
                 node={node}
-                instance={instance}
+                editor={editor}
                 // options={{ withChildren: true }}
             />
         </div>

@@ -15,7 +15,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, instance] = useJsonEditor({
+    const [node, editor] = useJsonEditor({
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
@@ -27,7 +27,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <Form error>
-            <FileWidget node={fileNode} instance={instance} />
+            <FileWidget node={fileNode} editor={editor} />
         </Form>
     );
 };

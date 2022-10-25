@@ -24,7 +24,7 @@ type ComponentStoryProps = {
 };
 
 const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
-    const [node, instance] = useJsonEditor<ParentNode>({
+    const [node, editor] = useJsonEditor<ParentNode>({
         schema,
         widgets: defaultWidgets,
         data,
@@ -32,7 +32,7 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     });
     return (
         <Form error>
-            <SelectOneOfWidget node={node.children[0] as Node} instance={instance} options={options} />
+            <SelectOneOfWidget node={node.children[0] as Node} editor={editor} options={options} />
         </Form>
     );
 };

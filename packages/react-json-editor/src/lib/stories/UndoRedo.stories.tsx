@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useJsonEditor, defaultWidgets } from '../../index';
-import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
+import { HistoryPlugin, HistoryPlugineditor } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
 import '../styles.scss';
@@ -42,9 +42,9 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, instance] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [HistoryPlugin] });
-    const historyPlugin = useRef<HistoryPluginInstance>(instance.plugin('history') as HistoryPluginInstance);
-    const Widget = instance.getWidget(node);
+    const [node, editor] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [HistoryPlugin] });
+    const historyPlugin = useRef<HistoryPlugineditor>(editor.plugin('history') as HistoryPlugineditor);
+    const Widget = editor.getWidget(node);
     const history = historyPlugin.current;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
@@ -60,7 +60,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
                 </Button>
             </Button.Group>
             <Form error>
-                <Widget node={node} instance={instance} />
+                <Widget node={node} editor={editor} />
             </Form>
         </div>
     );

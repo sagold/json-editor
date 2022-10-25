@@ -64,11 +64,6 @@ export function JsonForm({
         validate
     });
 
-    // @ts-ignore
-    window['jsonNode'] = rootNode;
-    // @ts-ignore
-    window['validate'] = () => instance.core.validate(json(rootNode));
-
     if (editor) {
         editor.current = instance;
     }
@@ -85,7 +80,7 @@ export function JsonForm({
 
     return (
         <Form error>
-            <Widget node={node} instance={instance} options={options} />
+            <Widget node={node} editor={instance} options={options} />
         </Form>
     );
 }

@@ -14,7 +14,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, instance] = useJsonEditor({
+    const [node, editor] = useJsonEditor({
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
@@ -23,7 +23,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     });
     return (
         <div style={{ width: '400px' }}>
-            <TableWidget node={node} instance={instance} />
+            <TableWidget node={node} editor={editor} />
         </div>
     );
 };
