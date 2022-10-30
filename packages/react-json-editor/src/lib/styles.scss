@@ -1,3 +1,7 @@
+.clickable {
+    cursor: pointer;
+}
+
 /* fix: semantic ui dropdown within grid */
 .ui.dropdown,
 .ui.dropdown.selection {
@@ -44,7 +48,7 @@
 .ed-array-item__actions {
     position: absolute;
     right: 10px;
-    margin-top: 2.75em;
+    margin-top: 2.5em;
 }
 
 .ui.form .ui.card {
@@ -79,7 +83,7 @@
 .ed-value,
 .ed-object__items--grid,
 .ed-array__items--grid {
-    padding: 1em;
+    padding: 0.75em 1em;
 }
 
 .ed-array__items--default .with-drag-handle {
