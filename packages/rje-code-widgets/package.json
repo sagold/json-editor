@@ -1,6 +1,6 @@
 {
     "name": "@sagold/rje-code-widgets",
-    "version": "0.1.0",
+    "version": "0.14.0",
     "dependencies": {
         "@codemirror/lang-json": "*",
         "@codemirror/lint": "*",
