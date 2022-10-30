@@ -5,6 +5,10 @@ export const schema: JSONSchema = {
     type: 'object',
     required: ['header', 'intro', 'modules', 'furtherReading', 'seo', 'socialMedia', 'credits', 'dev'],
     properties: {
+        id: {
+            type: 'string',
+            default: 'd98124af'
+        },
         header: {
             title: 'Artikel',
             type: 'object',

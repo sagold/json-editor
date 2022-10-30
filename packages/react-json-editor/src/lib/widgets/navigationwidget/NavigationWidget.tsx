@@ -4,7 +4,7 @@ import { widget } from '../decorators';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '../../JsonEditor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, isValueNode, ArrayNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
+import { ParentNode, ArrayNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
 import { useState, useRef, useEffect } from 'react';
 
 function scrollTo(node: Node) {
@@ -20,7 +20,7 @@ function scrollTo(node: Node) {
 }
 
 function getNavigationTitle(node: Node) {
-    return isValueNode(node) ? node.value : node.options.title ?? node.property;
+    return node.options.title ?? node.property;
 }
 
 type ArrayOptions = {
@@ -93,7 +93,9 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
                 </List.Content>
                 <List.Header className="clickable">
                     <Icon name="dropdown" link onClick={() => setToggleState(!toggleState)} />
-                    <span onClick={() => scrollTo(node)}>{getNavigationTitle(node)}</span>
+                    <span className="clickable" onClick={() => scrollTo(node)}>
+                        {getNavigationTitle(node)}
+                    </span>
                 </List.Header>
             </Accordion.Title>
             <Accordion.Content active={toggleState}>
