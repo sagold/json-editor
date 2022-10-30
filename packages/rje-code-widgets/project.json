@@ -12,7 +12,13 @@
                 "tsConfig": "packages/rje-code-widgets/tsconfig.lib.json",
                 "project": "packages/rje-code-widgets/package.json",
                 "entryFile": "packages/rje-code-widgets/src/index.ts",
-                "external": ["react/jsx-runtime"],
+                "external": [
+                    "react/jsx-runtime",
+                    "@sagold/react-json-editor",
+                    "headless-json-editor",
+                    "semantic-ui-css",
+                    "semantic-ui-react"
+                ],
                 "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "assets": [
