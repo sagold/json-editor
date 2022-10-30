@@ -1,0 +1,74 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/rje-code-widgets/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:rollup",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/packages/rje-code-widgets",
+                "tsConfig": "packages/rje-code-widgets/tsconfig.lib.json",
+                "project": "packages/rje-code-widgets/package.json",
+                "entryFile": "packages/rje-code-widgets/src/index.ts",
+                "external": ["react/jsx-runtime"],
+                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "compiler": "babel",
+                "assets": [
+                    {
+                        "glob": "packages/rje-code-widgets/README.md",
+                        "input": ".",
+                        "output": "."
+                    }
+                ]
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["packages/rje-code-widgets/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/packages/rje-code-widgets"],
+            "options": {
+                "jestConfig": "packages/rje-code-widgets/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/react",
+                "port": 4400,
+                "config": {
+                    "configFolder": "packages/rje-code-widgets/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/react",
+                "outputPath": "dist/storybook/rje-code-widget",
+                "config": {
+                    "configFolder": "packages/rje-code-widgets/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        }
+    }
+}

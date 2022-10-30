@@ -6,6 +6,9 @@ nx generate @nrwl/js:library --name=headless-json-editor --buildable --publishab
 yarn add -D @nrwl/react
 nx g @nrwl/react:lib react-json-editor --preset=ts  --buildable --publishable --importPath=@sagold/react-json-editor
 nx g @nrwl/react:storybook-configuration react-json-editor
+
+nx g @nrwl/react:lib rje-code-widget --preset=ts  --publishable --importPath=@sagold/rje-code-widget
+nx g @nrwl/react:storybook-configuration rje-code-widget
     
 
 ## changes to ts-config in headless-json-editor

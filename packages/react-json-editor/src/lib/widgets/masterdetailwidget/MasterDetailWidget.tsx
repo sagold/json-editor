@@ -47,7 +47,6 @@ export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ edi
                     icon="edit outline"
                     className="clickable"
                     onClick={() => {
-                        console.log('open edit modal', node.pointer);
                         setEditModal({ open: true, pointer: node.pointer });
                     }}
                 />

@@ -16,7 +16,8 @@
         "baseUrl": ".",
         "paths": {
             "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"],
-            "headless-json-editor": ["packages/headless-json-editor/src/index.ts"]
+            "headless-json-editor": ["packages/headless-json-editor/src/index.ts"],
+            "rje-code-widgets": ["packages/rje-code-widgets/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

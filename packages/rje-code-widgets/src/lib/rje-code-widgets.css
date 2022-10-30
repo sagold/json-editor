@@ -1,0 +1,36 @@
+.cm-theme-light,
+.cm-theme-dark {
+    border: 0px solid transparent !important;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.cm-editor {
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-radius: 0.28571429rem;
+}
+
+.cm-editor.cm-focused {
+    outline: none !important;
+    border-color: #85b7d9;
+}
+
+.field.error > .cm-theme-light > .cm-editor,
+.field.error > .cm-theme-dark > .cm-editor {
+    border-color: #9f3a38;
+    background: rgba(224, 180, 180, 0.25);
+}
+
+.cm-theme-light .cm-editor .cm-gutters {
+    background-color: rgba(34, 36, 38, 0.03);
+}
+
+.cm-lint-marker {
+    border-color: #9f3a38;
+    border-radius: 100%;
+    border: 2px solid #9f3a38;
+    background-color: #e0b4b4;
+}
+
+.cm-lint-marker:before {
+    content: '' !important;
+}

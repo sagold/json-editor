@@ -35,8 +35,6 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
-    console.log('object', options.disabled, options.readOnly);
-
     let children: JSX.Element;
     if (options.layout && Array.isArray(options.layout.cells)) {
         const cells = buildObjectLayout(node, options.layout);
