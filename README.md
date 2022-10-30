@@ -9,6 +9,7 @@ Currently this repository includes packages
 
 - [headless-json-editor](./packages/headless-json-editor) and
 - [@sagold/react-json-editor](./packages/react-json-editor) for a react implementation using semantic-ui
+- [@sagold/rje-code-widgets](./packages/rje-code-widgets) additional code-widgets for react-json-editor
 
 
 ## tooling
