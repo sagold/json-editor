@@ -13,6 +13,7 @@ export { JsonForm, Widget, widget, JsonEditor, useJsonEditor, useEditor, classNa
 // widgets
 export { defaultWidgets } from './lib/widgets/index';
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
+export { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/BooleanWidget';
 export { ErrorWidget, ErrorWidgetPlugin } from './lib/widgets/ErrorWidget';
 export { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
 export { MultiSelectWidget, MultiSelectWidgetPlugin } from './lib/widgets/MultiSelectWidget';

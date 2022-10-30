@@ -6,6 +6,10 @@ export type BooleanOptions = {
     type?: 'checkbox' | 'toggle';
 } & DefaultNodeOptions;
 
+export const booleanDefaultOptions = {
+    type: 'toggle'
+};
+
 export const BooleanWidget = widget<BooleanNode<BooleanOptions>, boolean>(({ node, options, setValue }) => (
     <div className="ed-form ed-value" data-type="boolean" data-id={node.pointer}>
         <Form.Field id={node.id} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
@@ -14,7 +18,7 @@ export const BooleanWidget = widget<BooleanNode<BooleanOptions>, boolean>(({ nod
                 label={options.title as string}
                 onChange={(e, { checked }) => setValue(checked === true)}
                 readOnly={options.readOnly === true}
-                toggle={options.type === 'toggle'}
+                toggle={options.type ? options.type === 'toggle' : booleanDefaultOptions.type === 'toggle'}
             />
         </Form.Field>
         {options.description && <em className="ed-description">{options.description}</em>}

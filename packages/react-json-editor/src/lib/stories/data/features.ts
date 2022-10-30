@@ -97,10 +97,10 @@ export const schema = {
         },
         isInteractive: {
             title: 'True if should be interactive',
-            description: 'boolean with options: { type: "toggle"}',
+            description: 'boolean with options: { type: "checkbox"}',
             type: 'boolean',
             options: {
-                type: 'toggle'
+                type: 'checkbox'
             },
             default: true
         },
