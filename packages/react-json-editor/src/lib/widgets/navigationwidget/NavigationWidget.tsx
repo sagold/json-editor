@@ -218,7 +218,6 @@ export type NavigationWidgetOptions = {
  * ```
  */
 export const NavigationWidget = widget<ParentNode<NavigationWidgetOptions>>(({ node, editor, options }) => {
-    console.log('OPTS', options);
     return (
         <List divided relaxed="very">
             {node.children.map((child: Node) => {
