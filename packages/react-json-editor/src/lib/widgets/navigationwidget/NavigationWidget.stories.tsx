@@ -1,7 +1,7 @@
 import { ComponentStory } from '@storybook/react';
 import { defaultWidgets, useJsonEditor } from '../../../index';
 import { NavigationWidget } from './NavigationWidget';
-import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
+import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
 import '../../styles.scss';
 
 const schema = {
@@ -56,8 +56,9 @@ export default {
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, editor] = useJsonEditor({
+const Template: ComponentStory<any> = ({ data, schema, options }) => {
+    console.log('COMP', options);
+    const [node, editor] = useJsonEditor<ParentNode>({
         schema,
         widgets: defaultWidgets,
         plugins: [RemoteEnumOptionsPlugin],
@@ -66,14 +67,16 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     });
     return (
         <div style={{ width: '400px' }}>
-            <NavigationWidget
-                node={node}
-                editor={editor}
-                // options={{ withChildren: true }}
-            />
+            <NavigationWidget node={node} editor={editor} options={options} />
         </div>
     );
 };
 
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default = Template.bind({ data, schema });
+
+export const ShowProperties = Template.bind({});
+ShowProperties.args = {
+    options: {
+        showProperties: true
+    }
+};

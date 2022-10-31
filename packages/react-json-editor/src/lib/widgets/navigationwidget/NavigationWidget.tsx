@@ -4,7 +4,7 @@ import { widget } from '../decorators';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '../../JsonEditor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, ArrayNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
+import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
 import { useState, useRef, useEffect } from 'react';
 
 function scrollTo(node: Node) {
@@ -131,17 +131,64 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
     );
 }
 
-function ChildNavigation({ node, editor }: { node: Node; editor: JsonEditor }) {
+function ObjectPropertyNavigation({ node, editor }: { node: ObjectNode; editor: JsonEditor }) {
+    const [toggleState, setToggleState] = useState<boolean>(false);
+    return (
+        <Accordion>
+            <Accordion.Title active={toggleState}>
+                <List.Header className="clickable">
+                    <Icon name="dropdown" link onClick={() => setToggleState(!toggleState)} />
+                    <span className="clickable" onClick={() => scrollTo(node)}>
+                        {getNavigationTitle(node)}
+                    </span>
+                </List.Header>
+            </Accordion.Title>
+            <Accordion.Content active={toggleState}>
+                <Ref>
+                    <List.List className="children">
+                        {node.children.map((childchild: Node) => {
+                            // @todo configurable title location for parent-nodes
+                            return (
+                                <List.Item key={childchild.id + 'nav'} style={{ display: 'flex' }}>
+                                    <List.Content
+                                        onClick={() => scrollTo(childchild)}
+                                        style={{ flexGrow: 1 }}
+                                        className="clickable"
+                                    >
+                                        {getNavigationTitle(childchild)}
+                                    </List.Content>
+                                </List.Item>
+                            );
+                        })}
+                    </List.List>
+                </Ref>
+            </Accordion.Content>
+        </Accordion>
+    );
+}
+
+function ChildNavigation({
+    node,
+    editor,
+    options
+}: {
+    node: Node;
+    editor: JsonEditor;
+    options: NavigationWidgetOptions;
+}) {
     if (node.type === 'array') {
         return <ArrayChildNavigation node={node} editor={editor} />;
     }
     if (node.type === 'object') {
+        console.log('show properties?', options);
+        if (options.showProperties) {
+            return <ObjectPropertyNavigation node={node} editor={editor} />;
+        }
+
         return (
-            <>
-                <List.Header className="clickable" onClick={() => scrollTo(node)}>
-                    {getNavigationTitle(node)}
-                </List.Header>
-            </>
+            <List.Header className="clickable" onClick={() => scrollTo(node)}>
+                {getNavigationTitle(node)}
+            </List.Header>
         );
     }
     return (
@@ -150,6 +197,10 @@ function ChildNavigation({ node, editor }: { node: Node; editor: JsonEditor }) {
         </List.Header>
     );
 }
+
+export type NavigationWidgetOptions = {
+    showProperties?: boolean;
+} & DefaultNodeOptions;
 
 /**
  * Navigation Editor
@@ -167,7 +218,8 @@ function ChildNavigation({ node, editor }: { node: Node; editor: JsonEditor }) {
  *  />
  * ```
  */
-export const NavigationWidget = widget<ParentNode>(({ node, editor }) => {
+export const NavigationWidget = widget<ParentNode<NavigationWidgetOptions>>(({ node, editor, options }) => {
+    console.log('OPTS', options);
     return (
         <List divided relaxed="very">
             {node.children.map((child: Node) => {
@@ -176,7 +228,7 @@ export const NavigationWidget = widget<ParentNode>(({ node, editor }) => {
                 }
                 return (
                     <List.Item key={child.id}>
-                        <ChildNavigation node={child} editor={editor} />
+                        <ChildNavigation node={child} editor={editor} options={options} />
                     </List.Item>
                 );
             })}
