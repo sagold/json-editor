@@ -1,3 +1,5 @@
+// settings
+export { setErrorMessages } from './settings';
 // create
 import { create, getOptions, DefaultNodeOptions } from './node/create';
 import { json } from './node/json';
@@ -8,7 +10,6 @@ import { flat } from './node/flat';
 import { get } from './node/get';
 import { trace } from './node/trace';
 import { getChildNode } from './node/getChildNode';
-
 // transformation
 import { set } from './transform/set';
 import { remove } from './transform/remove';

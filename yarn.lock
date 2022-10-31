@@ -4181,22 +4181,6 @@
     "@codemirror/state" "^6.0.0"
     "@codemirror/view" "^6.0.0"
 
-"@uiw/codemirror-theme-github@*":
-  version "4.12.4"
-  resolved "https://registry.yarnpkg.com/@uiw/codemirror-theme-github/-/codemirror-theme-github-4.12.4.tgz#db6eaecdf23bf6230ff64c44befddf0d6fdd22fc"
-  integrity sha512-ni5/u6aqv+4Nq5i7BaQiDFmZGu/+BhoptjxvNBlqJjVuYeUfv27zFTdcaFf2GKVL7mPMX4Q4MltVGKDYoWe14Q==
-  dependencies:
-    "@uiw/codemirror-themes" "4.12.4"
-
-"@uiw/codemirror-themes@4.12.4":
-  version "4.12.4"
-  resolved "https://registry.yarnpkg.com/@uiw/codemirror-themes/-/codemirror-themes-4.12.4.tgz#d8d06a26045104bb6a666f2eb5646d6830f1663e"
-  integrity sha512-ekySMFlXaJ4u0TCz/caHG8HqJPT0+viUA2ZQ4yZ+F1z2Lk9HgMS/1YfRj8vHuEUPNXc9Fsy5qxwTp7I1hEanEg==
-  dependencies:
-    "@codemirror/language" "^6.0.0"
-    "@codemirror/state" "^6.0.0"
-    "@codemirror/view" "^6.0.0"
-
 "@uiw/react-codemirror@*":
   version "4.12.4"
   resolved "https://registry.yarnpkg.com/@uiw/react-codemirror/-/react-codemirror-4.12.4.tgz#26c36e7957bc51894bc6526b3922645215ad46d5"
@@ -10360,10 +10344,10 @@ json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
   integrity sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==
 
-json-schema-library@^7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/json-schema-library/-/json-schema-library-7.2.0.tgz#ddaa104d83011049af362dec847e700d488a5f19"
-  integrity sha512-jlDNceLO7BL7g1CZpyiJLwgEf9S7sDm08BJnZU60I/8DpQUif8Hq6g+Rw2kMhx9V0eXNazFVtAexT0acOauMKQ==
+json-schema-library@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/json-schema-library/-/json-schema-library-7.3.0.tgz#bb2c507a0f40126500eb78efb851d1d36e7a2da4"
+  integrity sha512-UOZokI/kc0oVCDJ/De5XH1A0pPTI2N0wh8WDe9ZnIFNp0p2Nd/1xI+/JAs3y/ALnCbxJ78Hzv5ogsSvsKUlULQ==
   dependencies:
     deepmerge "^4.2.2"
     fast-deep-equal "^3.1.3"
