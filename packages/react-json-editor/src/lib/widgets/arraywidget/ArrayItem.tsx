@@ -10,9 +10,13 @@ export type ArrayItemProps = {
     size: number;
     withDragHandle?: boolean;
     disabled?: boolean;
+    options?: Record<string, any>;
 };
 
-export function ArrayItemDefault({ editor, node, withDragHandle, disabled, size }: ArrayItemProps) {
+export function ArrayItemDefault({ editor, node, withDragHandle, disabled, size, options = {} }: ArrayItemProps) {
+    options.title = undefined;
+    options.description = undefined;
+
     return (
         <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
             {withDragHandle && (
@@ -25,13 +29,16 @@ export function ArrayItemDefault({ editor, node, withDragHandle, disabled, size 
                     <ArrayItemActions editor={editor} node={node} size={size} />
                 </Popup>
             </div>
-            <Widget editor={editor} node={node} options={{ title: undefined, description: undefined }} />
+            <Widget editor={editor} node={node} options={options} />
             {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
         </div>
     );
 }
 
-export function ArrayItemCard({ editor, node, withDragHandle, disabled, size }: ArrayItemProps) {
+export function ArrayItemCard({ editor, node, withDragHandle, disabled, size, options = {} }: ArrayItemProps) {
+    options.title = undefined;
+    options.description = undefined;
+
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
             <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
@@ -48,7 +55,7 @@ export function ArrayItemCard({ editor, node, withDragHandle, disabled, size }: 
                 <Card.Meta>{node.options.description}</Card.Meta>
             </Card.Content>
             <Card.Content key="item">
-                <Widget editor={editor} node={node} options={{ title: undefined, description: undefined }} />
+                <Widget editor={editor} node={node} options={options} />
             </Card.Content>
         </Card>
     );

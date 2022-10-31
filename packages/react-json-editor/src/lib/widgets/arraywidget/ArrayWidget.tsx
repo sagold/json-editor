@@ -14,15 +14,6 @@ import Ref from '@semantic-ui-react/component-ref';
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
 
-export type ArrayItemProps = {
-    editor: JsonEditor;
-    node: ArrayNode;
-    child: Node;
-    size: number;
-    children: JSX.Element;
-    withDragHandle?: boolean;
-};
-
 export type ArrayOptions = {
     /** additional classnames for array editor */
     classNames?: string[];
@@ -81,6 +72,10 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     }
     sortable.enabled = sortable.enabled ?? false;
     sortable.group = sortable.group ?? node.pointer;
+
+    const childOptions: Record<string, any> = {};
+    options.disabled && (childOptions.disabled = true);
+    options.readOnly && (childOptions.readOnly = true);
 
     function insertItem() {
         const options = editor.getArrayAddOptions(node);
@@ -155,6 +150,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                       node={child}
                                       size={node.children.length}
                                       withDragHandle={sortable?.enabled}
+                                      options={childOptions}
                                   />
                               ))
                             : node.children.map((child) => (
@@ -165,6 +161,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                       node={child}
                                       size={node.children.length}
                                       withDragHandle={sortable?.enabled}
+                                      options={childOptions}
                                   />
                               )))}
                 </div>

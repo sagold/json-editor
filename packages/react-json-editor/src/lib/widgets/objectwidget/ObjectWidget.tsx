@@ -35,6 +35,10 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
+    const childOptions: Record<string, any> = {};
+    options.disabled && (childOptions.disabled = true);
+    options.readOnly && (childOptions.readOnly = true);
+
     let children: JSX.Element;
     if (options.layout && Array.isArray(options.layout.cells)) {
         const cells = buildObjectLayout(node, options.layout);
@@ -48,7 +52,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         }
                         return (
                             <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
-                                <Widget node={child} editor={editor} key={child.id} />
+                                <Widget node={child} editor={editor} key={child.id} options={childOptions} />
                             </Grid.Column>
                         );
                     })}
@@ -59,7 +63,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         children = (
             <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => (
-                    <Widget node={child} editor={editor} key={child.id} />
+                    <Widget node={child} editor={editor} key={child.id} options={childOptions} />
                 ))}
             </div>
         );
