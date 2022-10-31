@@ -69,7 +69,6 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
 });
 
 export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, options, editor, setValue }) => {
-    console.log('init');
     return (
         <div
             className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}

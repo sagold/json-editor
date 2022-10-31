@@ -26,7 +26,9 @@ function getPropertyValueCursor(node: SyntaxNode) {
 }
 
 export function jsonSchemaLinter(editor: JsonEditor, schema: JSONSchema) {
-    const draft = new Draft(editor.draft.config, schema);
+    const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
+    const draft = new Draft(editor.draft.config, rootSchema);
+    const localSchema = draft.compileSchema(schema);
 
     return function (view: EditorView): Diagnostic[] {
         const jsonLint = jsonParseLinter();
@@ -35,13 +37,13 @@ export function jsonSchemaLinter(editor: JsonEditor, schema: JSONSchema) {
             return jsonLintResult;
         }
 
-        return runJsonSchemaLinter(draft, view);
+        return runJsonSchemaLinter(draft, localSchema, view);
     };
 }
 
-function runJsonSchemaLinter(draft: Draft, view: EditorView): Diagnostic[] {
+function runJsonSchemaLinter(draft: Draft, schema: JSONSchema, view: EditorView): Diagnostic[] {
     const currentData = JSON.parse(view.state.doc.toString());
-    const errors = draft.validate(currentData);
+    const errors = draft.validate(currentData, schema);
     if (errors.length === 0) {
         return [];
     }

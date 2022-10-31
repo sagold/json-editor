@@ -50,11 +50,29 @@ const schema = {
                 schema: propertySchema
             }
         },
+        jsonStringRef: {
+            type: 'string',
+            title: 'Json Data using $ref',
+            format: 'json',
+            options: {
+                schema: {
+                    $ref: '#/$defs/propertySchema'
+                }
+            }
+        },
+        jsonStringMissingSchema: {
+            title: 'Json Code Widget',
+            type: 'string',
+            format: 'json'
+        },
         jsonData: {
             type: 'object',
             format: 'json',
             properties: propertySchema.properties
         }
+    },
+    $defs: {
+        propertySchema
     }
 } as unknown as JSONSchema;
 
@@ -80,11 +98,12 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
             schema={schema}
             data={{
                 jsonString: JSON.stringify(data, null, 2),
+                jsonStringRef: JSON.stringify(data, null, 2),
                 jsonData: data
             }}
             widgets={[JsonWidgetPlugin, ...defaultWidgets]}
             onChange={(data) => {
-                console.log('data', data);
+                // console.log('data', data);
             }}
         />
     );
