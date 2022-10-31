@@ -22,6 +22,9 @@ export type UseJsonEditorOptions = {
     cacheKey?: string | number;
 };
 
+// prevent required tooltip in browsers
+document.addEventListener('invalid', (e) => e.preventDefault(), true);
+
 /**
  * add json editor widget capabilities to your functional component
  */

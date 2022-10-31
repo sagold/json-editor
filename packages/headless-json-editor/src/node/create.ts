@@ -27,6 +27,7 @@ export type DefaultNodeOptions = {
     title?: string;
     /** disable edit of form, but allow selection and copy of value */
     readOnly?: boolean;
+    required?: boolean;
     [o: string]: unknown;
 };
 
@@ -67,7 +68,10 @@ export const NODES: Record<NodeType, CreateNode> = {
             pointer,
             property,
             schema,
-            options: getOptions(schema, property),
+            options: {
+                ...getOptions(schema, property),
+                required: schema.minItems != null && schema.minItems > 0
+            },
             children: [],
             errors: []
         };
@@ -170,7 +174,10 @@ export const NODES: Record<NodeType, CreateNode> = {
             type: 'string',
             pointer,
             property,
-            options: getOptions(schema, property),
+            options: {
+                ...getOptions(schema, property),
+                required: schema.minLength != null && schema.minLength > 0
+            },
             schema,
             value,
             errors: []

@@ -1,5 +1,5 @@
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
-import { Form, Dropdown, SemanticICONS, LabelProps, SemanticShorthandItem } from 'semantic-ui-react';
+import { Form, Dropdown, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from './decorators';
 
 export type StringOptions = {
@@ -24,6 +24,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                 id={node.id}
                 type="text"
                 disabled={disabled}
+                required={options.required === true}
                 error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
                 icon={options.icon}
                 iconPosition={options.iconPosition}
@@ -32,8 +33,6 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                 placeholder={options.placeholder}
                 readOnly={options.readOnly === true}
                 value={node.value}
-                // label={options.label ?? options.title}
-                // labelPosition={options.labelPosition}
                 onChange={(e, { value }) => setValue(value)}
             />
             {options.description && <em className="ed-description">{options.description}</em>}
@@ -59,7 +58,11 @@ export const SelectWidget = widget<StringNode, string>(({ node, options, setValu
 
     return (
         <div className="ed-form ed-value" data-type="string">
-            <Form.Field id={node.pointer} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
+            <Form.Field
+                required={options.required === true}
+                id={node.pointer}
+                error={node.errors.length > 0 && node.errors.map((e) => e.message)}
+            >
                 <label>{options.title ?? node.property}</label>
                 <Dropdown
                     selection

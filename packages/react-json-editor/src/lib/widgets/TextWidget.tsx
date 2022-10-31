@@ -17,6 +17,7 @@ export const TextWidget = widget<StringNode, string>(({ node, options, setValue 
                 control={TextareaAutosize}
                 id={node.id}
                 rows={1}
+                required={options.required === true}
                 readOnly={options.readOnly === true}
                 minRows={2}
                 maxRows={10}

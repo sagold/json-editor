@@ -146,6 +146,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
             <Form.Field
                 id={node.id}
                 error={hasError}
+                required={options.required === true}
                 onDragOver={preventDefault}
                 onDragEnter={preventDefault}
                 onDrop={drop}
