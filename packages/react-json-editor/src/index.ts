@@ -23,6 +23,7 @@ export { NumberWidget, NumberWidgetPlugin } from './lib/widgets/NumberWidget';
 export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
 export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
 export { StringWidget, StringWidgetPlugin } from './lib/widgets/StringWidget';
+export { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/SimpleJsonWidget';
 export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/UnknownWidget';
 
 // types

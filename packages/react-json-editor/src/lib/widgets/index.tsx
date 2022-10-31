@@ -10,6 +10,7 @@ import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
 import { SelectOneOfWidgetPlugin } from './selectoneofwidget/SelectOneOfWidget';
 import { StringWidgetPlugin, SelectWidget } from './StringWidget';
 import { TextWidgetPlugin } from './TextWidget';
+import { SimpleJsonWidgetPlugin } from './SimpleJsonWidget';
 import { UnknownWidgetPlugin } from './UnknownWidget';
 import { WidgetPlugin } from './decorators';
 
@@ -19,6 +20,7 @@ export const defaultWidgets: WidgetPlugin[] = [
         use: (node) => node.options?.hidden,
         Widget: () => null
     },
+    SimpleJsonWidgetPlugin,
     MasterDetailWidgetPlugin,
     SelectOneOfWidgetPlugin,
     MultiSelectWidgetPlugin,
