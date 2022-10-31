@@ -2,7 +2,7 @@ import { get, ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { Table } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '../decorators';
 import { useState } from 'react';
-import { EditModal } from '../../components/editmodal/EditModal';
+import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
 import { getTypeOf } from 'json-schema-library';
 
 export type ColumnConfig = {
@@ -19,8 +19,9 @@ export type TableOptions = {
 /**
  * @todo maybe better to use ag-grid
  */
-export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor }) => {
-    const columns = Object.keys(node.schema.items.properties);
+export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor, options }) => {
+    // @ts-ignore
+    const columns = Object.keys(node.schema.items?.properties || {});
     const [edit, setEdit] = useState<{ isOpen: boolean; pointer?: string; cell?: Node }>({ isOpen: false });
 
     return (
@@ -36,12 +37,13 @@ export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor }) =>
 
                 <Table.Body>
                     {node.children.map((row) => {
+                        const children = row?.children;
+                        if (!Array.isArray(children)) {
+                            return null;
+                        }
                         return (
                             <Table.Row key={row.id}>
-                                {row.children.map((cell) => {
-                                    {
-                                        /*const WidgetComponent = editor.getWidget(cell);*/
-                                    }
+                                {children.map((cell) => {
                                     return (
                                         <Table.Cell selectable key={cell.id} error={cell.errors.length > 0}>
                                             {/*<Editor editor={editor} node={cell} />*/}
@@ -60,10 +62,11 @@ export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor }) =>
                 </Table.Body>
             </Table>
             {edit.pointer && (
-                <EditModal
+                <WidgetModal
                     editor={editor}
                     node={get(node, edit.pointer)}
                     isOpen={edit.isOpen}
+                    options={options}
                     closeModal={() => setEdit({ isOpen: false })}
                 />
             )}

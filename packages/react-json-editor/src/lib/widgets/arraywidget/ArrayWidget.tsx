@@ -5,7 +5,7 @@ import { widget, WidgetPlugin } from '../decorators';
 import { JsonEditor } from '../../JsonEditor';
 import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
+import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
 import { classNames } from '../../classNames';
@@ -173,14 +173,12 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
 
             {editJson.enabled && (
-                <EditJsonModal
+                <WidgetModal
                     editor={editor}
                     node={node}
-                    liveUpdate={editJson.liveUpdate}
+                    options={{ ...options, widget: 'json' }}
                     isOpen={isEditModalOpen}
-                    openEditModal={openEditModal}
-                    disabled={options.disabled}
-                    readOnly={options.readOnly}
+                    closeModal={() => openEditModal(false)}
                 />
             )}
         </div>

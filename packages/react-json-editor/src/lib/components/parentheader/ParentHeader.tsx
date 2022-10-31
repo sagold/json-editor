@@ -42,7 +42,7 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
             >
                 <Header as={`h${depth}`} inverted={inverted} floated="left">
                     {icon && <Header.Content floated="left">{icon}</Header.Content>}
-
+                    {/*@todo flag required*/}
                     <Header.Content>{title}</Header.Content>
                     {description && <Header.Subheader>{description}</Header.Subheader>}
                 </Header>

@@ -3,7 +3,7 @@ import { Button, Card, Segment, Message, Icon, Grid, SemanticCOLORS } from 'sema
 import { useState } from 'react';
 import { buildObjectLayout, ObjectLayout } from './buildObjectLayout';
 import { widget, WidgetPlugin } from '../decorators';
-import { EditJsonModal } from '../../components/editjsonmodal/EditJsonModal';
+import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { classNames } from '../../classNames';
 import { Widget } from '../../components/widget/Widget';
@@ -89,15 +89,12 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     )}
                     {children}
                     {options.editJson && (
-                        <EditJsonModal
+                        <WidgetModal
                             editor={editor}
                             node={node}
-                            disabled={options.disabled}
-                            readOnly={options.readOnly}
+                            options={{ ...options, widget: 'json' }}
                             isOpen={isEditModalOpen}
-                            title={options.title}
-                            openEditModal={openEditModal}
-                            liveUpdate={options.editJson?.liveUpdate}
+                            closeModal={() => openEditModal(false)}
                         />
                     )}
                 </Card.Content>
@@ -142,15 +139,12 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             )}
             {showContent && children}
             {options.editJson && (
-                <EditJsonModal
+                <WidgetModal
                     editor={editor}
                     node={node}
-                    disabled={options.disabled}
-                    readOnly={options.readOnly}
+                    options={{ ...options, widget: 'json' }}
                     isOpen={isEditModalOpen}
-                    title={options.title}
-                    openEditModal={openEditModal}
-                    liveUpdate={options.editJson?.liveUpdate}
+                    closeModal={() => openEditModal(false)}
                 />
             )}
         </div>

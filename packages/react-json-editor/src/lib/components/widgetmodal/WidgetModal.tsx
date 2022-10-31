@@ -3,15 +3,15 @@ import { Button, Modal, Form } from 'semantic-ui-react';
 import { Node } from 'headless-json-editor';
 import { JSONError, isJSONError } from 'json-schema-library';
 
-export type EditModalProps = {
-    isOpen: boolean;
+export type WidgetModalProps = {
     editor: JsonEditor;
     node: Node | JSONError;
+    isOpen: boolean;
     closeModal: () => void;
     options: Record<string, any>;
 };
 
-export function EditModal({ isOpen, closeModal, editor, node, options }: EditModalProps) {
+export function WidgetModal({ isOpen, closeModal, editor, node, options }: WidgetModalProps) {
     if (isJSONError(node)) {
         console.log(node);
         return null;

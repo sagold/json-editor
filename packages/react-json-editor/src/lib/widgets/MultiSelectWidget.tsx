@@ -38,7 +38,12 @@ export const MultiSelectWidget = widget<StringNode, string>(({ node, options, se
             data-type="string"
             data-id={node.pointer}
         >
-            <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
+            <Form.Field
+                required={options.required === true}
+                id={node.id}
+                error={node.errors.length > 0}
+                disabled={options.disabled}
+            >
                 <label>{options.title as string}</label>
                 <Dropdown
                     allowAdditions={allowAdditions}

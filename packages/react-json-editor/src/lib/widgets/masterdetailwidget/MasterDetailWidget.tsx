@@ -5,7 +5,7 @@ import { get as getPointer } from 'gson-pointer';
 import { Button, SemanticCOLORS } from 'semantic-ui-react';
 import { DefaultNodeOptions, ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
 import { useState } from 'react';
-import { EditModal } from '../../components/editmodal/EditModal';
+import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 
 function getPreviewText(node: Node) {
@@ -60,10 +60,10 @@ export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ edi
             )}
 
             {editModal.open && editModal.pointer && (
-                <EditModal
+                <WidgetModal
                     editor={editor}
                     node={get(editor.state, editModal.pointer)}
-                    options={{ skipMaster: true }}
+                    options={{ ...options, skipMaster: true }}
                     isOpen={editModal.open}
                     closeModal={() => setEditModal({ open: false })}
                 />
@@ -74,9 +74,9 @@ export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ edi
 
 export const MasterDetailWidgetPlugin: WidgetPlugin = {
     id: 'master-detail-widget',
-    use: (node, options) =>
-        options?.skipMaster !== true &&
+    use: (node, options = {}) =>
+        options.skipMaster !== true &&
         (node.schema.type === 'object' || node.schema.type === 'array') &&
-        node.options.editor === 'MasterDetail',
+        options.widget === 'MasterDetail',
     Widget: MasterDetailWidget
 };
