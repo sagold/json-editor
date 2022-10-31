@@ -180,7 +180,6 @@ function ChildNavigation({
         return <ArrayChildNavigation node={node} editor={editor} />;
     }
     if (node.type === 'object') {
-        console.log('show properties?', options);
         if (options.showProperties) {
             return <ObjectPropertyNavigation node={node} editor={editor} />;
         }
