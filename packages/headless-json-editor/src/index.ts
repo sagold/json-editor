@@ -2,32 +2,33 @@
 export { setErrorMessages } from './settings';
 // create
 import { create, getOptions, DefaultNodeOptions } from './node/create';
-import { json } from './node/json';
+export { json } from './node/json';
 // traversal
-import { errors } from './node/errors';
-import { find } from './node/find';
-import { flat } from './node/flat';
-import { get } from './node/get';
-import { trace } from './node/trace';
-import { getChildNode } from './node/getChildNode';
+export { errors } from './node/errors';
+export { find } from './node/find';
+export { flat } from './node/flat';
+export { get } from './node/get';
+export { trace } from './node/trace';
+export { getChildNode } from './node/getChildNode';
 // transformation
-import { set } from './transform/set';
-import { remove } from './transform/remove';
-import { move } from './transform/move';
+export { set } from './transform/set';
+export { remove } from './transform/remove';
+export { move } from './transform/move';
+export { unlinkAll } from './transform/unlinkAll';
 import { updateSchema, updateOptions } from './transform/update';
-import { unlinkAll } from './transform/unlinkAll';
 // convenience: append, prepend, insert
 
 // hje
 import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin } from './HeadlessJsonEditor';
 
 // plugins
-import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
+export { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
+export { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
 import { OnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
 import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
 
 // validation
-import { updateErrors } from './validate/updateErrors';
+export { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
 
 import {
@@ -51,29 +52,17 @@ import {
 
 export {
     create,
-    errors,
-    find,
-    flat,
-    get,
-    getChildNode,
     getErrors,
     getOptions,
-    json,
-    move,
-    remove,
-    set,
     splitErrors,
-    trace,
     updateOptions,
     updateSchema,
-    updateErrors,
     HeadlessJsonEditor,
     Plugin,
     isNode,
     isParentNode,
     isValueNode,
     isJSONError,
-    RemoteEnumOptionsPlugin,
     OnChangePlugin,
     HistoryPlugin
 };
