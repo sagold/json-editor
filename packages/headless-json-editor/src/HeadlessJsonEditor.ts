@@ -11,6 +11,7 @@ import { move as moveItem } from './transform/move';
 import { updateErrors } from './validate/updateErrors';
 import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
 import { splitLastProperty } from './splitLastProperty';
+import { deepEqual } from 'fast-equals';
 
 export interface PluginInstance {
     id: string;
@@ -137,6 +138,14 @@ export class HeadlessJsonEditor {
     }
 
     setValue(pointer: string, value: unknown): Node {
+        const previousNode = get(this.state, pointer);
+        if (!isJSONError(previousNode)) {
+            const previousValue = json(previousNode);
+            if (deepEqual(previousValue, value)) {
+                return this.state;
+            }
+        }
+
         const [state, changes] = set(this.draft, this.state, pointer, value);
         if (isJSONError(state)) {
             console.error(`error setting '${pointer}' = ${value}`);
