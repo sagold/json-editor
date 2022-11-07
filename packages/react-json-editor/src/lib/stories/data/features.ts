@@ -69,6 +69,9 @@ export const schema = {
         //     description: 'text inputs can have a placeholder and icon'
         // },
         text: {
+            options: {
+                disabled: false
+            },
             type: 'string',
             format: 'textarea',
             description: 'textarea for multiline contents',
@@ -76,6 +79,9 @@ export const schema = {
         },
         number: {
             type: 'number',
+            options: {
+                required: true
+            },
             default: 2019,
             maximum: 2020,
             description: 'number input with maximum 2020'

@@ -2,9 +2,12 @@ import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { Form } from 'semantic-ui-react';
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
 import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
+import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
 
 export type CodeWidgetOptions = {
     setup?: ReactCodeMirrorProps['basicSetup'];
+    /** if value should update on each keystroke instead of on blur. Defaults to false */
+    liveUpdate?: boolean;
 } & Pick<ReactCodeMirrorProps, 'theme' | 'height' | 'minHeight' | 'maxHeight' | 'indentWithTab'> &
     DefaultNodeOptions;
 
@@ -22,6 +25,13 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
         id: `${format}-code-widget`,
         use: (node) => node.schema.type === 'string' && node.schema.format === format,
         Widget: widget<StringNode<CodeWidgetOptions>>(({ node, options, editor, setValue }) => {
+            const [ref] = useCodeMirrorOnBlur(setValue, node.pointer);
+            const onChangeListener = {};
+            if (options.liveUpdate) {
+                onChangeListener['onChange'] = setValue;
+            } else {
+                onChangeListener['ref'] = ref;
+            }
             return (
                 <div
                     className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
@@ -43,9 +53,7 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
                             placeholder={options.placeholder}
                             readOnly={options.readOnly}
                             theme={options.theme ?? 'light'}
-                            onChange={(value, viewUpdate) => {
-                                setValue(value);
-                            }}
+                            {...onChangeListener}
                         />
                     </Form.Field>
                     {options.description && <em className="ed-description">{options.description}</em>}

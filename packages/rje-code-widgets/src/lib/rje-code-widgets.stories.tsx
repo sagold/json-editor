@@ -56,6 +56,7 @@ const schema = {
             type: 'string',
             format: 'json',
             options: {
+                liveUpdate: true,
                 schema: propertySchema
             }
         },
@@ -126,6 +127,7 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
                 onChange={(data) => {
+                    console.log('changed to', data);
                     setState(data);
                 }}
             />

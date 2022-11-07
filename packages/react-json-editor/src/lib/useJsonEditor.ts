@@ -20,6 +20,7 @@ export type UseJsonEditorOptions = {
     onChange?: OnChangeListener;
     plugins?: Plugin[];
     cacheKey?: string | number;
+    liveUpdate?: boolean;
 };
 
 // prevent required tooltip in browsers
@@ -52,6 +53,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
             data,
             widgets,
             validate: settings.validate,
+            liveUpdate: settings.liveUpdate,
             draftConfig: settings.draftConfig,
             plugins: [...plugins, OnChangePlugin],
             onChange(data, root) {

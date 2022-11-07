@@ -1,5 +1,5 @@
 import { Node } from 'headless-json-editor';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { JsonEditor } from '../JsonEditor';
 
 type AnyOption = Record<string, unknown>;
@@ -40,15 +40,17 @@ export type DecoratedWidget<T extends Node, V = unknown> = (props: DecoratedWidg
  * add setValue helper to editor component and reduce update cycles
  */
 export function widget<T extends Node = Node, V = unknown>(WidgetComponent: DecoratedWidget<T, V>) {
-    return memo(
-        (props: WidgetProps<T>) =>
-            WidgetComponent({
-                ...props,
-                options: { ...props.node.options, ...props.options },
-                setValue: (value: V) => props.editor.setValue(props.node.pointer, value)
-            }),
-        isEqual
-    );
+    return memo((props: WidgetProps<T>) => {
+        const setValue = useCallback(
+            (value: V) => props.editor.setValue(props.node.pointer, value),
+            [props.node.id, props.node.pointer, props.editor]
+        );
+        return WidgetComponent({
+            ...props,
+            options: { ...props.node.options, ...props.editor.widgetOptions, ...props.options },
+            setValue
+        });
+    }, isEqual);
 }
 
 export type WidgetPlugin = {

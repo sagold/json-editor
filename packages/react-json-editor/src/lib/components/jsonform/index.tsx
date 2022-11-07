@@ -38,6 +38,8 @@ export type JsonFormProps = {
     editor?: MutableRefObject<JsonEditor | undefined>;
     /** set to true to initially validate complete data */
     validate?: boolean;
+    /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
+    liveUpdate?: boolean;
 };
 
 export function JsonForm({
@@ -51,7 +53,8 @@ export function JsonForm({
     draft,
     cacheKey,
     editor,
-    validate
+    validate,
+    liveUpdate
 }: JsonFormProps) {
     const [rootNode, instance] = useJsonEditor({
         schema,
@@ -61,7 +64,8 @@ export function JsonForm({
         draftConfig: draft,
         data,
         cacheKey,
-        validate
+        validate,
+        liveUpdate
     });
 
     if (editor) {

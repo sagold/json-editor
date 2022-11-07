@@ -17,7 +17,6 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     const [editorData, setEditorData] = useState(data);
 
     useEffect(() => {
-        console.log('editor ref', editor.current);
         // @ts-ignore
         window.changeData = () => setEditorData({ text: 'mimimi' });
     }, [data]);
@@ -28,6 +27,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
             data={editorData}
             schema={schema}
             validate={true}
+            liveUpdate={true}
             onChange={(data) => {
                 // console.log('change data in editor');
                 // setEditorData({ text: 'mimimi' });

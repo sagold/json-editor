@@ -1,11 +1,13 @@
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
-import { Form, Dropdown, SemanticICONS } from 'semantic-ui-react';
+import { Form, Dropdown, Input, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from './decorators';
 
 export type StringOptions = {
     icon?: SemanticICONS;
     iconPosition?: 'left';
     inline?: true;
+    /** if value should update on each keystroke instead of on blur. Defaults to false */
+    liveUpdate?: boolean;
     // label?: SemanticShorthandItem<LabelProps>;
     // labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
 } & DefaultNodeOptions;
@@ -13,6 +15,11 @@ export type StringOptions = {
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+    const changeListener = {
+        [options.liveUpdate ? 'onChange' : 'onBlur']: onChange
+    };
 
     return (
         <div
@@ -22,19 +29,24 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
         >
             <Form.Input
                 id={node.id}
-                type="text"
+                inline={options.inline === true}
                 disabled={disabled}
                 required={options.required === true}
-                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
-                icon={options.icon}
-                iconPosition={options.iconPosition}
-                inline={options.inline === true}
                 label={options.title}
-                placeholder={options.placeholder}
-                readOnly={options.readOnly === true}
-                value={node.value}
-                onChange={(e, { value }) => setValue(value)}
-            />
+                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
+            >
+                <Input
+                    id={node.id}
+                    type="text"
+                    disabled={disabled}
+                    placeholder={options.placeholder}
+                    readOnly={options.readOnly === true}
+                    icon={options.icon}
+                    iconPosition={options.iconPosition}
+                    defaultValue={node.value}
+                    {...changeListener}
+                />
+            </Form.Input>
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );

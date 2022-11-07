@@ -5,7 +5,8 @@ import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { linter, lintGutter } from '@codemirror/lint';
 import { StringNode, ParentNode, json, DefaultNodeOptions, JSONSchema } from 'headless-json-editor';
 import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
 
 export const JsonWidget = (props) => {
     if (props.node.schema.type === 'string') {
@@ -16,12 +17,33 @@ export const JsonWidget = (props) => {
 
 export type JsonWidgetOptions = {
     schema?: JSONSchema;
+    /** if value should update on each keystroke instead of on blur. Defaults to false */
+    liveUpdate?: boolean;
     setup?: ReactCodeMirrorProps['basicSetup'];
 } & Pick<ReactCodeMirrorProps, 'theme' | 'height' | 'minHeight' | 'maxHeight' | 'indentWithTab'> &
     DefaultNodeOptions;
 
 export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, options, editor, setValue }) => {
     const [validJson, setJsonValid] = useState(true);
+    const onChange = useCallback(
+        (value: string) => {
+            try {
+                setValue(JSON.parse(value));
+                setJsonValid(true);
+            } catch (e) {
+                console.log('failed parsing value');
+                setJsonValid(false);
+            }
+        },
+        [setValue]
+    );
+    const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
+    const onChangeListener = {};
+    if (options.liveUpdate) {
+        onChangeListener['onChange'] = onChange;
+    } else {
+        onChangeListener['ref'] = ref;
+    }
 
     return (
         <div
@@ -44,15 +66,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                     placeholder={options.placeholder}
                     readOnly={options.readOnly}
                     theme={options.theme ?? 'light'}
-                    onChange={(value, viewUpdate) => {
-                        try {
-                            setValue(JSON.parse(value));
-                            setJsonValid(true);
-                        } catch (e) {
-                            console.log('failed parsing value');
-                            setJsonValid(false);
-                        }
-                    }}
+                    {...onChangeListener}
                     style={{
                         border: '1px solid silver'
                     }}
@@ -69,6 +83,14 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
 });
 
 export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, options, editor, setValue }) => {
+    const [ref] = useCodeMirrorOnBlur(setValue, node.pointer);
+    const onChangeListener = {};
+    if (options.liveUpdate) {
+        onChangeListener['onChange'] = setValue;
+    } else {
+        onChangeListener['ref'] = ref;
+    }
+
     return (
         <div
             className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
@@ -90,9 +112,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                     placeholder={options.placeholder}
                     readOnly={options.readOnly}
                     theme={options.theme ?? 'light'}
-                    onChange={(value, viewUpdate) => {
-                        setValue(value);
-                    }}
+                    {...onChangeListener}
                     style={{
                         border: '1px solid silver'
                     }}
