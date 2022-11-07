@@ -23,7 +23,7 @@ export const schema = {
     title: 'Widgets Overview',
     description: 'this is the root object',
     options: {
-        editJson: { liveUpdate: true }
+        editJson: { enabled: true, liveUpdate: true }
     },
     properties: {
         string: {
@@ -245,7 +245,7 @@ export const schema = {
             minItems: 1,
             options: {
                 sortable: { enabled: true },
-                editJson: { liveUpdate: true }
+                editJson: { enabled: true, liveUpdate: true }
             },
             default: [
                 {

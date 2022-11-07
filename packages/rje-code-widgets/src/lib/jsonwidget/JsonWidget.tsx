@@ -105,6 +105,6 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
 
 export const JsonWidgetPlugin: WidgetPlugin = {
     id: 'json-widget',
-    use: (node) => node.schema.format === 'json',
+    use: ({ schema }, options) => options?.widget === 'json' || schema.format === 'json',
     Widget: JsonWidget
 };

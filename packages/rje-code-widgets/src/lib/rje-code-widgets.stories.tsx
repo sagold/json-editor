@@ -1,6 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import { JSONSchema, JsonForm, defaultWidgets } from '@sagold/react-json-editor';
+import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
+import { JSONSchema, JsonForm, defaultWidgets, useEditor } from '@sagold/react-json-editor';
+import { Button, Icon } from 'semantic-ui-react';
+import { useState } from 'react';
 import './rje-code-widgets.css';
 
 const propertySchema = {
@@ -37,6 +40,12 @@ const propertySchema = {
 
 const schema = {
     type: 'object',
+    options: {
+        editJson: {
+            enabled: true,
+            modalSize: 'large'
+        }
+    },
     properties: {
         title: {
             title: 'title',
@@ -76,7 +85,7 @@ const schema = {
     }
 } as unknown as JSONSchema;
 
-const data = {
+const dataObject = {
     productId: 123,
     header: {
         title: 'What a wreck'
@@ -93,20 +102,43 @@ export default {
 } as ComponentMeta<typeof JsonWidget>;
 
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
+    const [data, setState] = useState(args.data);
+
+    const editor = useEditor();
+    const history = editor.current?.plugin('history') as HistoryPluginInstance;
+    const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
+    const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
+
     return (
-        <JsonForm
-            schema={schema}
-            data={{
-                jsonString: JSON.stringify(data, null, 2),
-                jsonStringRef: JSON.stringify(data, null, 2),
-                jsonData: data
-            }}
-            widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-            onChange={(data) => {
-                // console.log('data', data);
-            }}
-        />
+        <div>
+            <Button.Group icon>
+                <Button icon onClick={() => history?.undo()} disabled={!isUndoEnabled}>
+                    <Icon name="undo" />
+                </Button>
+                <Button icon onClick={() => history?.redo()} disabled={!isRedoEnabled}>
+                    <Icon name="redo" />
+                </Button>
+            </Button.Group>
+            <JsonForm
+                schema={schema}
+                data={args.data}
+                editor={editor}
+                plugins={[HistoryPlugin]}
+                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
+                onChange={(data) => {
+                    setState(data);
+                    console.log('change');
+                }}
+            />
+        </div>
     );
 };
+
 export const Primary = Template.bind({});
-Primary.args = {};
+Primary.args = {
+    data: {
+        jsonString: JSON.stringify(dataObject, null, 2),
+        jsonStringRef: JSON.stringify(dataObject, null, 2),
+        jsonData: dataObject
+    }
+};

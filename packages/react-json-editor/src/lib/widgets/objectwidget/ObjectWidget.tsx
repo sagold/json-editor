@@ -3,7 +3,7 @@ import { Button, Card, Segment, Message, Icon, Grid, SemanticCOLORS } from 'sema
 import { useState } from 'react';
 import { buildObjectLayout, ObjectLayout } from './buildObjectLayout';
 import { widget, WidgetPlugin } from '../decorators';
-import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
+import { WidgetModal, WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { classNames } from '../../classNames';
 import { Widget } from '../../components/widget/Widget';
@@ -15,6 +15,8 @@ export type ObjectOptions = {
     collapsed?: boolean;
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
     editJson?: {
+        enabled?: boolean;
+        modalSize?: WidgetModalSize;
         /** if true, will update on each change if input is a valid json format */
         liveUpdate?: boolean;
     };
@@ -69,13 +71,13 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         );
     }
 
-    const { title, description, editJson, layout, header } = options;
+    const { title, description, editJson = {}, layout, header } = options;
     const inverted = header?.inverted ?? false;
     if (layout?.type === 'card') {
         return (
             <Card fluid data-type="object" data-id={node.pointer} className={options.classNames?.join(' ')}>
                 <Card.Content key="header" style={{ background: header?.color }}>
-                    {editJson && (
+                    {editJson.enabled && (
                         <Button basic floated="right" icon="edit outline" onClick={() => openEditModal(true)} />
                     )}
                     <Card.Header>{title}</Card.Header>
@@ -92,7 +94,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         </Segment>
                     )}
                     {children}
-                    {options.editJson && (
+                    {editJson.enabled && (
                         <WidgetModal
                             editor={editor}
                             node={node}
@@ -112,7 +114,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             data-type="object"
             data-id={node.pointer}
         >
-            {(editJson || title || description || options.collapsed != null) && (
+            {(editJson.enabled || title || description || options.collapsed != null) && (
                 <ParentHeader
                     node={node}
                     options={options}
@@ -127,7 +129,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         )
                     }
                 >
-                    {editJson && (
+                    {editJson.enabled && (
                         <Button basic inverted={inverted} icon="edit outline" onClick={() => openEditModal(true)} />
                     )}
                 </ParentHeader>
@@ -142,11 +144,11 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 </Segment>
             )}
             {showContent && children}
-            {options.editJson && (
+            {editJson.enabled && (
                 <WidgetModal
                     editor={editor}
                     node={node}
-                    options={{ ...options, widget: 'json' }}
+                    options={{ modalSize: editJson.modalSize, ...options, widget: 'json' }}
                     isOpen={isEditModalOpen}
                     closeModal={() => openEditModal(false)}
                 />

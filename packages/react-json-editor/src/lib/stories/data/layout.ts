@@ -46,6 +46,7 @@ export const schema = {
             options: {
                 collapsed: false,
                 editJson: {
+                    enabled: true,
                     liveUpdate: true
                 }
             },

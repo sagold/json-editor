@@ -5,7 +5,7 @@ import { widget, WidgetPlugin } from '../decorators';
 import { JsonEditor } from '../../JsonEditor';
 import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
+import { WidgetModal, WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
 import { classNames } from '../../classNames';
@@ -27,6 +27,7 @@ export type ArrayOptions = {
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
     editJson?: {
         enabled?: boolean;
+        modalSize?: WidgetModalSize;
         /** if true, will update on each change if input is a valid json format */
         liveUpdate?: boolean;
     };
@@ -173,7 +174,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 <WidgetModal
                     editor={editor}
                     node={node}
-                    options={{ ...options, widget: 'json' }}
+                    options={{ modalSize: editJson.modalSize, ...options, widget: 'json' }}
                     isOpen={isEditModalOpen}
                     closeModal={() => openEditModal(false)}
                 />

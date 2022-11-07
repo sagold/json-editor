@@ -3,12 +3,16 @@ import { Button, Modal, Form } from 'semantic-ui-react';
 import { Node } from 'headless-json-editor';
 import { JSONError, isJSONError } from 'json-schema-library';
 
+export type WidgetModalSize = 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen' | undefined;
+
 export type WidgetModalProps = {
     editor: JsonEditor;
     node: Node | JSONError;
     isOpen: boolean;
     closeModal: () => void;
-    options: Record<string, any>;
+    options: Record<string, any> & {
+        modalSize?: WidgetModalSize;
+    };
 };
 
 export function WidgetModal({ isOpen, closeModal, editor, node, options }: WidgetModalProps) {
@@ -18,10 +22,10 @@ export function WidgetModal({ isOpen, closeModal, editor, node, options }: Widge
     }
     const Widget = editor.getWidget(node, options);
     return (
-        <Modal open={isOpen} onClose={closeModal}>
+        <Modal open={isOpen} onClose={closeModal} size={options.modalSize}>
             <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>
             <Modal.Content>
-                <Form error>
+                <Form error style={{ maxWidth: 'none' }}>
                     <Widget node={node} editor={editor} options={{ ...options, title: undefined }} />
                 </Form>
             </Modal.Content>
