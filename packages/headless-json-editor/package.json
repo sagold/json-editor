@@ -1,13 +1,13 @@
 {
     "name": "headless-json-editor",
-    "version": "0.15.0",
+    "version": "0.16.0",
+    "license": "MIT",
     "type": "commonjs",
     "author": {
         "name": "Sascha Goldhofer",
         "email": "github@saschagoldhofer.de",
         "url": "https://github.com/sagold/"
     },
-    "license": "MIT",
     "devDependencies": {
         "@types/jest": "^28.1.1",
         "@types/json-schema": "^7.0.11",

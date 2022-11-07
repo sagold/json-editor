@@ -127,7 +127,6 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
                 onChange={(data) => {
                     setState(data);
-                    console.log('change');
                 }}
             />
         </div>
