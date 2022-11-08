@@ -1,15 +1,19 @@
 <p align="center">
-    <img src="https://github.com/sagold/json-editor/blob/main/packages/react-json-editor/docs/he-full-2000x564.png?raw=true" width="100%" alt="_react-json-editor">   
+  <img src="https://github.com/sagold/json-editor/blob/main/packages/react-json-editor/docs/he-full-2000x564.png?raw=true" width="100%" alt="_react-json-editor">   
+  <img src="../../images/title-rje-code-widgets-700.png" width="350px" alt="rje-code-widgets">
 </p>
 
+> Additional code widgets for [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor) to edit code formatted strings, json and json with json-schema validation using [CodeMirror](https://codemirror.net/) and [@uiw/react-codemirror](https://github.com/uiwjs/react-codemirror).
 
-# rje-code-widgets
-
-> code widgets for [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
+<p align="center">
+  <a href="#json-widget">Json Widget</a> |
+  <a href="#widget-options">Widget Options</a> |
+  <a href="#custom-code-widgets">Custom Code Widget</a>
+</p>
 
 install
 
-`yarn add @sagold/rje-code-widgets`;
+`yarn add @sagold/rje-code-widgets`
 
 include css
 
@@ -18,57 +22,127 @@ include css
 ```
 
 
-## JsonWidget
+## Json Widget
 
-> json widget with linting support for json and json-schema
+> Specific code editor supporting json syntax highlighting, linting and inline json-schema validation. The editor supports all kinds of data and json as strings.
+
+To add the plugin to available widgets you have to pass it to the widget plugin registry:
 
 ```tsx
-import { JsonForm, defaultWidgets } from "@sagold/react-json-editor";
+import { defaultWidgets } from "@sagold/react-json-editor";
 import { JsonWidgetPlugin } from "@sagold/rje-code-widgets";
 
-function Form(schema, data) {
-    return <JsonForm
-        schema={schema}
-        data={data} 
-        widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-    />;
-}
+<JsonForm widgets={[JsonWidgetPlugin, ...defaultWidgets]} />
 ```
 
-**using widget for stringified json**
-
-set `"format": "json` on a string. You can pass a json-schema in options for json-schema validation.
+To use the plugin for a specific json-schema use `"format": "json`:
 
 ```json
 {
-    "type": "object",
-    "properties": {
-        "data": {
-            "type": "string",
-            "format": "json",
-            "options": {
-                "schema": { "type": "object" }
-            }
-        }
-    }
+  "type": "object",
+  "format": "json",
+  "properties": {}
 }
 ```
 
-**using widget for any data**
+Or use the inline option to trigger the editor by `widget: "json"`:
 
-as before, set `"format": "json"` to trigger editor. Note that data can only be saved if the json is valid.
+```tsx
+import { Widget } from "@sagold/react-json-editor";
+
+<Widget node={node} editor={editor} options={{ widget: "json" }} />
+```
+
+For information on widgets see [@sagold/react-json-editor#widgets](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor#widgets)
+
+
+## Widget Options
+
+> You can configure your editor within your json-schema using the _options_ property. JsonWidget supports all [defaultOptions](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor#widget-options) where approriate. What follows is a list of additionally supported options by _JsonWidget_:
+
+
+### `liveUpdate: boolean`
+
+With `"liveUpdate": true` JsonWidget will commit every changed character back to the editor. Default behaviour is to send data in blur, which can also be set explicetly by `"liveUpdate": false`, e.g.
 
 ```json
 {
-    "type": "object",
-    "properties": {
-        "data": {
-            "type": "object",
-            "format": "json"
-        }
-    }
+  "type": "array",
+  "format": "json",
+  "options": { 
+    "liveUpdate": true
+  }
 }
 ```
+
+### `height: number`
+
+Set the height of the code editor to a specific value
+
+
+### `indentWithTab: boolean`
+
+Set to `true`, if the editor should indent using tabs instead of spaces
+
+
+### `minHeight: number`
+
+Set the minimum height of the code editor to a specific value
+
+
+### `maxHeight: number`
+
+Set the maximum height of the code editor to a specific value
+
+
+### `schema: JSONSchema`
+
+JsonWidget exclusive json-schema for a json type _string_ which consists of stringified json-data. Pass either a valid json-schema or a reference to your local schema, e.g. 
+
+```json
+{
+  "type": "string",
+  "format": "json",
+  "default": "{}",
+  "options": { 
+    "schema": { "$ref": "#/$defs/inline-json" } 
+  },
+  "$defs": {
+    "inline-json": {
+      "type": "object"
+    }
+  }
+}
+```
+
+
+### `setup: ReactCodeMirrorProps['basicSetup']`
+
+JsonWidget passes all basicSetup options to react-codemirror, e.g.
+
+```json
+{
+  "type": "object",
+  "format": "json",
+  "options": { 
+    "setup": {
+      "lineNumbers": false,
+      "highlightActiveLineGutter": true,
+      "closeBrackets": true,
+      "autocompletion": false
+    }
+  }
+}
+```
+
+For more details see the [props documentation of @uiw/react-codemirror](https://github.com/uiwjs/react-codemirror#props).
+
+
+
+### `theme: "light" | "dark"`
+
+Renders the editor in a _light_ or _dark_ theme, where _light_ is the default.
+
 
 
 ## Custom Code Widgets
@@ -87,16 +161,16 @@ import { linter, lintGutter } from '@codemirror/lint';
 import { css } from "@codemirror/lang-css";
 
 const CssCodeWidgetPlugin = createCodeWidgetPlugin({
-    extensions: [css(), lintGutter()],
-    format: "css"
+  extensions: [css(), lintGutter()],
+  format: "css"
 });
 
 function Form(schema, data) {
-    return <JsonForm
-        schema={schema}
-        data={data} 
-        widgets={[CssCodeWidgetPlugin, ...defaultWidgets]}
-    />;
+  return <JsonForm
+    schema={schema}
+    data={data} 
+    widgets={[CssCodeWidgetPlugin, ...defaultWidgets]}
+  />;
 }
 ```
 

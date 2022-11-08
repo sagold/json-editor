@@ -1,7 +1,10 @@
 <p align="center">
     <img src="./docs/he-full-2000x564.png" width="100%" alt="_react-json-editor"><br />
-    <img src="./docs/title-react-700x76.png" width="350px" alt="_react-json-editor">
+    <img src="./docs/title-react-700x76.png" width="350px" alt="react-json-editor">
 </p>
+
+> Simple React component capable of using JSON Schema to declaratively build and customize user forms.
+
 <p align="center">
     <a href="https://sagold.github.io/json-editor/">demo</a> |
     <a href="#overview">overview</a> |
@@ -11,10 +14,7 @@
     <a href="#advanced">advanced</a>
 </p>
 
-> Simple React component capable of using JSON Schema to declaratively build and customize user forms.
-
 install `yarn add @sagold/react-json-editor`
-
 
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
