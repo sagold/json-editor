@@ -1,5 +1,5 @@
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
-import { Form, Dropdown, Input, SemanticICONS } from 'semantic-ui-react';
+import { Form, Dropdown, Label, Input, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from './decorators';
 
 export type StringOptions = {
@@ -27,14 +27,14 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
             data-type="string"
             data-id={node.pointer}
         >
-            <Form.Input
+            <Form.Field
                 id={node.id}
                 inline={options.inline === true}
                 disabled={disabled}
                 required={options.required === true}
-                label={options.title}
-                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
+                error={node.errors.length > 0}
             >
+                <label htmlFor={node.id}>{options.title}</label>
                 <Input
                     id={node.id}
                     type="text"
@@ -46,7 +46,12 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                     defaultValue={node.value}
                     {...changeListener}
                 />
-            </Form.Input>
+                {node.errors.length > 0 && (
+                    <Label color="red" basic prompt pointing="above">
+                        {node.errors.map((e) => e.message).join(';')}
+                    </Label>
+                )}
+            </Form.Field>
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );
