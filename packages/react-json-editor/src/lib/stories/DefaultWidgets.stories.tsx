@@ -1,7 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonForm, useEditor } from '../../index';
+import { JsonForm, JsonEditor } from '../../index';
 import { data, schema } from './data/features';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 // import '../styles.scss';
 
 export default {
@@ -13,9 +13,8 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const editor = useEditor();
+    const editor = useRef<JsonEditor>(null);
     const [editorData, setEditorData] = useState(data);
-
     useEffect(() => {
         // @ts-ignore
         window.changeData = () => setEditorData({ text: 'mimimi' });
@@ -29,7 +28,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
             validate={true}
             liveUpdate={true}
             onChange={(data) => {
-                // console.log('change data in editor');
+                // console.log('change data in editor', editor);
                 // setEditorData({ text: 'mimimi' });
             }}
         />

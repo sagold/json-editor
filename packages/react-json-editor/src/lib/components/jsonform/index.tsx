@@ -4,7 +4,6 @@ import {
     JSONSchema,
     Node,
     get,
-    json,
     Plugin,
     isJSONError,
     DefaultNodeOptions,
@@ -15,11 +14,7 @@ import { defaultWidgets } from '../../../index';
 import { WidgetPlugin } from '../../widgets/decorators';
 import { Widget } from '../widget/Widget';
 import { JsonEditor } from '../../JsonEditor';
-import { MutableRefObject, useRef } from 'react';
-
-export function useEditor() {
-    return useRef<JsonEditor>();
-}
+import { forwardRef, useImperativeHandle } from 'react';
 
 // import { createContext } from 'react';
 // export const ModalContext = createContext({});
@@ -35,27 +30,28 @@ export type JsonFormProps = {
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
     onChange?: (data: unknown, root: Node) => void;
-    ref?: MutableRefObject<JsonEditor | undefined>;
     /** set to true to initially validate complete data */
     validate?: boolean;
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
 };
 
-export function JsonForm({
-    schema,
-    data,
-    pointer,
-    widgets = defaultWidgets,
-    plugins = [RemoteEnumOptionsPlugin],
-    onChange,
-    options,
-    draft,
-    cacheKey,
-    ref,
-    validate,
-    liveUpdate
-}: JsonFormProps) {
+export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
+    {
+        schema,
+        data,
+        pointer,
+        widgets = defaultWidgets,
+        plugins = [RemoteEnumOptionsPlugin],
+        onChange,
+        options,
+        draft,
+        cacheKey,
+        validate,
+        liveUpdate
+    },
+    ref
+) {
     const [rootNode, instance] = useJsonEditor({
         schema,
         widgets,
@@ -68,9 +64,7 @@ export function JsonForm({
         liveUpdate
     });
 
-    if (ref) {
-        ref.current = instance;
-    }
+    useImperativeHandle(ref, () => instance);
 
     let node = rootNode;
     if (pointer) {
@@ -87,4 +81,4 @@ export function JsonForm({
             <Widget node={node} editor={instance} options={options} />
         </Form>
     );
-}
+});

@@ -235,7 +235,7 @@ For more details check [any default widget](https://github.com/sagold/json-edito
 ### adding plugins
 
 ```tsx
-import { Jsonform, useEditor } from "@sagold/react-json-editor";
+import { Jsonform } from "@sagold/react-json-editor";
 import { EventLoggerPlugin } from "headless-json-editor";
 
 function Myform() {
@@ -252,11 +252,12 @@ function Myform() {
 #### `HistoryPlugin`
 
 ```tsx
-import { Jsonform, useEditor } from "@sagold/react-json-editor";
+import { Jsonform, JsonEditor } from "@sagold/react-json-editor";
 import { HistoryPlugin } from "headless-json-editor";
+import { useRef } from "react";
 
 function Myform() {
-  const ref = useEditor();
+  const ref = useRef<JsonEditor>(null);
 
   if (ref.current) {
     const history = ref.current.plugin("history");
