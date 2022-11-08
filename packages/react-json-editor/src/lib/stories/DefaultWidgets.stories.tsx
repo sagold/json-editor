@@ -23,7 +23,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <JsonForm
-            editor={editor}
+            ref={editor}
             data={editorData}
             schema={schema}
             validate={true}
