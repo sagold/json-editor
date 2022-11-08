@@ -52,7 +52,7 @@ export function JsonForm({
     options,
     draft,
     cacheKey,
-    editor,
+    ref,
     validate,
     liveUpdate
 }: JsonFormProps) {
@@ -68,8 +68,8 @@ export function JsonForm({
         liveUpdate
     });
 
-    if (editor) {
-        editor.current = instance;
+    if (ref) {
+        ref.current = instance;
     }
 
     let node = rootNode;

@@ -1,57 +1,59 @@
 <p align="center">
-    <img src="./docs/he-full-2000x564.png" width="100%" alt="_react-json-editor"><br />
-    <img src="./docs/title-react-700x76.png" width="350px" alt="react-json-editor">
+  <img src="./docs/he-full-2000x564.png" width="100%" alt="react-json-editor"><br />
+  <img src="./docs/title-react-700x76.png" width="350px" alt="react-json-editor">
 </p>
 
-> Simple React component capable of using JSON Schema to declaratively build and customize user forms.
+> Simple and extensible React component capable of using JSON Schema to declaratively build and customize user forms.
 
 <p align="center">
-    <a href="https://sagold.github.io/json-editor/">demo</a> |
-    <a href="#overview">overview</a> |
-    <a href="#widgets">widgets</a> |
-    <a href="#validators">validators</a> |
-    <a href="#plugins">plugins</a> |
-    <a href="#advanced">advanced</a>
+  <a href="https://sagold.github.io/json-editor/">demo</a> |
+  <a href="#overview">overview</a> |
+  <a href="#widgets">widgets</a> |
+  <a href="#validators">validators</a> |
+  <a href="#plugins">plugins</a> |
+  <a href="#advanced">advanced</a>
 </p>
 
-install `yarn add @sagold/react-json-editor`
+install 
+
+`yarn add @sagold/react-json-editor`
 
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
 import '@sagold/react-json-editor/json-form.min.css';
 
 function MyForm({ schema, data }) {
-    return (
-        <JsonForm
-            schema={schema}
-            data={data}
-            onChange={(data) => {
-                console.log('data', data);
-            }}
-        />
-    );
+  return (
+    <JsonForm
+      schema={schema}
+      data={data}
+      onChange={(data) => {
+        console.log('data', data);
+      }}
+    />
+  );
 }
 ```
 
-<details><summary>JsonForm Props</summary>
+**JsonForm Props**
 
 the only required property is a valid json-schema passed to `schema`.
 
-| Name      | Type                  | Description                                       |
-|:----------|:----------------------|:--------------------------------------------------|
-| schema    | JsonSchema            | json schema describing data                       |
-| data      | any                   | initial data matching json schema                 |
-| cacheKey  | number|string         | optionally change key to completely recreate form |
-| draft     | DraftConfig           | json schema draft config (json-schema-library)    |
-| editor    | React.Ref<JsonEditor> | get instance of json editor after first render    |
-| onChange  | (data, node) => void  | change listener for data updates                  |
-| options   | {}&DefaultNodeOptions | options to override for root widget               |
-| plugins   | Plugin[]              | list of plugins for json editor                   |
-| pointer   | string                | json-pointer to root node. Defaults to root ('#') |
-| validate  | boolean               | set to true to validate and show errors on create |
-| widgets   | WidgetPlugin[]        | list of widgets used to create user form          |
+| Name      | Type                      | Description                                       |
+|:----------|:--------------------------|:--------------------------------------------------|
+| cacheKey  | number|string             | optionally change key to completely recreate form |
+| data      | any                       | initial data matching json schema                 |
+| draft     | DraftConfig               | json schema draft config (json-schema-library)    |
+| liveUpdate| boolean                   | omit changes for each keystroke instead of on blur|
+| onChange  | (data, node) => void      | change listener for data updates                  |
+| options   | extends DefaultNodeOptions| options to override for root widget               |
+| plugins   | Plugin[]                  | list of plugins for json editor                   |
+| pointer   | string                    | json-pointer to root node. Defaults to root ('#') |
+| ref       | React.Ref<JsonEditor>     | get instance of json editor after first render    |
+| schema    | JsonSchema                | json schema describing data                       |
+| validate  | boolean                   | set to true to validate and show errors on create |
+| widgets   | WidgetPlugin[]            | list of widgets used to create user form          |
 
-</details>
 
 
 # overview
@@ -63,10 +65,10 @@ the only required property is a valid json-schema passed to `schema`.
 ## widgets
 
 <p align="left">
-    <a href="#widget-options">widget options</a> | 
-    <a href="#widget-registry">widget registry</a> |
-    <a href="#default-widgets">default widgets</a> |
-    <a href="#custom-widgets">custom widgets</a>
+  <a href="#widget-options">widget options</a> | 
+  <a href="#widget-registry">widget registry</a> |
+  <a href="#default-widgets">default widgets</a> |
+  <a href="#custom-widgets">custom widgets</a>
 </p>
 
 A user form built with json-editor solely consists of a tree of widgets. Each widget is responsible to render a part of a json-schema.
@@ -85,11 +87,11 @@ Each widget registers to a sub schema on which an `options` object can be passed
 
 ```json
 {
-    "type": "string",
-    "options": {
-        "title": "Unique Id",
-        "disabled": true
-    }
+  "type": "string",
+  "options": {
+    "title": "Unique Id",
+    "disabled": true
+  }
 }
 ```
 
@@ -168,10 +170,58 @@ Assembling the list of widgets on your own, you can select the widgets available
 
 ### default widgets
 
+`react-json-editor` comes with a list of default widgets that cover inputs for all possible json-data as well as catching possible data errors and rendering to them into the form. Note that in some cases a specialized widget is required for a better user experience. For this you can add a any editor into the list of default widgets or replace them completely with your own widgets.
+
+The `Jsonform` component add the defaultWidgets per default. If you are using `useJsonEditor` hook you have to pass the defaultWidgets on your own, e.g.
+
+```tsx
+import { defaultWidgets, useJsonEditor, Widget } from "@sagold/react-json-editor";
+
+function Myform() {
+  const [rootNode, editor] = useJsonEditor({ schema, widgets: defaultWidgets });
+  return <Form error>
+    <Widget node={rootNode} editor={editor} />
+  </Form>
+}
+```
+
 
 ### custom widgets
 
-> 
+You can create a custom widget for any input data and add a specific function to register for a specific json-schema.
+
+**create your widget**
+
+```tsx
+import { widget, WidgetPlugin } from '@sagold/react-json-editor';
+
+const MyStringWidget = widget<StringNode, string>(({ node, options, setValue }) => (
+  <input 
+    type="text" 
+    defaultValue={node.value} 
+    disabled={options.disabled === true} 
+    onChange={(e) => {
+    setValue(e.target.value);
+  }}>
+));
+```
+
+In order to register the widget in `react-json-editor` and hook into specific json-schema a plugin wrapper is required
+
+**create a plugin wrapper for your widget**
+
+```tsx
+export const MyStringWidgetPlugin = {
+  // a unique id is required for each widget plugin
+  id: "my-widget-plugin",
+  // return true to register to this node/schema
+  use: (node, options) => node.schema.type === 'string',
+  // expose the widget to be rendered with this node
+  Widget: MyStringWidget
+}
+```
+
+For more details check [any default widget](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor/src/lib/widgets) or take a look at the additional widget packages like [rje-code-widgets](https://github.com/sagold/json-editor/tree/main/packages/rje-code-widgets)
 
 
 ## validation
@@ -182,9 +232,48 @@ Assembling the list of widgets on your own, you can select the widgets available
 
 ## plugins
 
-> - adding plugins
-> - existing plugins
-> - create custom plugin
+### adding plugins
+
+```tsx
+import { Jsonform, useEditor } from "@sagold/react-json-editor";
+import { EventLoggerPlugin } from "headless-json-editor";
+
+function Myform() {
+  return <JsonForm
+    plugins={[EventLoggerPlugin]}
+  />
+}
+```
+
+### existing plugins
+
+#### `EventLoggerPlugin`
+
+#### `HistoryPlugin`
+
+```tsx
+import { Jsonform, useEditor } from "@sagold/react-json-editor";
+import { HistoryPlugin } from "headless-json-editor";
+
+function Myform() {
+  const ref = useEditor();
+
+  if (ref.current) {
+    const history = ref.current.plugin("history");
+    console.log("undo count", history.getUndoCount());
+  }
+
+  <JsonForm
+    ref={ref}
+    plugins={[HistoryPlugin]}
+  />
+}
+```
+
+#### `OnChangePlugin`
+
+
+### create custom plugin
 
 
 ## advanced
@@ -199,15 +288,15 @@ import { useJsonEditor } from '@sagold/react-json-editor';
 
 function MyForm({ schema, data }) {
   const [node, jsonEditor] = useJsonEditor({
-    schema,
-    data,
-    onChange: (data, state) => { console.log('data', data, "root", state); }
+  schema,
+  data,
+  onChange: (data, state) => { console.log('data', data, "root", state); }
   });
   const Widget = jsonEditor.getWidget(node);
   return (
-    <Form error>
-      <Widget node={node} editor={jsonEditor} />
-    </Form>
+  <Form error>
+    <Widget node={node} editor={jsonEditor} />
+  </Form>
   );
 }
 ```
