@@ -16,16 +16,16 @@ type NumberOptions = {
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
     const onChange = useCallback(
-        (event: FocusEvent | React.ChangeEvent<HTMLInputElement>) => {
-            const value = event.target?.value;
-            const number = parseFloat(value);
-            if (`${number}` === value) {
+        (event: Event | React.ChangeEvent<HTMLInputElement>) => {
+            const input = event.target as HTMLInputElement;
+            const number = parseFloat(input.value);
+            if (`${number}` === input.value) {
                 setValue(number);
             } else {
                 // @todo TYPE CHANGE BREAKS EVERYTHING
                 // should not change node type - should maintain expected type from schema
                 // @ts-ignore
-                setValue(value);
+                setValue(input.value);
             }
         },
         [setValue]
