@@ -20,7 +20,7 @@ install
 
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
-import '@sagold/react-json-editor/json-form.min.css';
+import '@sagold/react-json-editor/index.min.css';
 
 function MyForm({ schema, data }) {
   return (
