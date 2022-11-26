@@ -7,6 +7,7 @@ import { StringNode, ParentNode, json, DefaultNodeOptions, JSONSchema } from 'he
 import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
 import { useState, useCallback } from 'react';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
+import { jsonSchemaTooltip } from './jsonSchemaTooltip';
 
 export const JsonWidget = (props) => {
     if (props.node.schema.type === 'string') {
@@ -45,6 +46,13 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
         onChangeListener['ref'] = ref;
     }
 
+    const extensions = [
+        jsonLanguage(),
+        lintGutter(),
+        linter(jsonSchemaLinter(editor, node.schema || {})),
+        jsonSchemaTooltip(editor, node.pointer)
+    ];
+
     return (
         <div
             className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
@@ -58,7 +66,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                     value={JSON.stringify(json(node), null, 2)}
                     basicSetup={options.setup}
                     editable={options.disabled === false}
-                    extensions={[jsonLanguage(), lintGutter(), linter(jsonSchemaLinter(editor, node.schema || {}))]}
+                    extensions={extensions}
                     height={options.height}
                     minHeight={options.minHeight}
                     maxHeight={options.maxHeight}
@@ -91,6 +99,12 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
         onChangeListener['ref'] = ref;
     }
 
+    const extensions = [jsonLanguage(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
+
+    if (options.schema) {
+        extensions.push(jsonSchemaTooltip(editor, node.pointer, options.schema));
+    }
+
     return (
         <div
             className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
@@ -104,7 +118,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                     value={node.value}
                     basicSetup={options.setup}
                     editable={options.disabled === false}
-                    extensions={[jsonLanguage(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))]}
+                    extensions={extensions}
                     height={options.height}
                     minHeight={options.minHeight}
                     maxHeight={options.maxHeight}

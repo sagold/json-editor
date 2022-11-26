@@ -34,3 +34,26 @@
 .cm-lint-marker:before {
     content: '' !important;
 }
+
+/* json-schema tooltip */
+.rje-tooltip--jsonschema {
+    padding: 4px 8px;
+    font-size: 1em;
+    max-width: 640px;
+}
+
+.rje-tooltip--jsonschema h1 {
+    font-size: 1em;
+    line-height: 1.5em;
+    padding-bottom: 0.2em;
+    margin: 0;
+}
+
+.rje-tooltip--jsonschema p {
+    font-size: 1em;
+}
+
+.rje-tooltip--pointer {
+    font-size: 0.65em;
+    padding: 0.2em;
+}

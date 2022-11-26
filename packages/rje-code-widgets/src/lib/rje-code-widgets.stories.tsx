@@ -1,9 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { JSONSchema, JsonForm, defaultWidgets, useEditor } from '@sagold/react-json-editor';
+import { JSONSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './rje-code-widgets.css';
 
 const propertySchema = {
@@ -11,24 +11,39 @@ const propertySchema = {
     required: ['productId', 'price'],
     properties: {
         productName: {
+            title: 'Name of product',
+            description:
+                'Full description of [product name](https://namechk.com/product-name-generator/), including product number',
             type: 'string',
             minLength: 1
         },
         header: {
             type: 'object',
+            title: 'Product header',
+            description:
+                'A product header is shown **below** the the product picture. A _title_ should be short and descriptive, the following date the date of the actual product release, not the date of updating product information.',
             required: ['title'],
             properties: {
-                title: { type: 'string' },
-                counter: { type: 'number' }
+                title: {
+                    title: 'Product title',
+                    type: 'string'
+                },
+                date: {
+                    title: 'Date of entry',
+                    type: 'string'
+                }
             }
         },
         productId: {
+            title: 'ID of product',
             type: 'number'
         },
         price: {
+            title: 'Price of product, in Euros',
             type: 'number'
         },
         tags: {
+            title: 'Keywords of product',
             type: 'array',
             items: {
                 type: 'string'
@@ -105,7 +120,7 @@ export default {
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
     const [data, setState] = useState(args.data);
 
-    const editor = useEditor();
+    const editor = useRef<JsonEditor>();
     const history = editor.current?.plugin('history') as HistoryPluginInstance;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
@@ -123,7 +138,7 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
             <JsonForm
                 schema={schema}
                 data={args.data}
-                editor={editor}
+                ref={editor}
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
                 onChange={(data) => {

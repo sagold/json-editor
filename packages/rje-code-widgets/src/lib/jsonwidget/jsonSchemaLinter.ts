@@ -3,7 +3,7 @@ import { jsonParseLinter } from '@codemirror/lang-json';
 import { EditorView } from '@codemirror/view';
 import { Diagnostic } from '@codemirror/lint';
 import { syntaxTree } from '@codemirror/language';
-import { buildJsonLocationMap } from './buildJsonLocationMap';
+import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { SyntaxNode } from '@lezer/common';
 import { Draft, JSONSchema } from 'json-schema-library';
 import { JsonEditor } from '@sagold/react-json-editor';
@@ -49,7 +49,7 @@ function runJsonSchemaLinter(draft: Draft, schema: JSONSchema, view: EditorView)
     }
 
     const tree = syntaxTree(view.state);
-    const locationMap = buildJsonLocationMap(view.state.doc, tree.cursor());
+    const locationMap = buildJsonPointerMap(view.state.doc, tree.cursor());
     // console.log('errors', errors, currentData);
     // console.log('location map', locationMap);
 

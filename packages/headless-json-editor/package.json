@@ -25,7 +25,7 @@
         "@types/uuid": "^8.3.4",
         "fast-equals": "^4.0.1",
         "gson-pointer": "^4.1.1",
-        "json-schema-library": "^7.3.0",
+        "json-schema-library": "^7.3.3",
         "uuid": "^8.3.2"
     }
 }

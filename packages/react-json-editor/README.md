@@ -276,6 +276,16 @@ function Myform() {
 
 ### create custom plugin
 
+```ts
+export type Plugin = (he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions) => PluginInstance | undefined;
+export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
+export interface PluginInstance {
+    id: string;
+    onEvent: PluginObserver;
+    [p: string]: unknown;
+}
+```
+
 
 ## advanced
 

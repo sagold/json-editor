@@ -5,7 +5,8 @@
     "dependencies": {
         "@codemirror/lang-json": "*",
         "@codemirror/lint": "*",
-        "@uiw/react-codemirror": "*"
+        "@uiw/react-codemirror": "*",
+        "markdown-to-jsx": "^7.1.7"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "*",

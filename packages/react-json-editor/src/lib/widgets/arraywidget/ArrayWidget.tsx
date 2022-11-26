@@ -94,7 +94,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             Sortable.create(ref.current, {
                 handle: '.ed-drag__handle',
                 swapThreshold: 4,
-                delay: 250,
+                // delay: 250,
                 ...sortable,
                 onEnd: createOnSortEnd(editor, node)
             });

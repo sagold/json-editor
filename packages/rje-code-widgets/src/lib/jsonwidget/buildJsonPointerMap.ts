@@ -9,7 +9,7 @@ export type PropertyLocation = {
 
 export type PropertyLocationMap = Record<string, PropertyLocation>;
 
-function getValue(doc: Text, cursor: TreeCursor) {
+export function getValue(doc: Text, cursor: TreeCursor) {
     return doc.sliceString(cursor.from, cursor.to);
 }
 
@@ -34,11 +34,11 @@ function getValue(doc: Text, cursor: TreeCursor) {
  *   "#/todos/0": Location
  * }
  */
-export function buildJsonLocationMap(doc, cursor: TreeCursor, pointer = '#', map: PropertyLocationMap = {}) {
+export function buildJsonPointerMap(doc, cursor: TreeCursor, pointer = '#', map: PropertyLocationMap = {}) {
     const nodeType = cursor.node.name;
     if (nodeType === 'JsonText') {
         cursor.next(); // Object | Array
-        return buildJsonLocationMap(doc, cursor, pointer, map);
+        return buildJsonPointerMap(doc, cursor, pointer, map);
     }
 
     if (nodeType === 'Object') {
@@ -53,7 +53,7 @@ export function buildJsonLocationMap(doc, cursor: TreeCursor, pointer = '#', map
                 map[`${pointer}/${JSON.parse(jsonName)}`] = location;
                 propertyCursor.next();
                 if (propertyCursor.node.name === 'Object' || propertyCursor.node.name === 'Array') {
-                    buildJsonLocationMap(doc, propertyCursor, `${pointer}/${JSON.parse(jsonName)}`, map);
+                    buildJsonPointerMap(doc, propertyCursor, `${pointer}/${JSON.parse(jsonName)}`, map);
                 }
             }
         }
@@ -67,7 +67,7 @@ export function buildJsonLocationMap(doc, cursor: TreeCursor, pointer = '#', map
             if (cursor.node.name !== ']') {
                 map[`${pointer}/${index}`] = { node: cursor.node, from: cursor.from, to: cursor.to };
                 if (cursor.node.name === 'Object' || cursor.node.name === 'Array') {
-                    buildJsonLocationMap(doc, cursor, `${pointer}/${index}`, map);
+                    buildJsonPointerMap(doc, cursor, `${pointer}/${index}`, map);
                 }
                 index++;
             }
