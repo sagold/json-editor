@@ -1,5 +1,5 @@
 import { TreeCursor, SyntaxNode } from '@lezer/common';
-import { Text } from '@codemirror/state';
+import { getValue } from './syntaxTreeUtils';
 
 export type PropertyLocation = {
     node: SyntaxNode;
@@ -8,10 +8,6 @@ export type PropertyLocation = {
 };
 
 export type PropertyLocationMap = Record<string, PropertyLocation>;
-
-export function getValue(doc: Text, cursor: TreeCursor) {
-    return doc.sliceString(cursor.from, cursor.to);
-}
 
 /**
  * returns a map of all jsonpointers found in json and a codemiror location as

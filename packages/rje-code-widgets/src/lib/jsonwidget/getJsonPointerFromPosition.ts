@@ -2,25 +2,7 @@
 import { syntaxTree } from '@codemirror/language';
 import { TreeCursor } from '@lezer/common';
 import { EditorState, Text } from '@codemirror/state';
-
-export function getJsonPointerFromPosition(state: EditorState, position: number) {
-    const tree = syntaxTree(state);
-    return getJsonPointerFromCursor(state.doc, tree.cursor(), position);
-}
-
-function isWithinNode(cursor: TreeCursor, position: number) {
-    return cursor.from <= position && position <= cursor.to;
-}
-
-export function getPropertyName(doc: Text, cursor: TreeCursor) {
-    if (cursor.node.name !== 'Property') {
-        throw new Error(`Cannot resolve property name of none property: ${cursor.node.name}`);
-    }
-    const propertyCursor = cursor.node.cursor();
-    propertyCursor.next();
-    // strips quotes
-    return doc.sliceString(propertyCursor.from + 1, propertyCursor.to - 1);
-}
+import { isWithinNode, getPropertyName } from './syntaxTreeUtils';
 
 const STEP_INTO_NODE = ['JsonText', 'Property', 'Object', 'Array'];
 
@@ -34,6 +16,11 @@ export type JsonPointerLocation = {
     /** syntax type of current cursor location */
     location: CursorLocationType;
 };
+
+export function getJsonPointerFromPosition(state: EditorState, position: number) {
+    const tree = syntaxTree(state);
+    return getJsonPointerFromCursor(state.doc, tree.cursor(), position);
+}
 
 function getJsonPointerFromCursor(doc: Text, cursor: TreeCursor, from: number, pointer = ''): JsonPointerLocation {
     const nodeType = cursor.node.name;

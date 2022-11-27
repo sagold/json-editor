@@ -57,7 +57,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     array: (draft, schema, context, { pointer }) => {
         const parentSchema = draft.getSchema(pointer, getData(context), schema);
         if (isObject(parentSchema.items)) {
-            const itemSchema = parentSchema.items;
+            const itemSchema = parentSchema.items as JSONSchema;
             const value = draft.getTemplate(undefined, itemSchema);
             return {
                 from: context.pos,
@@ -93,7 +93,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for an object property */
     object: (draft, schema, context, { pointer }) => {
         const data = getData(context);
-        const targetData = get(data, pointer, {});
+        const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(pointer, data, schema);
         const options: Completion[] = [];
         Object.keys(parentSchema.properties).forEach((prop) => {
@@ -129,7 +129,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
                     label: JSON.stringify(value),
                     type: 'text',
                     info: () => renderInfo(schema),
-                    detail: schema.type,
+                    detail: schema.type as string,
                     apply: `${JSON.stringify(value)},`
                 }
             ]
@@ -140,7 +140,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     property: (draft, schema, context, { pointer, cursor }) => {
         const parentPointer = getParentPointer(pointer);
         const data = getData(context);
-        const targetData = get(data, pointer, {});
+        const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(parentPointer, data, schema);
         const options: Completion[] = [];
         Object.keys(parentSchema.properties).forEach((prop) => {
@@ -166,10 +166,9 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     value: () => null
 };
 
-export const jsonSchemaCompletion = (draft: Draft, schema?: JSONSchema) =>
+export const jsonSchemaCompletion = (draft: Draft, schema: JSONSchema) =>
     function (context: CompletionContext) {
         const resolvedCursor = getJsonPointerFromPosition(context.state, context.pos);
-        const { location, cursor, pointer } = resolvedCursor;
-        // console.log('pointer', pointer, location, `${cursor.from} - ${cursor.to}`);
+        const { location } = resolvedCursor;
         return COMPLETION[location] ? COMPLETION[location](draft, schema, context, resolvedCursor) : null;
     };

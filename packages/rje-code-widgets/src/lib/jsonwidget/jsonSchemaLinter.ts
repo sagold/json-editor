@@ -1,12 +1,13 @@
 import gp from 'gson-pointer';
-import { jsonParseLinter } from '@codemirror/lang-json';
-import { EditorView } from '@codemirror/view';
-import { Diagnostic } from '@codemirror/lint';
-import { syntaxTree } from '@codemirror/language';
 import { buildJsonPointerMap } from './buildJsonPointerMap';
-import { SyntaxNode } from '@lezer/common';
+import { Diagnostic } from '@codemirror/lint';
 import { Draft, JSONSchema } from 'json-schema-library';
+import { EditorView } from '@codemirror/view';
 import { JsonEditor } from '@sagold/react-json-editor';
+import { jsonParseLinter } from '@codemirror/lang-json';
+import { SyntaxNode } from '@lezer/common';
+import { syntaxTree } from '@codemirror/language';
+import { jsonLintPropertyDuplicates } from './jsonLintPropertyDuplicates';
 
 function getPropertyNameCursor(node: SyntaxNode) {
     if (node.name === 'Property') {
@@ -16,6 +17,7 @@ function getPropertyNameCursor(node: SyntaxNode) {
     }
     return undefined;
 }
+
 function getPropertyValueCursor(node: SyntaxNode) {
     const cursor = getPropertyNameCursor(node);
     if (cursor) {
@@ -50,10 +52,8 @@ function runJsonSchemaLinter(draft: Draft, schema: JSONSchema, view: EditorView)
 
     const tree = syntaxTree(view.state);
     const locationMap = buildJsonPointerMap(view.state.doc, tree.cursor());
-    // console.log('errors', errors, currentData);
-    // console.log('location map', locationMap);
+    const duplicateProperties = jsonLintPropertyDuplicates(view.state.doc, tree.cursor());
 
-    // @ts-ignore
     const validationErrors: Diagnostic[] = errors.map((error) => {
         let flagPropertyNameOnly = false;
         let flagPropertyValueOnly = true;
@@ -99,5 +99,10 @@ function runJsonSchemaLinter(draft: Draft, schema: JSONSchema, view: EditorView)
             message: error.message
         };
     });
+
+    if (duplicateProperties.length > 0) {
+        validationErrors.push(...duplicateProperties);
+    }
+
     return validationErrors.filter((err) => err != null);
 }
