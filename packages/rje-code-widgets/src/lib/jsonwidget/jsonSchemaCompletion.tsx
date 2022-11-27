@@ -80,7 +80,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
             const value = draft.getTemplate(undefined, itemSchema);
             return {
                 from: context.pos,
-                options: getValueCompletions(itemSchema, value)
+                options: getValueCompletions(itemSchema)
             };
         }
         if (Array.isArray(parentSchema.items)) {
