@@ -34,6 +34,12 @@ const propertySchema = {
                 }
             }
         },
+        category: {
+            enum: ['mobility', 'entertainment', 'education', 2923, true]
+        },
+        constant: {
+            const: 'product-page'
+        },
         productId: {
             title: 'ID of product',
             type: 'number'
@@ -46,7 +52,8 @@ const propertySchema = {
             title: 'Keywords of product',
             type: 'array',
             items: {
-                type: 'string'
+                type: 'string',
+                enum: ['red', 'green', 'blue', 'cyan']
             }
         }
     },
@@ -103,6 +110,7 @@ const schema = {
 
 const dataObject = {
     productId: 123,
+    category: 'enter',
     header: {
         title: 'What a wreck'
     },
@@ -120,7 +128,7 @@ export default {
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
     const [data, setState] = useState(args.data);
 
-    const editor = useRef<JsonEditor>();
+    const editor = useRef<JsonEditor>(null);
     const history = editor.current?.plugin('history') as HistoryPluginInstance;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
@@ -142,7 +150,7 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
                 onChange={(data) => {
-                    console.log('changed to', data);
+                    console.log('change event');
                     setState(data);
                 }}
             />
