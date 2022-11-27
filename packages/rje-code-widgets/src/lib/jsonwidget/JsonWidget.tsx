@@ -1,6 +1,6 @@
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { Form, Label } from 'semantic-ui-react';
-import { json as jsonLanguage } from '@codemirror/lang-json';
+import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
 import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { linter, lintGutter } from '@codemirror/lint';
 import { StringNode, ParentNode, json, DefaultNodeOptions, JSONSchema } from 'headless-json-editor';
@@ -8,6 +8,7 @@ import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
 import { useState, useCallback } from 'react';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
 import { jsonSchemaTooltip } from './jsonSchemaTooltip';
+import { jsonSchemaCompletion } from './jsonSchemaCompletion';
 
 export const JsonWidget = (props) => {
     if (props.node.schema.type === 'string') {
@@ -47,7 +48,10 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
     }
 
     const extensions = [
-        jsonLanguage(),
+        jsonSyntax(),
+        jsonLanguage.data.of({
+            autocomplete: jsonSchemaCompletion(editor.draft, node.schema)
+        }),
         lintGutter(),
         linter(jsonSchemaLinter(editor, node.schema || {})),
         jsonSchemaTooltip(editor, node.pointer)
@@ -91,18 +95,38 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
 });
 
 export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, options, editor, setValue }) => {
-    const [ref] = useCodeMirrorOnBlur(setValue, node.pointer);
+    const [validJson, setJsonValid] = useState(true);
+    const onChange = useCallback(
+        (value: string) => {
+            try {
+                JSON.parse(value);
+                setValue(value);
+                setJsonValid(true);
+            } catch (e) {
+                console.log('failed parsing value');
+                setJsonValid(false);
+            }
+        },
+        [setValue]
+    );
+
+    const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
     const onChangeListener = {};
     if (options.liveUpdate) {
-        onChangeListener['onChange'] = setValue;
+        onChangeListener['onChange'] = onChange;
     } else {
         onChangeListener['ref'] = ref;
     }
 
-    const extensions = [jsonLanguage(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
+    const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
 
     if (options.schema) {
         extensions.push(jsonSchemaTooltip(editor, node.pointer, options.schema));
+        extensions.push(
+            jsonLanguage.data.of({
+                autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
+            })
+        );
     }
 
     return (
@@ -111,7 +135,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
             data-type="object"
             data-id={node.pointer}
         >
-            <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
+            <Form.Field id={node.id} error={node.errors.length > 0 || !validJson} disabled={options.disabled}>
                 <label>{options.title as string}</label>
                 {/*https://uiwjs.github.io/react-codemirror/*/}
                 <CodeMirror
@@ -132,6 +156,11 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                     }}
                 />
             </Form.Field>
+            {!validJson && (
+                <Label color="red" basic prompt pointing="above">
+                    Invalid json format. Changes will be applied only if the json is valid.
+                </Label>
+            )}
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );

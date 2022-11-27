@@ -27,7 +27,6 @@ export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSc
             end: cursor.to,
             above: true,
             create(view) {
-                console.log('Create');
                 root.render(
                     <div className="rje-tooltip rje-tooltip--jsonschema">
                         {schema.title && <h1>{schema.title}</h1>}

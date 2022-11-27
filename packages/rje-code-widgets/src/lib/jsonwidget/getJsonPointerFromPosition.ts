@@ -24,12 +24,18 @@ export function getPropertyName(doc: Text, cursor: TreeCursor) {
 
 const STEP_INTO_NODE = ['JsonText', 'Property', 'Object', 'Array'];
 
-function getJsonPointerFromCursor(
-    doc: Text,
-    cursor: TreeCursor,
-    from: number,
-    pointer = ''
-): { pointer: string; cursor: TreeCursor } {
+export type CursorLocationType = 'property' | 'value' | 'object' | 'array' | 'outside';
+
+export type JsonPointerLocation = {
+    /** json-pointer of current cursor position */
+    pointer: string;
+    /** cursor on current position */
+    cursor: TreeCursor;
+    /** syntax type of current cursor location */
+    location: CursorLocationType;
+};
+
+function getJsonPointerFromCursor(doc: Text, cursor: TreeCursor, from: number, pointer = ''): JsonPointerLocation {
     const nodeType = cursor.node.name;
     if (isWithinNode(cursor, from)) {
         // console.log(`%cwithin ${nodeType}`, 'color: gray;');
@@ -39,11 +45,11 @@ function getJsonPointerFromCursor(
         }
         // cursor is on property name
         if (nodeType === 'PropertyName') {
-            return { pointer, cursor };
+            return { pointer, cursor, location: 'property' };
         }
         // cursor is on a value (string, number, ...)
         // console.info('%cunchecked node type', 'color: blue;', cursor.node.name, '-> return pointer');
-        return { pointer, cursor };
+        return { pointer, cursor, location: 'value' };
     }
 
     // console.log(`%cfind position in ${cursor.node.name} [${from}]: ${cursor.from} - ${cursor.to}`, 'color: gray;');
@@ -61,6 +67,15 @@ function getJsonPointerFromCursor(
         childIndex++;
     }
 
-    console.warn(`outside of ${cursor.node.name} [${from}]: ${cursor.from} - ${cursor.to}`);
-    return { pointer, cursor };
+    if (cursor.node.name === '}') {
+        return { pointer, cursor, location: 'object' };
+    }
+
+    if (cursor.node.name === ']') {
+        return { pointer, cursor, location: 'array' };
+    }
+
+    // const content = doc.sliceString(cursor.from, cursor.to);
+    // console.warn(`outside of ${cursor.node.name} [${from}]: ${cursor.from} - ${cursor.to}: ${content}`);
+    return { pointer, cursor, location: 'outside' };
 }
