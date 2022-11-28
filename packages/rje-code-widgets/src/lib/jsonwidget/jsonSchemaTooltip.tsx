@@ -9,11 +9,11 @@ const root = createRoot(dom);
 
 export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSchema?: JSONSchema) =>
     hoverTooltip((view, pos, side) => {
-        const { pointer, cursor } = getJsonPointerFromPosition(view.state, pos);
+        const { pointer, cursor, location } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;
         const schema = editor.draft.getSchema(`${absolutePointer}`, {}, localSchema);
 
-        if (schema.type === 'error') {
+        if (schema.type === 'error' || location === 'value') {
             return null;
         }
 
