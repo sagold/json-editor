@@ -32,13 +32,12 @@ export function jsonSchemaLinter(editor: JsonEditor, schema: JSONSchema) {
     const draft = new Draft(editor.draft.config, rootSchema);
     const localSchema = draft.compileSchema(schema);
 
-    return function (view: EditorView): Diagnostic[] {
+    return async function (view: EditorView): Promise<Diagnostic[]> {
         const jsonLint = jsonParseLinter();
         const jsonLintResult = jsonLint(view);
         if (jsonLintResult.length > 0) {
             return jsonLintResult;
         }
-
         return runJsonSchemaLinter(draft, localSchema, view);
     };
 }

@@ -17,7 +17,7 @@ function getData(doc: Text) {
 }
 
 export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSchema?: JSONSchema) =>
-    hoverTooltip((view, pos, side) => {
+    hoverTooltip(async (view, pos, side) => {
         const { pointer, cursor, location } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;
         const data = getData(view.state.doc);
