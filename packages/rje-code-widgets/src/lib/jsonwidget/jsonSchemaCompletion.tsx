@@ -53,9 +53,9 @@ function getValueCompletions(schema: JSONSchema): Completion[] {
 }
 
 export const jsonSchemaCompletion = (draft: Draft, schema: JSONSchema) =>
-    function (context: CompletionContext) {
+    async function (context: CompletionContext) {
         const resolvedCursor = getJsonPointerFromPosition(context.state, context.pos);
-        const { location, cursor } = resolvedCursor;
+        const { location } = resolvedCursor;
         return COMPLETION[location] ? COMPLETION[location](draft, schema, context, resolvedCursor) : null;
     };
 
@@ -75,13 +75,9 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for array values (array item) */
     array: (draft, schema, context, { pointer }) => {
         const parentSchema = draft.getSchema(pointer, getData(context), schema);
-        if (isObject(parentSchema.items)) {
-            const itemSchema = parentSchema.items as JSONSchema;
-            const value = draft.getTemplate(undefined, itemSchema);
-            return {
-                from: context.pos,
-                options: getValueCompletions(itemSchema)
-            };
+        if (isJSONError(parentSchema)) {
+            console.log(`failed resolving completion of 'array' on ${pointer}`, parentSchema);
+            return null;
         }
         if (Array.isArray(parentSchema.items)) {
             const itemsSchema = parentSchema.items;
@@ -99,6 +95,28 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
                 })
             };
         }
+        if (parentSchema.items.oneOf) {
+            const options = draft.getChildSchemaSelection(0, parentSchema);
+            return {
+                from: context.pos,
+                options: options.map((s: JSONSchema, index) => ({
+                    label: s.title || `${index + 1}. item (no title defined)`,
+                    type: 'text',
+                    info: () => renderInfo(s),
+                    detail: s.type,
+                    apply: JSON.stringify(draft.getTemplate(undefined, s))
+                }))
+            };
+        }
+        if (isObject(parentSchema.items)) {
+            const itemSchema = parentSchema.items as JSONSchema;
+            // console.log('itemSchema', itemSchema);
+            // const value = draft.getTemplate(undefined, itemSchema);
+            return {
+                from: context.pos,
+                options: getValueCompletions(itemSchema)
+            };
+        }
         return null;
     },
     /** completion for an object property */
@@ -106,6 +124,10 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(pointer, data, schema);
+        if (isJSONError(parentSchema)) {
+            console.log(`failed resolving completion of 'object' on ${pointer}`, parentSchema);
+            return null;
+        }
         const options: Completion[] = [];
         Object.keys(parentSchema.properties).forEach((prop) => {
             if (targetData[prop] !== undefined) {
@@ -141,7 +163,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const data = getData(context);
         const targetSchema = draft.getSchema(pointer, data, schema);
         if (isJSONError(targetSchema)) {
-            console.warn(targetSchema);
+            console.log(`failed resolving completion of 'outside' on ${pointer}`, targetSchema);
             return null;
         }
         const completions = {
@@ -156,6 +178,10 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(parentPointer, data, schema);
+        if (isJSONError(parentSchema)) {
+            console.log(`failed resolving completion of 'property' on ${pointer}`, parentSchema);
+            return null;
+        }
         const options: Completion[] = [];
         Object.keys(parentSchema.properties).forEach((prop) => {
             if (targetData[prop] !== undefined) {
@@ -180,12 +206,29 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for a partial value */
     value: (draft, schema, context, { pointer, cursor }) => {
         const data = getData(context);
-        const schemaOfValue = draft.getSchema(pointer, data, schema) as JSONSchema;
-        const value = get(data, pointer);
-        const templateData = draft.getTemplate(value, schemaOfValue);
+        const schemaOfLocation = draft.getSchema(pointer, data, schema) as JSONSchema;
+        if (isJSONError(schemaOfLocation)) {
+            console.log(`failed resolving completion of 'value' on ${pointer}`, schemaOfLocation);
+            return null;
+        }
+
+        if (schemaOfLocation.items && (schemaOfLocation.items as JSONSchema).oneOf) {
+            const options = draft.getChildSchemaSelection(0, schemaOfLocation);
+            return {
+                from: context.pos,
+                options: options.map((s: JSONSchema, index) => ({
+                    label: s.title || `${index + 1}. item (no title defined)`,
+                    type: 'text',
+                    info: () => renderInfo(s),
+                    detail: s.type,
+                    apply: JSON.stringify(draft.getTemplate(undefined, s))
+                }))
+            };
+        }
+
         return {
             from: cursor.from,
-            options: getValueCompletions(schemaOfValue)
+            options: getValueCompletions(schemaOfLocation)
         };
     }
 };
