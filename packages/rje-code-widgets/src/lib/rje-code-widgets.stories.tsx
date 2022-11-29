@@ -60,7 +60,7 @@ const propertySchema = {
     additionalProperties: false
 } as unknown as JSONSchema;
 
-const schema = {
+const defaultSchema = {
     type: 'object',
     options: {
         editJson: {
@@ -144,8 +144,8 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 </Button>
             </Button.Group>
             <JsonForm
-                schema={schema}
-                data={args.data}
+                schema={args.schema}
+                data={data}
                 ref={editor}
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
@@ -160,9 +160,128 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
 
 export const Primary = Template.bind({});
 Primary.args = {
+    schema: defaultSchema,
     data: {
         jsonString: JSON.stringify(dataObject, null, 2),
         jsonStringRef: JSON.stringify(dataObject, null, 2),
         jsonData: dataObject
+    }
+};
+
+export const OneOfSupport = Template.bind({});
+OneOfSupport.args = {
+    data: {
+        filters: {
+            typeA: [
+                {
+                    op: 'nin',
+                    property: 'energy_class',
+                    values: []
+                }
+            ],
+            typeB: []
+        }
+    },
+    schema: {
+        title: 'Filter example',
+        type: 'object',
+        required: ['filters'],
+        format: 'json',
+        properties: {
+            filters: {
+                title: 'Filters',
+                type: 'object',
+                required: ['typeA', 'typeB'],
+                properties: {
+                    typeA: {
+                        title: 'Filter for TypeA',
+                        $ref: '#/$defs/filter'
+                    },
+                    typeB: {
+                        title: 'Filter for TypeB',
+                        $ref: '#/$defs/filter'
+                    }
+                }
+            }
+        },
+        $defs: {
+            filter: {
+                type: 'array',
+                items: {
+                    oneOfProperty: 'op',
+                    oneOf: [
+                        { $ref: '#/$defs/in:filter' },
+                        { $ref: '#/$defs/nin:filter' },
+                        { $ref: '#/$defs/eq:filter' }
+                    ]
+                },
+                additionalItems: false
+            },
+            'in:filter': {
+                title: 'in-filter',
+                description:
+                    'in-filter accepts only entries that have one of the following values assigned for the given property.',
+                type: 'object',
+                properties: {
+                    op: {
+                        const: 'in'
+                    },
+                    property: {
+                        title: 'Column Key',
+                        type: 'string',
+                        minLength: 1
+                    },
+                    values: {
+                        title: 'List of allowed values',
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    }
+                }
+            },
+            'nin:filter': {
+                title: 'nin-filter',
+                description:
+                    'nin-filter accepts only entries that have **not one of the following** values assigned for the given property.',
+                type: 'object',
+                properties: {
+                    op: {
+                        const: 'nin'
+                    },
+                    property: {
+                        title: 'Column Key',
+                        type: 'string',
+                        minLength: 1
+                    },
+                    values: {
+                        title: 'List of forbidden values',
+                        type: 'array',
+                        items: {
+                            type: 'string'
+                        }
+                    }
+                }
+            },
+            'eq:filter': {
+                title: 'eq-filter',
+                description: 'eq-filter accepts only entries that exactly have this value on the specified property.',
+                type: 'object',
+                properties: {
+                    op: {
+                        const: 'eq'
+                    },
+                    property: {
+                        title: 'Column Key',
+                        type: 'string',
+                        minLength: 1
+                    },
+                    values: {
+                        title: 'Value that has to match',
+                        type: 'string'
+                    }
+                }
+            }
+        }
     }
 };

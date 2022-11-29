@@ -5,7 +5,7 @@ import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { linter, lintGutter } from '@codemirror/lint';
 import { StringNode, ParentNode, json, DefaultNodeOptions, JSONSchema } from 'headless-json-editor';
 import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
 import { jsonSchemaTooltip } from './jsonSchemaTooltip';
 import { jsonSchemaCompletion } from './jsonSchemaCompletion';
@@ -110,23 +110,26 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
         [setValue]
     );
 
+    // tooltip cannot be recreated, because of codemirror hooking into editor
+    // instance in this case and there would be conflicting instances on the
+    // editor state
+    const tooltip = useMemo(() => jsonSchemaTooltip(editor, node.pointer, options.schema), []);
+    const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
+    if (options.schema) {
+        extensions.push(
+            tooltip,
+            jsonLanguage.data.of({
+                autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
+            })
+        );
+    }
+
     const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
     const onChangeListener = {};
     if (options.liveUpdate) {
         onChangeListener['onChange'] = onChange;
     } else {
         onChangeListener['ref'] = ref;
-    }
-
-    const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
-
-    if (options.schema) {
-        extensions.push(jsonSchemaTooltip(editor, node.pointer, options.schema));
-        extensions.push(
-            jsonLanguage.data.of({
-                autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
-            })
-        );
     }
 
     return (
