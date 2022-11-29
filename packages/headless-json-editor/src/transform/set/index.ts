@@ -1,5 +1,5 @@
 import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { create } from 'headless-json-editor';
+import { create } from '../../node/create';
 import { split, join } from 'gson-pointer';
 import { Node, ArrayNode, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
 import { invalidPathError } from '../../errors';

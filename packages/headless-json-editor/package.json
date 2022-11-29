@@ -3,24 +3,15 @@
     "version": "0.19.0",
     "license": "MIT",
     "type": "commonjs",
+    "module": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "main": "dist/headlessJsonEditor.min.js",
     "author": {
         "name": "Sascha Goldhofer",
         "email": "github@saschagoldhofer.de",
         "url": "https://github.com/sagold/"
     },
-    "devDependencies": {
-        "@types/jest": "^28.1.1",
-        "@types/json-schema": "^7.0.11",
-        "@typescript-eslint/eslint-plugin": "^5.27.0",
-        "@typescript-eslint/parser": "^5.27.0",
-        "eslint": "^8.17.0",
-        "jest": "^28.1.1",
-        "jest-environment-jsdom": "*",
-        "ts-jest": "^28.0.4",
-        "ts-loader": "^9.3.0",
-        "ts-node": "^10.8.1",
-        "typescript": "^4.7.3"
-    },
+    "devDependencies": {},
     "dependencies": {
         "@types/uuid": "^8.3.4",
         "fast-equals": "^4.0.1",

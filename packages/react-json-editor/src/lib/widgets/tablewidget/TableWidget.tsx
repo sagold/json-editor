@@ -36,7 +36,8 @@ export const TableWidget = widget<ArrayNode<TableOptions>>(({ node, editor, opti
                 </Table.Header>
 
                 <Table.Body>
-                    {node.children.map((row) => {
+                    {node.children.map((row: Node) => {
+                        // @ts-ignore
                         const children = row?.children;
                         if (!Array.isArray(children)) {
                             return null;

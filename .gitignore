@@ -18,6 +18,9 @@ node_modules
 *.sublime-workspace
 *.pxd
 
+/packages/*/dist
+/dev
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -34,6 +37,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+stats.json
 
 # System Files
 .DS_Store

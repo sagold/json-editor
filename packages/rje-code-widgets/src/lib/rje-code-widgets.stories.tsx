@@ -4,7 +4,6 @@ import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { JSONSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
 import { useState, useRef } from 'react';
-import './rje-code-widgets.css';
 
 const propertySchema = {
     type: 'object',

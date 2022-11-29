@@ -12,17 +12,19 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false
     },
-    "files": [],
-    "include": [],
+    "include": ["src/**/*", "../react-json-editor/src/**/*", "../headless-json-editor/src/**/*"],
+    "exclude": [
+        "**/*.stories.tsx",
+        "**/*.stories.mdx",
+        "../react-json-editor/src/**/*.stories.tsx",
+        "../react-json-editor/src/lib/stories/**/*"
+    ],
     "references": [
         {
-            "path": "./tsconfig.lib.json"
+            "path": "../react-json-editor"
         },
         {
-            "path": "./tsconfig.spec.json"
-        },
-        {
-            "path": "./.storybook/tsconfig.json"
+            "path": "../headless-json-editor"
         }
     ]
 }

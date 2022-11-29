@@ -6,7 +6,22 @@
     "workspaces": [
         "packages/*"
     ],
-    "scripts": {},
+    "scripts": {
+        "build": "webpack --config webpack.hje.js",
+        "dist": "rm -rf packages/headless-json-editor/dist; yarn hje:dist; yarn rje:dist; yarn code:dist",
+        "hje:dist": "yarn hje:bundle; yarn hje:ts",
+        "hje:bundle": "NODE_ENV=production webpack --config webpack.hje.js",
+        "hje:ts": "(cd packages/headless-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "hje:analyze": "mkdir tmp; webpack --config webpack.hje.js --profile --json > tmp/hje-stats.json; webpack-bundle-analyzer tmp/hje-stats.json",
+        "rje:dist": "yarn rje:bundle; yarn rje:ts",
+        "rje:bundle": "NODE_ENV=production webpack --config webpack.rje.js",
+        "rje:ts": "(cd packages/react-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "rje:analyze": "mkdir tmp; webpack --config webpack.rje.js --profile --json > tmp/rje-stats.json; webpack-bundle-analyzer tmp/rje-stats.json",
+        "code:dist": "yarn code:bundle; yarn code:ts",
+        "code:bundle": "NODE_ENV=production webpack --config webpack.rje-codewidgets.js",
+        "code:ts": "(cd packages/rje-code-widgets && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "code:analyze": "mkdir tmp; webpack --config webpack.rje-codewidgets.js --profile --json > tmp/rje-cw-stats.json; webpack-bundle-analyzer tmp/rje-cw-stats.json"
+    },
     "dependencies": {
         "react": "18.2.0",
         "react-dom": "18.2.0"
@@ -17,9 +32,19 @@
         "@types/react-dom": "18.0.6",
         "@typescript-eslint/eslint-plugin": "5.33.1",
         "@typescript-eslint/parser": "5.33.1",
+        "css-loader": "^6.7.2",
         "prettier": "^2.6.2",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.56.1",
+        "sass-loader": "^13.2.0",
+        "style-loader": "^3.3.1",
+        "terser-webpack-plugin": "^5.3.6",
+        "ts-loader": "^9.4.1",
         "ts-node": "10.9.1",
         "typescript": "~4.7.2",
-        "url-loader": "^3.0.0"
+        "url-loader": "^3.0.0",
+        "webpack": "^5.75.0",
+        "webpack-bundle-analyzer": "^4.7.0",
+        "webpack-cli": "^5.0.0"
     }
 }

@@ -1,6 +1,7 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
+        "rootDir": ".",
         "jsx": "react-jsx",
         "allowJs": true,
         "esModuleInterop": true,
@@ -13,17 +14,11 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false
     },
-    "files": [],
-    "include": [],
+    "include": ["src/**/*"],
+    "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.mdx", "src/lib/stories/**/*"],
     "references": [
         {
-            "path": "./tsconfig.lib.json"
-        },
-        {
-            "path": "./tsconfig.spec.json"
-        },
-        {
-            "path": "./.storybook/tsconfig.json"
+            "path": "../headless-json-editor"
         }
     ]
 }
