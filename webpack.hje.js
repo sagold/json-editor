@@ -21,9 +21,13 @@ const config = {
     externals: {},
     resolve: {
         modules: [
+            path.resolve(__dirname),
             path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, 'packages', PACKAGE_NAME, 'node_modules')
         ],
+        alias: {
+            packages: path.resolve(__dirname, 'packages/')
+        },
         extensions: ['.tsx', '.ts', '.js']
     },
     module: {
@@ -33,6 +37,7 @@ const config = {
                 use: {
                     loader: 'ts-loader',
                     options: {
+                        projectReferences: true,
                         configFile: path.resolve(__dirname, 'packages', PACKAGE_NAME, 'tsconfig.json'),
                         compilerOptions: {
                             sourceMap: !PRODUCTION,

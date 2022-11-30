@@ -15,11 +15,13 @@
         "hje:analyze": "mkdir tmp; webpack --config webpack.hje.js --profile --json > tmp/hje-stats.json; webpack-bundle-analyzer tmp/hje-stats.json",
         "rje:dist": "yarn rje:bundle; yarn rje:ts",
         "rje:bundle": "NODE_ENV=production webpack --config webpack.rje.js",
-        "rje:ts": "(cd packages/react-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "_rje:ts": "(cd packages/react-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "rje:ts": "(cd packages/react-json-editor && tsc --build .)",
         "rje:analyze": "mkdir tmp; webpack --config webpack.rje.js --profile --json > tmp/rje-stats.json; webpack-bundle-analyzer tmp/rje-stats.json",
         "code:dist": "yarn code:bundle; yarn code:ts",
         "code:bundle": "NODE_ENV=production webpack --config webpack.rje-codewidgets.js",
-        "code:ts": "(cd packages/rje-code-widgets && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "_code:ts": "(cd packages/rje-code-widgets && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
+        "code:ts": "(cd packages/rje-code-widgets && tsc --build .)",
         "code:analyze": "mkdir tmp; webpack --config webpack.rje-codewidgets.js --profile --json > tmp/rje-cw-stats.json; webpack-bundle-analyzer tmp/rje-cw-stats.json"
     },
     "dependencies": {

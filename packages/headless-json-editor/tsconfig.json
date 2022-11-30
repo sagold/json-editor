@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": ".",
-        "module": "commonjs",
+        "outDir": "./dist",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "noImplicitOverride": true,
@@ -10,5 +10,5 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true
     },
-    "include": ["src/**/*"]
+    "include": ["src"]
 }
