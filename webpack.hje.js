@@ -3,6 +3,11 @@ const TerserPlugin = require('terser-webpack-plugin'); // eslint-disable-line
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const PACKAGE_NAME = 'headless-json-editor';
 
+const dashedToCamelCase = (v) =>
+    v.replace(/-([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+    });
+
 const config = {
     entry: `./packages/${PACKAGE_NAME}/src/index.ts`,
     mode: PRODUCTION ? 'production' : 'development',
@@ -12,9 +17,9 @@ const config = {
     stats: { children: false },
     output: {
         path: path.resolve(__dirname, 'packages', PACKAGE_NAME, PRODUCTION ? 'dist' : 'dev'),
-        filename: `headlessJsonEditor${PRODUCTION ? '.min' : ''}.js`,
+        filename: `${dashedToCamelCase(PACKAGE_NAME)}${PRODUCTION ? '.min' : ''}.js`,
         libraryTarget: 'umd',
-        library: 'hje',
+        library: dashedToCamelCase(PACKAGE_NAME),
         umdNamedDefine: true,
         globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
