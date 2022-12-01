@@ -1,6 +1,6 @@
 {
     "name": "@sagold/rje-code-widgets",
-    "version": "0.19.1",
+    "version": "0.19.2",
     "license": "MIT",
     "type": "module",
     "module": "./dist/es6/src/index.js",

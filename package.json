@@ -1,12 +1,14 @@
 {
     "name": "json-editor",
-    "version": "0.19.0",
+    "version": "0.19.2",
     "license": "MIT",
     "private": true,
     "workspaces": [
         "packages/*"
     ],
     "scripts": {
+        "bump": "./tools/bump.js",
+        "publish": "./tools/publish.js",
         "build": "webpack --config webpack.hje.js",
         "dist": "rm -rf packages/headless-json-editor/dist; yarn hje:dist; yarn rje:dist; yarn code:dist",
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
