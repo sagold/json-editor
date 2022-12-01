@@ -18,7 +18,7 @@ install
 include css
 
 ```css
-@import "@sagold/rje-code-widgets/index.css";
+@import "@sagold/rje-code-widgets/rje-code-widgets.css";
 ```
 
 
