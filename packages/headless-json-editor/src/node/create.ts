@@ -130,6 +130,21 @@ export const NODES: Record<NodeType, CreateNode> = {
 
                 // @ts-ignore
                 properties = { ...properties, ...(additionalSchema.properties ?? {}) };
+                const source = Object.keys(properties as object);
+                const additional = Object.keys((additionalSchema.properties as object) ?? {});
+                const newProperties: Record<string, any> = {};
+                for (let i = 0; i < source.length; i += 1) {
+                    const name = source[i];
+                    // @ts-ignore
+                    newProperties[name] = properties[name];
+                    if (name === dependentKey) {
+                        additional.forEach((key: string) => {
+                            // @ts-ignore
+                            newProperties[key] = additionalSchema.properties[key];
+                        });
+                    }
+                }
+                properties = newProperties;
                 return;
             });
         }
