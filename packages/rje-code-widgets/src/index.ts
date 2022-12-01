@@ -1,4 +1,3 @@
-import './lib/rje-code-widgets.scss';
 import { CodeWidgetOptions, CreateCodeWidgetParams, createCodeWidgetPlugin } from './lib/codewidget/CodeWidget';
 import {
     JsonWidget,
