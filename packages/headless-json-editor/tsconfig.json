@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": ".",
-        "outDir": "./dist",
+        "outDir": "./dist/es6",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "noImplicitOverride": true,

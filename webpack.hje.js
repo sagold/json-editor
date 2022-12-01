@@ -18,7 +18,14 @@ const config = {
         umdNamedDefine: true,
         globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
-    externals: {},
+    externals: {
+        'json-schema-library': {
+            commonjs: 'json-schema-library',
+            commonjs2: 'json-schema-library',
+            amd: 'json-schema-library',
+            root: 'jlib'
+        }
+    },
     resolve: {
         modules: [
             path.resolve(__dirname),

@@ -14,13 +14,41 @@ const config = {
         path: path.resolve(__dirname, 'packages', PACKAGE_NAME, PRODUCTION ? 'dist' : 'dev'),
         filename: `reactJsonEditor${PRODUCTION ? '.min' : ''}.js`,
         libraryTarget: 'umd',
-        library: 'hje',
+        library: 'rje',
         umdNamedDefine: true,
         globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     externals: {
-        react: 'react',
-        'react-dom': 'reactDOM'
+        'headless-json-editor': {
+            commonjs: 'headless-json-editor',
+            commonjs2: 'headless-json-editor',
+            amd: 'headless-json-editor',
+            root: 'hje'
+        },
+        'json-schema-library': {
+            commonjs: 'json-schema-library',
+            commonjs2: 'json-schema-library',
+            amd: 'json-schema-library',
+            root: 'jlib'
+        },
+        react: {
+            commonjs: 'react',
+            commonjs2: 'react',
+            amd: 'react',
+            root: 'React'
+        },
+        'react-dom/client': {
+            commonjs: 'react-dom/client',
+            commonjs2: 'react-dom/client',
+            amd: 'react-dom/client',
+            root: 'ReactDOM'
+        },
+        'semantic-ui-react': {
+            commonjs: 'semantic-ui-react',
+            commonjs2: 'semantic-ui-react',
+            amd: 'semantic-ui-react',
+            root: 'semanticUIReact'
+        }
     },
     resolve: {
         modules: [
