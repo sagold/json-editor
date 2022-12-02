@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { defaultWidgets, useJsonEditor } from '../../../index';
 import { MasterDetailWidget } from './MasterDetailWidget';
 import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
-// import '../../styles.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

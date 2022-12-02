@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { defaultWidgets, useJsonEditor } from '../../../index';
 import { TableWidget } from './TableWidget';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
-// import '../../styles.scss';
 
 export default {
     title: 'Widget/TableWidget',

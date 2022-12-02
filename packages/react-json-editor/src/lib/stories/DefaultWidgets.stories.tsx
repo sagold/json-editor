@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { JsonForm, JsonEditor } from '../../index';
 import { data, schema } from './data/features';
 import { useEffect, useRef, useState } from 'react';
-// import '../styles.scss';
 
 export default {
     title: 'Example',

@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { defaultWidgets, useJsonEditor } from '../../../index';
 import { NavigationWidget } from './NavigationWidget';
 import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
-// import '../../styles.scss';
 
 const schema = {
     type: 'object',

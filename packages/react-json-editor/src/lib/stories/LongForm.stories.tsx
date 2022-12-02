@@ -2,7 +2,6 @@ import { useJsonEditor, defaultWidgets } from '../../index';
 import { Form } from 'semantic-ui-react';
 import { NavigationWidget } from '../widgets/navigationwidget/NavigationWidget';
 import { data, schema } from './data/longform';
-// import '../styles.scss';
 
 export default {
     title: 'Example',

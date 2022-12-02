@@ -38,6 +38,29 @@ module.exports = {
             'headless-json-editor',
             'src'
         );
+
+        config.module.rules.push({
+            test: /\.scss$/,
+            use: [
+                'style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 3,
+                        sourceMap: true
+                    }
+                },
+                { loader: 'resolve-url-loader' },
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        sassOptions: { outputStyle: 'compressed' },
+                        sourceMap: true
+                    }
+                }
+            ]
+        });
+
         return config;
     }
 };
