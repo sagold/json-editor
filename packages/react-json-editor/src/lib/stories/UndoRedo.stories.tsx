@@ -3,7 +3,7 @@ import { useJsonEditor, defaultWidgets } from '../../index';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
-import '../styles.scss';
+// import '../styles.scss';
 
 const schema = {
     type: 'object',

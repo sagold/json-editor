@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { JsonFormProps, useJsonEditor } from '../../index';
 import { defaultWidgets } from '../../index';
 import { data, schema } from './data/features';
-import '../styles.scss';
+// import '../styles.scss';
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 

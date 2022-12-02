@@ -3,7 +3,7 @@ import { defaultWidgets, useJsonEditor } from '../../../index';
 import { ArrayWidget, ArrayOptions } from './ArrayWidget';
 import { JSONSchema, ArrayNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
-import '../../styles.scss';
+// import '../../styles.scss';
 
 export default {
     title: 'Widget/ArrayWidget',

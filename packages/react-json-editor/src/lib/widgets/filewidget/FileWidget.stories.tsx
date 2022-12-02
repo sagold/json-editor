@@ -3,7 +3,7 @@ import { defaultWidgets, useJsonEditor } from '../../../index';
 import { FileWidget } from './FileWidget';
 import { RemoteEnumOptionsPlugin, get, StringNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
-import '../../styles.scss';
+// import '../../styles.scss';
 
 export default {
     title: 'Widget/FileWidget',

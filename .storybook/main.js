@@ -3,8 +3,9 @@ const path = require('path');
 module.exports = {
     stories: [
         '../stories/**/*.stories.mdx',
-        '../stories/**/*.stories.@(js|jsx|ts|tsx)',
-        '../packages/react-json-editor/src/lib/stories/DefaultWidgets.stories.tsx'
+        // '../stories/**/*.stories.@(js|jsx|ts|tsx)'
+        '../packages/react-json-editor/src/**/*.stories.tsx',
+        '../packages/react-json-editor/src/**/*.stories.mdx'
         // '../stories/**/*.stories.@(js|jsx|ts|tsx)',
         // '../packages/*/src/**/*stories.mdx',
         // '../packages/*/src/*.stories.@(js|jsx|ts|tsx)'
