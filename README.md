@@ -5,6 +5,8 @@
 
 > **[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor)
 
+[![CI](https://github.com/sagold/json-editor/actions/workflows/ci.yaml/badge.svg)](https://github.com/sagold/json-editor/actions/workflows/ci.yaml)
+
 Currently this repository includes packages
 
 - [headless-json-editor](./packages/headless-json-editor) and

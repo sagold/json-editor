@@ -16,12 +16,12 @@ jobs:
               with:
                   node-version: '16'
                   cache: 'yarn'
-            - name: Install dependencies
+            - name: install dependencies
               run: yarn --frozen-lockfile
-            - name: unit tests
+            - name: run unit tests
               run: yarn test:ci
             - uses: dorny/test-reporter@v1.6.0
               with:
                   name: unit test results
-                  path: test-result-unittests.json
+                  path: junit.xml
                   reporter: jest-junit
