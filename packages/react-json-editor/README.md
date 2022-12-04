@@ -20,6 +20,8 @@ install
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
+![minified](https://badgen.net/bundlephobia/min/@sagold/react-json-editor)
+![minified + gzip](https://badgen.net/bundlephobia/minzip/@sagold/react-json-editor)
 
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
