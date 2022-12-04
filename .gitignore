@@ -18,6 +18,7 @@ node_modules
 .settings/
 *.sublime-workspace
 *.pxd
+junit.xml
 
 /packages/*/dist
 /dev
