@@ -18,6 +18,8 @@ install
 
 `yarn add @sagold/react-json-editor`
 
+[![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
+
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
 import '@sagold/react-json-editor/react-json-editor.css';

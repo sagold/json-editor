@@ -13,6 +13,8 @@ install
 
 `yarn add headless-json-editor`
 
+[![Npm package version](https://badgen.net/npm/v/headless-json-editor)](https://github.com/sagold/headless-json-editor/actions/workflows/ci.yaml)
+
 quick overview
 
 ```ts
