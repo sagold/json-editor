@@ -16,6 +16,7 @@ install
 `yarn add @sagold/rje-code-widgets`
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-code-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-code-widgets)
+![Types](https://badgen.net/npm/types/@sagold/rje-code-widgets)
 
 include css
 
