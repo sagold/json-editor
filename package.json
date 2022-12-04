@@ -26,7 +26,7 @@
         "sb": "start-storybook -p 6006",
         "sb:dist": "build-storybook --output-dir ./docs",
         "test": "jest --maxWorkers=2",
-        "test:ci": "jest --maxWorkers=2 --json --outputFile=test-result-unittests.json"
+        "test:ci": "jest --maxWorkers=2 --ci --reporters=default --reporters=jest-Junit"
     },
     "dependencies": {
         "react": "18.2.0",

@@ -24,4 +24,4 @@ jobs:
               with:
                   name: unit test results
                   path: test-result-unittests.json
-                  reporter: mocha-json
+                  reporter: jest-junit
