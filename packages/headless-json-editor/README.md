@@ -15,8 +15,6 @@ install
 
 [![Npm package version](https://badgen.net/npm/v/headless-json-editor)](https://github.com/sagold/headless-json-editor/actions/workflows/ci.yaml)
 ![Types](https://badgen.net/npm/types/headless-json-editor)
-![minified](https://badgen.net/bundlephobia/min/headless-json-editor)
-![minified + gzip](https://badgen.net/bundlephobia/minzip/headless-json-editor)
 
 quick overview
 

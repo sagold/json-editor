@@ -17,8 +17,6 @@ install
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-code-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-code-widgets)
 ![Types](https://badgen.net/npm/types/@sagold/rje-code-widgets)
-![minified](https://badgen.net/bundlephobia/min/@sagold/rje-code-widgets)
-![minified + gzip](https://badgen.net/bundlephobia/minzip/@sagold/rje-code-widgets)
 
 include css
 
