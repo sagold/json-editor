@@ -11,11 +11,3 @@ Currently this repository includes packages
 - [@sagold/react-json-editor](./packages/react-json-editor) for a react implementation using semantic-ui
 - [@sagold/rje-code-widgets](./packages/rje-code-widgets) additional code-widgets for react-json-editor
 
-
-## tooling
-
-- run tests `nx test headless-json-editor`
-- run storybook `nx run react-json-editor:storybook`
-- build storybook `nx run react-json-editor:build-storybook`
-- build packages `nx run-many --target=build`
-- build react-json-editor `nx run react-json-editor:build`

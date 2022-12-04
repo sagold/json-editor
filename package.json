@@ -25,7 +25,8 @@
         "code:analyze": "mkdir tmp; PACKAGE_NAME=rje-code-widgets webpack --profile --json > tmp/rje-cw-stats.json; webpack-bundle-analyzer tmp/rje-cw-stats.json",
         "sb": "start-storybook -p 6006",
         "sb:dist": "build-storybook --output-dir ./docs",
-        "test": "jest"
+        "test": "jest --maxWorkers=2",
+        "test:ci": "jest --maxWorkers=2 --json --outputFile=test-result-unittests.json"
     },
     "dependencies": {
         "react": "18.2.0",
