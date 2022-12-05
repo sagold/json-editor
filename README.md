@@ -3,7 +3,7 @@
     <img src="./images/json-editor-700x70.png" width="350px" alt="headless-json-editor">
 </p>
 
-**[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor). Currently this repository includes packages:
+**[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor). Currently this repository includes the following packages:
 
 ## [headless-json-editor](./packages/headless-json-editor)
 
@@ -17,7 +17,7 @@ A simple beautiful api for your custom form generator powered by json-schema. _h
 yarn add headless-json-editor
 ```
 
-- package [headless-json-editor](./packages/headless-json-editor)
+- read more in package [headless-json-editor](./packages/headless-json-editor)
 
 
 ## [@sagold/react-json-editor](./packages/react-json-editor)
@@ -31,8 +31,8 @@ Simple and extensible react component capable of using json-schema to declarativ
 yarn add @sagold/react-json-editor
 ```
 
-- goto [package react-json-editor](./packages/react-json-editor)
-- goto [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
+- read more in package [react-json-editor](./packages/react-json-editor)
+- [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
 
 
 
@@ -47,6 +47,6 @@ Additional code widgets for [@sagold/react-json-editor](https://github.com/sagol
 yarn add @sagold/rje-code-widgets
 ```
 
-- package [rje-code-widgets](./packages/rje-code-widgets)
-- goto [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
+- read more in package [rje-code-widgets](./packages/rje-code-widgets)
+- [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
 
