@@ -3,13 +3,50 @@
     <img src="./images/json-editor-700x70.png" width="350px" alt="headless-json-editor">
 </p>
 
-> **[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor)
+**[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor). Currently this repository includes packages:
+
+## [headless-json-editor](./packages/headless-json-editor)
 
 [![CI](https://github.com/sagold/json-editor/actions/workflows/ci.yaml/badge.svg)](https://github.com/sagold/json-editor/actions/workflows/ci.yaml)
+[![Npm package version](https://badgen.net/npm/v/headless-json-editor)](https://github.com/sagold/headless-json-editor/actions/workflows/ci.yaml)
+![Types](https://badgen.net/npm/types/headless-json-editor)
 
-Currently this repository includes packages
+A simple beautiful api for your custom form generator powered by json-schema. _headless-json-editor_ build a syntax tree of your json-schema and input data, which can be easily walked through to be rendered or processed further.
 
-- [headless-json-editor](./packages/headless-json-editor) and
-- [@sagold/react-json-editor](./packages/react-json-editor) for a react implementation using semantic-ui
-- [@sagold/rje-code-widgets](./packages/rje-code-widgets) additional code-widgets for react-json-editor
+```sh
+yarn add headless-json-editor
+```
+
+- package [headless-json-editor](./packages/headless-json-editor)
+
+
+## [@sagold/react-json-editor](./packages/react-json-editor)
+
+[![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
+![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
+
+Simple and extensible react component capable of using json-schema to declaratively build and customize user forms. _react-json-editor_ comes with a set of default widgets using semantic-ui that render a user form for all basic json datatypes.
+
+```sh
+yarn add @sagold/react-json-editor
+```
+
+- goto [package react-json-editor](./packages/react-json-editor)
+- goto [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
+
+
+
+## [@sagold/rje-code-widgets](./packages/rje-code-widgets)
+
+[![Npm package version](https://badgen.net/npm/v/@sagold/rje-code-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-code-widgets)
+![Types](https://badgen.net/npm/types/@sagold/rje-code-widgets)
+
+Additional code widgets for [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor) to edit code formatted strings, json and json with json-schema validation, tooltips and autocompletion using [CodeMirror](https://codemirror.net/) and [@uiw/react-codemirror](https://github.com/uiwjs/react-codemirror)
+
+```sh
+yarn add @sagold/rje-code-widgets
+```
+
+- package [rje-code-widgets](./packages/rje-code-widgets)
+- goto [demo page](https://sagold.github.io/json-editor/?path=/story/example--default-widgets)
 
