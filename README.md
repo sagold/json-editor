@@ -20,7 +20,7 @@ yarn add headless-json-editor
 - read more in package [headless-json-editor](./packages/headless-json-editor)
 
 
-## [@sagold/react-json-editor](./packages/react-json-editor)
+## [react-json-editor](./packages/react-json-editor)
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
@@ -36,7 +36,7 @@ yarn add @sagold/react-json-editor
 
 
 
-## [@sagold/rje-code-widgets](./packages/rje-code-widgets)
+## [rje-code-widgets](./packages/rje-code-widgets)
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-code-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-code-widgets)
 ![Types](https://badgen.net/npm/types/@sagold/rje-code-widgets)
