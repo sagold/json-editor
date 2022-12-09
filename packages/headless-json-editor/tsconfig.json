@@ -10,5 +10,5 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true
     },
-    "include": ["src"]
+    "include": ["src", "tests"]
 }

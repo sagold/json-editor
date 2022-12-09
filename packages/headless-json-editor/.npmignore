@@ -5,3 +5,5 @@
 .eslintrc.json
 tsconfig.json
 yarn*
+/dist/es6/tests
+/dist/tests
