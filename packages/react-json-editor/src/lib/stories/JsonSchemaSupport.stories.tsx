@@ -21,7 +21,9 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
             schema={schema}
             validate={true}
             liveUpdate={true}
-            onChange={(data) => {}}
+            onChange={(data) => {
+                console.log(data);
+            }}
         />
     );
 };
@@ -31,51 +33,49 @@ AllOfWithConditions.args = {
     data: {},
     schema: {
         type: 'object',
-        title: 'allOf with multiple if-then-else statements',
+        title: 'allOf with single if-then-else statements',
         description:
-            '**allOf** statement can combined multiple **if-then-else** statements. In this case, we want to add additional properties to the schema based on the presence of a specfic value. In case the schema is toggled, we do not want to lose its data in case the initial value is restored',
+            'Goal: Optional form to be toggled by a valid schema. Optional form, store data even when hidden. Does not remove data when hidden, does not return errors when hidden. This setup is very specific and is no easy drop-in toggle, but tries to stay true to json-schema where possible (still, schema is merged which it should not). Follows test/features/toggleForm. !! The problem that remains is, that json-editor currently does not create nodes for missing schemas, thus it removes data unless the hidden property is structurely complete (properties are given)',
+        required: ['trigger'],
         properties: {
-            addSchema: {
-                title: 'add schema?',
+            trigger: {
+                title: 'show optional schema',
                 type: 'boolean',
                 default: false
+            },
+            optional: {
+                options: { hidden: true, title: false },
+                type: 'object',
+                properties: {
+                    title: {
+                        type: 'string'
+                    }
+                }
+            },
+
+            check: {
+                type: 'null',
+                title: 'test attribute - should come last in any case',
+                description: 'mimimi'
             }
         },
         allOf: [
             {
                 if: {
+                    required: ['trigger'],
                     properties: {
-                        addSchema: {
-                            type: 'boolean',
+                        trigger: {
                             const: true
                         }
                     }
                 },
                 then: {
+                    required: ['optional'],
                     properties: {
-                        additionalSchema: {
-                            title: 'initial schema',
-                            description: 'trigger next schema by adding some text',
-                            type: 'string'
-                        }
-                    }
-                }
-            },
-            {
-                if: {
-                    required: ['additionalSchema'],
-                    properties: {
-                        additionalSchema: {
-                            type: 'string',
-                            minLength: 1
-                        }
-                    }
-                },
-                then: {
-                    properties: {
-                        secondSchema: {
-                            title: 'second schema, based on additionalSchema having at least 1 character',
-                            type: 'string'
+                        optional: {
+                            title: 'Optional form',
+                            options: { hidden: false },
+                            required: ['title']
                         }
                     }
                 }

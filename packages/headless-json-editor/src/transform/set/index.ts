@@ -1,4 +1,5 @@
 import { Draft, JSONPointer, JSONError, resolveAllOf } from 'json-schema-library';
+import { deepEqual } from 'fast-equals';
 import { json } from '../../node/json';
 import { create } from '../../node/create';
 import { split, join } from 'gson-pointer';
@@ -65,16 +66,24 @@ export function set<T extends Node = Node>(
 
         // in case our current node has a allOf statement, the schema might
         // change and must replace the whole subtree
-        // if (targetNode.schema.allOf) {
-        //     const nextValue = getUpdatedData<UnknownObject>(parentNode, join(childProperty, frags), value);
-        //     const newSchema = core.resolveAllOf(nextValue, targetNode.schema);
-        //     const finalData = core.getTemplate(nextValue, newSchema);
-        //     const node = create(core, finalData, newSchema);
-        //     console.log(newSchema, finalData);
-        //     const targetIndex = getChildNodeIndex(parentNode, childProperty);
-        //     (parentNode as ParentNode).children[targetIndex] = node;
-        //     return [newRootNode, changeSet];
-        // }
+        if (targetNode.schema.allOf) {
+            let nextValue = getUpdatedData<UnknownObject>(parentNode, join(childProperty, frags), value);
+            const previousSchema = core.resolveAllOf(json(targetNode), targetNode.schema);
+            const nextSchema = core.resolveAllOf(nextValue, targetNode.schema);
+            nextValue = core.getTemplate(nextValue, nextSchema);
+            if (!deepEqual(nextSchema, previousSchema)) {
+                // schema has changed
+                // Note
+                // - via create schema could be different - check
+                const node = create<ParentNode>(core, nextValue, targetNode.schema) as ParentNode;
+                node.id = targetNode.id;
+                if (parentNode === targetNode) {
+                    // root node changed
+                    return [node as T, changeSet];
+                }
+                targetNode = node;
+            }
+        }
 
         // in case our current node has a oneOf statement, the schema might
         // change and must replace the whole subtree

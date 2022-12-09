@@ -1,6 +1,7 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
+import { set } from '../../../src/transform/set';
 import { errors } from '../../../src/node/errors';
 import { strict as assert } from 'assert';
 import { ObjectNode, StringNode, isJSONError, JSONSchema } from '../../../src/types';
@@ -18,13 +19,11 @@ describe('feature: toggle form', () => {
         () =>
             (draft = new Draft07({
                 type: 'object',
-                required: ['trigger'],
+                required: ['trigger', 'check'],
                 properties: {
                     trigger: { type: 'boolean', $id: 'trigger', default: false },
                     addition: {
-                        options: {
-                            hidden: true
-                        },
+                        options: { hidden: true },
                         type: 'object'
                     }
                 },
@@ -40,9 +39,7 @@ describe('feature: toggle form', () => {
                             required: ['addition'],
                             properties: {
                                 addition: {
-                                    options: {
-                                        hidden: false
-                                    },
+                                    options: { hidden: false },
                                     type: 'object',
                                     required: ['title'],
                                     properties: {
@@ -89,5 +86,27 @@ describe('feature: toggle form', () => {
         assert.equal(root.children.length, 2);
         assert.equal(root.children[0].schema.$id, 'trigger');
         assert.equal(root.children[1].options.hidden, false);
+    });
+
+    it('should switch node to active', () => {
+        const root = create(draft, { trigger: false });
+
+        const [update] = set(draft, root, '/trigger', true);
+
+        assert(update.type === 'object');
+        assert.equal(update.children.length, 2);
+        assert.equal(update.children[0].schema.$id, 'trigger');
+        assert.equal(update.children[1].options.hidden, false);
+    });
+
+    it('should switch node to inactive', () => {
+        const root = create(draft, { trigger: true });
+
+        const [update] = set(draft, root, '/trigger', false);
+
+        assert(update.type === 'object');
+        assert.equal(update.children.length, 2);
+        assert.equal(update.children[0].schema.$id, 'trigger');
+        assert.equal(update.children[1].options.hidden, true);
     });
 });
