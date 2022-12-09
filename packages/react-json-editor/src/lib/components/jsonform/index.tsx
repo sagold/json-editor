@@ -34,6 +34,7 @@ export type JsonFormProps = {
     validate?: boolean;
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
+    style?: React.CSSProperties;
 };
 
 export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
@@ -48,7 +49,8 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         draft,
         cacheKey,
         validate,
-        liveUpdate
+        liveUpdate,
+        style
     },
     ref
 ) {
@@ -77,7 +79,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
     }
 
     return (
-        <Form error>
+        <Form error style={style}>
             <Widget node={node} editor={instance} options={options} />
         </Form>
     );

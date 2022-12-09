@@ -1,4 +1,6 @@
 import { Meta } from '@storybook/addon-docs';
+import { JsonForm } from '@sagold/react-json-editor';
+import { schema } from './data/featureToggleForm';
 
 <Meta title="Introduction" />
 
@@ -11,6 +13,16 @@ installation
 
 `yarn add @sagold/react-json-editor`
 
-notes
+## Current features in development
 
--   storybook examples: https://storybook.js.org/showcase
+conditional forms
+
+<JsonForm
+    style={{ borderRadius: 5, boxShadow: '-2px 2px 5px rgba(0,0,0,0.2)', border: '1px solid #fff' }}
+    data={{}}
+    schema={{ options: { title: false }, ...schema }}
+/>
+
+## notes
+
+> json-schema for valdiation vs json-schema editor

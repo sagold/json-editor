@@ -2,6 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { JsonForm, JsonEditor } from '../../index';
 import { data, schema } from './data/features';
 import { useEffect, useRef, useState } from 'react';
+import { errors, json } from 'headless-json-editor';
 
 export default {
     title: 'Example',
@@ -17,6 +18,12 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     useEffect(() => {
         // @ts-ignore
         window.changeData = () => setEditorData({ text: 'mimimi' });
+        // @ts-ignore
+        window.getErrors = () => errors(editor.current?.getState());
+        // @ts-ignore
+        window.getData = () => json(editor.current?.getState());
+        // @ts-ignore
+        window.getState = () => editor.current?.getState();
     }, [data]);
 
     return (
