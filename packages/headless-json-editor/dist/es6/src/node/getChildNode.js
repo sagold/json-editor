@@ -1,0 +1,1 @@
+import{isParentNode}from"../types";export function getChildNode(e,r){if(isParentNode(e))return e.children.find((e=>e.property===r))}export function getChildNodeIndex(e,r){return isParentNode(e)?e.children.findIndex((e=>e.property===r)):-1}

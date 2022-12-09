@@ -1,0 +1,1 @@
+import{json}from"../../node/json";import{set}from"gson-pointer";export function getUpdatedData(o,t,n){const e=json(o);return set(e,t,n),e}

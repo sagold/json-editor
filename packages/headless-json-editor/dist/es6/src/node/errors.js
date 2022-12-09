@@ -1,0 +1,1 @@
+import{flat}from"./flat";const errorReducer=(r,e)=>(r.push(...e.errors),r);export function errors(r){return flat(r).reduceRight(errorReducer,[])}

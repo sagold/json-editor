@@ -1,0 +1,1 @@
+export const EventLoggerPlugin=()=>({id:"eventLogger",onEvent(e,o){console.log(o)}});

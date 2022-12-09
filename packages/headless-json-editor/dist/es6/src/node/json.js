@@ -1,0 +1,1 @@
+export function json(r){if(null==r)return null;if("array"===r.type)return r.children.map(json);if("object"===r.type){const n={};return r.children.forEach((r=>n[r.property]=json(r))),n}return r.value}
