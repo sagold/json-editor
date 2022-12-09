@@ -1,1 +1,0 @@
-import{flat}from"./flat";export function find(f,t){return flat(f).find(t)}

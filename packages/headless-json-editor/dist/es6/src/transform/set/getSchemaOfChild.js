@@ -1,1 +1,0 @@
-import{isJSONError}from"../../types";import{json}from"../../node/json";export function getSchemaOfChild(o,r,e,n){const t=json(r);t[e]=n;const s=o.step(e,r.schema,t,r.pointer);return isJSONError(s)?"unknown-property-error"!==s.code?(console.log(`failed retrieving schema for '${r.pointer}/${e}'`),console.log(s),s):o.createSchemaOf(n):s}

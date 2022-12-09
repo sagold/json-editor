@@ -163,6 +163,9 @@ export class HeadlessJsonEditor {
         // console.log('new state', state);
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
+
+        // console.log(json(this.state), this.state);
+
         return this.state;
     }
 

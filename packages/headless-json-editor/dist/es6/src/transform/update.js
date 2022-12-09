@@ -1,1 +1,0 @@
-import{isJSONError}from"../types";import{unlinkPath}from"./unlinkPath";export function updateSchema(t,n,r){const o=unlinkPath(t,n);if(isJSONError(o))return[o];const[e,i]=o;return i.schema=r,[e,[{type:"update",node:i}]]}export function updateOptions(t,n,r){const o=unlinkPath(t,n);if(isJSONError(o))return[o];const[e,i]=o;return i.options=r,[e,[{type:"update",node:i}]]}

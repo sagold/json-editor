@@ -1,1 +1,0 @@
-import{isParentNode}from"../types";export function flat(r,t=[]){return t.push(r),isParentNode(r)&&r.children.forEach((r=>flat(r,t))),t}

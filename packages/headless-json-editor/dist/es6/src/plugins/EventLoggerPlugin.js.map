@@ -1,1 +1,0 @@
-{"version":3,"file":"EventLoggerPlugin.js","sourceRoot":"","sources":["../../../../src/plugins/EventLoggerPlugin.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,iBAAiB,GAAW,GAAmB,EAAE;IAC1D,OAAO;QACH,EAAE,EAAE,aAAa;QACjB,OAAO,CAAC,IAAI,EAAE,KAAK;YACf,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC;QACvB,CAAC;KACJ,CAAC;AACN,CAAC,CAAC"}

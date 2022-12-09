@@ -1,1 +1,0 @@
-const NodeTypes=["array","object","string","number","null","boolean"];export function isNode(e){return NodeTypes.includes(null==e?void 0:e.type)}export function isParentNode(e){return"array"===e.type||"object"===e.type}export function isValueNode(e){return"string"===e.type||"number"===e.type||"null"===e.type||"boolean"===e.type}export{isJSONError}from"json-schema-library";

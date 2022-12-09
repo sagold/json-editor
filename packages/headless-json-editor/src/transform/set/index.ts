@@ -1,4 +1,5 @@
-import { Draft, JSONPointer, JSONError } from 'json-schema-library';
+import { Draft, JSONPointer, JSONError, resolveAllOf } from 'json-schema-library';
+import { json } from '../../node/json';
 import { create } from '../../node/create';
 import { split, join } from 'gson-pointer';
 import { Node, ArrayNode, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
@@ -61,6 +62,19 @@ export function set<T extends Node = Node>(
                 })
             ];
         }
+
+        // in case our current node has a allOf statement, the schema might
+        // change and must replace the whole subtree
+        // if (targetNode.schema.allOf) {
+        //     const nextValue = getUpdatedData<UnknownObject>(parentNode, join(childProperty, frags), value);
+        //     const newSchema = core.resolveAllOf(nextValue, targetNode.schema);
+        //     const finalData = core.getTemplate(nextValue, newSchema);
+        //     const node = create(core, finalData, newSchema);
+        //     console.log(newSchema, finalData);
+        //     const targetIndex = getChildNodeIndex(parentNode, childProperty);
+        //     (parentNode as ParentNode).children[targetIndex] = node;
+        //     return [newRootNode, changeSet];
+        // }
 
         // in case our current node has a oneOf statement, the schema might
         // change and must replace the whole subtree

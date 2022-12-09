@@ -94,6 +94,11 @@ export const NODES: Record<NodeType, CreateNode> = {
             errors: []
         };
 
+        if (schema.allOf) {
+            schema = core.resolveAllOf(data, schema);
+            data = core.getTemplate(data, schema);
+        }
+
         /**
          * if there are dependencies
          * - we need at least to flag the schema:

@@ -1,1 +1,0 @@
-import{join,split}from"gson-pointer";export function splitLastProperty(o){const r=split(o);if(r.length>=1){const o=r.pop();return[join(r),o]}throw new Error(`There is no property for pointer '${o}'`)}

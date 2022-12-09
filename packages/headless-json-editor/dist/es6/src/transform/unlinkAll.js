@@ -1,1 +1,0 @@
-import{isParentNode}from"../types";export function unlinkAll(n){const e={...n};return isParentNode(e)&&(e.children=e.children.map((n=>unlinkAll(n)))),e}
