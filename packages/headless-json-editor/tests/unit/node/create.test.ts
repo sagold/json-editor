@@ -270,7 +270,7 @@ describe('create', () => {
         });
     });
 
-    describe.only('allOf', () => {
+    describe('allOf', () => {
         /** Note: json-schema spec states that allOf statements (as dependencies, if-then-else, ...)
          * should not merge schemas, but validate them individually. In case of an abstract tree,
          * we somehow need to merge those schemas */
