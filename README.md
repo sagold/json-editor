@@ -3,7 +3,7 @@
     <img src="./images/json-editor-700x70.png" width="350px" alt="headless-json-editor">
 </p>
 
-**[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor). Currently this repository includes the following packages:
+**[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor)
 
 ## [headless-json-editor](./packages/headless-json-editor)
 

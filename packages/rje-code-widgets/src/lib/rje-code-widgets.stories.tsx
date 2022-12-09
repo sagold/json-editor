@@ -121,7 +121,7 @@ const dataObject = {
 
 export default {
     component: JsonWidget,
-    title: 'CodeWidgets/JsonWidget'
+    title: 'packages/rje-code-widgets/JsonWidget'
 } as ComponentMeta<typeof JsonWidget>;
 
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
@@ -165,6 +165,62 @@ Primary.args = {
         jsonStringRef: JSON.stringify(dataObject, null, 2),
         jsonData: dataObject
     }
+};
+
+export const AllOfIfThenElse = Template.bind({});
+AllOfIfThenElse.args = {
+    schema: {
+        format: 'json',
+        title: 'allOf with multiple if-then-else statements',
+        description:
+            '**allOf** statement can combined multiple **if-then-else** statements. In this case, we want to add additional properties to the schema based on the presence of a specfic value. In case the schema is toggled, we do not want to lose its data in case the initial value is restored',
+        type: 'object',
+        required: ['addSchema'],
+        properties: {
+            addSchema: {
+                title: 'add schema?',
+                type: 'boolean',
+                default: false
+            },
+            additionalSchema: {
+                title: 'initial schema',
+                type: 'string'
+            },
+            secondSchema: {
+                title: 'second schema, based on additionalSchema having at least 1 character',
+                type: 'string'
+            }
+        },
+        allOf: [
+            {
+                if: {
+                    properties: {
+                        addSchema: {
+                            type: 'boolean',
+                            const: true
+                        }
+                    }
+                },
+                then: {
+                    required: ['additionalSchema']
+                }
+            },
+            {
+                if: {
+                    properties: {
+                        additionalSchema: {
+                            type: 'string',
+                            minLength: 1
+                        }
+                    }
+                },
+                then: {
+                    required: ['secondSchema']
+                }
+            }
+        ]
+    },
+    data: {}
 };
 
 export const OneOfSupport = Template.bind({});
