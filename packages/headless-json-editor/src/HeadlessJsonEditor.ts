@@ -60,6 +60,7 @@ export type HeadlessJsonEditorOptions = {
     data?: unknown;
     draftConfig?: Partial<DraftConfig>;
     plugins?: Plugin[];
+    /** if daTa should be initially validated */
     validate?: boolean;
     /** if all optional properties should be added when missing */
     addOptionalProps?: boolean;

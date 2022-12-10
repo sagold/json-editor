@@ -3,21 +3,49 @@ import { JsonForm } from '@sagold/react-json-editor';
 
 <Meta title="docs/ObjectProperties" />
 
-# Object properties
+# object properties
 
-> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _react-json-editor_.
+> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and default widgets.
 
-| definition               | support | comment                                                           |
-| ------------------------ | ------- | ----------------------------------------------------------------- |
-| **required**             | ✅      | properties that are always to input data. Option: add all         |
-| **properties**           | ✅      | properties that can be added as user form                         |
-| **oneOf**                | ✅      | partially supported                                               |
-| **anyOf**                | ❌      | not yet supported                                                 |
-| **allOf**                | ✅      | partially supported                                               |
-| **dependencies**         | ✅      | supported                                                         |
-| **if-then-else**         | ✅      | supported                                                         |
-| **additionalProperties** | ❌      | currently default to false and removes any unspecified properties |
-| **patternProperties**    | ❌      | not yet supported                                                 |
+| definition                                         | support | comment                                                              |
+| -------------------------------------------------- | ------- | -------------------------------------------------------------------- |
+| [**properties**](#properties)                      | ✅      | properties that can be added to a user form                          |
+| [**required**](#required-properties)               | ✅      | properties that are always to input data. Option: add all            |
+| **oneOf**                                          | ✅      | partially supported                                                  |
+| **anyOf**                                          | ❌      | not yet supported                                                    |
+| **allOf**                                          | ✅      | partially supported                                                  |
+| [**dependencies**](#dependencies)                  | ✅      | supported                                                            |
+| **if-then-else**                                   | ✅      | supported                                                            |
+| [**additionalProperties**](#additional-properties) | ✅      | partially. additionalProperties defaults to false and removes values |
+| **patternProperties**                              | ❌      | not yet supported                                                    |
+
+**missing features**
+
+- add button to add non-required, missing properties
+- optional delete button to remove non-required properties
+
+**bugs**
+
+- correct property order for `additionalProperties`
+- initial validation with wrong data does not return an error [@see additionalProperties](#additional-properties)
+
+## properties
+
+Per default or with `addOptionalProps` set to `true`, all available properties will be added when missing:
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={true}
+    schema={{
+      type: 'object',
+      properties: {
+        one: { title: 'Property One', type: 'string' },
+        two: { title: 'Property Two', type: 'string' }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
 
 ## required properties
 
@@ -58,6 +86,63 @@ Given an input value for property `"two"` will add this property to the form:
   />
 </Canvas>
 
-## non-required properties
-
 ## additional properties
+
+For additional properties to be added, you have to set `additionalProperties: true` explicitly:
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    data={{ two: 'additional property' }}
+    onChange={console.log}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One (required)', type: 'string' }
+      },
+      additionalProperties: true,
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+If `additionalProperties` is missing, unspecified properties are removed
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    data={{ two: 'additional property' }}
+    onChange={console.log}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One (required)', type: 'string' }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+Setting a schema for `additionalProperties` adds a validated field corresponding the subschema. Note values might be removed or replaced when the given type invalid as shown in the following example:
+
+<Canvas>
+  <JsonForm
+    validate={true}
+    addOptionalProps={false}
+    data={{ two: 'additional property' }}
+    onChange={console.log}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One (required)', type: 'string' }
+      },
+      additionalProperties: { type: 'number' },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+## dependencies
