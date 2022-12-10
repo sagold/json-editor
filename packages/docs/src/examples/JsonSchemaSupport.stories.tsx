@@ -1,10 +1,10 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonForm, JsonEditor } from '../../index';
-import { useEffect, useRef, useState } from 'react';
 import { errors } from 'headless-json-editor';
+import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
+import { useEffect, useRef, useState } from 'react';
 
 export default {
-    title: 'JsonSchemaSupport',
+    title: 'Examples/JsonSchemaSupport',
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: {} },
         schema: { control: { type: 'object' }, defaultValue: { type: 'object' } }

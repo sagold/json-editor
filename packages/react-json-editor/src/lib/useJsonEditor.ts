@@ -20,6 +20,8 @@ export type UseJsonEditorOptions = {
     onChange?: OnChangeListener;
     plugins?: Plugin[];
     cacheKey?: string | number;
+    /** if all optional properties should be added when missing */
+    addOptionalProps?: boolean;
     liveUpdate?: boolean;
 };
 
@@ -54,6 +56,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
             widgets,
             validate: settings.validate,
             liveUpdate: settings.liveUpdate,
+            addOptionalProps: settings.addOptionalProps,
             draftConfig: settings.draftConfig,
             plugins: [...plugins, OnChangePlugin],
             onChange(data, root) {

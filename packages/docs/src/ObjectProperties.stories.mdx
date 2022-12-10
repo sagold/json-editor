@@ -1,0 +1,63 @@
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { JsonForm } from '@sagold/react-json-editor';
+
+<Meta title="docs/ObjectProperties" />
+
+# Object properties
+
+> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _react-json-editor_.
+
+| definition               | support | comment                                                           |
+| ------------------------ | ------- | ----------------------------------------------------------------- |
+| **required**             | ✅      | properties that are always to input data. Option: add all         |
+| **properties**           | ✅      | properties that can be added as user form                         |
+| **oneOf**                | ✅      | partially supported                                               |
+| **anyOf**                | ❌      | not yet supported                                                 |
+| **allOf**                | ✅      | partially supported                                               |
+| **dependencies**         | ✅      | supported                                                         |
+| **if-then-else**         | ✅      | supported                                                         |
+| **additionalProperties** | ❌      | currently default to false and removes any unspecified properties |
+| **patternProperties**    | ❌      | not yet supported                                                 |
+
+## required properties
+
+> ⚠️ **currently `addOptionalProps` defaults to `true`**. This example sets it to `false`.
+
+The following example has two properties defined, but only property `"one"` is required:
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One (required)', type: 'string' },
+        two: { title: 'Property Two', type: 'string' }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+Given an input value for property `"two"` will add this property to the form:
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    data={{ two: 'set on input data' }}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One (required)', type: 'string' },
+        two: { title: 'Property Two', type: 'string' }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+## non-required properties
+
+## additional properties

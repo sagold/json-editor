@@ -61,6 +61,8 @@ export type HeadlessJsonEditorOptions = {
     draftConfig?: Partial<DraftConfig>;
     plugins?: Plugin[];
     validate?: boolean;
+    /** if all optional properties should be added when missing */
+    addOptionalProps?: boolean;
     [p: string]: unknown;
 };
 
@@ -72,12 +74,19 @@ export class HeadlessJsonEditor {
     changes: Change[] = [];
     plugins: PluginInstance[] = [];
     options: HeadlessJsonEditorOptions;
+    templateOptions = {
+        addOptionalProps: true
+    };
 
     constructor(options: HeadlessJsonEditorOptions) {
-        const { schema, data = {}, plugins = [], draftConfig } = options;
+        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = true } = options;
         this.options = options;
+        this.templateOptions.addOptionalProps = addOptionalProps;
         this.draft = new JsonEditor(schema, draftConfig);
-        this.state = create<ParentNode>(this.draft, this.draft.getTemplate(data));
+        this.state = create<ParentNode>(
+            this.draft,
+            this.draft.getTemplate(data, this.draft.getSchema(), this.templateOptions)
+        );
         plugins.map((p) => this.addPlugin(p));
         setTimeout(() => options.validate && this.validate());
     }
@@ -86,7 +95,12 @@ export class HeadlessJsonEditor {
     setData(data?: unknown): Node {
         const { draft } = this;
         const previousState = this.state;
-        this.state = create<ParentNode>(draft, draft.getTemplate(data));
+        this.state = create<ParentNode>(
+            draft,
+            draft.getTemplate(data, draft.getSchema(), {
+                addOptionalProps: false
+            })
+        );
         this.options.validate === true && this.validate();
         const changes: Change[] = flat(this.state).map((node) => ({ type: 'create', node }));
         this.state = runPlugins(this.plugins, previousState, this.state, changes);
@@ -214,7 +228,7 @@ export class HeadlessJsonEditor {
     }
 
     appendItem(node: ArrayNode, itemSchema: JSONSchema): Node {
-        const value = this.draft.getTemplate(null, itemSchema);
+        const value = this.draft.getTemplate(null, itemSchema, this.templateOptions);
         const pointer = `${node.pointer}/${node.children.length}`;
         const [state, changes] = set(this.draft, this.state, pointer, value);
         if (isJSONError(state)) {
@@ -249,6 +263,6 @@ export class HeadlessJsonEditor {
     }
 
     getTemplateData(schema: JSONSchema) {
-        return this.draft.getTemplate(null, schema);
+        return this.draft.getTemplate(null, schema, this.templateOptions);
     }
 }

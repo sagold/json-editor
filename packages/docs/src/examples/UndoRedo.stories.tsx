@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useJsonEditor, defaultWidgets } from '../../index';
+import { useJsonEditor, defaultWidgets } from '@sagold/react-json-editor';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
@@ -31,7 +31,7 @@ const schema = {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Example',
+    title: 'Examples/UndoRedo',
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: {} },

@@ -27,6 +27,8 @@ export type JsonFormProps = {
     plugins?: Plugin[];
     cacheKey?: string | number;
     draft?: HeadlessJsonEditorOptions['draftConfig'];
+    /** if all optional properties should be added when missing */
+    addOptionalProps?: boolean;
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
     onChange?: (data: unknown, root: Node) => void;
@@ -50,6 +52,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         cacheKey,
         validate,
         liveUpdate,
+        addOptionalProps,
         style
     },
     ref
@@ -63,6 +66,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         data,
         cacheKey,
         validate,
+        addOptionalProps,
         liveUpdate
     });
 

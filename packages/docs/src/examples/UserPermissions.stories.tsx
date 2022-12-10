@@ -1,10 +1,10 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonForm } from '../../index';
+import { JsonForm } from '@sagold/react-json-editor';
 import { data, schema } from './data/layout';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Example',
+    title: 'Examples/ObjectLayout',
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: data },

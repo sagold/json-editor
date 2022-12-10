@@ -11,11 +11,9 @@
     // ],
     "exclude": ["../**/*.spec.ts", "../**/*.spec.js", "../**/*.spec.tsx", "../**/*.spec.jsx", "jest.config.ts"],
     "include": [
-        "../packages/src/**/*.stories.ts",
-        "../packages/src/**/*.stories.js",
-        "../packages/src/**/*.stories.jsx",
-        "../packages/src/**/*.stories.tsx",
-        "../packages/src/**/*.stories.mdx",
-        "*.js"
+        "../packages/*/src/**/*.ts",
+        "../packages/*/src/**/*.stories.ts",
+        "../packages/*/src/**/*.stories.tsx",
+        "../packages/*/src/**/*.mdx"
     ]
 }
