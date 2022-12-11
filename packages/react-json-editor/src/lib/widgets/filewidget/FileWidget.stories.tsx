@@ -5,7 +5,7 @@ import { RemoteEnumOptionsPlugin, get, StringNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {
-    title: 'Widget/FileWidget',
+    title: 'packages/rje-widgets/FileWidget',
     component: FileWidget,
     argTypes: {
         data: { control: { type: 'object' } },

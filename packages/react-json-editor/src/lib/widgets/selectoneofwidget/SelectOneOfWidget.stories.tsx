@@ -5,7 +5,7 @@ import { JSONSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-
 import { Form } from 'semantic-ui-react';
 
 export default {
-    title: 'Widget/SelectOneOfWidget',
+    title: 'packages/rje-widgets/SelectOneOfWidget',
     component: SelectOneOfWidget,
     argTypes: {
         data: { control: { type: 'object' } },

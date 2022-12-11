@@ -4,7 +4,7 @@ import { TableWidget } from './TableWidget';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 
 export default {
-    title: 'Widget/TableWidget',
+    title: 'packages/rje-widgets/TableWidget',
     component: TableWidget,
     argTypes: {
         data: { control: { type: 'object' } },

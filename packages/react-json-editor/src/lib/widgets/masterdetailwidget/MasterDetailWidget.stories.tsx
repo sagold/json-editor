@@ -5,7 +5,7 @@ import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Widget/MasterDetailWidget',
+    title: 'packages/rje-widgets/MasterDetailWidget',
     component: MasterDetailWidget,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {

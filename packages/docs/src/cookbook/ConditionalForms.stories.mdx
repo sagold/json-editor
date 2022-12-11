@@ -1,0 +1,119 @@
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { JsonForm } from '@sagold/react-json-editor';
+
+<Meta title="Cookbook/ConditionalForms" />
+
+# Conditional forms
+
+> Conditional forms are parts of the user interface that are shown and required only if a certain condition is met. Use this to only show input fields to the user if the data is really required. In addition, conditional forms can be used for data variations depending on certain selections.
+
+<!-- This library stays fully compatible to json-schema specifications where possible. In the context of user views, this might not always be the wanted behaviour. For example: If a user deactivates a conditional input field, we would want to store this value in case it is restored later on. -->
+
+## conditional form persisting input if deactivated
+
+The following example will persist user input, even if the additional user form is deactivated. The data of the user form is still stored on data and thus being exported. In case you do not want to have the data set on export, you need to remove the data on your own.
+
+<Canvas>
+  <JsonForm
+    options={{ title: false }}
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      title: 'allOf with single if-then-else statements',
+      required: ['trigger'],
+      properties: {
+        trigger: {
+          title: 'show optional schema',
+          type: 'boolean',
+          default: false
+        },
+        optional: {
+          options: { hidden: true, title: false },
+          type: 'object',
+          properties: {
+            title: {
+              title: 'Optional form',
+              type: 'string'
+            }
+          }
+        }
+      },
+      allOf: [
+        {
+          if: {
+            required: ['trigger'],
+            properties: {
+              trigger: {
+                const: true
+              }
+            }
+          },
+          then: {
+            required: ['optional'],
+            properties: {
+              optional: {
+                options: { hidden: false },
+                minLength: 1
+              }
+            }
+          }
+        }
+      ]
+    }}
+  />
+</Canvas>
+
+Our optional property `optional` is defined on the objet properties, so that it will never be removed automatically
+
+```js
+properties: {
+  optional: {
+    type: 'object',
+    properties: {
+      title: { title: 'Optional form', type: 'string' }
+    }
+  }
+}
+```
+
+Just make sure that the optional object has no validation methods.
+
+In order to hide this property when the condition does not match, we use the json-editor option `hidden` and set it to `true`
+
+```js
+properties: {
+  optional: {
+    options: {
+      hidden: true;
+    }
+    // ...
+  }
+}
+```
+
+Now, to add the dynamic property we introduce an _if-then_ condition to show our optional property for a condition. We could add the _if-then_ statement directly on our object, but we will wrap it in an _allOf_-statement to support multiple conditions on this object.
+
+```js
+allOf: [
+  {
+    if: {
+      required: ['trigger'],
+      properties: {
+        trigger: {
+          const: true
+        }
+      }
+    },
+    then: {
+      required: ['optional'],
+      properties: {
+        optional: {
+          options: { hidden: false },
+          minLength: 1
+        }
+      }
+    }
+  }
+```
+
+The if condition validates if a property `trigger` (required + properties) matches `true`. If the property trigger fulfills our criteria, we update our optional value to be required `required: ['optional']`, validated (`minLength: 1`) and show it in the user form by overwriting the json-editor options with `options: { hidden: true }`.

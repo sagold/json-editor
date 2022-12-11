@@ -5,7 +5,7 @@ import { JSONSchema, ArrayNode } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {
-    title: 'Widget/ArrayWidget',
+    title: 'packages/rje-widgets/ArrayWidget',
     component: ArrayWidget,
     argTypes: {
         data: { control: { type: 'object' } },
