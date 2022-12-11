@@ -122,7 +122,6 @@ export const NODES: Record<NodeType, CreateNode> = {
             if (isObject(dynamicSchema) && isObject(dynamicSchema.properties)) {
                 const dynamicProperties = dynamicSchema.properties;
                 const additionalData = core.getTemplate({}, { type: 'object', ...dynamicSchema }, TEMPLATE_OPTIONS);
-                console.log('additionalData', additionalData);
                 totalData = { ...additionalData, ...totalData };
                 // @ts-ignore
                 properties = { ...properties, ...dynamicProperties };
