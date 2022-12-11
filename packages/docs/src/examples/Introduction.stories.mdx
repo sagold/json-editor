@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs';
+import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 import { schema } from './data/featureToggleForm';
 
@@ -17,11 +17,9 @@ installation
 
 conditional forms
 
-<JsonForm
-    style={{ borderRadius: 5, boxShadow: '-2px 2px 5px rgba(0,0,0,0.2)', border: '1px solid #fff' }}
-    data={{}}
-    schema={{ options: { title: false }, ...schema }}
-/>
+<Canvas withSource="false">
+  <JsonForm data={{}} schema={{ options: { title: false }, ...schema }} />
+</Canvas>
 
 ## notes
 

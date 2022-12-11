@@ -19,7 +19,7 @@ describe('feature: toggle form', () => {
         () =>
             (draft = new Draft07({
                 type: 'object',
-                required: ['trigger', 'check'],
+                required: ['trigger'],
                 properties: {
                     trigger: { type: 'boolean', $id: 'trigger', default: false },
                     addition: {

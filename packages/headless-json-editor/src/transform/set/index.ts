@@ -114,12 +114,12 @@ export function set<T extends Node = Node>(
             changeSet.push(...changes);
         }
 
-        if (targetNode?.type === 'object' && targetNode.schema.dependencies) {
-            // replace whole object and reuse currently edited node
-            const [newTargetNode, changes] = resolveDependencies(core, targetNode, frags, value);
-            targetNode = newTargetNode;
-            changeSet.push(...changes);
-        }
+        // if (targetNode?.type === 'object' && targetNode.schema.dependencies) {
+        //     // replace whole object and reuse currently edited node
+        //     const [newTargetNode, changes] = resolveDependencies(core, targetNode, frags, value);
+        //     targetNode = newTargetNode;
+        //     changeSet.push(...changes);
+        // }
 
         // unlink children of current node
         targetNode.children = [...targetNode.children];

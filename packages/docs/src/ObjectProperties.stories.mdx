@@ -7,17 +7,19 @@ import { JsonForm } from '@sagold/react-json-editor';
 
 > _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and default widgets.
 
-| definition                                         | support | comment                                                              |
-| -------------------------------------------------- | ------- | -------------------------------------------------------------------- |
-| [**properties**](#properties)                      | ✅      | properties that can be added to a user form                          |
-| [**required**](#required-properties)               | ✅      | properties that are always to input data. Option: add all            |
-| **oneOf**                                          | ✅      | partially supported                                                  |
-| **anyOf**                                          | ❌      | not yet supported                                                    |
-| **allOf**                                          | ✅      | partially supported                                                  |
-| [**dependencies**](#dependencies)                  | ✅      | supported                                                            |
-| **if-then-else**                                   | ✅      | supported                                                            |
-| [**additionalProperties**](#additional-properties) | ✅      | partially. additionalProperties defaults to false and removes values |
-| **patternProperties**                              | ❌      | not yet supported                                                    |
+Validation of data is fully supported, the following table lists support by the user interface:
+
+| definition                                         | support | comment                                                                |
+| -------------------------------------------------- | :-----: | ---------------------------------------------------------------------- |
+| [**properties**](#properties)                      |   ✅    | properties that can be added to a user form                            |
+| [**required**](#required-properties)               |   ✅    | properties that are always added to input data. Option: add all        |
+| [**additionalProperties**](#additional-properties) |   ❎    | partially. _additionalProperties_ defaults to false and removes values |
+| [**dependencies**](#dependencies)                  |   ✅    | supported                                                              |
+| **if-then-else**                                   |   ✅    | subschema are merged which might result in unwanted behaviour          |
+| **oneOf**                                          |   ✅    | partially supported                                                    |
+| **anyOf**                                          |   ❌    | not yet supported                                                      |
+| **allOf**                                          |   ✅    | partially supported                                                    |
+| **patternProperties**                              |   ❌    | not yet supported                                                      |
 
 **missing features**
 
@@ -49,7 +51,7 @@ Per default or with `addOptionalProps` set to `true`, all available properties w
 
 ## required properties
 
-> ⚠️ **currently `addOptionalProps` defaults to `true`**. This example sets it to `false`.
+> ⚠️ **currently `addOptionalProps` defaults to `true`**. This example sets it to `false`. The default value will change to `false` as soon as adding optional properties is supported via the user interface.
 
 The following example has two properties defined, but only property `"one"` is required:
 
@@ -146,3 +148,102 @@ Setting a schema for `additionalProperties` adds a validated field corresponding
 </Canvas>
 
 ## dependencies
+
+**dependency required: `prop: ["prop"]`**
+
+> With `addOptionalProps=true` all dependencies are added per default as expected. Thus, the following examples set `addOptionalProps=false`
+
+Dependencies are not added per default
+
+<Canvas>
+  <JsonForm
+    data={{}}
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      properties: {
+        one: { title: 'Property One', type: 'string' },
+        two: { title: 'dependency', type: 'string' }
+      },
+      dependencies: {
+        one: ['two']
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+Dependencies are added when they are required by another property which has been set (`!== undefined`)
+
+<Canvas>
+  <JsonForm
+    data={{ one: 'input value' }}
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One', type: 'string' },
+        two: { title: 'dependency', type: 'string' }
+      },
+      dependencies: {
+        one: ['two']
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+**dependency schema: `prop: {}`**
+
+Dependent schemas are not added for a missing dependent property
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      properties: {
+        one: { title: 'Property One', type: 'string' }
+      },
+      dependencies: {
+        one: {
+          required: ['two'],
+          properties: {
+            two: { title: 'dependency', type: 'string' }
+          }
+        }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+Dependent schemas are added if the dependent property `!== undefined`
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['one'],
+      properties: {
+        one: { title: 'Property One', type: 'string' }
+      },
+      dependencies: {
+        one: {
+          required: ['two'],
+          properties: {
+            two: { title: 'dependency', type: 'string' }
+          }
+        }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+## references
+
+- [json-schema.org object properties](https://json-schema.org/understanding-json-schema/reference/object.html)
+- [json-schema.org dependencies](https://json-schema.org/understanding-json-schema/reference/conditionals.html)

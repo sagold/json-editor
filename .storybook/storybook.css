@@ -1,0 +1,22 @@
+#docs-root > .sbdocs.sbdocs-wrapper {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/** remove fixed height on mdx-canvas */
+.sbdocs-preview .docs-story > div > div[scale] {
+    height: auto;
+}
+
+.sbdocs.sbdocs-preview {
+    border-radius: 4px;
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    /*    box-shadow: -2px 2px 4px rgba(100, 100, 0, 0.33);*/
+    /*    border: 1px solid rgba(0, 0, 0, 0.1);*/
+}
+
+.sbdocs-preview .docs-story > div:first-child {
+    padding: 16px;
+    padding-bottom: 32px;
+    /*    background-color: rgba(30, 112, 191, 0.02);*/
+}
