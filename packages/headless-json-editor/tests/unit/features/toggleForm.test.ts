@@ -57,9 +57,8 @@ describe('feature: toggle form', () => {
         const root = create(draft, { trigger: false });
 
         assert(root.type === 'object');
-        assert.equal(root.children.length, 2);
+        assert.equal(root.children.length, 1);
         assert.equal(root.children[0].schema.$id, 'trigger');
-        assert.equal(root.children[1].options.hidden, true);
     });
 
     it('should not return errors for invalid hidden property', () => {

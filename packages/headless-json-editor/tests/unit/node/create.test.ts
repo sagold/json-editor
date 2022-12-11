@@ -152,7 +152,7 @@ describe('create', () => {
             });
         });
 
-        describe('if-else-then', () => {
+        describe('if-then-else', () => {
             let conditionalSchema: JSONSchema;
             beforeEach(
                 () =>
@@ -163,6 +163,7 @@ describe('create', () => {
                             test: { type: 'string' }
                         },
                         if: {
+                            required: ['test'],
                             properties: {
                                 test: {
                                     type: 'string',

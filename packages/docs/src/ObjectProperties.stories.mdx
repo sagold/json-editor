@@ -1,11 +1,11 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 
-<Meta title="docs/ObjectProperties" />
+<Meta title="ObjectProperties" />
 
 # object properties
 
-> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and default widgets.
+> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
 
 Validation of data is fully supported, the following table lists support by the user interface:
 
@@ -14,11 +14,11 @@ Validation of data is fully supported, the following table lists support by the 
 | [**properties**](#properties)                      |   ✅    | properties that can be added to a user form                            |
 | [**required**](#required-properties)               |   ✅    | properties that are always added to input data. Option: add all        |
 | [**additionalProperties**](#additional-properties) |   ❎    | partially. _additionalProperties_ defaults to false and removes values |
-| [**dependencies**](#dependencies)                  |   ✅    | supported                                                              |
-| **if-then-else**                                   |   ✅    | subschema are merged which might result in unwanted behaviour          |
-| **oneOf**                                          |   ✅    | partially supported                                                    |
+| [**dependencies**](#dependencies)                  |   ✅    | Attention: subschemas are merged                                       |
+| [**if-then-else**](#if-then-else)                  |   ✅    | Attention: subschemas are merged                                       |
+| **oneOf**                                          |   ❎    | partially supported                                                    |
 | **anyOf**                                          |   ❌    | not yet supported                                                      |
-| **allOf**                                          |   ✅    | partially supported                                                    |
+| **allOf**                                          |   ❎    | partially supported                                                    |
 | **patternProperties**                              |   ❌    | not yet supported                                                      |
 
 **missing features**
@@ -28,8 +28,9 @@ Validation of data is fully supported, the following table lists support by the 
 
 **bugs**
 
-- correct property order for `additionalProperties`
+- incorrect property order for `additionalProperties`
 - initial validation with wrong data does not return an error [@see additionalProperties](#additional-properties)
+- invalid property error is not removed from object when property was fixed [@see additionalProperties](#additional-properties)
 
 ## properties
 
@@ -196,7 +197,7 @@ Dependencies are added when they are required by another property which has been
 
 **dependency schema: `prop: {}`**
 
-Dependent schemas are not added for a missing dependent property
+Dependent schemas are not added per default for a missing dependent property
 
 <Canvas>
   <JsonForm
@@ -219,7 +220,7 @@ Dependent schemas are not added for a missing dependent property
   />
 </Canvas>
 
-Dependent schemas are added if the dependent property `!== undefined`
+Dependent schemas are added if the dependent property is set (`!== undefined`)
 
 <Canvas>
   <JsonForm
@@ -236,6 +237,101 @@ Dependent schemas are added if the dependent property `!== undefined`
           properties: {
             two: { title: 'dependency', type: 'string' }
           }
+        }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+## if-then-else
+
+_if-then_ statement, adding or removing a schema with its data depending on the property of trigger. The following toggle should not show the property per default as the property `addition` is not set as required
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['trigger'],
+      properties: {
+        trigger: { title: 'Trigger', type: 'boolean', default: false }
+      },
+      if: {
+        required: ['trigger'],
+        properties: {
+          trigger: { const: true }
+        }
+      },
+      then: {
+        properties: {
+          addition: { type: 'string' }
+        }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+Same setup as above, but with property `addition` set as required:
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['trigger'],
+      properties: {
+        trigger: { title: 'Trigger', type: 'boolean', default: false }
+      },
+      if: {
+        required: ['trigger'],
+        properties: {
+          trigger: { const: true }
+        }
+      },
+      then: {
+        required: ['addition'],
+        properties: {
+          addition: { type: 'string' }
+        }
+      },
+      options: { title: false }
+    }}
+  />
+</Canvas>
+
+> If you want to persist the value entered independent of the current visbility, follow the [tutorial](?path=/story/examples-jsonschemasupport--all-of-with-conditions).
+
+_if-then-else_ statement used to switch sub-schemas
+
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      required: ['switch'],
+      properties: {
+        switch: { title: 'Switch', type: 'boolean', default: false }
+      },
+      if: {
+        required: ['switch'],
+        properties: {
+          switch: { const: false }
+        }
+      },
+      then: {
+        required: ['then', 'number'],
+        properties: {
+          then: { title: 'Then statement', type: 'string' },
+          number: { title: 'Value in Then', type: 'string', minimum: 4 }
+        }
+      },
+      else: {
+        required: ['else', 'number'],
+        properties: {
+          else: { title: 'Else statement', type: 'boolean' },
+          number: { title: 'Value in Else', type: 'string', maximum: 4 }
         }
       },
       options: { title: false }

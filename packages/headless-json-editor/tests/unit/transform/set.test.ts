@@ -503,11 +503,13 @@ describe('set', () => {
                     }
                 },
                 then: {
+                    required: ['thenValue'],
                     properties: {
                         thenValue: { description: 'then', type: 'string', default: 'from then' }
                     }
                 },
                 else: {
+                    required: ['elseValue'],
                     properties: {
                         elseValue: { description: 'else', type: 'string', default: 'from else' }
                     }
@@ -559,6 +561,7 @@ describe('set', () => {
                     }
                 },
                 then: {
+                    required: ['thenValue'],
                     properties: {
                         thenValue: { description: 'then', type: 'string', default: 'from then' }
                     }

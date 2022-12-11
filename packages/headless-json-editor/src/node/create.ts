@@ -12,6 +12,10 @@ import {
     JSONSchema
 } from '../types';
 
+const TEMPLATE_OPTIONS = {
+    addOptionalProps: false
+};
+
 export type DefaultNodeOptions = {
     /** additional classnames the ui should add to the root of this data point */
     classNames?: string[];
@@ -96,7 +100,7 @@ export const NODES: Record<NodeType, CreateNode> = {
 
         if (schema.allOf) {
             schema = core.resolveAllOf(data, schema);
-            data = core.getTemplate(data, schema);
+            data = core.getTemplate(data, schema, TEMPLATE_OPTIONS);
         }
 
         /**
@@ -109,63 +113,19 @@ export const NODES: Record<NodeType, CreateNode> = {
          */
         let totalData = data;
         let properties = schema.properties;
-        // if (isObject(schema.dependencies)) {
-        //     const dependencies: JSONSchema['dependencies'] = schema.dependencies;
-        //     Object.keys(dependencies).forEach((dependentKey) => {
-        //         const additionalSchema = dependencies[dependentKey];
-        //         // ignore if its not a json-schema
-        //         if (!isObject(additionalSchema)) {
-        //             return;
-        //         }
 
-        //         additionalSchema.type = 'object';
-
-        //         const testValue = data[dependentKey];
-        //         const isActive = testValue != null;
-        //         const additionalData = core.getTemplate({}, additionalSchema);
-        //         totalData = { ...additionalData, ...data };
-
-        //         // @ts-ignore
-        //         Object.keys(additionalSchema.properties).forEach((key) => {
-        //             // @ts-ignore
-        //             additionalSchema.properties[key].isActive = isActive;
-        //             // @ts-ignore
-        //             additionalSchema.properties[key].isDynamic = true;
-        //         });
-
-        //         // @ts-ignore
-        //         properties = { ...properties, ...(additionalSchema.properties ?? {}) };
-        //         const source = Object.keys(properties as object);
-        //         const additional = Object.keys((additionalSchema.properties as object) ?? {});
-        //         const newProperties: Record<string, any> = {};
-        //         for (let i = 0; i < source.length; i += 1) {
-        //             const name = source[i];
-        //             // @ts-ignore
-        //             newProperties[name] = properties[name];
-        //             if (name === dependentKey) {
-        //                 additional.forEach((key: string) => {
-        //                     // @ts-ignore
-        //                     newProperties[key] = additionalSchema.properties[key];
-        //                 });
-        //             }
-        //         }
-        //         properties = newProperties;
-        //         return;
-        //     });
-        // }
-
+        // @todo is this no longer required? getTemplate resolves this...
         if (isObject(schema.if) && (schema.then || schema.else)) {
             const isValid = core.isValid(totalData, schema.if);
             const dynamicSchema = (isValid && schema.then) || (!isValid && schema.else);
 
-            if (isObject(dynamicSchema)) {
+            if (isObject(dynamicSchema) && isObject(dynamicSchema.properties)) {
                 const dynamicProperties = dynamicSchema.properties;
-                if (isObject(dynamicProperties)) {
-                    const additionalData = core.getTemplate({}, { type: 'object', ...dynamicSchema });
-                    totalData = { ...additionalData, ...totalData };
-                    // @ts-ignore
-                    properties = { ...properties, ...dynamicProperties };
-                }
+                const additionalData = core.getTemplate({}, { type: 'object', ...dynamicSchema }, TEMPLATE_OPTIONS);
+                console.log('additionalData', additionalData);
+                totalData = { ...additionalData, ...totalData };
+                // @ts-ignore
+                properties = { ...properties, ...dynamicProperties };
             }
         }
 

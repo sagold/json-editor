@@ -3,6 +3,9 @@ import { Node, ObjectNode, Change, JSONSchema } from '../../types';
 import { create } from '../../node/create';
 import { json } from '../../node/json';
 import { set as setPointer } from 'gson-pointer';
+import { settings } from '../../settings';
+
+const { TEMPLATE_OPTIONS } = settings;
 
 /**
  * simple deep copy of object or array
@@ -59,7 +62,7 @@ export function resolveIfThenElse(
         return keepChild;
     });
 
-    newTargetData = draft.getTemplate(newTargetData, newSchema);
+    newTargetData = draft.getTemplate(newTargetData, newSchema, TEMPLATE_OPTIONS);
     const newNodes: Node[] = create<ObjectNode>(draft, newTargetData, newSchema, node.pointer).children;
     // @change create nodes
     changeSet.push(...newNodes.map((node): Change => ({ type: 'create', node })));

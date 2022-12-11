@@ -1,5 +1,9 @@
 import { config } from 'json-schema-library';
 
+export const settings = {
+    TEMPLATE_OPTIONS: { addOptionalProps: false }
+};
+
 export function setErrorMessages(errorMessages: Record<string, string> = defaultErrorMessages) {
     Object.assign(config.strings, errorMessages);
 }
