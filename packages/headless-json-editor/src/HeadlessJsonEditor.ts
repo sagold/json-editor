@@ -89,7 +89,7 @@ export class HeadlessJsonEditor {
             this.draft.getTemplate(data, this.draft.getSchema(), this.templateOptions)
         );
         plugins.map((p) => this.addPlugin(p));
-        setTimeout(() => options.validate && this.validate());
+        options.validate && this.validate();
     }
 
     // import diff from 'microdiff';
