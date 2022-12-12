@@ -10,5 +10,6 @@ module.exports = {
             { tsconfig: './tsconfig.spec.json' }
         ]
     },
+    modulePathIgnorePatterns: ['dist'],
     moduleFileExtensions: ['ts', 'js', 'html']
 };
