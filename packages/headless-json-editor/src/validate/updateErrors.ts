@@ -20,9 +20,10 @@ function filterErrors(errors: JSONError[]): JSONError[] {
  * perform validation and assign errors to corresponding nodes
  */
 export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
-    let startNode = get(root, join(pointer, '..'));
+    let startNode = get(root, pointer);
     if (startNode.type === 'error') {
-        startNode = root;
+        console.error(`Invalid pointer: '${pointer}' to validate - abort`);
+        return;
     }
 
     const pointerToErrors: Record<string, JSONError[]> = {};

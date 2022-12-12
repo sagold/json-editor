@@ -12,6 +12,7 @@ import { updateErrors } from './validate/updateErrors';
 import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
 import { splitLastProperty } from './splitLastProperty';
 import { deepEqual } from 'fast-equals';
+import { join } from 'gson-pointer';
 
 export interface PluginInstance {
     id: string;
@@ -36,6 +37,14 @@ function getRootChange(changes: Change[]) {
         }
     });
     return lowestPointer;
+}
+
+function validateState(draft: Draft, root: Node, pointer = '#') {
+    let startNode = get(root, join(pointer, '..'));
+    if (startNode.type === 'error') {
+        pointer = '#';
+    }
+    updateErrors(draft, root, pointer);
 }
 
 function runPlugins(plugins: PluginInstance[], oldState: Node, newState: Node, changes: PluginEvent[]) {
@@ -118,7 +127,7 @@ export class HeadlessJsonEditor {
             return;
         }
         const state = unlinkAll(this.state);
-        updateErrors(this.draft, state);
+        validateState(this.draft, state);
         const validationErrors = errors(this.state);
         this.state = runPlugins(this.plugins, this.state, state, [
             { type: 'validation', previous: this.state, next: state, errors: validationErrors }
@@ -174,7 +183,7 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        updateErrors(this.draft, state, getRootChange(changes));
+        validateState(this.draft, state, getRootChange(changes));
         // console.log('new state', state);
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
@@ -199,7 +208,7 @@ export class HeadlessJsonEditor {
         const [parent] = splitLastProperty(pointer);
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using remove
-        updateErrors(this.draft, state, parent);
+        validateState(this.draft, state, parent);
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
         return this.state;
@@ -222,7 +231,7 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        updateErrors(this.draft, state, pointer);
+        validateState(this.draft, state, pointer);
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
         return this.state;
@@ -244,7 +253,7 @@ export class HeadlessJsonEditor {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        updateErrors(this.draft, state, node.pointer);
+        validateState(this.draft, state, node.pointer);
         let newState = runPlugins(this.plugins, this.state, state, changes);
         if (isJSONError(newState)) {
             console.error(`error from state returned by plugins '${node.pointer}'`);
