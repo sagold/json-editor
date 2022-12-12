@@ -1,6 +1,6 @@
 import { NumberNode, DefaultNodeOptions } from 'headless-json-editor';
 import { WidgetPlugin } from './decorators';
-import { Form, SemanticICONS, Input /*, SemanticShorthandItem, LabelProps*/ } from 'semantic-ui-react';
+import { Form, SemanticICONS, Input, Label /*, SemanticShorthandItem, LabelProps*/ } from 'semantic-ui-react';
 import { widget } from './decorators';
 import { useCallback } from 'react';
 
@@ -37,27 +37,32 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
 
     return (
         <div className="ed-form ed-value" data-type="number" data-id={node.pointer}>
-            <Form.Input
-                disabled={options.disabled === true}
-                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
+            <Form.Field
                 id={node.id}
                 inline={options.inline === true}
-                label={options.title}
+                disabled={options.disabled === true}
                 required={options.required === true}
+                error={node.errors.length > 0}
             >
+                <label htmlFor={node.id}>{options.title}</label>
                 <Input
-                    defaultValue={node.value}
-                    disabled={options.disabled === true}
-                    icon={options.icon}
-                    iconPosition={options.iconPosition}
                     id={node.id}
+                    type="number"
+                    disabled={options.disabled === true}
                     placeholder={options.placeholder}
                     readOnly={options.readOnly === true}
+                    icon={options.icon}
+                    iconPosition={options.iconPosition}
+                    defaultValue={node.value}
                     required={options.required === true}
-                    type="number"
                     {...changeListener}
                 />
-            </Form.Input>
+                {node.errors.length > 0 && (
+                    <Label color="red" basic prompt pointing="above">
+                        {node.errors.map((e) => e.message).join(';')}
+                    </Label>
+                )}
+            </Form.Field>
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );
