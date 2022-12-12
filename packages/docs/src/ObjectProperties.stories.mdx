@@ -307,6 +307,7 @@ _if-then-else_ statement used to switch sub-schemas
 
 <Canvas>
   <JsonForm
+    validate={true}
     addOptionalProps={false}
     schema={{
       type: 'object',
@@ -324,14 +325,14 @@ _if-then-else_ statement used to switch sub-schemas
         required: ['then', 'number'],
         properties: {
           then: { title: 'Then statement', type: 'string' },
-          number: { title: 'Value in Then', type: 'string', minimum: 4 }
+          number: { title: 'Value in Then', type: 'number', minimum: 4 }
         }
       },
       else: {
         required: ['else', 'number'],
         properties: {
           else: { title: 'Else statement', type: 'string', enum: ['option a', 'option b'] },
-          number: { title: 'Value in Else', type: 'string', maximum: 4 }
+          number: { title: 'Value in Else', type: 'number', maximum: 4 }
         }
       },
       options: { title: false }
