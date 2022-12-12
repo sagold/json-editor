@@ -40,11 +40,14 @@ function getRootChange(changes: Change[]) {
 }
 
 function validateState(draft: Draft, root: Node, pointer = '#') {
-    let startNode = get(root, join(pointer, '..'));
+    // always evaluate parent as it can be that children are referenced in parent
+    let validationTarget = join(pointer, '..');
+    const startNode = get(root, validationTarget);
     if (startNode.type === 'error') {
-        pointer = '#';
+        // if the node no longer exists, fallback to validate all
+        validationTarget = '#';
     }
-    updateErrors(draft, root, pointer);
+    updateErrors(draft, root, validationTarget);
 }
 
 function runPlugins(plugins: PluginInstance[], oldState: Node, newState: Node, changes: PluginEvent[]) {
