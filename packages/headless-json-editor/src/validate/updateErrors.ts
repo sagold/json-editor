@@ -19,9 +19,9 @@ function filterErrors(errors: JSONError[]): JSONError[] {
  * perform validation and assign errors to corresponding nodes
  */
 export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
-    const startNode = get(root, pointer);
+    let startNode = get(root, pointer);
     if (startNode.type === 'error') {
-        return startNode;
+        startNode = root;
     }
 
     const pointerToErrors: Record<string, JSONError[]> = {};
