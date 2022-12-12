@@ -3,6 +3,7 @@ import { Node, isJSONError, isParentNode } from '../types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
+import { join } from 'gson-pointer';
 
 function each(node: Node, cb: (node: Node) => void) {
     cb(node);
@@ -19,7 +20,7 @@ function filterErrors(errors: JSONError[]): JSONError[] {
  * perform validation and assign errors to corresponding nodes
  */
 export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
-    let startNode = get(root, pointer);
+    let startNode = get(root, join(pointer, '..'));
     if (startNode.type === 'error') {
         startNode = root;
     }
