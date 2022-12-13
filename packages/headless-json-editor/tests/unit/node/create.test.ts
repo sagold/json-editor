@@ -89,48 +89,6 @@ describe('create', () => {
 
     describe('dynamic', () => {
         describe('dependencies', () => {
-            // it('should return inactive dynamic schema for missing dependency', () => {
-            //     draft.setSchema({
-            //         type: 'object',
-            //         properties: {},
-            //         dependencies: {
-            //             test: {
-            //                 properties: {
-            //                     additionalValue: { description: 'added', type: 'string' }
-            //                 }
-            //             }
-            //         }
-            //     });
-
-            //     const root = create(draft, {}) as ObjectNode;
-            //     assert.equal(root.children.length, 1);
-            //     assert.equal(root.children[0].schema.description, 'added');
-            //     assert.equal(root.children[0].schema.isDynamic, true);
-            //     assert.equal(root.children[0].schema.isActive, false);
-            // });
-
-            // it('should return active dynamic schema if dependency has value', () => {
-            //     draft.setSchema({
-            //         type: 'object',
-            //         properties: {
-            //             test: { type: 'string' }
-            //         },
-            //         dependencies: {
-            //             test: {
-            //                 properties: {
-            //                     additionalValue: { description: 'added', type: 'string' }
-            //                 }
-            //             }
-            //         }
-            //     });
-
-            //     const root = create(draft, { test: 'with value' }) as ObjectNode;
-            //     assert.equal(root.children.length, 2);
-            //     assert.equal(root.children[1].schema.description, 'added');
-            //     assert.equal(root.children[1].schema.isDynamic, true);
-            //     assert.equal(root.children[1].schema.isActive, true);
-            // });
-
             it('should return value of dependency', () => {
                 draft.setSchema({
                     type: 'object',
@@ -268,6 +226,32 @@ describe('create', () => {
                 assert.equal(root.children.length, 2);
                 assert.deepEqual(json(root), { test: 'triggers then', thenValue: 'input then' });
             });
+        });
+    });
+
+    describe('oneOf', () => {
+        it('should create root node with first schema', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOf: [
+                    {
+                        required: ['one'],
+                        properties: {
+                            one: { type: 'string', $id: 'one' }
+                        }
+                    },
+                    {
+                        required: ['two'],
+                        properties: {
+                            two: { type: 'number', $id: 'two' }
+                        }
+                    }
+                ]
+            });
+            const root = create(draft, {});
+            assert(root.type === 'object');
+            assert.equal(root.children.length, 1);
+            assert.equal(root.children[0].schema.$id, 'one');
         });
     });
 

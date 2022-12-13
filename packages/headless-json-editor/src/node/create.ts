@@ -103,6 +103,21 @@ export const NODES: Record<NodeType, CreateNode> = {
             data = core.getTemplate(data, schema, TEMPLATE_OPTIONS);
         }
 
+        if (schema.oneOf) {
+            // console.log('get template', schema, '->', data);
+            data = core.getTemplate(data, schema, { addOptionalProps: true });
+            const resolvedSchema = core.resolveOneOf(data, schema);
+            // @todo this has to be returned by jlib from root-oneOf
+            schema = {
+                ...resolvedSchema,
+                // @ts-ignore
+                variableSchema: true,
+                oneOfIndex: schema.oneOf.indexOf(resolvedSchema),
+                oneOfSchema: schema
+            };
+            node.schema = schema;
+        }
+
         /**
          * if there are dependencies
          * - we need at least to flag the schema:
