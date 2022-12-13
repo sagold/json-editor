@@ -17,6 +17,17 @@ type UnknownParentData = Record<string, unknown> | unknown[];
  * @returns undefined if the schema has not changed or a list of changes if the child item was replaced
  */
 export function resolveOneOf(draft: Draft, parent: ParentNode, property: string, data: UnknownParentData) {
+    if (parent.pointer === '#' && property === '') {
+        // @todo write test for this case
+        // resolveOf on root level
+        // simple version -> update root Node
+        const newRootNode = create(draft, data);
+        Object.assign(parent, newRootNode, { id: parent.id });
+        // @todo this is not the correct change, must be specific
+        const changeSet: Change[] = [{ type: 'create', node: newRootNode }];
+        return changeSet;
+    }
+
     // from parent retrieve the new oneOf schema
     const nextChildSchema = draft.step(property, parent.schema, data, parent.pointer);
     let index = getChildNodeIndex(parent, property);
