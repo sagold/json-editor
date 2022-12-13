@@ -13,7 +13,7 @@ Validation of data is fully supported, the following table lists support by the 
 - ✅ [**required**](#required-properties) - switch behaviour with `addOptionalProps`. Defaults to `true`
 - ❎ [**additionalProperties**](#additional-properties) - partially. _additionalProperties_ defaults to false and removes values
 - ❌ **patternProperties** - not yet supported
-- ❎ [**oneOf**](#oneof) - not on root object, oneOfProperty highly recommended
+- ❎ [**oneOf**](#oneof) - additional oneOfProperty highly recommended
 - ❌ **anyOf** - not yet supported
 - ❎ **allOf** - partially. Attention: subschemas are merged
 - ✅ [**dependencies**](#dependencies) - Attention: subschemas are merged
@@ -150,56 +150,13 @@ _oneOf_ statements offer the ability to choose a specific schema for a user form
 Attention:
 
 - additional type in _oneOf_ item is required
-- 🐞 currently unsupported on root object
 - _oneOfProperty_ is highly recommended
-
-<Canvas>
-  <JsonForm
-    schema={{
-      type: 'object',
-      required: ['oneOf'],
-      options: { title: false },
-      properties: {
-        oneOf: {
-          options: { title: false },
-          oneOf: [
-            {
-              type: 'object',
-              title: 'Selection One',
-              required: ['one'],
-              properties: {
-                id: { type: 'string', const: 'one' },
-                one: {
-                  type: 'string',
-                  title: 'Property One'
-                }
-              }
-            },
-            {
-              type: 'object',
-              title: 'Selection Two',
-              required: ['two'],
-              properties: {
-                id: { type: 'string', const: 'two' },
-                two: {
-                  type: 'number',
-                  title: 'Property Two'
-                }
-              }
-            }
-          ]
-        }
-      }
-    }}
-  />
-</Canvas>
 
 _oneOf_ statement on root level
 
 <Canvas>
   <JsonForm
     schema={{
-      type: 'object',
       options: { title: false },
       oneOfProperty: 'id',
       oneOf: [

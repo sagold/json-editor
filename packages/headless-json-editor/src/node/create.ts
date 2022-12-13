@@ -103,6 +103,10 @@ export const NODES: Record<NodeType, CreateNode> = {
             data = core.getTemplate(data, schema, TEMPLATE_OPTIONS);
         }
 
+        // this is the root object, no step was done prior to this, so we have
+        // to resolve this manually -> find a better solution here:
+        // - new resolve helper in jlib &
+        // - only execute here if first call
         if (schema.oneOf) {
             // console.log('get template', schema, '->', data);
             data = core.getTemplate(data, schema, { addOptionalProps: true });
