@@ -9,17 +9,15 @@ import { JsonForm } from '@sagold/react-json-editor';
 
 Validation of data is fully supported, the following table lists support by the user interface:
 
-| definition                                         | support | comment                                                                |
-| -------------------------------------------------- | :-----: | ---------------------------------------------------------------------- |
-| [**properties**](#properties)                      |   ✅    | -                                                                      |
-| [**required**](#required-properties)               |   ✅    | switch behaviour with `addOptionalProps`. Defaults to `true`           |
-| [**additionalProperties**](#additional-properties) |   ❎    | partially. _additionalProperties_ defaults to false and removes values |
-| [**dependencies**](#dependencies)                  |   ✅    | Attention: subschemas are merged                                       |
-| [**if-then-else**](#if-then-else)                  |   ✅    | Attention: subschemas are merged                                       |
-| **oneOf**                                          |   ❌    | not supported for objects yet supported                                |
-| **anyOf**                                          |   ❌    | not yet supported                                                      |
-| **allOf**                                          |   ❎    | partially. Attention: subschemas are merged                            |
-| **patternProperties**                              |   ❌    | not yet supported                                                      |
+- ✅ [**properties**](#properties)
+- ✅ [**required**](#required-properties) - switch behaviour with `addOptionalProps`. Defaults to `true`
+- ❎ [**additionalProperties**](#additional-properties) - partially. _additionalProperties_ defaults to false and removes values
+- ❌ **patternProperties** - not yet supported
+- ❎ [**oneOf**](#oneof) - not on root object, oneOfProperty highly recommended
+- ❌ **anyOf** - not yet supported
+- ❎ **allOf** - partially. Attention: subschemas are merged
+- ✅ [**dependencies**](#dependencies) - Attention: subschemas are merged
+- ✅ [**if-then-else**](#if-then-else) - Attention: subschemas are merged
 
 **missing features**
 
@@ -95,7 +93,6 @@ For additional properties to be added, you have to set `additionalProperties: tr
   <JsonForm
     addOptionalProps={false}
     data={{ two: 'additional property' }}
-    onChange={console.log}
     schema={{
       type: 'object',
       required: ['one'],
@@ -142,6 +139,95 @@ Setting a schema for `additionalProperties` adds a validated field corresponding
       },
       additionalProperties: { type: 'number' },
       options: { title: false }
+    }}
+  />
+</Canvas>
+
+## oneOf
+
+_oneOf_ statements offer the ability to choose a specific schema for a user form.
+
+Attention:
+
+- additional type in _oneOf_ item is required
+- 🐞 currently unsupported on root object
+- _oneOfProperty_ is highly recommended
+
+<Canvas>
+  <JsonForm
+    schema={{
+      type: 'object',
+      required: ['oneOf'],
+      options: { title: false },
+      properties: {
+        oneOf: {
+          options: { title: false },
+          oneOf: [
+            {
+              type: 'object',
+              title: 'Selection One',
+              required: ['one'],
+              properties: {
+                id: { type: 'string', const: 'one' },
+                one: {
+                  type: 'string',
+                  title: 'Property One'
+                }
+              }
+            },
+            {
+              type: 'object',
+              title: 'Selection Two',
+              required: ['two'],
+              properties: {
+                id: { type: 'string', const: 'two' },
+                two: {
+                  type: 'number',
+                  title: 'Property Two'
+                }
+              }
+            }
+          ]
+        }
+      }
+    }}
+  />
+</Canvas>
+
+_oneOf_ statement on root level
+
+<Canvas>
+  <JsonForm
+    schema={{
+      type: 'object',
+      options: { title: false },
+      oneOfProperty: 'id',
+      oneOf: [
+        {
+          type: 'object',
+          title: 'Selection One',
+          required: ['one'],
+          properties: {
+            id: { type: 'string', const: 'one' },
+            one: {
+              type: 'string',
+              title: 'Property One'
+            }
+          }
+        },
+        {
+          type: 'object',
+          title: 'Selection Two',
+          required: ['two'],
+          properties: {
+            id: { type: 'string', const: 'two' },
+            two: {
+              type: 'number',
+              title: 'Property Two'
+            }
+          }
+        }
+      ]
     }}
   />
 </Canvas>

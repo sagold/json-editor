@@ -160,8 +160,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                             <Button icon labelPosition="left" size="large">
                                 <Icon name="folder open" />
                                 choose a file
-                            </Button>{' '}
-                            or drop a file here
+                            </Button>
                         </Message.Content>
                         <Input
                             style={{

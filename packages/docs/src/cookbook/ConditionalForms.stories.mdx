@@ -9,7 +9,7 @@ import { JsonForm } from '@sagold/react-json-editor';
 
 <!-- This library stays fully compatible to json-schema specifications where possible. In the context of user views, this might not always be the wanted behaviour. For example: If a user deactivates a conditional input field, we would want to store this value in case it is restored later on. -->
 
-## conditional form persisting input if deactivated
+## persisting input for deactivated field
 
 The following example will persist user input, even if the additional user form is deactivated. The data of the user form is still stored on data and thus being exported. In case you do not want to have the data set on export, you need to remove the data on your own.
 
@@ -23,7 +23,7 @@ The following example will persist user input, even if the additional user form 
       required: ['trigger'],
       properties: {
         trigger: {
-          title: 'show optional schema',
+          title: 'with additional field',
           type: 'boolean',
           default: false
         },
