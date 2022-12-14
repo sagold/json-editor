@@ -9,7 +9,7 @@
     "scripts": {
         "bump": "./tools/bump.js",
         "publish": "./tools/publish.js",
-        "dist": "rm -rf packages/headless-json-editor/dist; yarn hje:dist; yarn rje:dist; yarn code:dist",
+        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn code:dist; yarn sb:dist",
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
         "hje:bundle": "NODE_ENV=production PACKAGE_NAME=headless-json-editor webpack",
         "hje:ts": "(cd packages/headless-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",

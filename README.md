@@ -32,7 +32,7 @@ yarn add @sagold/react-json-editor
 ```
 
 - read more in package [react-json-editor](./packages/react-json-editor)
-- [demo page](http://localhost:6006/?path=/story/packages-rje-widgets-overview--page)
+- [demo page](https://sagold.github.io/json-editor)
 
 
 
@@ -48,5 +48,5 @@ yarn add @sagold/rje-code-widgets
 ```
 
 - read more in package [rje-code-widgets](./packages/rje-code-widgets)
-- [demo page](http://localhost:6006/?path=/story/packages-rje-code-widgets-overview--page)
+- [demo page](https://sagold.github.io/json-editor/?path=/story/packages-rje-code-widgets-overview--page)
 
