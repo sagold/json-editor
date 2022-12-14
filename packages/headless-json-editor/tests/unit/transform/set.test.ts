@@ -61,7 +61,7 @@ describe('set', () => {
         assert.deepEqual(changes, [{ type: 'update', node: titleAfter }]);
     });
 
-    it('should replace existing object', () => {
+    it('should update existing object', () => {
         const before = create(core, core.getTemplate({})) as ObjectNode;
         const beforeString = JSON.stringify(before);
 
@@ -84,12 +84,13 @@ describe('set', () => {
         ]);
     });
 
-    it('should replace existing object on root', () => {
+    it('should update existing object on root', () => {
         const before = create(core, core.getTemplate({})) as ObjectNode;
         const [after, changes] = set(core, before, '#', { title: 'new', size: {}, list: [99] });
 
         assert(after.type !== 'error');
         assert.deepEqual(json(after), { title: 'new', size: {}, list: [99] });
+        assert.equal(before.id, after.id, 'should not have changed id of updated object');
     });
 
     it('should add new property to existing parent object', () => {
@@ -244,6 +245,72 @@ describe('set', () => {
         });
     });
 
+    describe('object allOf', () => {
+        it('should update allOf property', () => {
+            const allOf = new Draft07({
+                type: 'object',
+                required: ['switch'],
+                properties: {
+                    switch: { type: 'boolean', default: false }
+                },
+                allOf: [
+                    {
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', default: 'standard title' }
+                        }
+                    }
+                ]
+            });
+            const before = create(allOf, { switch: true }) as ObjectNode;
+            // test precondition: did allOf create missing node
+            assert.equal(before.children.length, 2, 'should have created missing node from allOf');
+            assert(before.children[1].type === 'string');
+            assert.equal(before.children[1].value, 'standard title');
+
+            const [after] = set(allOf, before, '/title', 'custom title');
+            assert(after.type === 'object');
+
+            // test update result
+            assert.equal(after.children.length, 2);
+            assert(after.children[1].type === 'string');
+            assert.equal(after.children[1].value, 'custom title');
+
+            // test node updates
+            assert(before.id === after.id, 'allOf node should not have been replaced');
+        });
+
+        it('should update allOf location', () => {
+            const allOf = new Draft07({
+                type: 'object',
+                required: ['switch'],
+                properties: {
+                    switch: { type: 'boolean', default: false }
+                },
+                allOf: [
+                    {
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', default: 'standard title' }
+                        }
+                    }
+                ]
+            });
+            const before = create(allOf, { switch: true }) as ObjectNode;
+
+            const [after] = set(allOf, before, '#', { title: 'custom title' });
+            assert(after.type === 'object');
+
+            // test update result
+            assert.equal(after.children.length, 2);
+            assert(after.children[1].type === 'string');
+            assert.equal(after.children[1].value, 'custom title');
+
+            // test node updates
+            assert(before.id === after.id, 'allOf node should not have been replaced');
+        });
+    });
+
     describe('object oneOf', () => {
         let oneOf: Draft;
         beforeEach(() => {
@@ -257,6 +324,7 @@ describe('set', () => {
                             {
                                 id: 'header',
                                 // type: 'object',
+                                required: ['type', 'text'],
                                 properties: {
                                     type: { const: 'header' },
                                     text: { type: 'string' }
@@ -265,6 +333,7 @@ describe('set', () => {
                             {
                                 id: 'paragraph',
                                 // type: 'object',
+                                required: ['type', 'text'],
                                 properties: {
                                     type: { const: 'paragraph' },
                                     text: { type: 'string' }
@@ -426,53 +495,6 @@ describe('set', () => {
             });
         });
 
-        // it('should activate deactivated dynamic schema', () => {
-        //     const before = create<ObjectNode>(dependencies, { test: '' });
-        //     assert.equal(before.children[1].schema.description, 'added');
-        //     assert.equal(before.children[1].schema.isActive, false);
-
-        //     const [after] = set<ObjectNode>(dependencies, before, '/test', 'with-value');
-        //     assert.equal(after.children[1].schema.isActive, true);
-        // });
-
-        // it('should deactivate activated dynamic schema', () => {
-        //     const before = create<ObjectNode>(dependencies, { test: 'with-value' });
-        //     assert.equal(before.children[1].schema.description, 'added');
-        //     assert.equal(before.children[1].schema.isActive, true);
-
-        //     const [after] = set<ObjectNode>(dependencies, before, '/test', '');
-        //     assert.equal(after.children[1].schema.isActive, false);
-        // });
-
-        // it('should activate deactivated dynamic schema (not on root)', () => {
-        //     const draft = new Draft07({
-        //         type: 'object',
-        //         properties: {
-        //             content: {
-        //                 type: 'object',
-        //                 properties: { test: { type: 'string' } },
-        //                 dependencies: {
-        //                     test: {
-        //                         properties: {
-        //                             additionalValue: { description: 'added', type: 'string' }
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-
-        //     const root = create<ObjectNode>(draft, { content: { test: '' } });
-        //     const before = get(root, '/content/additionalValue');
-        //     assert.equal(before.schema.description, 'added');
-        //     assert.equal(before.schema.isActive, false);
-
-        //     const [updatedRoot] = set<ObjectNode>(draft, root, '/content/test', 'with-value');
-        //     assert(updatedRoot.type === 'object');
-        //     const after = get(updatedRoot, '/content/additionalValue');
-        //     assert.equal(after.schema.isActive, true);
-        // });
-
         it('should not replace dependency node', () => {
             const before = create<ObjectNode>(dependencies, { test: '' });
 
@@ -580,6 +602,53 @@ describe('set', () => {
     });
 
     describe('scenarios', () => {
+        it('should not replace node of updated object', () => {
+            const draft: Draft = new Draft07({
+                type: 'object',
+                required: ['addSchema'],
+                properties: {
+                    addSchema: { type: 'boolean', default: false },
+                    additionalSchema: { type: 'string' },
+                    secondSchema: { type: 'string' }
+                },
+                allOf: [
+                    {
+                        if: {
+                            properties: {
+                                addSchema: { type: 'boolean', const: true }
+                            }
+                        },
+                        then: {
+                            required: ['additionalSchema']
+                        }
+                    },
+                    {
+                        if: {
+                            required: ['additionalSchema'],
+                            properties: {
+                                additionalSchema: { type: 'string', minLength: 1 }
+                            }
+                        },
+                        then: {
+                            required: ['secondSchema']
+                        }
+                    }
+                ]
+            });
+
+            const before = create(draft, draft.getTemplate({ addSchema: true, additionalSchema: 'added' }));
+            assert(before.type === 'object');
+            const beforeString = json(before);
+
+            const [after, changes] = set(draft, before, '', { addSchema: true, additionalSchema: 'updated' });
+            assert(after.type === 'object');
+
+            assert(before.id === after.id, 'should not have replaced root node');
+            assert.deepEqual(json(before), beforeString, 'should not have modified previous state');
+            assert(after.children[1].type === 'string');
+            assert.equal(after.children[1].value, 'updated');
+        });
+
         it('should not lose oneOf objects when setting a value', () => {
             const core: Draft = new Draft07({
                 type: 'object',
