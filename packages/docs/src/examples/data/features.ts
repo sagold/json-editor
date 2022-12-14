@@ -25,6 +25,31 @@ export const schema = {
     options: {
         editJson: { enabled: true, liveUpdate: true }
     },
+    required: [
+        'string',
+        'stringPlaceholder',
+        'stringReadonly',
+        'stringDisabled',
+        'text',
+        'number',
+        'numberIcons',
+        'boolean',
+        'isInteractive',
+        'file',
+        'const',
+        'imageFile',
+        'readOnlyFile',
+        'typeSelection',
+        'anyOf',
+        'nullField',
+        'remoteNestedEnum',
+        'list',
+        'switch',
+        'dependency',
+        'ifthenelse',
+        'ifthen',
+        'html'
+    ],
     properties: {
         string: {
             title: 'Required string input',
@@ -163,6 +188,7 @@ export const schema = {
                 {
                     type: 'object',
                     title: 'first option',
+                    required: ['type', 'title'],
                     properties: {
                         type: { type: 'string', const: 'first' },
                         title: { type: 'string', title: 'header 1' }
@@ -171,6 +197,7 @@ export const schema = {
                 {
                     type: 'object',
                     title: 'second option',
+                    required: ['type', 'title'],
                     properties: {
                         type: { type: 'string', const: 'second' },
                         title: { type: 'string', title: 'header 2' }
@@ -265,6 +292,7 @@ export const schema = {
                         id: 'header',
                         title: 'header',
                         type: 'object',
+                        required: ['type', 'text'],
                         properties: {
                             type: {
                                 type: 'string',
@@ -280,6 +308,7 @@ export const schema = {
                         id: 'paragraph',
                         title: 'paragraph',
                         type: 'object',
+                        required: ['type', 'text'],
                         properties: {
                             type: {
                                 type: 'string',
@@ -304,6 +333,7 @@ export const schema = {
             description:
                 'support for schema dependencies, where an additional schema is activated if a given input has a value',
             type: 'object',
+            required: ['firstname'],
             properties: {
                 firstname: {
                     title: 'first name',
@@ -313,6 +343,7 @@ export const schema = {
             },
             dependencies: {
                 firstname: {
+                    required: ['lastname'],
                     properties: {
                         lastname: {
                             title: 'last name',
@@ -332,6 +363,7 @@ export const schema = {
                     color: 'blue'
                 }
             },
+            required: ['toggle'],
             properties: {
                 toggle: {
                     title: 'Toggle for conditional schema',
@@ -341,6 +373,7 @@ export const schema = {
                 }
             },
             if: {
+                required: ['toggle'],
                 properties: {
                     toggle: {
                         type: 'string',
@@ -349,6 +382,7 @@ export const schema = {
                 }
             },
             then: {
+                required: ['toggleOn'],
                 properties: {
                     toggleOn: {
                         title: 'toggle off',
@@ -358,6 +392,7 @@ export const schema = {
                 }
             },
             else: {
+                required: ['toggleOff'],
                 properties: {
                     toggleOff: {
                         title: 'toggle on',
@@ -378,6 +413,7 @@ export const schema = {
                     color: 'blue'
                 }
             },
+            required: ['toggle'],
             properties: {
                 toggle: {
                     title: 'Toggle for conditional schema',
@@ -386,6 +422,7 @@ export const schema = {
                 }
             },
             if: {
+                required: ['toggle'],
                 properties: {
                     toggle: {
                         type: 'string',
@@ -394,6 +431,7 @@ export const schema = {
                 }
             },
             then: {
+                required: ['toggleOff'],
                 properties: {
                     toggleOff: {
                         title: 'dynamic schema',
