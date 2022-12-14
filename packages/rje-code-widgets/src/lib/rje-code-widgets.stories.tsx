@@ -4,6 +4,7 @@ import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { JSONSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
 import { useState, useRef } from 'react';
+import './rje-code-widgets.scss';
 
 const propertySchema = {
     type: 'object',
@@ -125,8 +126,6 @@ export default {
 } as ComponentMeta<typeof JsonWidget>;
 
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
-    const [data, setState] = useState(args.data);
-
     const editor = useRef<JsonEditor>(null);
     const history = editor.current?.plugin('history') as HistoryPluginInstance;
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
@@ -143,15 +142,12 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 </Button>
             </Button.Group>
             <JsonForm
+                addOptionalProps={false}
                 schema={args.schema}
-                data={data}
+                data={args.data}
                 ref={editor}
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-                onChange={(data) => {
-                    console.log('change event');
-                    setState(data);
-                }}
             />
         </div>
     );
@@ -207,6 +203,7 @@ AllOfIfThenElse.args = {
             },
             {
                 if: {
+                    required: ['additionalSchema'],
                     properties: {
                         additionalSchema: {
                             type: 'string',
