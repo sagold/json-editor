@@ -18,13 +18,15 @@ type UnknownParentData = Record<string, unknown> | unknown[];
  */
 export function resolveOneOf(draft: Draft, parent: ParentNode, property: string, data: UnknownParentData) {
     if (parent.pointer === '#' && property === '') {
-        // @todo write test for this case
         // resolveOf on root level
         // simple version -> update root Node
         const newRootNode = create(draft, data);
+        if (deepEqual(newRootNode.schema, parent.schema)) {
+            return undefined;
+        }
+
         Object.assign(parent, newRootNode, { id: parent.id });
-        // @todo this is not the correct change, must be specific
-        const changeSet: Change[] = [{ type: 'create', node: newRootNode }];
+        const changeSet: Change[] = [{ type: 'update', node: parent }];
         return changeSet;
     }
 

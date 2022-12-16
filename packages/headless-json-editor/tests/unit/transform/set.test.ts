@@ -311,12 +311,71 @@ describe('set', () => {
         });
     });
 
+    describe('object oneOf - root level', () => {
+        let oneOf: Draft;
+        beforeEach(() => {
+            oneOf = new Draft07({
+                oneOf: [
+                    {
+                        type: 'object',
+                        description: 'header',
+                        required: ['type', 'text'],
+                        properties: {
+                            type: { const: 'header' },
+                            text: { type: 'string' }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        description: 'paragraph',
+                        required: ['type', 'text'],
+                        properties: {
+                            type: { const: 'paragraph' },
+                            text: { type: 'string' }
+                        }
+                    }
+                ]
+            });
+        });
+
+        it('should switch between object schema', () => {
+            const before = create(oneOf, { type: 'header', text: 'test' }) as ObjectNode;
+            assert.equal(before.schema.description, 'header');
+
+            const [after, changes] = set(oneOf, before, '/type', 'paragraph');
+
+            assert(after.type !== 'error');
+            assert.equal(after.schema.description, 'paragraph');
+            // check linking
+            assertUnlinkedNodes(after, before, '/type');
+            assertUnlinkedNodes(after, before, '/text');
+            // check changeset
+            assert.deepEqual(changes, [{ type: 'update', node: after }]);
+        });
+
+        it('should not replace nodes on value update', () => {
+            const before = create(oneOf, { type: 'header', text: 'test' }) as ObjectNode;
+            const beforeJson = JSON.parse(JSON.stringify(before));
+
+            const [after] = set(oneOf, before, '/text', 'updated-test-string');
+
+            assert(after.type !== 'error');
+            assert(before.id === after.id, 'parent id of object should not have changed');
+            assert.equal(
+                get(before, '/text').id,
+                get(after, '/text').id,
+                'id of updated value should not have changed'
+            );
+            // check linking
+            assertUnlinkedNodes(after, before, '/text');
+        });
+    });
+
     describe('object oneOf', () => {
         let oneOf: Draft;
         beforeEach(() => {
             oneOf = new Draft07({
                 type: 'object',
-                // @todo: oneOf on root level is not supported
                 properties: {
                     switch: {
                         type: 'object',
