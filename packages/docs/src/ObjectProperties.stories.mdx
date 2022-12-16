@@ -12,12 +12,12 @@ Validation of data is fully supported, the following table lists support by the 
 - ✅ [**properties**](#properties)
 - ✅ [**required**](#required-properties) - switch behaviour with `addOptionalProps`. Defaults to `true`
 - ❎ [**additionalProperties**](#additional-properties) - partially. _additionalProperties_ defaults to false and removes values
-- ❌ **patternProperties** - not yet supported
-- ❎ [**oneOf**](#oneof) - additional oneOfProperty highly recommended
-- ❌ **anyOf** - not yet supported
-- ❎ **allOf** - partially. Attention: subschemas are merged
+- ❎ [**oneOf**](#oneof) - Attention: _oneOfProperty_ highly recommended
+- ❎ [**allOf**](#allof) - partially. Attention: subschemas are merged
 - ✅ [**dependencies**](#dependencies) - Attention: subschemas are merged
 - ✅ [**if-then-else**](#if-then-else) - Attention: subschemas are merged
+- ❌ **patternProperties** - not yet supported
+- ❌ **anyOf** - not yet supported
 
 **missing features**
 
@@ -176,6 +176,77 @@ _oneOf_ statements offer the ability to choose a specific schema for a user form
             two: {
               type: 'number',
               title: 'Property Two'
+            }
+          }
+        }
+      ]
+    }}
+  />
+</Canvas>
+
+## allOf
+
+_allOf_ requires all sub schemas to be valid for the given input. For a user input this all sub schemas have to be merged, thus you must ensure properties and validation rules are exclusive. At some point, the merging of subschemas might improve here, but currently any attributes woud be overriden by the last definition.
+
+The following example has conflicting validation rules, where the last statement will be applied:
+
+<Canvas>
+  <JsonForm
+    validate={true}
+    schema={{
+      type: 'object',
+      options: { title: false },
+      properties: {
+        title: { type: 'string' }
+      },
+      allOf: [
+        {
+          properties: {
+            title: { minLength: 1 }
+          }
+        },
+        {
+          properties: {
+            title: {
+              default: 'title',
+              minLength: 6
+            }
+          }
+        }
+      ]
+    }}
+  />
+</Canvas>
+
+_allOf_ also supports any json-schema supported by json-editor, e.g. if-then-else statements
+
+<Canvas>
+  <JsonForm
+    validate={true}
+    liveUpdate={true}
+    schema={{
+      type: 'object',
+      options: { title: false },
+      properties: {
+        title: { type: 'string', default: 'four' }
+      },
+      allOf: [
+        {
+          if: {
+            type: 'object',
+            required: ['title'],
+            properties: {
+              title: {
+                minLength: 4
+              }
+            }
+          },
+          then: {
+            properties: {
+              title: {
+                pattern: '^[0-9]+$',
+                patternExample: 'a string with a length of 4+ should contain only numbers'
+              }
             }
           }
         }
