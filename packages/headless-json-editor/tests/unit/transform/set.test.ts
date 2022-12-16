@@ -309,6 +309,43 @@ describe('set', () => {
             // test node updates
             assert(before.id === after.id, 'allOf node should not have been replaced');
         });
+
+        // @todo - this might get complex. Simple diff is no longer sufficient here
+        it.skip('should update modified node', () => {
+            const allOf = new Draft07({
+                type: 'object',
+                properties: {
+                    title: { type: 'string' }
+                },
+                allOf: [
+                    {
+                        if: {
+                            type: 'object',
+                            required: ['title'],
+                            properties: {
+                                title: {
+                                    minLength: 4
+                                }
+                            }
+                        },
+                        then: {
+                            properties: {
+                                title: {
+                                    pattern: '^[0-9]+$',
+                                    patternExample: 'a string with a length of 4+ should contain only numbers'
+                                }
+                            }
+                        }
+                    }
+                ]
+            });
+            const before = create(allOf, { title: 'ok' }) as ObjectNode;
+
+            const [after] = set(allOf, before, '/title', 'triggers an error');
+
+            assert(after.type === 'object');
+            assert.equal(get(before, '/title').id, get(after, '/title').id, 'should not have replaced node');
+        });
     });
 
     describe('object oneOf - root level', () => {
