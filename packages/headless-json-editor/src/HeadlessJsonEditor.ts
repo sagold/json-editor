@@ -12,7 +12,7 @@ import { updateErrors } from './validate/updateErrors';
 import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
 import { splitLastProperty } from './splitLastProperty';
 import { deepEqual } from 'fast-equals';
-import { join } from 'gson-pointer';
+import { join, get as getPointer } from 'gson-pointer';
 
 export interface PluginInstance {
     id: string;
@@ -162,6 +162,14 @@ export class HeadlessJsonEditor {
         if (p && p.id) {
             this.plugins.push(p);
         }
+    }
+
+    /**
+     * Returns the current json data
+     * @param [pointer] - optional json-pointer of data to return. Returns whole json-data per default
+     */
+    getValue(pointer = '#') {
+        return getPointer(json(this.state), pointer);
     }
 
     setValue(pointer: string, value: unknown): Node {
