@@ -13,6 +13,9 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
         data
     });
 
+    // @ts-ignore
+    window.getEditor = () => editor;
+
     const ChildWidget = editor.getWidget(node);
     return (
         <section
