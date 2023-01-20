@@ -273,7 +273,6 @@ export function create<T extends Node = Node>(
 
     if (NODES[dataType]) {
         const node = NODES[dataType](draft, data, schema, pointer, isArrayItem) as T;
-        console.log('create', dataType, node);
         return node;
     }
     // e.g. null, undefined, etc
