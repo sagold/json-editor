@@ -22,19 +22,22 @@ export function InsertItemModal({ editor, node, isOpen, onClose }: InsertItemMod
         onClose();
     }
 
+    let dropdownOptions = [];
+    if (options?.map) {
+        dropdownOptions = options.map((o, index) => ({
+            key: o.id,
+            value: index,
+            text: o.title
+        }));
+    } else {
+        console.error('invalid options', options);
+    }
+
     return (
         <Modal open={isOpen} onClose={onClose}>
             <Modal.Header>Select new array item</Modal.Header>
             <Modal.Content>
-                <Dropdown
-                    onChange={handleSelection}
-                    defaultValue={modal.selected}
-                    options={options.map((o, index) => ({
-                        key: o.id,
-                        value: index,
-                        text: o.title
-                    }))}
-                />
+                <Dropdown onChange={handleSelection} defaultValue={modal.selected} options={dropdownOptions} />
             </Modal.Content>
             <Modal.Actions>
                 <Button basic onClick={onClose}>

@@ -1,4 +1,4 @@
-import { ObjectNode, DefaultNodeOptions, getChildNode } from 'headless-json-editor';
+import { ObjectNode, DefaultNodeOptions, getChildNode, json } from 'headless-json-editor';
 import { Button, Card, Segment, Message, Icon, Grid, SemanticCOLORS } from 'semantic-ui-react';
 import { useState } from 'react';
 import { buildObjectLayout, ObjectLayout } from './buildObjectLayout';
@@ -33,7 +33,7 @@ export type ObjectOptions = {
     };
 } & DefaultNodeOptions;
 
-export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
+export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor, setValue }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
 
@@ -53,7 +53,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                             return null;
                         }
                         return (
-                            <Grid.Column width={cell.width ?? 16} key={cell.prop} style={{ padding: 0 }}>
+                            <Grid.Column key={cell.prop} width={cell.width ?? 16} style={{ padding: 0 }}>
                                 <Widget node={child} editor={editor} key={child.id} options={childOptions} />
                             </Grid.Column>
                         );
@@ -65,7 +65,14 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         children = (
             <div className="ed-object__items" style={{ boxShadow: 'none', border: 0 }}>
                 {node.children.map((child) => (
-                    <Widget node={child} editor={editor} key={child.id} options={childOptions} />
+                    <div key={child.id} className="ed-object-item">
+                        <Widget node={child} editor={editor} options={childOptions} />
+                        <div className="ed-object-item__actions">
+                            {node.optionalProperties.includes(child.property) && (
+                                <Button onClick={() => editor.removeValue(child.pointer)} basic icon="remove" />
+                            )}
+                        </div>
+                    </div>
                 ))}
             </div>
         );
@@ -153,6 +160,18 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     closeModal={() => openEditModal(false)}
                 />
             )}
+            {node.missingProperties.length > 0 &&
+                node.missingProperties.map((name) => (
+                    <Button
+                        key={name}
+                        content={name}
+                        icon="plus"
+                        basic
+                        size="small"
+                        // onClick={() => setValue({ ...(json(node) as object), [name]: '' })}
+                        onClick={() => editor.addValue(`${node.pointer}/${name}`)}
+                    />
+                ))}
         </div>
     );
 });

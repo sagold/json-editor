@@ -1,7 +1,7 @@
 import { JSONPointer } from 'json-schema-library';
 import { getChildNode } from './getChildNode';
 import { Node } from '../types';
-import { split } from 'gson-pointer';
+import { split } from '@sagold/json-pointer';
 
 /**
  * returns all nodes along the path, including the given starting node

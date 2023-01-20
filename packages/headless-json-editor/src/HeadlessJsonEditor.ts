@@ -10,9 +10,8 @@ import { remove as removeTarget } from './transform/remove';
 import { move as moveItem } from './transform/move';
 import { updateErrors } from './validate/updateErrors';
 import { JSONSchema, Change, Node, ParentNode, ArrayNode, isJSONError } from './types';
-import { splitLastProperty } from './splitLastProperty';
 import { deepEqual } from 'fast-equals';
-import { join, get as getPointer } from 'gson-pointer';
+import gp from '@sagold/json-pointer';
 
 export interface PluginInstance {
     id: string;
@@ -30,6 +29,10 @@ export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | Validatio
 export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
 
 function getRootChange(changes: Change[]) {
+    if (changes.length === 0) {
+        return '#';
+    }
+
     let lowestPointer: string = changes[0]?.node.pointer || '#';
     changes.forEach(({ node }) => {
         if (lowestPointer.includes(node.pointer)) {
@@ -41,7 +44,7 @@ function getRootChange(changes: Change[]) {
 
 function validateState(draft: Draft, root: Node, pointer = '#') {
     // always evaluate parent as it can be that children are referenced in parent
-    let validationTarget = join(pointer, '..');
+    let validationTarget = gp.join(pointer, '..');
     const startNode = get(root, validationTarget);
     if (startNode.type === 'error') {
         // if the node no longer exists, fallback to validate all
@@ -88,11 +91,11 @@ export class HeadlessJsonEditor {
     plugins: PluginInstance[] = [];
     options: HeadlessJsonEditorOptions;
     templateOptions = {
-        addOptionalProps: true
+        addOptionalProps: false
     };
 
     constructor(options: HeadlessJsonEditorOptions) {
-        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = true } = options;
+        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false } = options;
         this.options = options;
         this.templateOptions.addOptionalProps = addOptionalProps;
         this.draft = new JsonEditor(schema, draftConfig);
@@ -169,7 +172,13 @@ export class HeadlessJsonEditor {
      * @param [pointer] - optional json-pointer of data to return. Returns whole json-data per default
      */
     getValue(pointer = '#') {
-        return getPointer(json(this.state), pointer);
+        return gp.get(json(this.state), pointer);
+    }
+
+    addValue(pointer: string) {
+        const schema = this.draft.getSchema(pointer, json(this.state));
+        const value = this.draft.getTemplate(undefined, schema, this.templateOptions);
+        return this.setValue(pointer, value);
     }
 
     setValue(pointer: string, value: unknown): Node {
@@ -195,17 +204,15 @@ export class HeadlessJsonEditor {
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
         validateState(this.draft, state, getRootChange(changes));
-        // console.log('new state', state);
+
         this.changes.push(...changes);
         this.state = runPlugins(this.plugins, this.state, state, changes);
-
-        // console.log(json(this.state), this.state);
 
         return this.state;
     }
 
     removeValue(pointer: string): Node {
-        const [state, changes] = removeTarget(this.state, pointer);
+        const [state, changes] = removeTarget(this.draft, this.state, pointer);
         if (isJSONError(state)) {
             console.error(`error removing '${pointer}'`);
             console.log(state);
@@ -216,7 +223,8 @@ export class HeadlessJsonEditor {
             throw new Error('invalid state');
         }
 
-        const [parent] = splitLastProperty(pointer);
+        const [parent] = gp.splitLast(pointer);
+
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using remove
         validateState(this.draft, state, parent);
@@ -226,10 +234,9 @@ export class HeadlessJsonEditor {
     }
 
     moveItem(pointer: string, to: number): Node {
-        const [parent, from] = splitLastProperty(pointer);
-        console.log('move', parent, from, to);
-        const [state, changes] = moveItem(this.draft, this.state, parent, parseInt(from), to);
-        console.log(changes, state);
+        const [parent, from] = gp.splitLast(pointer);
+        // console.log('move', parent, from, to);
+        const [state, changes] = moveItem(this.draft, this.state, parent, parseInt(`${from}`), to);
         if (isJSONError(state)) {
             console.error(`error moving nodes in '${pointer}'`);
             console.log(state);

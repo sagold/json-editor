@@ -7,7 +7,7 @@ import { JsonForm } from '@sagold/react-json-editor';
 
 > _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
 
-Validation of data is fully supported, the following table lists support by the user interface:
+Validation of data is fully supported, the following lists tracks support by the user interface:
 
 - ✅ [**properties**](#properties)
 - ✅ [**required**](#required-properties) - switch behaviour with `addOptionalProps`. Defaults to `true`
@@ -19,27 +19,23 @@ Validation of data is fully supported, the following table lists support by the 
 - ❌ **patternProperties** - not yet supported
 - ❌ **anyOf** - not yet supported
 
-**missing features**
-
-- add button to add non-required, missing properties
-- optional delete button to remove non-required properties
-
 **bugs**
 
 - incorrect property order for `additionalProperties`
 
 ## properties
 
-Per default or with `addOptionalProps` set to `true`, all available properties will be added when missing:
+Per default or with `addOptionalProps` set to `false` only required properties will be added when missing. This behaviour corresponds to json-schema `additionalProperties` being `true` per default. Setting `addOptionalProps=true` will add all missing properties per default:
 
 <Canvas>
   <JsonForm
     addOptionalProps={true}
     schema={{
       type: 'object',
+      required: ['one'],
       properties: {
-        one: { title: 'Property One', type: 'string' },
-        two: { title: 'Property Two', type: 'string' }
+        one: { title: 'Property One is required', type: 'string' },
+        two: { title: 'Property Two is optional', type: 'string' }
       },
       options: { title: false }
     }}
@@ -48,13 +44,10 @@ Per default or with `addOptionalProps` set to `true`, all available properties w
 
 ## required properties
 
-> ⚠️ **currently `addOptionalProps` defaults to `true`**. This example sets it to `false`. The default value will change to `false` as soon as adding optional properties is supported via the user interface.
-
 The following example has two properties defined, but only property `"one"` is required:
 
 <Canvas>
   <JsonForm
-    addOptionalProps={false}
     schema={{
       type: 'object',
       required: ['one'],
@@ -156,7 +149,7 @@ _oneOf_ statements offer the ability to choose a specific schema for a user form
         {
           type: 'object',
           title: 'Selection One',
-          required: ['one'],
+          required: ['one', 'id'],
           properties: {
             id: { type: 'string', const: 'one' },
             one: {
@@ -168,7 +161,7 @@ _oneOf_ statements offer the ability to choose a specific schema for a user form
         {
           type: 'object',
           title: 'Selection Two',
-          required: ['two'],
+          required: ['two', 'id'],
           properties: {
             id: { type: 'string', const: 'two' },
             two: {
@@ -218,6 +211,8 @@ The following example has conflicting validation rules, where the last statement
 
 _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-else statements
 
+> **⚠️ TODO** change in schema should not lose focus
+
 <Canvas>
   <JsonForm
     validate={true}
@@ -257,14 +252,12 @@ _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-els
 
 **dependency required: `prop: ["prop"]`**
 
-> With `addOptionalProps=true` all dependencies are added per default as expected. Thus, the following examples set `addOptionalProps=false`
-
 Dependencies are not added per default
 
 <Canvas>
   <JsonForm
     data={{}}
-    addOptionalProps={false}
+    onChange={(data, root) => console.log(data, root)}
     schema={{
       type: 'object',
       properties: {

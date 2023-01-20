@@ -3,7 +3,7 @@ import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
-import { Node } from '../../../src/types';
+import { Node, ObjectNode } from '../../../src/types';
 import { strict as assert } from 'assert';
 import { remove } from '../../../src/transform/remove';
 
@@ -38,7 +38,7 @@ describe('remove', () => {
             const before = create(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = remove(before, '/list/2');
+            const [after] = remove(core, before, '/list/2');
 
             assert(after.type !== 'error');
             const data = json(after);
@@ -57,7 +57,7 @@ describe('remove', () => {
             const before = create(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = remove(before, '/list');
+            const [after] = remove(core, before, '/list');
 
             assert(after.type !== 'error');
             const data = json(after);
@@ -65,5 +65,69 @@ describe('remove', () => {
             assert.equal(beforeString, JSON.stringify(before), 'should not have modified previous state');
             assertUnlinkedNodes(before, after, '/list');
         });
+    });
+
+    describe('object optional properties', () => {
+        let core: Draft;
+        beforeEach(() => {
+            core = new Draft07({
+                type: 'object',
+                required: ['title'],
+                properties: {
+                    title: { type: 'string', default: 'initial title' },
+                    size: {
+                        type: 'object',
+                        properties: {
+                            width: { type: 'number', default: 480 }
+                        }
+                    },
+                    list: { type: 'array', items: { type: 'string' } }
+                },
+                additionalProperties: true
+            });
+        });
+
+        it('should reduce list of optional properties for added properties', () => {
+            const before = create(
+                core,
+                core.getTemplate({ size: {} }, core.getSchema(), { addOptionalProps: false })
+            ) as ObjectNode;
+            // precondition: title is required, size is set, but list is optional
+            assert.deepEqual(before.missingProperties, ['list']);
+
+            const [after, changes] = remove(core, before, '/size');
+
+            assert(after.type !== 'error');
+            assert.deepEqual(after.missingProperties, ['size', 'list']);
+        });
+
+        it("should set dependency as optional if it is no longer required", () => {
+            const draft = new Draft07({
+              type: 'object',
+              properties: {
+                one: {
+                  title: 'Property One',
+                  type: 'string'
+                }
+              },
+              dependencies: {
+                    one: {
+                      required: ['two'],
+                      properties: {
+                        two: { type: 'string' }
+                      }
+                  }
+              }
+            });
+            const before = create(
+                draft,
+                draft.getTemplate({ one: "triggers two" }, draft.getSchema(), { addOptionalProps: false })
+            ) as ObjectNode;
+
+            const [after, changes] = remove(draft, before, '/one');
+            assert(after.type !== 'error');
+            assert.deepEqual(after.missingProperties, ['one']);
+            assert.deepEqual(after.optionalProperties, ['one', 'two']);
+        })
     });
 });

@@ -21,12 +21,104 @@ installation
 
 ## Current features in development
 
-conditional forms
+fixing array oneOf support
 
-<Canvas withSource="false">
-  <JsonForm data={{}} schema={{ options: { title: false }, ...schema }} />
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    data={[{ type: 'header' }]}
+    schema={{
+      title: 'Title of array',
+      description:
+        'Array with items.oneOf selection. OneOf selection in arrays works a litle differently as they are often added and removed on level of the array. Here, we want a selection of the type when adding content, not a oneOf-toggle per item.',
+      type: 'array',
+      minItems: 2,
+      items: {
+        oneOfProperty: 'type',
+        oneOf: [
+          {
+            id: 'header',
+            title: 'Title of header',
+            type: 'object',
+            required: ['type', 'text'],
+            properties: {
+              type: {
+                type: 'string',
+                const: 'header',
+                options: {
+                  hidden: true
+                }
+              },
+              text: {
+                title: 'Header text',
+                type: 'string'
+              }
+            }
+          },
+          {
+            id: 'paragraph',
+            title: 'Title of paragraph',
+            type: 'object',
+            required: ['type', 'text'],
+            properties: {
+              type: {
+                type: 'string',
+                const: 'paragraph',
+                options: {
+                  hidden: true
+                }
+              },
+              text: {
+                title: 'Paragraph text',
+                type: 'string'
+              }
+            }
+          }
+        ]
+      },
+      additionalItems: {
+        title: 'Width in px',
+        type: 'number',
+        default: 400
+      }
+    }}
+  />
 </Canvas>
 
-## notes
+**without breaking object oneOf support**
 
-> json-schema for valdiation vs json-schema editor
+<Canvas>
+  <JsonForm
+    addOptionalProps={false}
+    schema={{
+      type: 'object',
+      oneOfProperty: 'type',
+      description: 'description only for object typeSelection',
+      oneOf: [
+        {
+          type: 'object',
+          title: 'first option',
+          required: ['type', 'title'],
+          properties: {
+            type: { type: 'string', const: 'first' },
+            title: { type: 'string', title: 'header 1' }
+          }
+        },
+        {
+          type: 'object',
+          title: 'second option',
+          required: ['type', 'title'],
+          properties: {
+            type: { type: 'string', const: 'second' },
+            title: { type: 'string', title: 'header 2' }
+          }
+        }
+      ]
+    }}
+  />
+</Canvas>
+
+## roadmap
+
+- support for optional properties
+- set `additionalProperties` to `true` by default

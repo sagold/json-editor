@@ -18,9 +18,12 @@ export function getErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') 
 
     const errors: (JSONError | Promise<JSONError | undefined>)[] = draft
         .validate(json(startNode), startNode.schema, startNode.pointer)
-        .flat(Infinity);
+        .flat(Infinity)
+        .filter((item) => {
+            return item instanceof Promise || isJSONError(item);
+        });
 
-    return errors.filter((item) => isJSONError(item) || item instanceof Promise);
+    return errors;
 }
 
 /**

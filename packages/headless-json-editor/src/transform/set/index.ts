@@ -1,186 +1,184 @@
-import { Draft, JSONPointer, JSONError, resolveAllOf } from 'json-schema-library';
-import { deepEqual } from 'fast-equals';
+import {
+    Draft,
+    JSONPointer,
+    JSONError,
+    resolveAllOf,
+    isDynamicSchema,
+    resolveDynamicSchema
+} from 'json-schema-library';
+// import { deepEqual } from 'fast-equals';
 import { json } from '../../node/json';
 import { create } from '../../node/create';
-import { split, join } from 'gson-pointer';
-import { Node, ArrayNode, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
+import { split, join } from '@sagold/json-pointer';
+import { Node, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
 import { invalidPathError } from '../../errors';
 import { getChildNodeIndex } from '../../node/getChildNode';
+import gp from '@sagold/json-pointer';
+import { deepEqual } from 'fast-equals';
 
-import { getUpdatedData } from './getUpdatedData';
-import { resolveIfThenElse } from './resolveIfThenElse';
-import { resolveDependencies } from './resolveDependencies';
 import { replaceChildNode } from './replaceChildNode';
-import { resolveOneOf } from './resolveOneOf';
 import { createChildNode } from './createChildNode';
 import { updateValueNode } from './updateValueNode';
 
 type UnknownObject = Record<string, unknown>;
 
-/**
- * set (add, update) given data to location of json pointer
- *
- * - this function ensures that a new independent state is created while
- *     reusing most of the tree structure
- */
 export function set<T extends Node = Node>(
-    core: Draft,
-    previousRoot: T,
+    draft: Draft,
+    ast: T,
     pointer: JSONPointer,
     value: any
 ): [JSONError] | [T, Change[]] {
+    /** steps to value */
+    const frags = split(pointer);
     /** list of changes on nodes while performing set operation */
     const changeSet: Change[] = [];
-    /** list of properties pointing to targetNode = node to add value to */
-    const frags = split(pointer);
-    if (frags.length === 0) {
-        const newRootNode = create<T>(core, value);
-        changeSet.push({ type: 'delete', node: previousRoot });
-        changeSet.push({ type: 'create', node: newRootNode });
-        newRootNode.id = previousRoot.id;
-        return [newRootNode, changeSet];
+
+    // if change on root, replace all, but reuse root-id
+    if (frags.length === 0 || !isParentNode(ast)) {
+        const newAst = create<T>(draft, value);
+        changeSet.push({ type: 'delete', node: ast });
+        changeSet.push({ type: 'create', node: newAst });
+        newAst.id = ast.id;
+        return [newAst, changeSet];
     }
 
-    /** new root node to return */
-    const newRootNode = { ...previousRoot };
-    /** previous node, never being target node. If this is not a ParentNode it is an error */
-    let parentNode: Node = newRootNode; // @todo this might be really bad
-    /** node of json-pointer */
-    let targetNode: Node | null = newRootNode;
-    /** property in parentNode pointing to targetNode */
-    let childProperty = ''; // @todo this might be really bad
-
-    /**
-     * retrieve target node of json-pointer
-     */
-    while (frags.length > 0) {
-        if (!targetNode || !isParentNode(targetNode)) {
-            return [
-                invalidPathError({
-                    pointer,
-                    reason: 'expected parent data to be object or array',
-                    where: 'resolving json pointer to node in transform.change'
-                })
-            ];
-        }
-
-        // in case our current node has a allOf statement, the schema might
-        // change and must replace the whole subtree
-        if (targetNode.schema.allOf) {
-            let nextValue = getUpdatedData<UnknownObject>(parentNode, join(childProperty, frags), value);
-            const previousSchema = core.resolveAllOf(json(targetNode), targetNode.schema);
-            const nextSchema = core.resolveAllOf(nextValue, targetNode.schema);
-            nextValue = core.getTemplate(nextValue, nextSchema);
-            if (!deepEqual(nextSchema, previousSchema)) {
-                // schema has changed
-                // Note
-                // - via create schema could be different - check
-                const node = create<ParentNode>(core, nextValue, targetNode.schema) as ParentNode;
-                node.id = targetNode.id;
-                if (parentNode === targetNode) {
-                    // root node changed
-                    return [node as T, changeSet];
-                }
-                targetNode = node;
-            }
-        }
-
-        // in case our current node has a oneOf statement, the schema might
-        // change and must replace the whole subtree
-        if (targetNode.schema.oneOf || targetNode.schema.oneOfSchema) {
-            // build new data starting from parentNode
-            const nextParentValue = getUpdatedData<UnknownObject>(parentNode, join(childProperty, frags), value);
-            const changes = resolveOneOf(core, parentNode as ParentNode, childProperty, nextParentValue);
-            if (changes) {
-                // oneOf item has changed and new node was created
-                changeSet.push(...changes);
-                return [newRootNode, changeSet];
-            }
-        }
-
-        if (targetNode?.type === 'array' && (targetNode.schema?.items as JSONSchema | undefined)?.oneOf) {
-            const arrayData = getUpdatedData<unknown[]>(targetNode, join(frags), value);
-            const changes = resolveOneOf(core, targetNode as ArrayNode, frags[0], arrayData);
-            if (changes) {
-                // item has changed and was replace on parentNode
-                changeSet.push(...changes);
-                return [newRootNode, changeSet];
-            }
-        }
-
-        if (targetNode?.type === 'object' && targetNode.schema.if) {
-            const [newTargetNode, changes] = resolveIfThenElse(core, targetNode, join(frags), value);
-            targetNode = newTargetNode;
-            changeSet.push(...changes);
-        }
-
-        // if (targetNode?.type === 'object' && targetNode.schema.dependencies) {
-        //     // replace whole object and reuse currently edited node
-        //     const [newTargetNode, changes] = resolveDependencies(core, targetNode, frags, value);
-        //     targetNode = newTargetNode;
-        //     changeSet.push(...changes);
-        // }
-
-        // unlink children of current node
-        targetNode.children = [...targetNode.children];
-        childProperty = frags.shift() as string;
-        // step into next child (current targetNode becomes next parentNode)
-        const targetIndex = getChildNodeIndex(targetNode, childProperty);
-        if (targetIndex >= 0) {
-            // unlink and assign next child node
-            targetNode.children[targetIndex] = {
-                // @todo unnecessary unlink for last target node
-                ...targetNode.children[targetIndex]
-            };
-            // update nodes for next iteration
-            parentNode = targetNode;
-            targetNode = targetNode.children[targetIndex];
+    const currentRootSchema = draft.getSchema();
+    if (isDynamicSchema(currentRootSchema)) {
+        // root node has a dynamic schema which may change based in new value,
+        // thus we must test recreate sub tree if schema differs
+        const currentData = json(ast);
+        const currentSchema = resolveDynamicSchema(draft, currentRootSchema, currentData);
+        const nextData = json(ast);
+        gp.set(nextData, pointer, value);
+        const nextSchema = resolveDynamicSchema(draft, currentRootSchema, nextData);
+        if (!deepEqual(currentSchema, nextSchema)) {
+            const fullNextData = draft.getTemplate(nextData, draft.getSchema(), { addOptionalProps: false });
+            // console.log('root schema change', draft.getSchema(), "for", fullNextData);
+            const newAst = create<T>(draft, fullNextData);
+            changeSet.push({ type: 'delete', node: ast });
+            changeSet.push({ type: 'create', node: newAst });
+            newAst.id = ast.id;
+            return [newAst, changeSet];
         } else {
-            // no child node was found, so we are about to set a new node
-            parentNode = targetNode;
-            targetNode = null;
+            // console.log('root schema doesnt change', currentSchema);
         }
+    } else {
+        // console.log('root is not a dynamic schema', currentRootSchema);
     }
 
-    if (!isParentNode(parentNode)) {
-        throw new Error(
-            `Expected node '${parentNode.pointer}' (${parentNode.type}) to be object or array to set value on '${pointer}'`
-        );
+    // unlink tree and follow path to value
+    const newAst = { ...ast };
+    const error = setNext(draft, newAst, frags, frags.shift() as string, value, changeSet);
+    if (error) {
+        return [error];
     }
 
-    /**
-     * set value to target node
-     */
+    return [newAst, changeSet];
+}
 
-    // new property or item
-    if (targetNode == null) {
-        const changesOrError = createChildNode(core, parentNode, childProperty, value);
-        if (isJSONError(changesOrError)) {
-            return [changesOrError];
+/**
+ * @param parentNode - unlinked parent node which will be modified
+ */
+function setNext(
+    draft: Draft,
+    parentNode: ParentNode,
+    frags: string[],
+    property: string,
+    value: unknown,
+    changeSet: Change[]
+): JSONError | undefined {
+    if (property == null || property === '') {
+        throw new Error(`Invalid property: '${property}'`);
+    }
+
+    // console.log('set next', property, frags, value);
+
+    // get next child node at 'property'
+    const childNodeIndex = getChildNodeIndex(parentNode, property);
+    if (childNodeIndex === -1 && frags.length > 0) {
+        // given path is invalid
+        return invalidPathError({
+            pointer: join(parentNode.pointer, property, ...frags),
+            reason: `no node found at '${parentNode.pointer}/${property}'`,
+            where: 'resolving json pointer to node in `set`'
+        });
+    }
+
+    // children will be modified - unlink them
+    parentNode.children = [...parentNode.children];
+
+    if (childNodeIndex === -1) {
+        // new child -> create & insert
+        const result = createChildNode(draft, parentNode, property, value);
+        if (isJSONError(result)) {
+            return result;
         }
-        changeSet.push(...changesOrError);
-        return [newRootNode, changeSet];
+        changeSet.push(...result);
+        return;
     }
 
-    // simple node update, targetNode has already been unlinked/cloned
-    if (isValueNode(targetNode)) {
-        const changesOrError = updateValueNode(core, parentNode, targetNode, value);
-        if (isJSONError(changesOrError)) {
-            return [changesOrError];
+    const childNode = parentNode.children[childNodeIndex];
+    if (frags.length === 0) {
+        // update target node's value
+        if (isValueNode(childNode)) {
+            const changesOrError = updateValueNode(draft, parentNode, childNode, value);
+            if (isJSONError(changesOrError)) {
+                return changesOrError;
+            }
+            changeSet.push(...changesOrError);
+            return;
         }
-        changeSet.push(...changesOrError);
-        return [newRootNode, changeSet];
-    }
 
-    // replace node, creating new object or array tree
-    if (isParentNode(targetNode)) {
-        const changesOrError = replaceChildNode(core, parentNode, targetNode, value);
-        if (isJSONError(changesOrError)) {
-            return [changesOrError];
+        // replace node, creating new object or array tree
+        if (isParentNode(childNode)) {
+            const changesOrError = replaceChildNode(draft, parentNode, childNode, value);
+            if (isJSONError(changesOrError)) {
+                return changesOrError;
+            }
+            changeSet.push(...changesOrError);
+            return;
         }
-        changeSet.push(...changesOrError);
-        return [newRootNode, changeSet];
+
+        throw new Error('Invalid state in transform.set');
     }
 
-    throw new Error('Invalid state in transform.set');
+    if (!isParentNode(childNode)) {
+        // given path is invalid
+        return invalidPathError({
+            pointer: join(parentNode.pointer, property, ...frags),
+            reason: 'expected parent data to be object or array',
+            where: 'resolving json pointer to node in transform.change'
+        });
+    }
+
+    // @attention helper properties set by create
+    // @ts-ignore
+    const childSchema = childNode.sourceSchema ?? childNode.schema;
+    if (isDynamicSchema(childSchema)) {
+        // console.log('child has dynamic schema', property, childSchema);
+        // child node has a dynamic schema which may change based in new value,
+        // thus we must test recreate sub tree if schema differs
+        const currentData = json(childNode);
+        const currentSchema = resolveDynamicSchema(draft, childSchema, currentData);
+        let nextData = json(childNode);
+        nextData = gp.set(nextData, join(frags), value);
+        const nextSchema = resolveDynamicSchema(draft, childSchema, nextData);
+
+        if (!deepEqual(currentSchema, nextSchema)) {
+            // console.log('child schema changes', currentSchema, '->', nextSchema);
+            const newChild = create(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
+            changeSet.push({ type: 'delete', node: childNode });
+            changeSet.push({ type: 'create', node: newChild });
+            newChild.id = childNode.id;
+            parentNode.children[childNodeIndex] = newChild;
+            return;
+        }
+    } else {
+        // @ts-ignore
+        // console.log('child has no dynamic schema', property, childSchema);
+    }
+
+    const nextParentNode = { ...childNode };
+    parentNode.children[childNodeIndex] = nextParentNode;
+    return setNext(draft, nextParentNode, frags, frags.shift() as string, value, changeSet);
 }

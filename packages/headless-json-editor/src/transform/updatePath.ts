@@ -1,6 +1,6 @@
 import { JSONPointer } from 'json-schema-library';
 import { Node } from '../types';
-import gp from 'gson-pointer';
+import gp from '@sagold/json-pointer';
 
 const POINTER_PREFIX = '#/';
 function ensurePointer(pointer: JSONPointer) {

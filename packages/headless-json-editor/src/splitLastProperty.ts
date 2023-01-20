@@ -1,4 +1,4 @@
-import { join, split } from 'gson-pointer';
+import { join, split } from '@sagold/json-pointer';
 
 export function splitLastProperty(pointer: string): [string, string] {
     const frags = split(pointer);

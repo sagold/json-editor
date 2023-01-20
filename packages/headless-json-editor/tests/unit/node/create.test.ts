@@ -87,6 +87,76 @@ describe('create', () => {
         });
     });
 
+    describe('optional properties', () => {
+        it('should expose missing optional properties', () => {
+            draft.setSchema({
+                type: 'object',
+                required: ['two'],
+                properties: {
+                    one: { type: 'string' },
+                    two: { type: 'string' }
+                }
+            });
+
+            const root = create(draft, {}) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.missingProperties, ['one']);
+        });
+
+        it('should not expose existing optional properties', () => {
+            draft.setSchema({
+                type: 'object',
+                required: ['two'],
+                properties: {
+                    one: { type: 'string' },
+                    two: { type: 'string' }
+                }
+            });
+
+            const root = create(draft, { one: 'optional value added' }) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.missingProperties, []);
+        });
+
+        it('should remove matching dependencies from optional properties', () => {
+            draft.setSchema({
+                type: 'object',
+                required: [],
+                properties: {
+                    one: { type: 'string' },
+                    two: { type: 'string' }
+                },
+                dependencies: {
+                    one: ['two']
+                }
+            });
+
+            const root = create(draft, { one: 'optional value added' }) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.optionalProperties, ['one']);
+            assert.deepEqual(root.missingProperties, []);
+        });
+
+        it('should keep non-matching dependencies in optional properties', () => {
+            draft.setSchema({
+                type: 'object',
+                required: [],
+                properties: {
+                    one: { type: 'string' },
+                    two: { type: 'string' }
+                },
+                dependencies: {
+                    one: ['two']
+                }
+            });
+
+            const root = create(draft, {}) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.optionalProperties, ['one', 'two']);
+            assert.deepEqual(root.missingProperties, ['one', 'two']);
+        });
+    });
+
     describe('dynamic', () => {
         describe('dependencies', () => {
             it('should return value of dependency', () => {
@@ -107,6 +177,22 @@ describe('create', () => {
                 const root = create<ObjectNode>(draft, { test: 'with value', additionalValue: 'additional' });
                 assert.equal(root.children.length, 2);
                 assert.deepEqual(json(root), { test: 'with value', additionalValue: 'additional' });
+            });
+
+            it('should add required missing dependency', () => {
+                draft.setSchema({
+                    type: 'object',
+                    properties: {
+                        test: { type: 'string' },
+                        additionalValue: { type: 'string' }
+                    },
+                    dependencies: {
+                        test: ['additionalValue']
+                    }
+                });
+                const root = create<ObjectNode>(draft, { test: 'with value' });
+                assert.equal(root.children.length, 2);
+                assert.deepEqual(json(root), { test: 'with value', additionalValue: '' });
             });
         });
 
@@ -252,6 +338,34 @@ describe('create', () => {
             assert(root.type === 'object');
             assert.equal(root.children.length, 1);
             assert.equal(root.children[0].schema.$id, 'one');
+        });
+
+        it('should expose oneOf origin from root node schema', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOfProperty: 'type',
+                oneOf: [
+                    {
+                        type: 'object',
+                        required: ['type', 'title'],
+                        properties: {
+                            type: { type: 'string', const: 'paragraph' },
+                            title: { type: 'string', title: 'paragprah title' }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        required: ['type', 'title'],
+                        properties: {
+                            type: { type: 'string', const: 'section' },
+                            title: { type: 'string', title: 'section title' }
+                        }
+                    }
+                ]
+            });
+            const root = create(draft, { type: 'section', title: '' });
+            assert(root.type === 'object');
+            assert.equal(root.schema.getOneOfOrigin?.().index, 1);
         });
     });
 

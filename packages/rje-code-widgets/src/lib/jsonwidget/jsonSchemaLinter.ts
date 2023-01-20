@@ -1,4 +1,4 @@
-import gp from 'gson-pointer';
+import gp from '@sagold/json-pointer';
 import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { Diagnostic } from '@codemirror/lint';
 import { Draft, JSONSchema } from 'json-schema-library';

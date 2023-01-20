@@ -1,5 +1,18 @@
-
 - _allOf_ + _liveUpdate=true_ statement loses focus when error is added or removed (@see ObjectProperties page)
-- side-by-side example: string inputs are no longer updated on other side
-- with _liveUpdate=false_ multiselect delete is slows or misses update
-- with _liveUpdate=false_ number increment are not updated or miss change event
+- delete button clutter interface
+
+todo
+
+- test json schema editors
+
+
+code smells
+
+- `schema.getOneOfOrigin`, cache value, not serialisable (but retrievable)
+- `schema.sourceSchema`, heavy duplication but probably required. Alternative?
+- `create` `isArrayItem` introduces error surface if omitted -> property as number
+
+
+maybe 
+
+- [cannot reproduce] with _liveupdate=false_ multiselect delete is slow or misses update

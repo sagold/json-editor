@@ -1,6 +1,7 @@
 import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
 import { Form, Dropdown, Label, Input, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from './decorators';
+import { useState, useMemo } from 'react';
 
 export type StringOptions = {
     icon?: SemanticICONS;
@@ -13,6 +14,13 @@ export type StringOptions = {
 } & DefaultNodeOptions;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
+    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
+    useMemo(() => {
+        if (inputRef) {
+            inputRef.value = node.value ?? '';
+        }
+    }, [node.value]);
+
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const disabled = options.disabled || isValidConst;
 
@@ -36,15 +44,20 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
             >
                 <label htmlFor={node.id}>{options.title}</label>
                 <Input
+                    ref={(ref) => {
+                        const input = ref as unknown as { inputRef: { current: HTMLInputElement | null } };
+                        setInputRef(input?.inputRef?.current);
+                    }}
                     id={node.id}
                     type="text"
                     disabled={disabled}
                     placeholder={options.placeholder}
                     readOnly={options.readOnly === true}
-                    icon={options.icon}
-                    iconPosition={options.iconPosition}
+                    // icon={options.icon}
+                    // iconPosition={options.iconPosition}
                     defaultValue={node.value}
                     {...changeListener}
+                    // onChange={(event) => setInputValue(event.target.value)}
                 />
                 {node.errors.length > 0 && (
                     <Label color="red" basic prompt pointing="above">

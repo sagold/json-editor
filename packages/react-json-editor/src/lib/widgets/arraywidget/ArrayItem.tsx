@@ -11,31 +11,49 @@ export type ArrayItemProps = {
     withDragHandle?: boolean;
     disabled?: boolean;
     options?: Record<string, any>;
+    /** if item can be deleted */
+    optional?: boolean;
 };
 
-export function ArrayItemDefault({ editor, node, withDragHandle, disabled, size, options = {} }: ArrayItemProps) {
+export function ArrayItemDefault({
+    editor,
+    node,
+    withDragHandle,
+    disabled,
+    size,
+    optional,
+    options = {}
+}: ArrayItemProps) {
     options.title = undefined;
     options.description = undefined;
 
     return (
-        <div data-type="array-item" className={withDragHandle ? 'with-drag-handle' : ''}>
+        <div data-type="array-item" className={['array-item', withDragHandle ? 'with-drag-handle' : ''].join(' ')}>
             {withDragHandle && (
                 <div className="ed-drag__handle ed-drag__container">
                     <Icon name="bars" />
                 </div>
             )}
+            <Widget editor={editor} node={node} options={options} />
             <div className="ed-array-item__actions">
                 <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable disabled={disabled}>
-                    <ArrayItemActions editor={editor} node={node} size={size} />
+                    <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
                 </Popup>
             </div>
-            <Widget editor={editor} node={node} options={options} />
-            {size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}
+            {/*{size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}*/}
         </div>
     );
 }
 
-export function ArrayItemCard({ editor, node, withDragHandle, disabled, size, options = {} }: ArrayItemProps) {
+export function ArrayItemCard({
+    editor,
+    node,
+    withDragHandle,
+    disabled,
+    size,
+    optional,
+    options = {}
+}: ArrayItemProps) {
     options.title = undefined;
     options.description = undefined;
 
@@ -49,7 +67,7 @@ export function ArrayItemCard({ editor, node, withDragHandle, disabled, size, op
                     flowing
                     hoverable
                 >
-                    <ArrayItemActions editor={editor} node={node} size={size} />
+                    <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
                 </Popup>
                 <Card.Header>{node.options.title}</Card.Header>
                 <Card.Meta>{node.options.description}</Card.Meta>
@@ -61,12 +79,17 @@ export function ArrayItemCard({ editor, node, withDragHandle, disabled, size, op
     );
 }
 
-export type ArrayItemActionProps = { node: Node; editor: JsonEditor; size: number };
+export type ArrayItemActionProps = { node: Node; editor: JsonEditor; size: number; optional?: boolean };
 
-export function ArrayItemActions({ node, editor, size }: ArrayItemActionProps) {
+export function ArrayItemActions({ node, editor, size, optional }: ArrayItemActionProps) {
     return (
         <>
-            <Button basic icon="trash alternate outline" onClick={() => editor.removeValue(node.pointer)} />
+            <Button
+                basic
+                disabled={optional === false}
+                icon="trash alternate outline"
+                onClick={() => editor.removeValue(node.pointer)}
+            />
             <Button
                 basic
                 icon="caret up"

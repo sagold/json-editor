@@ -1,6 +1,6 @@
 import { Segment, Header, SemanticCOLORS } from 'semantic-ui-react';
 import { DefaultNodeOptions, Node } from 'headless-json-editor';
-import { split } from 'gson-pointer';
+import { split } from '@sagold/json-pointer';
 import { classNames } from '../../classNames';
 
 function getNodeDepth(node: Node, max = 4) {

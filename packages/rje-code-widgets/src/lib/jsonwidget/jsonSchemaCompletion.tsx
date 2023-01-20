@@ -3,7 +3,7 @@ import { CompletionContext, Completion } from '@codemirror/autocomplete';
 import { createRoot } from 'react-dom/client';
 import { Draft, isJSONError } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
-import { get, split, join } from 'gson-pointer';
+import { get, split, join } from '@sagold/json-pointer';
 import { getJsonPointerFromPosition, CursorLocationType, JsonPointerLocation } from './getJsonPointerFromPosition';
 import { JSONSchema } from '@sagold/react-json-editor';
 

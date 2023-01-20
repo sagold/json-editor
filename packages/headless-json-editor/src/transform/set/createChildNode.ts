@@ -3,6 +3,7 @@ import { isJSONError, ParentNode, Change, isNode } from '../../types';
 import { create } from '../../node/create';
 import { invalidPathError } from '../../errors';
 import { getSchemaOfChild } from './getSchemaOfChild';
+import { json } from '../../node/json';
 
 function isNumber(value: string) {
     return `${parseInt(value)}` === value;
@@ -31,8 +32,15 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
     if (isNode(node.children[childIndex])) {
         changeSet.push({ type: 'delete', node: node.children[childIndex] });
     }
-    node.children[childIndex] = create(draft, value, schema, `${node.pointer}/${property}`);
+    node.children[childIndex] = create(draft, value, schema, `${node.pointer}/${property}`, node.type === 'array');
     // @change create node
     changeSet.push({ type: 'create', node: node.children[childIndex] });
+
+    if (node.type === 'object') {
+        // update optional properties
+        node.missingProperties = node.missingProperties.filter((prop) => prop !== property);
+        changeSet.unshift({ type: 'update', node: node });
+    }
+
     return changeSet;
 }

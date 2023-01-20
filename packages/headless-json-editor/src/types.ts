@@ -9,7 +9,11 @@ export type JSONSchema =
     | JSONSchema7 & {
           isActive?: boolean;
           isDynamic?: boolean;
-          oneOfSchema?: JSONSchema;
+          getOneOfOrigin?: () => {
+              index: number;
+              schema: JSONSchema;
+              isItem?: boolean;
+          };
           options?: JSONSchemaOptions;
           properties?: { [key: string]: JSONSchemaDefinition };
           patternProperties?: { [key: string]: JSONSchemaDefinition } | undefined;
@@ -39,8 +43,17 @@ export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     options: T;
     pointer: string;
     property: string;
+    /** true, if this array is an array item */
+    isArrayItem: boolean;
+    /** final, reduced json-schema ob this array */
     schema: JSONSchema;
+    /** list of validation errors on this array */
     errors: JSONError[];
+    /** interaction state **/
+    // actions: {
+    //     canAddItem: boolean;
+    //     canRemoveItem: boolean;
+    // };
 };
 
 export type ObjectType = 'object';
@@ -50,9 +63,19 @@ export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     type: ObjectType;
     children: Node[];
     options: T;
+    /** list of all optional properties, present or missing */
+    optionalProperties: string[];
+    /** list of all missing optional properties */
+    missingProperties: string[];
     pointer: string;
     property: string;
+    /** true, if this object is an array item */
+    isArrayItem: boolean;
+    /** final, reduced json-schema ob this object */
     schema: JSONSchema;
+    /** original json-schema at this location */
+    sourceSchema: JSONSchema;
+    /** list of validation errors on this object */
     errors: JSONError[];
 };
 
@@ -64,6 +87,7 @@ export type StringNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
+    isArrayItem: boolean;
     schema: JSONSchema;
     value?: string;
     errors: JSONError[];
@@ -77,6 +101,7 @@ export type NumberNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
+    isArrayItem: boolean;
     schema: JSONSchema;
     value?: number;
     errors: JSONError[];
@@ -90,6 +115,7 @@ export type BooleanNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
+    isArrayItem: boolean;
     schema: JSONSchema;
     value?: boolean;
     errors: JSONError[];
@@ -103,6 +129,7 @@ export type NullNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
+    isArrayItem: boolean;
     schema: JSONSchema;
     value?: null;
     errors: JSONError[];

@@ -3,7 +3,7 @@ import { Node, isJSONError, isParentNode } from '../types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
-import { join } from 'gson-pointer';
+import { join } from '@sagold/json-pointer';
 
 function each(node: Node, cb: (node: Node) => void) {
     cb(node);

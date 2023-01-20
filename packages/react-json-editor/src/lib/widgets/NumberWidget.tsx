@@ -2,7 +2,7 @@ import { NumberNode, DefaultNodeOptions } from 'headless-json-editor';
 import { WidgetPlugin } from './decorators';
 import { Form, SemanticICONS, Input, Label /*, SemanticShorthandItem, LabelProps*/ } from 'semantic-ui-react';
 import { widget } from './decorators';
-import { useCallback } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 
 type NumberOptions = {
     icon?: SemanticICONS;
@@ -15,6 +15,14 @@ type NumberOptions = {
 } & DefaultNodeOptions;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
+    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
+    useMemo(() => {
+        if (inputRef) {
+            // @ts-ignore
+            inputRef.value = node.value;
+        }
+    }, [node.value]);
+
     const onChange = useCallback(
         (event: Event | React.ChangeEvent<HTMLInputElement>) => {
             const input = event.target as HTMLInputElement;
@@ -46,6 +54,10 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
             >
                 <label htmlFor={node.id}>{options.title}</label>
                 <Input
+                    ref={(ref) => {
+                        const input = ref as unknown as { inputRef: { current: HTMLInputElement | null } };
+                        setInputRef(input?.inputRef?.current);
+                    }}
                     id={node.id}
                     type="number"
                     disabled={options.disabled === true}

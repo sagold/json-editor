@@ -1,4 +1,4 @@
-import gp from 'gson-pointer';
+import gp from '@sagold/json-pointer';
 import { invalidPathError, JSONError } from '../errors';
 import { Node } from '../types';
 import { getChildNode } from './getChildNode';

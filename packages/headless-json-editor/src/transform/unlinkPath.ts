@@ -2,7 +2,7 @@ import { JSONPointer, JSONError } from 'json-schema-library';
 import { ObjectNode, ArrayNode, isParentNode, Node } from '../types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
-import { split, join } from 'gson-pointer';
+import { split, join } from '@sagold/json-pointer';
 
 export function buildPathsMap(paths: (JSONPointer | string[])[]) {
     const map: Record<string, unknown> = {};
@@ -35,10 +35,10 @@ export function unlinkPaths(previousRoot: Node, paths: JSONPointer[]) {
  * Returns a new tree with cloned nodes along the given path
  * @returns [new root node, node at pointer] or error if path is invalid
  */
-export function unlinkPath(
-    previousRoot: Node,
+export function unlinkPath<T extends Node = Node>(
+    previousRoot: T,
     pointer: JSONPointer | string[]
-): JSONError | [ObjectNode | ArrayNode, Node] {
+): JSONError | [T, Node] {
     pointer = join(pointer);
     if (!isParentNode(previousRoot)) {
         return invalidNodeTypeError({

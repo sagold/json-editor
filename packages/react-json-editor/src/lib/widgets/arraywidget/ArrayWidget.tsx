@@ -64,6 +64,11 @@ function createOnSortEnd(editor: JsonEditor, node: Node) {
 }
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
+    if (!Array.isArray(node.children)) {
+        console.log('Invalid array node', node);
+        return null;
+    }
+
     const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
     const [isEditModalOpen, openEditModal] = useState<boolean>(false);
@@ -101,7 +106,18 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         }
     }, [sortable, editor]);
 
+    const minItems = node.schema.minItems || 0;
     const { title, description, collapsed, editJson = {} } = options;
+
+    const isDeleteEnabled = minItems < node.children.length;
+
+    let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
+    if (
+        Array.isArray(node.schema.items) &&
+        (node.schema.additionalItems === false || node.schema.additionalItems == null)
+    ) {
+        isAddEnabled = node.children.length < node.schema.items.length;
+    }
 
     return (
         <div
@@ -124,7 +140,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         )
                     }
                 >
-                    <Button basic icon="add" onClick={insertItem} />
+                    <Button basic icon="add" onClick={insertItem} disabled={!isAddEnabled} />
                     {editJson.enabled && <Button basic icon="edit outline" onClick={() => openEditModal(true)} />}
                 </ParentHeader>
             )}
@@ -143,7 +159,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 <div className={`ed-array__items ed-array__items--${options.layout?.type ?? 'default'}`}>
                     {showContent &&
                         (options.layout?.type === 'cards'
-                            ? node.children.map((child) => (
+                            ? node.children.map((child, index) => (
                                   <ArrayItemCard
                                       disabled={options.disabled || options.readOnly}
                                       editor={editor}
@@ -152,6 +168,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                       size={node.children.length}
                                       withDragHandle={sortable?.enabled}
                                       options={childOptions}
+                                      optional={isDeleteEnabled}
                                   />
                               ))
                             : node.children.map((child) => (
@@ -163,6 +180,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                       size={node.children.length}
                                       withDragHandle={sortable?.enabled}
                                       options={childOptions}
+                                      optional={isDeleteEnabled}
                                   />
                               )))}
                 </div>

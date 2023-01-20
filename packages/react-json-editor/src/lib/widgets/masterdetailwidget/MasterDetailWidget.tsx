@@ -1,7 +1,7 @@
 // import Ref from '@semantic-ui-react/component-ref';
 // import Sortable from 'sortablejs';
 import { widget, WidgetPlugin } from '../decorators';
-import { get as getPointer } from 'gson-pointer';
+import { get as getPointer } from '@sagold/json-pointer';
 import { Button, SemanticCOLORS } from 'semantic-ui-react';
 import { DefaultNodeOptions, ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
 import { useState } from 'react';

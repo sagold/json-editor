@@ -16,7 +16,7 @@ export function replaceChildNode(core: Draft, parent: ParentNode, child: ParentN
 
     const changeSet: Change[] = [];
     const targetIndex = getChildNodeIndex(parent, child.property);
-    const nextNode = create<ParentNode>(core, value, schema, child.pointer);
+    const nextNode = create<ParentNode>(core, value, schema, child.pointer, parent.type === 'array');
     // replace change - @todo sync old subtree with new subtree
     parent.children[targetIndex] = nextNode;
 
