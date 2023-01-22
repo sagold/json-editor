@@ -54,6 +54,20 @@ describe('create', () => {
         assert.equal(root.children[1].value, 'second', "'second' node should come last");
     });
 
+    it('should add any node with `additionalProperty=true`', () => {
+        draft.setSchema({ type: 'object', additionalProperties: true });
+        const root = create(draft, { item: 'keep-me' });
+        assert(root.type === 'object');
+        assert.equal(root.children.length, 1);
+    });
+
+    it('should treat `additionalProperty=true` per default', () => {
+        draft.setSchema({ type: 'object' });
+        const root = create(draft, { item: 'keep-me' });
+        assert(root.type === 'object');
+        assert.equal(root.children.length, 1);
+    });
+
     describe('object errors', () => {
         it.skip('should return an error node for undefined and invalid data', () => {
             draft.setSchema({
