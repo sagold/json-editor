@@ -61,7 +61,7 @@ describe('set', () => {
         assert.deepEqual(changes, [{ type: 'update', node: titleAfter }]);
     });
 
-    it.only('should update existing object', () => {
+    it('should update existing object', () => {
         const before = create(core, core.getTemplate({})) as ObjectNode;
         const beforeString = JSON.stringify(before);
 
