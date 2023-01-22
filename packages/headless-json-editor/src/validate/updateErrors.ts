@@ -1,5 +1,5 @@
-import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJSONError, isParentNode } from '../types';
+import { Draft, JsonPointer, JsonError } from 'json-schema-library';
+import { Node, isJsonError, isParentNode } from '../types';
 import { json } from '../node/json';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
@@ -12,21 +12,21 @@ function each(node: Node, cb: (node: Node) => void) {
     }
 }
 
-function filterErrors(errors: JSONError[]): JSONError[] {
-    return [errors].flat(Infinity).filter(isJSONError);
+function filterErrors(errors: JsonError[]): JsonError[] {
+    return [errors].flat(Infinity).filter(isJsonError);
 }
 
 /**
  * perform validation and assign errors to corresponding nodes
  */
-export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointer = '#') {
+export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') {
     let startNode = get(root, pointer);
     if (startNode.type === 'error') {
         console.error(`Invalid pointer: '${pointer}' to validate - abort`);
         return;
     }
 
-    const pointerToErrors: Record<string, JSONError[]> = {};
+    const pointerToErrors: Record<string, JsonError[]> = {};
     // reset errors
     each(startNode, (node) => {
         node.errors = [];
@@ -38,7 +38,7 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
     const [syncErrors, asyncErrors] = splitErrors(errors);
 
     // assign errors
-    syncErrors.forEach((err: JSONError) => {
+    syncErrors.forEach((err: JsonError) => {
         const pointer = err.data?.pointer ?? '#';
         if (pointerToErrors[pointer] == null) {
             // retrieve new (dynamic) node
@@ -48,7 +48,7 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JSONPointe
     });
 
     // await and assign async errors
-    asyncErrors.forEach((validation: Promise<JSONError[]>) =>
+    asyncErrors.forEach((validation: Promise<JsonError[]>) =>
         validation.then((errors) => {
             // console.log(errors);
             filterErrors(errors).forEach((err) => {

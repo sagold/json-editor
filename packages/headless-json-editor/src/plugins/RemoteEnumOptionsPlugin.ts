@@ -1,6 +1,6 @@
-import { JSONPointer } from 'json-schema-library';
+import { JsonPointer } from 'json-schema-library';
 import { Plugin, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
-import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
+import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
 
 /**
  * prototypical plugin to support a dynamic enum for a schema like
@@ -21,12 +21,12 @@ import { get, json, updateSchema, isJSONError, Change, Node } from '../index';
  * ```
  */
 export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
-    const sources: Record<string, JSONPointer> = {};
-    const targets: Record<string, JSONPointer> = {};
+    const sources: Record<string, JsonPointer> = {};
+    const targets: Record<string, JsonPointer> = {};
 
     function updateEnumInSchema(root: Node, changedNode: Node) {
         const sourceNode = get(root, targets[changedNode.pointer]);
-        if (isJSONError(sourceNode)) {
+        if (isJsonError(sourceNode)) {
             return;
         }
         const enumValues = (json(sourceNode) as string[]).filter((v: unknown) => !(v == null || v === ''));
@@ -38,7 +38,7 @@ export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
                 enum: enumValues
             }
         });
-        if (isJSONError(newRoot)) {
+        if (isJsonError(newRoot)) {
             return undefined;
         }
         return [newRoot, additionalChanges] as [Node, Change[]];
@@ -50,7 +50,7 @@ export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
             if (event.type === 'create' && event.node.options.syncEnum) {
                 // @ts-ignore
                 const source = get(root, event.node.options.syncEnum.source);
-                if (!isJSONError(source)) {
+                if (!isJsonError(source)) {
                     sources[source.pointer] = event.node.pointer;
                     targets[event.node.pointer] = source.pointer;
                     return updateEnumInSchema(root, event.node);
@@ -63,7 +63,7 @@ export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
                     return updateEnumInSchema(root, event.node);
                 } else if (sources[parentPointer]) {
                     const targetNode = get(root, sources[parentPointer]);
-                    if (!isJSONError(targetNode)) {
+                    if (!isJsonError(targetNode)) {
                         return updateEnumInSchema(root, targetNode);
                     }
                 }

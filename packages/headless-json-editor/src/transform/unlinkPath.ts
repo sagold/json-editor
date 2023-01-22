@@ -1,10 +1,10 @@
-import { JSONPointer, JSONError } from 'json-schema-library';
+import { JsonPointer, JsonError } from 'json-schema-library';
 import { ObjectNode, ArrayNode, isParentNode, Node } from '../types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { split, join } from '@sagold/json-pointer';
 
-export function buildPathsMap(paths: (JSONPointer | string[])[]) {
+export function buildPathsMap(paths: (JsonPointer | string[])[]) {
     const map: Record<string, unknown> = {};
     paths.forEach((p) => {
         const frags = split(p);
@@ -27,7 +27,7 @@ export function unlinkMap(previousRoot: Node, map: { [p: string]: any }) {
  * Returns a new tree with cloned nodes along the given path
  * @returns [new root node, node at pointer] or error if path is invalid
  */
-export function unlinkPaths(previousRoot: Node, paths: JSONPointer[]) {
+export function unlinkPaths(previousRoot: Node, paths: JsonPointer[]) {
     throw new Error('not implemented');
 }
 
@@ -37,8 +37,8 @@ export function unlinkPaths(previousRoot: Node, paths: JSONPointer[]) {
  */
 export function unlinkPath<T extends Node = Node>(
     previousRoot: T,
-    pointer: JSONPointer | string[]
-): JSONError | [T, Node] {
+    pointer: JsonPointer | string[]
+): JsonError | [T, Node] {
     pointer = join(pointer);
     if (!isParentNode(previousRoot)) {
         return invalidNodeTypeError({

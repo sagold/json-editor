@@ -2,7 +2,7 @@ import { Draft07, Draft } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { json } from '../../../src/node/json';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJSONError, JSONSchema } from '../../../src/types';
+import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
 
 describe('create', () => {
     let draft: Draft;
@@ -80,7 +80,7 @@ describe('create', () => {
                 unknownInvalid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
-            assert(isJSONError(root.children[0].schema));
+            assert(isJsonError(root.children[0].schema));
             assert.deepEqual(json(root), { unknownInvalid: 'property' });
         });
 
@@ -95,7 +95,7 @@ describe('create', () => {
                 unknownValid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
-            assert(!isJSONError(root.children[0].schema));
+            assert(!isJsonError(root.children[0].schema));
             assert.equal((root.children[0] as StringNode).value, 'property');
             assert.deepEqual(json(root), { unknownValid: 'property' });
         });
@@ -211,7 +211,7 @@ describe('create', () => {
         });
 
         describe('if-then-else', () => {
-            let conditionalSchema: JSONSchema;
+            let conditionalSchema: JsonSchema;
             beforeEach(
                 () =>
                     (conditionalSchema = {
@@ -315,7 +315,8 @@ describe('create', () => {
                         properties: {
                             elseValue: { description: 'else', type: 'string', default: 'dynamic else' }
                         }
-                    }
+                    },
+                    additionalProperties: false
                 });
 
                 const root = create<ObjectNode>(draft, {

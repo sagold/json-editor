@@ -1,5 +1,5 @@
-import { Draft, JSONError } from 'json-schema-library';
-import { ParentNode, isJSONError, JSONSchema } from '../../types';
+import { Draft, JsonError } from 'json-schema-library';
+import { ParentNode, isJsonError, JsonSchema } from '../../types';
 import { json } from '../../node/json';
 
 type UnknownObject = Record<string, unknown>;
@@ -14,12 +14,12 @@ export function getSchemaOfChild(
     node: ParentNode,
     property: string,
     value: unknown
-): JSONSchema | JSONError {
+): JsonSchema | JsonError {
     const data = json(node) as UnknownObject;
     data[property] = value;
     const schema = draft.step(property, node.schema, data, node.pointer);
     // unknown property in schema
-    if (isJSONError(schema)) {
+    if (isJsonError(schema)) {
         if (schema.code !== 'unknown-property-error') {
             console.log(`failed retrieving schema for '${node.pointer}/${property}'`);
             console.log(schema);

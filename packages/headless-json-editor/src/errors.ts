@@ -1,6 +1,6 @@
-import { createCustomError, JSONError, config } from 'json-schema-library';
+import { createCustomError, JsonError, config } from 'json-schema-library';
 
-export type { JSONError };
+export type { JsonError };
 
 config.strings.InvalidPathError = `Path '{{pointer}}' does not exist in data`;
 export const invalidPathError = createCustomError('InvalidPathError');

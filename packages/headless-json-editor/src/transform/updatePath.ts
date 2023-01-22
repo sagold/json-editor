@@ -1,9 +1,9 @@
-import { JSONPointer } from 'json-schema-library';
+import { JsonPointer } from 'json-schema-library';
 import { Node } from '../types';
 import gp from '@sagold/json-pointer';
 
 const POINTER_PREFIX = '#/';
-function ensurePointer(pointer: JSONPointer) {
+function ensurePointer(pointer: JsonPointer) {
     return pointer.replace(/^[#/]*/, POINTER_PREFIX);
 }
 

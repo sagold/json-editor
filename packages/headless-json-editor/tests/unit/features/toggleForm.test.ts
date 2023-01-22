@@ -4,7 +4,7 @@ import { json } from '../../../src/node/json';
 import { set } from '../../../src/transform/set';
 import { errors } from '../../../src/node/errors';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJSONError, JSONSchema } from '../../../src/types';
+import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
 
 /**
  * conditional forms should

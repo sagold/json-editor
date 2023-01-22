@@ -1,4 +1,4 @@
-import { Draft07, Draft, JSONValidator, JSONError } from 'json-schema-library';
+import { Draft07, Draft, JsonValidator, JsonError } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { create } from '../../../src/node/create';
 import { get } from '../../../src/node/get';
@@ -60,8 +60,8 @@ describe('validate', () => {
     describe('async validation', () => {
         let async: Draft;
         // @ts-ignore
-        const validator: JSONValidator = (core, schema, value, pointer) => {
-            const error: JSONError = {
+        const validator: JsonValidator = (core, schema, value, pointer) => {
+            const error: JsonError = {
                 type: 'error',
                 code: 'async-error',
                 message: 'an async error',

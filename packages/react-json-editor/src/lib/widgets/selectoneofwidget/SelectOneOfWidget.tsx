@@ -1,14 +1,14 @@
 import { Dropdown, DropdownProps, Divider } from 'semantic-ui-react';
 import { getOptions } from 'headless-json-editor';
-import { JSONSchema } from 'json-schema-library';
+import { JsonSchema } from 'json-schema-library';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { widget, WidgetPlugin } from '../decorators';
 import { Widget } from '../../components/widget/Widget';
 
-type SelectedOneOfSchema = JSONSchema & {
+type SelectedOneOfSchema = JsonSchema & {
     getOneOfOrigin: () => {
         index: number;
-        schema: JSONSchema;
+        schema: JsonSchema;
         isItem?: boolean;
     };
 };
@@ -38,7 +38,7 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
 
     return (
         <div className="ed-form ed-form--parent ed-oneof">
-            <ParentHeader node={node} options={getOptions(oneOfSchema as JSONSchema, node.property)} />
+            <ParentHeader node={node} options={getOptions(oneOfSchema as JsonSchema, node.property)} />
 
             <Divider horizontal>
                 <Dropdown

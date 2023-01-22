@@ -1,5 +1,5 @@
 import { Draft } from 'json-schema-library';
-import { ValueNode, isJSONError, ParentNode, isNode, Change } from '../../types';
+import { ValueNode, isJsonError, ParentNode, isNode, Change } from '../../types';
 import { create } from '../../node/create';
 import { getChildNodeIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
@@ -23,7 +23,7 @@ export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNo
     }
 
     const schema = getSchemaOfChild(draft, parent, child.property, value);
-    if (isJSONError(schema)) {
+    if (isJsonError(schema)) {
         return schema;
     }
 

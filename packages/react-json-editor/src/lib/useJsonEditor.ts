@@ -5,7 +5,7 @@ import {
     Node,
     OnChangePlugin,
     OnChangeListener,
-    JSONSchema
+    JsonSchema
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './widgets/decorators';
@@ -13,7 +13,7 @@ import { deepEqual } from 'fast-equals';
 
 export type UseJsonEditorOptions = {
     widgets: WidgetPlugin[];
-    schema: JSONSchema;
+    schema: JsonSchema;
     data?: unknown;
     validate?: boolean;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];

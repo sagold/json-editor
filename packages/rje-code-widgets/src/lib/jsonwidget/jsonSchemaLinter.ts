@@ -1,7 +1,7 @@
 import gp from '@sagold/json-pointer';
 import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { Diagnostic } from '@codemirror/lint';
-import { Draft, JSONSchema } from 'json-schema-library';
+import { Draft, JsonSchema } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
 import { JsonEditor } from '@sagold/react-json-editor';
 import { jsonParseLinter } from '@codemirror/lang-json';
@@ -27,7 +27,7 @@ function getPropertyValueCursor(node: SyntaxNode) {
     return undefined;
 }
 
-export function jsonSchemaLinter(editor: JsonEditor, schema: JSONSchema) {
+export function jsonSchemaLinter(editor: JsonEditor, schema: JsonSchema) {
     const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
     const draft = new Draft(editor.draft.config, rootSchema);
     const localSchema = draft.compileSchema(schema);
@@ -42,7 +42,7 @@ export function jsonSchemaLinter(editor: JsonEditor, schema: JSONSchema) {
     };
 }
 
-function runJsonSchemaLinter(draft: Draft, schema: JSONSchema, view: EditorView): Diagnostic[] {
+function runJsonSchemaLinter(draft: Draft, schema: JsonSchema, view: EditorView): Diagnostic[] {
     const currentData = JSON.parse(view.state.doc.toString());
     const errors = draft.validate(currentData, schema);
     if (errors.length === 0) {

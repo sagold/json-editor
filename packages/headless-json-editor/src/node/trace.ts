@@ -1,4 +1,4 @@
-import { JSONPointer } from 'json-schema-library';
+import { JsonPointer } from 'json-schema-library';
 import { getChildNode } from './getChildNode';
 import { Node } from '../types';
 import { split } from '@sagold/json-pointer';
@@ -6,7 +6,7 @@ import { split } from '@sagold/json-pointer';
 /**
  * returns all nodes along the path, including the given starting node
  */
-export function trace(node: Node, pointer: JSONPointer) {
+export function trace(node: Node, pointer: JsonPointer) {
     const frags = split(pointer).reverse();
     const selection = [node];
 

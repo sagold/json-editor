@@ -1,4 +1,4 @@
-import { JSONSchema } from 'headless-json-editor';
+import { JsonSchema } from 'headless-json-editor';
 
 import { JsonForm, JsonFormProps } from './lib/components/jsonform';
 import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
@@ -27,7 +27,7 @@ export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/UnknownWidget'
 
 // types
 export type {
-    JSONSchema,
+    JsonSchema,
     JsonFormProps,
     JsonEditorOptions,
     UseJsonEditorOptions,

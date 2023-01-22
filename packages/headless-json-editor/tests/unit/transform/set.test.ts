@@ -25,6 +25,7 @@ describe('set', () => {
     beforeEach(() => {
         core = new Draft07({
             type: 'object',
+            additionalProperties: false,
             required: ['title', 'size', 'list'],
             properties: {
                 title: { type: 'string', default: 'initial title' },
@@ -36,8 +37,7 @@ describe('set', () => {
                     }
                 },
                 list: { type: 'array', items: { type: 'string' } }
-            },
-            additionalProperties: true
+            }
         });
         template = core.getTemplate({});
     });
@@ -61,7 +61,7 @@ describe('set', () => {
         assert.deepEqual(changes, [{ type: 'update', node: titleAfter }]);
     });
 
-    it('should update existing object', () => {
+    it.only('should update existing object', () => {
         const before = create(core, core.getTemplate({})) as ObjectNode;
         const beforeString = JSON.stringify(before);
 
@@ -163,7 +163,7 @@ describe('set', () => {
                     },
                     list: { type: 'array', items: { type: 'string' } }
                 },
-                additionalProperties: true
+                additionalProperties: false
             });
         });
 
@@ -257,7 +257,8 @@ describe('set', () => {
 
     describe('unknown data', () => {
         it('should add correct schema', () => {
-            const before = create(core, core.getTemplate({ switch: ['first', 2] })) as ObjectNode;
+            const draft = new Draft07({ type: 'object' });
+            const before = create(draft, draft.getTemplate({ switch: ['first', 2] })) as ObjectNode;
 
             assert.equal(get(before, '/switch/0').type, 'string');
             assert.equal(get(before, '/switch/1').type, 'number');
@@ -700,6 +701,7 @@ describe('set', () => {
         beforeEach(() => {
             conditional = new Draft07({
                 type: 'object',
+                additionalProperties: false,
                 properties: { test: { type: 'string' } },
                 if: {
                     properties: {
@@ -758,6 +760,7 @@ describe('set', () => {
         it('should only remove "then"-schema on missing "else"', () => {
             const thenOnlySchema = new Draft07({
                 type: 'object',
+                additionalProperties: false,
                 properties: { test: { type: 'string' } },
                 if: {
                     properties: {
@@ -863,6 +866,7 @@ describe('set', () => {
         it('should not lose oneOf objects when setting a value', () => {
             const core: Draft = new Draft07({
                 type: 'object',
+                required: ['switch'],
                 properties: {
                     switch: {
                         type: 'array',

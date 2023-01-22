@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { getJsonPointerFromPosition } from './getJsonPointerFromPosition';
 import { hoverTooltip } from '@codemirror/view';
 import { Text } from '@codemirror/state';
-import { JsonEditor, JSONSchema } from '@sagold/react-json-editor';
+import { JsonEditor, JsonSchema } from '@sagold/react-json-editor';
 
 const dom = document.createElement('div');
 const root = createRoot(dom);
@@ -16,7 +16,7 @@ function getData(doc: Text) {
     }
 }
 
-export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSchema?: JSONSchema) =>
+export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSchema?: JsonSchema) =>
     hoverTooltip(async (view, pos, side) => {
         const { pointer, cursor, location } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;

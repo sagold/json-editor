@@ -1,11 +1,11 @@
 import Markdown from 'markdown-to-jsx';
 import { CompletionContext, Completion } from '@codemirror/autocomplete';
 import { createRoot } from 'react-dom/client';
-import { Draft, isJSONError } from 'json-schema-library';
+import { Draft, isJsonError } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
 import { get, split, join } from '@sagold/json-pointer';
 import { getJsonPointerFromPosition, CursorLocationType, JsonPointerLocation } from './getJsonPointerFromPosition';
-import { JSONSchema } from '@sagold/react-json-editor';
+import { JsonSchema } from '@sagold/react-json-editor';
 
 const dom = document.createElement('div');
 const root = createRoot(dom);
@@ -28,7 +28,7 @@ function insertValue(view: EditorView, completion: Completion, from: number, to:
     });
 }
 
-function getValueCompletions(schema: JSONSchema): Completion[] {
+function getValueCompletions(schema: JsonSchema): Completion[] {
     if (Array.isArray(schema.enum)) {
         return schema.enum.map((v) => ({
             label: JSON.stringify(v),
@@ -52,7 +52,7 @@ function getValueCompletions(schema: JSONSchema): Completion[] {
     return [];
 }
 
-export const jsonSchemaCompletion = (draft: Draft, schema: JSONSchema) =>
+export const jsonSchemaCompletion = (draft: Draft, schema: JsonSchema) =>
     async function (context: CompletionContext) {
         const resolvedCursor = getJsonPointerFromPosition(context.state, context.pos);
         const { location } = resolvedCursor;
@@ -66,7 +66,7 @@ type CompletionReturnValue = null | {
 
 type GetCompletions = (
     draft: Draft,
-    schema: JSONSchema,
+    schema: JsonSchema,
     context: CompletionContext,
     jpl: JsonPointerLocation
 ) => CompletionReturnValue;
@@ -75,7 +75,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for array values (array item) */
     array: (draft, schema, context, { pointer }) => {
         const parentSchema = draft.getSchema(pointer, getData(context), schema);
-        if (isJSONError(parentSchema)) {
+        if (isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'array' on ${pointer}`, parentSchema);
             return null;
         }
@@ -99,7 +99,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
             const options = draft.getChildSchemaSelection(0, parentSchema);
             return {
                 from: context.pos,
-                options: options.map((s: JSONSchema, index) => ({
+                options: options.map((s: JsonSchema, index) => ({
                     label: s.title || `${index + 1}. item (no title defined)`,
                     type: 'text',
                     info: () => renderInfo(s),
@@ -109,7 +109,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
             };
         }
         if (isObject(parentSchema.items)) {
-            const itemSchema = parentSchema.items as JSONSchema;
+            const itemSchema = parentSchema.items as JsonSchema;
             // console.log('itemSchema', itemSchema);
             // const value = draft.getTemplate(undefined, itemSchema);
             return {
@@ -124,7 +124,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(pointer, data, schema);
-        if (isJSONError(parentSchema)) {
+        if (isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'object' on ${pointer}`, parentSchema);
             return null;
         }
@@ -162,7 +162,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     outside: (draft, schema, context, { pointer }) => {
         const data = getData(context);
         const targetSchema = draft.getSchema(pointer, data, schema);
-        if (isJSONError(targetSchema)) {
+        if (isJsonError(targetSchema)) {
             console.log(`failed resolving completion of 'outside' on ${pointer}`, targetSchema);
             return null;
         }
@@ -178,7 +178,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
         const parentSchema = draft.getSchema(parentPointer, data, schema);
-        if (isJSONError(parentSchema)) {
+        if (isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'property' on ${pointer}`, parentSchema);
             return null;
         }
@@ -206,17 +206,17 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for a partial value */
     value: (draft, schema, context, { pointer, cursor }) => {
         const data = getData(context);
-        const schemaOfLocation = draft.getSchema(pointer, data, schema) as JSONSchema;
-        if (isJSONError(schemaOfLocation)) {
+        const schemaOfLocation = draft.getSchema(pointer, data, schema) as JsonSchema;
+        if (isJsonError(schemaOfLocation)) {
             console.log(`failed resolving completion of 'value' on ${pointer}`, schemaOfLocation);
             return null;
         }
 
-        if (schemaOfLocation.items && (schemaOfLocation.items as JSONSchema).oneOf) {
+        if (schemaOfLocation.items && (schemaOfLocation.items as JsonSchema).oneOf) {
             const options = draft.getChildSchemaSelection(0, schemaOfLocation);
             return {
                 from: context.pos,
-                options: options.map((s: JSONSchema, index) => ({
+                options: options.map((s: JsonSchema, index) => ({
                     label: s.title || `${index + 1}. item (no title defined)`,
                     type: 'text',
                     info: () => renderInfo(s),
@@ -233,7 +233,7 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     }
 };
 
-function renderInfo(schema?: JSONSchema) {
+function renderInfo(schema?: JsonSchema) {
     if (schema == null || (schema.title == null && schema.description == null)) {
         return null;
     }

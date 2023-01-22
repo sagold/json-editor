@@ -3,7 +3,7 @@ import { Form, Label } from 'semantic-ui-react';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
 import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { linter, lintGutter } from '@codemirror/lint';
-import { StringNode, ParentNode, json, DefaultNodeOptions, JSONSchema } from 'headless-json-editor';
+import { StringNode, ParentNode, json, DefaultNodeOptions, JsonSchema } from 'headless-json-editor';
 import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
 import { useState, useCallback, useMemo } from 'react';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
@@ -18,7 +18,7 @@ export const JsonWidget = (props) => {
 };
 
 export type JsonWidgetOptions = {
-    schema?: JSONSchema;
+    schema?: JsonSchema;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     setup?: ReactCodeMirrorProps['basicSetup'];

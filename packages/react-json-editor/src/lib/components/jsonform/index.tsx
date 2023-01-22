@@ -1,11 +1,11 @@
 import { Form } from 'semantic-ui-react';
 import {
     RemoteEnumOptionsPlugin,
-    JSONSchema,
+    JsonSchema,
     Node,
     get,
     Plugin,
-    isJSONError,
+    isJsonError,
     DefaultNodeOptions,
     HeadlessJsonEditorOptions
 } from 'headless-json-editor';
@@ -20,7 +20,7 @@ import { forwardRef, useImperativeHandle } from 'react';
 // export const ModalContext = createContext({});
 
 export type JsonFormProps = {
-    schema: JSONSchema;
+    schema: JsonSchema;
     data?: unknown;
     pointer?: string;
     widgets?: WidgetPlugin[];
@@ -75,7 +75,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
     let node = rootNode;
     if (pointer) {
         const specificRootNode = get(rootNode, pointer);
-        if (isJSONError(specificRootNode)) {
+        if (isJsonError(specificRootNode)) {
             console.error(`There is no node at '${pointer}', returning empty form`);
             return <Form error />;
         }

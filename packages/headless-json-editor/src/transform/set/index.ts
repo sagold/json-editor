@@ -1,7 +1,7 @@
 import {
     Draft,
-    JSONPointer,
-    JSONError,
+    JsonPointer,
+    JsonError,
     resolveAllOf,
     isDynamicSchema,
     resolveDynamicSchema
@@ -10,7 +10,7 @@ import {
 import { json } from '../../node/json';
 import { create } from '../../node/create';
 import { split, join } from '@sagold/json-pointer';
-import { Node, isValueNode, isParentNode, isJSONError, ParentNode, Change, JSONSchema } from '../../types';
+import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
 import { invalidPathError } from '../../errors';
 import { getChildNodeIndex } from '../../node/getChildNode';
 import gp from '@sagold/json-pointer';
@@ -25,9 +25,9 @@ type UnknownObject = Record<string, unknown>;
 export function set<T extends Node = Node>(
     draft: Draft,
     ast: T,
-    pointer: JSONPointer,
+    pointer: JsonPointer,
     value: any
-): [JSONError] | [T, Change[]] {
+): [JsonError] | [T, Change[]] {
     /** steps to value */
     const frags = split(pointer);
     /** list of changes on nodes while performing set operation */
@@ -86,7 +86,7 @@ function setNext(
     property: string,
     value: unknown,
     changeSet: Change[]
-): JSONError | undefined {
+): JsonError | undefined {
     if (property == null || property === '') {
         throw new Error(`Invalid property: '${property}'`);
     }
@@ -110,7 +110,7 @@ function setNext(
     if (childNodeIndex === -1) {
         // new child -> create & insert
         const result = createChildNode(draft, parentNode, property, value);
-        if (isJSONError(result)) {
+        if (isJsonError(result)) {
             return result;
         }
         changeSet.push(...result);
@@ -122,7 +122,7 @@ function setNext(
         // update target node's value
         if (isValueNode(childNode)) {
             const changesOrError = updateValueNode(draft, parentNode, childNode, value);
-            if (isJSONError(changesOrError)) {
+            if (isJsonError(changesOrError)) {
                 return changesOrError;
             }
             changeSet.push(...changesOrError);
@@ -132,7 +132,7 @@ function setNext(
         // replace node, creating new object or array tree
         if (isParentNode(childNode)) {
             const changesOrError = replaceChildNode(draft, parentNode, childNode, value);
-            if (isJSONError(changesOrError)) {
+            if (isJsonError(changesOrError)) {
                 return changesOrError;
             }
             changeSet.push(...changesOrError);

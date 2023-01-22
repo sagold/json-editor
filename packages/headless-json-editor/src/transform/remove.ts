@@ -1,5 +1,5 @@
-import { JSONPointer, JSONError, Draft, reduceSchema, isDynamicSchema } from 'json-schema-library';
-import { isParentNode, Node, isJSONError, Change } from '../types';
+import { JsonPointer, JsonError, Draft, reduceSchema, isDynamicSchema } from 'json-schema-library';
+import { isParentNode, Node, isJsonError, Change } from '../types';
 import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
@@ -11,13 +11,13 @@ import { updateOptionalPropertyList } from '../node/create';
 export function remove<T extends Node = Node>(
     draft: Draft,
     previousRoot: T,
-    pointer: JSONPointer
-): [JSONError] | [T, Change[]] {
+    pointer: JsonPointer
+): [JsonError] | [T, Change[]] {
     const frags = split(pointer);
     const property = frags.pop() as string;
 
     const result = unlinkPath(previousRoot, frags);
-    if (isJSONError(result)) {
+    if (isJsonError(result)) {
         return [result];
     }
 

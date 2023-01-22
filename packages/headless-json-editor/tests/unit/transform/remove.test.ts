@@ -101,33 +101,33 @@ describe('remove', () => {
             assert.deepEqual(after.missingProperties, ['size', 'list']);
         });
 
-        it("should set dependency as optional if it is no longer required", () => {
+        it('should set dependency as optional if it is no longer required', () => {
             const draft = new Draft07({
-              type: 'object',
-              properties: {
-                one: {
-                  title: 'Property One',
-                  type: 'string'
-                }
-              },
-              dependencies: {
+                type: 'object',
+                properties: {
                     one: {
-                      required: ['two'],
-                      properties: {
-                        two: { type: 'string' }
-                      }
-                  }
-              }
+                        title: 'Property One',
+                        type: 'string'
+                    }
+                },
+                dependencies: {
+                    one: {
+                        required: ['two'],
+                        properties: {
+                            two: { type: 'string' }
+                        }
+                    }
+                }
             });
             const before = create(
                 draft,
-                draft.getTemplate({ one: "triggers two" }, draft.getSchema(), { addOptionalProps: false })
+                draft.getTemplate({ one: 'triggers two' }, draft.getSchema(), { addOptionalProps: false })
             ) as ObjectNode;
 
             const [after, changes] = remove(draft, before, '/one');
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['one']);
             assert.deepEqual(after.optionalProperties, ['one', 'two']);
-        })
+        });
     });
 });

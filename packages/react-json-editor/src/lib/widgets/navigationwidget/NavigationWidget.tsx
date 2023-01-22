@@ -4,7 +4,7 @@ import { widget } from '../decorators';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '../../JsonEditor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJSONError } from 'headless-json-editor';
+import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJsonError } from 'headless-json-editor';
 import { useState, useRef, useEffect } from 'react';
 
 function scrollTo(node: Node) {
@@ -74,7 +74,7 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
             return;
         }
         const insertOptions = editor.getArrayAddOptions(node);
-        if (isJSONError(insertOptions)) {
+        if (isJsonError(insertOptions)) {
             console.log(insertOptions);
             return;
         }

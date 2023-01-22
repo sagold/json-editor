@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JSONPointer, isJSONError, isDynamicSchema, reduceSchema } from 'json-schema-library';
+import { getTypeOf, Draft, JsonPointer, isJsonError, isDynamicSchema, reduceSchema } from 'json-schema-library';
 import {
     Node,
     NodeType,
@@ -9,7 +9,7 @@ import {
     NumberNode,
     BooleanNode,
     NullNode,
-    JSONSchema
+    JsonSchema
 } from '../types';
 // @ts-ignore
 import deepmerge from 'deepmerge';
@@ -46,9 +46,9 @@ export type DefaultNodeOptions = {
     [o: string]: unknown;
 };
 
-type CreateNode = (draft: Draft, data: any, schema: JSONSchema, pointer: JSONPointer, isArrayItem: boolean) => Node;
+type CreateNode = (draft: Draft, data: any, schema: JsonSchema, pointer: JsonPointer, isArrayItem: boolean) => Node;
 
-export function getOptions(schema: JSONSchema, property: string) {
+export function getOptions(schema: JsonSchema, property: string) {
     if (schema == null) {
         throw new Error('Missing schema in get options');
     }
@@ -141,7 +141,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         // @todo replace by jlib helpers
         data.forEach((next, key) => {
             const childSchema = core.step(key, schema, data, pointer);
-            if (childSchema && !isJSONError(childSchema)) {
+            if (childSchema && !isJsonError(childSchema)) {
                 childSchema.isArrayItem = true;
                 node.children.push(create(core, next, childSchema, `${pointer}/${key}`, true));
             }
@@ -152,8 +152,8 @@ export const NODES: Record<NodeType, CreateNode> = {
     object: (draft, data: Record<string, unknown>, schema, pointer, isArrayItem): ObjectNode => {
         // if this is an object from a oneOf-list, the schema comes resolved
         // to this data. Resolve schema back to actual source
-        const sourceSchema: JSONSchema =
-            (schema.getOneOfOrigin && (schema.getOneOfOrigin().schema as JSONSchema)) || schema;
+        const sourceSchema: JsonSchema =
+            (schema.getOneOfOrigin && (schema.getOneOfOrigin().schema as JsonSchema)) || schema;
         // schema without any dynamic properties, those have been resolved by given data
         const staticSchema = reduceSchema(draft, sourceSchema, data);
         // staticSchema._oneOfOrigin = schema._oneOfOrigin;
@@ -181,7 +181,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
             const nextSchema = draft.step(key, staticSchema, resolvedData, pointer);
-            if (nextSchema && !isJSONError(nextSchema)) {
+            if (nextSchema && !isJsonError(nextSchema)) {
                 node.children.push(create(draft, resolvedData[key], nextSchema, `${pointer}/${key}`));
             }
         });
@@ -265,8 +265,8 @@ export const NODES: Record<NodeType, CreateNode> = {
 export function create<T extends Node = Node>(
     draft: Draft,
     data: unknown,
-    schema: JSONSchema = draft.rootSchema,
-    pointer: JSONPointer = '#',
+    schema: JsonSchema = draft.rootSchema,
+    pointer: JsonPointer = '#',
     isArrayItem = false
 ): T {
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schema.const) as NodeType);

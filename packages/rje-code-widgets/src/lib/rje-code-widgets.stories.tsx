@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { JSONSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
+import { JsonSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
 import { useState, useRef } from 'react';
 import './rje-code-widgets.scss';
@@ -58,7 +58,7 @@ const propertySchema = {
         }
     },
     additionalProperties: false
-} as unknown as JSONSchema;
+} as unknown as JsonSchema;
 
 const defaultSchema = {
     type: 'object',
@@ -106,7 +106,7 @@ const defaultSchema = {
     $defs: {
         propertySchema
     }
-} as unknown as JSONSchema;
+} as unknown as JsonSchema;
 
 const dataObject = {
     productId: 123,

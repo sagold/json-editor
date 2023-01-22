@@ -1,13 +1,13 @@
 import { JsonEditor } from '../../JsonEditor';
 import { Button, Modal, Form } from 'semantic-ui-react';
 import { Node } from 'headless-json-editor';
-import { JSONError, isJSONError } from 'json-schema-library';
+import { JsonError, isJsonError } from 'json-schema-library';
 
 export type WidgetModalSize = 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen' | undefined;
 
 export type WidgetModalProps = {
     editor: JsonEditor;
-    node: Node | JSONError;
+    node: Node | JsonError;
     isOpen: boolean;
     closeModal: () => void;
     options: Record<string, any> & {
@@ -16,7 +16,7 @@ export type WidgetModalProps = {
 };
 
 export function WidgetModal({ isOpen, closeModal, editor, node, options }: WidgetModalProps) {
-    if (isJSONError(node)) {
+    if (isJsonError(node)) {
         console.log(node);
         return null;
     }

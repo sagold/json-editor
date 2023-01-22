@@ -1,5 +1,5 @@
-import { Draft, JSONPointer, JSONError } from 'json-schema-library';
-import { Node, isJSONError, Change } from '../types';
+import { Draft, JsonPointer, JsonError } from 'json-schema-library';
+import { Node, isJsonError, Change } from '../types';
 import gp from '@sagold/json-pointer';
 import { invalidPathError } from '../errors';
 import { updatePath } from './updatePath';
@@ -11,12 +11,12 @@ import { unlinkPath } from './unlinkPath';
 export function move(
     core: Draft,
     rootNode: Node,
-    pointerToArray: JSONPointer,
+    pointerToArray: JsonPointer,
     from: number,
     to: number
-): [JSONError] | [Node, Change[]] {
+): [JsonError] | [Node, Change[]] {
     const result = unlinkPath(rootNode, pointerToArray);
-    if (isJSONError(result)) {
+    if (isJsonError(result)) {
         return [result];
     }
     const [newRoot, arrayNode] = result;

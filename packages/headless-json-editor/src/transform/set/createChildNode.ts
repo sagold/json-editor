@@ -1,5 +1,5 @@
 import { Draft } from 'json-schema-library';
-import { isJSONError, ParentNode, Change, isNode } from '../../types';
+import { isJsonError, ParentNode, Change, isNode } from '../../types';
 import { create } from '../../node/create';
 import { invalidPathError } from '../../errors';
 import { getSchemaOfChild } from './getSchemaOfChild';
@@ -23,7 +23,7 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
     }
 
     const schema = getSchemaOfChild(draft, node, property, value);
-    if (isJSONError(schema)) {
+    if (isJsonError(schema)) {
         return schema;
     }
 

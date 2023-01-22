@@ -410,6 +410,7 @@ _if-then-else_ statement used to switch sub-schemas
     schema={{
       type: 'object',
       required: ['switch'],
+      additionalProperties: false,
       properties: {
         switch: { title: 'Switch', type: 'boolean', default: false }
       },

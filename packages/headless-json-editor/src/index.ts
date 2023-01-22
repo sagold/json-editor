@@ -35,7 +35,7 @@ import {
     ArrayNode,
     BooleanNode,
     Change,
-    JSONSchema,
+    JsonSchema,
     Node,
     NodeType,
     NullNode,
@@ -47,7 +47,7 @@ import {
     isNode,
     isParentNode,
     isValueNode,
-    isJSONError
+    isJsonError
 } from './types';
 
 export {
@@ -61,7 +61,7 @@ export {
     isNode,
     isParentNode,
     isValueNode,
-    isJSONError,
+    isJsonError,
     OnChangePlugin,
     HistoryPlugin
 };
@@ -73,7 +73,7 @@ export type {
     DefaultNodeOptions,
     HeadlessJsonEditorOptions,
     HistoryPluginInstance,
-    JSONSchema,
+    JsonSchema,
     Plugin,
     Node,
     NodeType,

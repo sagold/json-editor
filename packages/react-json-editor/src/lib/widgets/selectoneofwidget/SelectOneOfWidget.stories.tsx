@@ -1,7 +1,7 @@
 import { ComponentStory } from '@storybook/react';
 import { defaultWidgets, useJsonEditor } from '../../../index';
 import { SelectOneOfWidget } from './SelectOneOfWidget';
-import { JSONSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-editor';
+import { JsonSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {
@@ -18,7 +18,7 @@ export default {
 
 type ComponentStoryProps = {
     data: unknown[];
-    schema: JSONSchema;
+    schema: JsonSchema;
     options?: Partial<DefaultNodeOptions>;
 };
 
