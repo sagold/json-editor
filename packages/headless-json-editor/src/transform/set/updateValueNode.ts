@@ -11,6 +11,7 @@ import { getSchemaOfChild } from './getSchemaOfChild';
  * @param parent - parentNode to 'child'
  */
 export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNode, value: any) {
+    // console.log('update', child.pointer, value);
     const targetIndex = getChildNodeIndex(parent, child.property);
     const changeSet: Change[] = [];
     if (typeof child.value === typeof value) {

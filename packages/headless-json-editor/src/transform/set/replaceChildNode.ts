@@ -9,6 +9,7 @@ import { getSchemaOfChild } from './getSchemaOfChild';
  * replaces child node in given parent node
  */
 export function replaceChildNode(core: Draft, parent: ParentNode, child: ParentNode, value: unknown) {
+    // console.log('replace', child.pointer, value);
     const schema = getSchemaOfChild(core, parent, child.property, value);
     if (isJsonError(schema)) {
         return schema;

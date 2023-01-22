@@ -62,7 +62,7 @@ describe('set', () => {
     });
 
     it('should update existing object', () => {
-        const before = create(core, core.getTemplate({})) as ObjectNode;
+        const before = create(core, core.getTemplate({ size: { width: 99, height: 333 } })) as ObjectNode;
         const beforeString = JSON.stringify(before);
 
         const [after, changes] = set(core, before, '#/size', { width: 4, height: 1 });
