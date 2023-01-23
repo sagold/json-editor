@@ -1,6 +1,6 @@
 {
     "name": "@sagold/react-json-editor",
-    "version": "0.20.0",
+    "version": "0.21.0",
     "license": "MIT",
     "type": "module",
     "module": "./dist/es6/src/index.js",
@@ -8,7 +8,7 @@
     "main": "dist/reactJsonEditor.min.js",
     "dependencies": {
         "@semantic-ui-react/component-ref": "*",
-        "headless-json-editor": "*",
+        "headless-json-editor": "^0.21.0",
         "react-is": "*",
         "react-textarea-autosize": "^8.3.4",
         "semantic-ui-css": "^2.4.1",

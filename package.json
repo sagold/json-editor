@@ -1,6 +1,5 @@
 {
     "name": "json-editor",
-    "version": "0.20.0",
     "license": "MIT",
     "private": true,
     "workspaces": [
