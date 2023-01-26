@@ -18,12 +18,14 @@
         "paths": {
             "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"],
             "@sagold/rje-code-widgets": ["packages/rje-code-widgets/src/index.ts"],
+            "@sagold/rje-widgets": ["packages/rje-widgets/src/index.ts"],
             "headless-json-editor": ["packages/headless-json-editor/src/index.ts"]
         }
     },
     "references": [
         { "path": "./packages/headless-json-editor" },
         { "path": "./packages/react-json-editor" },
+        { "path": "./packages/rje-widgets" },
         { "path": "./packages/rje-code-widgets" }
     ],
     "exclude": ["node_modules", "tmp"]

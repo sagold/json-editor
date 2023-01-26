@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-widgets';
 
 <Meta title="Cookbook/ConditionalForms" />
 
@@ -15,6 +16,7 @@ The following example will persist user input, even if the additional user form 
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     options={{ title: false }}
     addOptionalProps={false}
     schema={{

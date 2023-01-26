@@ -10,8 +10,7 @@ import {
     HeadlessJsonEditorOptions
 } from 'headless-json-editor';
 import { useJsonEditor } from '../../useJsonEditor';
-import { defaultWidgets } from '../../../index';
-import { WidgetPlugin } from '../../widgets/decorators';
+import { WidgetPlugin } from '../../decorators';
 import { Widget } from '../widget/Widget';
 import { JsonEditor } from '../../JsonEditor';
 import { forwardRef, useImperativeHandle } from 'react';
@@ -44,7 +43,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         schema,
         data,
         pointer,
-        widgets = defaultWidgets,
+        widgets = [],
         plugins = [RemoteEnumOptionsPlugin],
         onChange,
         options,

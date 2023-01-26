@@ -1,7 +1,7 @@
 import { Node } from 'headless-json-editor';
-import { ErrorWidget } from './widgets/ErrorWidget';
+import { ErrorWidget } from './components/ErrorWidget';
 import { HeadlessJsonEditor, HeadlessJsonEditorOptions, isNode } from 'headless-json-editor';
-import { Widget, WidgetPlugin } from './widgets/decorators';
+import { Widget, WidgetPlugin } from './decorators';
 
 export type JsonEditorOptions = HeadlessJsonEditorOptions & {
     widgets: WidgetPlugin[];

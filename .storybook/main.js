@@ -27,11 +27,12 @@ module.exports = {
             'headless-json-editor',
             'src'
         );
+        config.resolve.alias['@sagold/rje-widgets'] = path.resolve(__dirname, '..', 'packages', 'rje-widgets', 'src');
         config.resolve.alias['@sagold/rje-code-widgets'] = path.resolve(
             __dirname,
             '..',
             'packages',
-            'headless-json-editor',
+            'rje-code-widgets',
             'src'
         );
 

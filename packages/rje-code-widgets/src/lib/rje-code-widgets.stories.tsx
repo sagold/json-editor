@@ -1,9 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { JsonSchema, JsonForm, defaultWidgets, JsonEditor } from '@sagold/react-json-editor';
+import { JsonSchema, JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
 import { useState, useRef } from 'react';
+import { widgets } from '@sagold/rje-widgets';
 import './rje-code-widgets.scss';
 
 const propertySchema = {
@@ -147,7 +148,7 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
                 data={args.data}
                 ref={editor}
                 plugins={[HistoryPlugin]}
-                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
+                widgets={[JsonWidgetPlugin, ...widgets]}
             />
         </div>
     );

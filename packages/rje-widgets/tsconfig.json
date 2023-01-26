@@ -1,0 +1,28 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "./dist/es6",
+        "rootDir": "./",
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": false
+    },
+    "include": ["src/**/*"],
+    "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.mdx", "src/lib/stories/**/*"],
+    "references": [
+        {
+            "path": "../headless-json-editor"
+        },
+        {
+            "path": "../react-json-editor"
+        }
+    ]
+}

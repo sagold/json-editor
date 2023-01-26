@@ -3,6 +3,7 @@ import { data, schema } from './data/features';
 import { errors, json } from 'headless-json-editor';
 import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { useEffect, useRef, useState } from 'react';
+import { widgets } from '@sagold/rje-widgets';
 
 export default {
     title: 'Examples/DefaultWidgets',
@@ -28,6 +29,7 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <JsonForm
+            widgets={widgets}
             ref={editor}
             data={editorData}
             schema={schema}

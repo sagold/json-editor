@@ -8,7 +8,7 @@ import {
     JsonSchema
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
-import { WidgetPlugin } from './widgets/decorators';
+import { WidgetPlugin } from './decorators';
 import { deepEqual } from 'fast-equals';
 
 export type UseJsonEditorOptions = {

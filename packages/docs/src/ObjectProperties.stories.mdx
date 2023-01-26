@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-widgets';
 
 <Meta title="ObjectProperties" />
 
@@ -29,6 +30,7 @@ Per default or with `addOptionalProps` set to `false` only required properties w
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={true}
     schema={{
       type: 'object',
@@ -48,6 +50,7 @@ The following example has two properties defined, but only property `"one"` is r
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     schema={{
       type: 'object',
       required: ['one'],
@@ -64,6 +67,7 @@ Given an input value for property `"two"` will add this property to the form:
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={{ two: 'set on input data' }}
     schema={{
@@ -84,6 +88,7 @@ For additional properties to be added, you have to set `additionalProperties: tr
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={{ two: 'additional property' }}
     schema={{
@@ -102,6 +107,7 @@ If `additionalProperties` is missing, unspecified properties are removed
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={{ two: 'additional property' }}
     schema={{
@@ -119,6 +125,7 @@ Setting a schema for `additionalProperties` adds a validated field corresponding
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     addOptionalProps={false}
     data={{ two: 'additional property' }}
@@ -142,6 +149,7 @@ _oneOf_ statements offer the ability to choose a specific schema for a user form
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     schema={{
       options: { title: false },
       oneOfProperty: 'id',
@@ -183,6 +191,7 @@ The following example has conflicting validation rules, where the last statement
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     schema={{
       type: 'object',
@@ -215,6 +224,7 @@ _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-els
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     liveUpdate={true}
     schema={{
@@ -256,6 +266,7 @@ Dependencies are not added per default
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     data={{}}
     onChange={(data, root) => console.log(data, root)}
     schema={{
@@ -276,6 +287,7 @@ Dependencies are added when they are required by another property which has been
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     data={{ one: 'input value' }}
     addOptionalProps={false}
     schema={{
@@ -299,6 +311,7 @@ Dependent schemas are not added per default for a missing dependent property
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'object',
@@ -322,6 +335,7 @@ Dependent schemas are added if the dependent property is set (`!== undefined`)
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'object',
@@ -348,6 +362,7 @@ _if-then_ statement, adding or removing a schema with its data depending on the 
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'object',
@@ -375,6 +390,7 @@ Same setup as above, but with property `addition` set as required:
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'object',
@@ -405,6 +421,7 @@ _if-then-else_ statement used to switch sub-schemas
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     addOptionalProps={false}
     schema={{

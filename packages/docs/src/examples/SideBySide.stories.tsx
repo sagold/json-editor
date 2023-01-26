@@ -1,13 +1,14 @@
 import { ComponentStory } from '@storybook/react';
-import { defaultWidgets, JsonFormProps, useJsonEditor } from '@sagold/react-json-editor';
+import { JsonFormProps, useJsonEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/features';
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
+import { widgets } from '../../../rje-widgets/src';
 
 function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
     const [node, editor] = useJsonEditor({
         schema,
-        widgets: defaultWidgets,
+        widgets,
         onChange,
         plugins: [RemoteEnumOptionsPlugin],
         data

@@ -1,11 +1,13 @@
 import { useRef } from 'react';
-import { useJsonEditor, defaultWidgets } from '@sagold/react-json-editor';
+import { useJsonEditor } from '@sagold/react-json-editor';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
 import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
+import { widgets } from '@sagold/rje-widgets';
 
 const schema = {
     type: 'object',
+    required: ['title'],
     properties: {
         title: {
             title: 'text',
@@ -41,7 +43,7 @@ export default {
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, editor] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [HistoryPlugin] });
+    const [node, editor] = useJsonEditor({ data, schema, widgets, plugins: [HistoryPlugin] });
     const historyPlugin = useRef<HistoryPluginInstance>(editor.plugin('history') as HistoryPluginInstance);
     const Widget = editor.getWidget(node);
     const history = historyPlugin.current;

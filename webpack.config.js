@@ -42,6 +42,12 @@ const config = {
         globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     externals: {
+        '@sagold/rje-widgets': {
+            commonjs: '@sagold/rje-widgets',
+            commonjs2: '@sagold/rje-widgets',
+            amd: '@sagold/rje-widgets',
+            root: 'rjeWidgets'
+        },
         '@sagold/react-json-editor': {
             commonjs: '@sagold/react-json-editor',
             commonjs2: '@sagold/react-json-editor',

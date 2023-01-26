@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-widgets';
 
 <Meta title="ArrayItems" />
 
@@ -29,6 +30,7 @@ array with fixed elements and `additionaItems=undefined` (equals empty schema ->
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     options={{ title: true }}
     schema={{
@@ -54,6 +56,7 @@ array with fixed elements and `additionaItems=false`
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     addOptionalProps={false}
     data={['first', 'second', 'invalid']}
@@ -82,6 +85,7 @@ array with fixed elements and `additionaItems=true`
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={['first', 'second', 'unknown', 42, { title: 'schema is retrieved from input data' }]}
     schema={{
@@ -106,6 +110,7 @@ array with fixed elements and `additionaItems={ type: "number" }`
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       title: 'Content with additional numbers',
@@ -133,6 +138,7 @@ Array items can contain any supported json-schema. You can set items as simple v
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={[2023]}
     schema={{
@@ -153,6 +159,7 @@ or complex objects
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={[2023]}
     schema={{
@@ -187,6 +194,7 @@ or complex objects
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={[{ type: 'header' }]}
     schema={{
@@ -249,6 +257,7 @@ support for `minItems` and `maxItems` length restrictions:
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'array',
@@ -270,6 +279,7 @@ example: if any number is above 1 the list is restricted to one item, else no it
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     validate={true}
     schema={{
@@ -304,6 +314,7 @@ example: if any number is above 1 the list is restricted to one item, else no it
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     addOptionalProps={false}
     schema={{
@@ -330,6 +341,7 @@ support for `not` schema
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={[123]}
     schema={{
@@ -360,6 +372,7 @@ support for `uniqueItems` schema
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     validate={true}
     addOptionalProps={false}
     data={[1, 2, 2]}

@@ -1,0 +1,8 @@
+/docs
+/node_modules
+/src
+/tests
+.eslintrc.json
+tsconfig.json
+yarn*
+/dist/styles.css

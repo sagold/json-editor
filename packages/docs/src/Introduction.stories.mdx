@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-widgets';
 import { schema } from './examples/data/featureToggleForm';
 import logo from '../../../images/he-full-trans-2000x564.png';
 
@@ -25,6 +26,7 @@ fixing array oneOf support
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     data={[{ type: 'header' }]}
     schema={{
@@ -89,6 +91,7 @@ fixing array oneOf support
 
 <Canvas>
   <JsonForm
+    widgets={widgets}
     addOptionalProps={false}
     schema={{
       type: 'object',

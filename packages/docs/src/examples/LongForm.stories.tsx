@@ -1,6 +1,7 @@
 import { Form } from 'semantic-ui-react';
-import { NavigationWidget, useJsonEditor, defaultWidgets } from '@sagold/react-json-editor';
+import { useJsonEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/longform';
+import { NavigationWidget, widgets } from '@sagold/rje-widgets';
 
 export default {
     title: 'Examples/LargeForm',
@@ -11,7 +12,7 @@ export default {
 };
 
 export const LargeForm = () => {
-    const [node, editor] = useJsonEditor({ data, schema, widgets: defaultWidgets, plugins: [] });
+    const [node, editor] = useJsonEditor({ data, schema, widgets, plugins: [] });
     const WidgetComponent = editor.getWidget(node);
 
     return (
