@@ -37,6 +37,10 @@
         </div>
 
         <script>
+            console.log("headless-json-editor", headlessJsonEditor);
+            console.log("react-json-editor", reactJsonEditor);
+            console.log("react-code-widgets", rjeCodeWidgets);
+
             const dom = document.getElementById("form");
             const root = ReactDOM.createRoot(dom);
             root.render(React.createElement(reactJsonEditor.JsonForm, {

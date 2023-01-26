@@ -10,14 +10,14 @@ const dashedToCamelCase = (v) =>
         return g[1].toUpperCase();
     });
 
-const entry = [`./packages/${PACKAGE_NAME}/src/index.ts`];
+const entry = { main: `./packages/${PACKAGE_NAME}/src/index.ts` };
 if (fs.existsSync(path.resolve(__dirname, `./packages/${PACKAGE_NAME}/src/index.scss`))) {
-    entry.push(`./packages/${PACKAGE_NAME}/src/index.scss`);
+    entry['styles'] = `./packages/${PACKAGE_NAME}/src/index.scss`;
 }
 
-console.log(
-    `package: ${PACKAGE_NAME} - production: ${PRODUCTION} - ${entry.length === 2 ? 'with styles' : 'no styles'}`
-);
+// console.log(
+//     `package: ${PACKAGE_NAME} - production: ${PRODUCTION} - ${entry.length === 2 ? 'with styles' : 'no styles'}`
+// );
 
 const config = {
     entry,
@@ -28,7 +28,14 @@ const config = {
     stats: { children: false },
     output: {
         path: path.resolve(__dirname, 'packages', PACKAGE_NAME, PRODUCTION ? 'dist' : 'dev'),
-        filename: `${dashedToCamelCase(PACKAGE_NAME)}${PRODUCTION ? '.min' : ''}.js`,
+        filename: (entry) => {
+            if (entry.runtime === 'styles') {
+                return `styles.css`;
+            }
+            if (entry.runtime === 'main') {
+                return `${dashedToCamelCase(PACKAGE_NAME)}${PRODUCTION ? '.min' : ''}.js`;
+            }
+        },
         libraryTarget: 'umd',
         library: dashedToCamelCase(PACKAGE_NAME),
         umdNamedDefine: true,
@@ -128,8 +135,13 @@ const config = {
     optimization: {
         minimizer: [new TerserPlugin()]
     },
-
-    plugins: PRODUCTION ? [new MiniCssExtractPlugin({ filename: `${PACKAGE_NAME}.css` })] : []
+    plugins: PRODUCTION
+        ? [
+              new MiniCssExtractPlugin({
+                  filename: `${PACKAGE_NAME}.css`
+              })
+          ]
+        : []
 };
 
 module.exports = config;

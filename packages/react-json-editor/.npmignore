@@ -5,3 +5,4 @@
 .eslintrc.json
 tsconfig.json
 yarn*
+/dist/styles.css
