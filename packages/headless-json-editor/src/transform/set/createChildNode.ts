@@ -11,7 +11,7 @@ function isNumber(value: string) {
 
 /**
  * creates a new child node for the given property. Expects that no child node
- * is present at 'property'
+ * is present at 'property' and that children-array of node is already unlinked
  */
 export function createChildNode(draft: Draft, node: ParentNode, property: string, value: unknown) {
     if (node.type === 'array' && !isNumber(property)) {
@@ -32,14 +32,26 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
     if (isNode(node.children[childIndex])) {
         changeSet.push({ type: 'delete', node: node.children[childIndex] });
     }
-    node.children[childIndex] = create(draft, value, schema, `${node.pointer}/${property}`, node.type === 'array');
+
+    const newNode = create(draft, value, schema, `${node.pointer}/${property}`, node.type === 'array');
     // @change create node
-    changeSet.push({ type: 'create', node: node.children[childIndex] });
+    changeSet.push({ type: 'create', node: newNode });
 
     if (node.type === 'object') {
         // update optional properties
         node.missingProperties = node.missingProperties.filter((prop) => prop !== property);
+        // insert child at correct position
+        const list = node.schema.properties ? Object.keys(node.schema.properties) : node.optionalProperties;
+        const index = list.indexOf(newNode.property);
+        if (index === -1) {
+            node.children[childIndex] = newNode;
+        } else {
+            node.children.splice(index, 0, newNode);
+        }
+
         changeSet.unshift({ type: 'update', node: node });
+    } else {
+        node.children[childIndex] = newNode;
     }
 
     return changeSet;

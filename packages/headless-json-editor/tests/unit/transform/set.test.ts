@@ -180,6 +180,29 @@ describe('set', () => {
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['list']);
         });
+
+        it('should add optional properties in the correct order', () => {
+            core.setSchema({
+                type: 'object',
+                properties: {
+                    a: { type: 'string' },
+                    b: { type: 'string' },
+                    c: { type: 'string' }
+                }
+            });
+            const before = create(
+                core,
+                core.getTemplate({ a: '1', c: '3' }, core.getSchema(), { addOptionalProps: false })
+            ) as ObjectNode;
+            // precondition
+            assert.deepEqual(before.missingProperties, ['b']);
+
+            const [after, changes] = set(core, before, '/b', '2');
+
+            assert(after.type !== 'error');
+            assert.deepEqual(after.children.length, 3);
+            assert.deepEqual(after.children[1].property, 'b');
+        });
     });
 
     describe('array', () => {
