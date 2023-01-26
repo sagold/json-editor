@@ -23,11 +23,14 @@ install
 
 ```tsx
 import { JsonForm } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-widgets';
+import '@sagold/rje-widgets/rje-widgets.css';
 import '@sagold/react-json-editor/react-json-editor.css';
 
 function MyForm({ schema, data }) {
   return (
     <JsonForm
+      widgets={widgets}
       schema={schema}
       data={data}
       onChange={(data) => {

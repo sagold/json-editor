@@ -25,13 +25,28 @@ yarn add headless-json-editor
 [![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
 
-Simple and extensible react component capable of using json-schema to declaratively build and customize user forms. _react-json-editor_ comes with a set of default widgets using semantic-ui that render a user form for all basic json datatypes.
+Simple and extensible react component capable of using json-schema to declaratively build and customize user forms.
 
 ```sh
 yarn add @sagold/react-json-editor
 ```
 
 - read more in package [react-json-editor](./packages/react-json-editor)
+- [demo page](https://sagold.github.io/json-editor)
+
+
+## [rje-widgets](./packages/rje-widgets)
+
+[![Npm package version](https://badgen.net/npm/v/@sagold/rje-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-widgets)
+![Types](https://badgen.net/npm/types/@sagold/rje-widgets)
+
+Set of default widgets for _react-json-editor_ using _semantic-ui_ that render a user form for all basic json datatypes.
+
+```sh
+yarn add @sagold/rje-widgets
+```
+
+- read more in package [react-json-editor](./packages/rje-widgets)
 - [demo page](https://sagold.github.io/json-editor)
 
 
