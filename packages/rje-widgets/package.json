@@ -8,7 +8,7 @@
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
         "@semantic-ui-react/component-ref": "*",
-        "react-json-editor": "^0.23.0",
+        "@sagold/react-json-editor": "^0.23.0",
         "react-is": "*",
         "react-textarea-autosize": "^8.3.4",
         "semantic-ui-css": "^2.5.0",
