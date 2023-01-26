@@ -1,6 +1,6 @@
 {
     "name": "headless-json-editor",
-    "version": "0.21.1",
+    "version": "0.21.2",
     "license": "MIT",
     "type": "module",
     "module": "./dist/es6/src/index.js",
