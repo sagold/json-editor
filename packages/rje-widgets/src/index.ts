@@ -1,3 +1,5 @@
+// shortcut with widgets assigned
+export { JsonForm } from './lib/components/JsonForm';
 // widgets
 export { widgets } from './lib/widgets/index';
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
