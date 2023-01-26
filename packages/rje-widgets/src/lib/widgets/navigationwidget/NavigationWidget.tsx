@@ -4,7 +4,7 @@ import { widget } from '@sagold/react-json-editor';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
 import { JsonEditor } from '@sagold/react-json-editor';
 import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJsonError } from 'headless-json-editor';
+import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJsonError } from '@sagold/react-json-editor';
 import { useState, useRef, useEffect } from 'react';
 
 function scrollTo(node: Node) {

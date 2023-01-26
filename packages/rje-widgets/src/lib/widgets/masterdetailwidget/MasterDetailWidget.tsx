@@ -3,7 +3,7 @@
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 import { get as getPointer } from '@sagold/json-pointer';
 import { Button, SemanticCOLORS } from 'semantic-ui-react';
-import { DefaultNodeOptions, ParentNode, isParentNode, Node, json, get } from 'headless-json-editor';
+import { DefaultNodeOptions, ParentNode, isParentNode, Node, json, get } from '@sagold/react-json-editor';
 import { useState } from 'react';
 import { WidgetModal } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';

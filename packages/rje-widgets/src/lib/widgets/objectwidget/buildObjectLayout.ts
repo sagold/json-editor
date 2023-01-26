@@ -1,4 +1,4 @@
-import { ObjectNode } from 'headless-json-editor';
+import { ObjectNode } from '@sagold/react-json-editor';
 import { SemanticWIDTHS } from 'semantic-ui-react';
 
 const GRID_COLUMNS = 16 as const;

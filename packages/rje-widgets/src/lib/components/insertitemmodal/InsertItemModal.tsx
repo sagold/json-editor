@@ -1,6 +1,5 @@
-import { ArrayNode } from 'headless-json-editor';
 import { Button, Modal, Dropdown, DropdownProps } from 'semantic-ui-react';
-import { JsonEditor } from '@sagold/react-json-editor';
+import { JsonEditor, ArrayNode } from '@sagold/react-json-editor';
 import { useState } from 'react';
 
 export type InsertItemModalProps = {

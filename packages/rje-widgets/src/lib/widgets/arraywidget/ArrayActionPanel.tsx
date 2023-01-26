@@ -1,4 +1,4 @@
-import { ArrayNode } from 'headless-json-editor';
+import { ArrayNode } from '@sagold/react-json-editor';
 import { Button, Popup, List } from 'semantic-ui-react';
 import { JsonEditor } from '@sagold/react-json-editor';
 import { useState } from 'react';

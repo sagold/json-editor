@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { JsonSchema, JsonForm, JsonEditor } from '@sagold/react-json-editor';
+import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
 import { useState, useRef } from 'react';
 import { widgets } from '@sagold/rje-widgets';

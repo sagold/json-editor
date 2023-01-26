@@ -1,8 +1,8 @@
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
+import { classNames } from '../classNames';
 import { Form } from 'semantic-ui-react';
-import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
-import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
+import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 
 export type CodeWidgetOptions = {
     setup?: ReactCodeMirrorProps['basicSetup'];

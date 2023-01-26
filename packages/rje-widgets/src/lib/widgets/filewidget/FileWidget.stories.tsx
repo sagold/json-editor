@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { FileWidget } from './FileWidget';
-import { RemoteEnumOptionsPlugin, get, StringNode } from 'headless-json-editor';
+import { RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {

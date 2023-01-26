@@ -1,5 +1,5 @@
 import { WidgetPlugin } from '@sagold/react-json-editor';
-import { Node } from 'headless-json-editor';
+import { Node } from '@sagold/react-json-editor';
 
 export const NullWidget = ({ node }: { node: Node }) => {
     const { description, title, pointer } = node.options;

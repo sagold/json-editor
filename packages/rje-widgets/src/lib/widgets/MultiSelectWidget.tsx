@@ -1,4 +1,4 @@
-import { StringNode, Node, json } from 'headless-json-editor';
+import { StringNode, Node, json } from '@sagold/react-json-editor';
 import { Form, Dropdown, DropdownItemProps, Message } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 

@@ -1,36 +1,32 @@
 // settings
-export { setErrorMessages } from './settings';
+import { setErrorMessages } from './settings';
 // create
 import { create, getOptions, DefaultNodeOptions } from './node/create';
-export { json } from './node/json';
+import { json } from './node/json';
 // traversal
-export { errors } from './node/errors';
-export { find } from './node/find';
-export { flat } from './node/flat';
-export { get } from './node/get';
-export { trace } from './node/trace';
-export { getChildNode } from './node/getChildNode';
+import { errors } from './node/errors';
+import { find } from './node/find';
+import { flat } from './node/flat';
+import { get } from './node/get';
+import { trace } from './node/trace';
+import { getChildNode } from './node/getChildNode';
 // transformation
-export { set } from './transform/set';
-export { remove } from './transform/remove';
-export { move } from './transform/move';
-export { unlinkAll } from './transform/unlinkAll';
+import { set } from './transform/set';
+import { remove } from './transform/remove';
+import { move } from './transform/move';
+import { unlinkAll } from './transform/unlinkAll';
 import { updateSchema, updateOptions } from './transform/update';
-// convenience: append, prepend, insert
-
 // hje
 import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin } from './HeadlessJsonEditor';
-
 // plugins
-export { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
-export { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
+import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
+import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
 import { OnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
 import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
-
 // validation
-export { updateErrors } from './validate/updateErrors';
+import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
-
+// types and type guards
 import {
     ArrayNode,
     BooleanNode,
@@ -52,18 +48,33 @@ import {
 
 export {
     create,
+    errors,
+    EventLoggerPlugin,
+    find,
+    flat,
+    get,
+    getChildNode,
     getErrors,
     getOptions,
-    splitErrors,
-    updateOptions,
-    updateSchema,
     HeadlessJsonEditor,
+    HistoryPlugin,
+    isJsonError,
     isNode,
     isParentNode,
     isValueNode,
-    isJsonError,
+    json,
+    move,
     OnChangePlugin,
-    HistoryPlugin
+    RemoteEnumOptionsPlugin,
+    remove,
+    set,
+    setErrorMessages,
+    splitErrors,
+    trace,
+    unlinkAll,
+    updateErrors,
+    updateOptions,
+    updateSchema
 };
 
 export type {

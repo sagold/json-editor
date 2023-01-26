@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { ObjectWidget, ObjectOptions } from './ObjectWidget';
-import { JsonSchema, ArrayNode } from 'headless-json-editor';
+import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {

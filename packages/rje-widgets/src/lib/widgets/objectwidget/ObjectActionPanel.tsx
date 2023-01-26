@@ -1,4 +1,4 @@
-import { ObjectNode } from 'headless-json-editor';
+import { ObjectNode } from '@sagold/react-json-editor';
 import { Button, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { useState } from 'react';
 import { WidgetModal } from '../../components/widgetmodal/WidgetModal';

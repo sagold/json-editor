@@ -1,4 +1,4 @@
-import { NumberNode, DefaultNodeOptions } from 'headless-json-editor';
+import { NumberNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { WidgetPlugin } from '@sagold/react-json-editor';
 import { Form, SemanticICONS, Input, Label /*, SemanticShorthandItem, LabelProps*/ } from 'semantic-ui-react';
 import { widget } from '@sagold/react-json-editor';

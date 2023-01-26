@@ -1,5 +1,5 @@
 import { WidgetPlugin } from '@sagold/react-json-editor';
-import { json, Node } from 'headless-json-editor';
+import { json, Node } from '@sagold/react-json-editor';
 
 export const UnknownWidget = ({ node }: { node: Node }) => (
     <div data-type="unknown" data-id={node.pointer} style={{ background: 'rgb(208, 120, 132)', padding: '8px' }}>

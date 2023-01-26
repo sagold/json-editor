@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { SelectOneOfWidget } from './SelectOneOfWidget';
-import { JsonSchema, ParentNode, Node, DefaultNodeOptions } from 'headless-json-editor';
+import { JsonSchema, ParentNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { Form } from 'semantic-ui-react';
 
 export default {

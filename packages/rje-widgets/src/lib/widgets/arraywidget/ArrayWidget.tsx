@@ -1,15 +1,15 @@
-import Sortable from 'sortablejs';
-import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { Button, Icon, SemanticCOLORS } from 'semantic-ui-react';
-import { JsonEditor, widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
-import { useState, useRef, useEffect } from 'react';
-import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
-import { ParentHeader } from '../../components/parentheader/ParentHeader';
-import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
 import Ref from '@semantic-ui-react/component-ref';
-import { ValidationErrors } from '../../components/ValidationErrors';
+import Sortable from 'sortablejs';
 import { ArrayActionPanel } from './ArrayActionPanel';
+import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
+import { Button, Icon, SemanticCOLORS } from 'semantic-ui-react';
+import { classNames } from '../../classNames';
+import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
+import { JsonEditor, widget, WidgetPlugin, ArrayNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { ParentHeader } from '../../components/parentheader/ParentHeader';
+import { useState, useRef, useEffect } from 'react';
+import { ValidationErrors } from '../../components/ValidationErrors';
+import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts

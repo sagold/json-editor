@@ -1,5 +1,5 @@
 import { Segment, Message } from 'semantic-ui-react';
-import { JsonError } from 'json-schema-library';
+import { JsonError } from '@sagold/react-json-editor';
 
 export function ValidationErrors({ errors }: { errors: JsonError[] }) {
     if (errors.length === 0) {

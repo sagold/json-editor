@@ -1,8 +1,7 @@
-import { ObjectNode, getChildNode } from 'headless-json-editor';
+import { ObjectNode, getChildNode } from '@sagold/react-json-editor';
 import { Grid, Button } from 'semantic-ui-react';
 import { buildObjectLayout } from './buildObjectLayout';
-import { Widget } from '../../components/widget/Widget';
-import { JsonEditor } from '@sagold/react-json-editor';
+import { Widget, JsonEditor } from '@sagold/react-json-editor';
 import { ObjectOptions } from './ObjectWidget';
 
 type ObjectPropertiesProps = {

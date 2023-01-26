@@ -1,7 +1,6 @@
-import { JsonEditor } from '@sagold/react-json-editor';
 import { Button, Modal, Form } from 'semantic-ui-react';
-import { Node } from 'headless-json-editor';
-import { JsonError, isJsonError } from 'json-schema-library';
+import { JsonEditor, Node } from '@sagold/react-json-editor';
+import { JsonError, isJsonError } from '@sagold/react-json-editor';
 
 export type WidgetModalSize = 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen' | undefined;
 

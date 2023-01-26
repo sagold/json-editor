@@ -1,7 +1,7 @@
 import { ArrayWidget, ArrayOptions } from './ArrayWidget';
 import { ComponentStory } from '@storybook/react';
 import { Form } from 'semantic-ui-react';
-import { JsonSchema, ArrayNode } from 'headless-json-editor';
+import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 

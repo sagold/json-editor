@@ -7,11 +7,6 @@
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/reactJsonEditor.min.js",
     "dependencies": {
-        "@semantic-ui-react/component-ref": "*",
-        "headless-json-editor": "^0.21.0",
-        "react-is": "*",
-        "react-textarea-autosize": "^8.3.4",
-        "semantic-ui-css": "^2.5.0",
-        "semantic-ui-react": "^2.1.4"
+        "headless-json-editor": "^0.21.0"
     }
 }

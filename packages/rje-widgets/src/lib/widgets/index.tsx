@@ -1,6 +1,5 @@
 import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
 import { BooleanWidgetPlugin } from './BooleanWidget';
-import { ErrorWidgetPlugin } from './ErrorWidget';
 import { FileWidgetPlugin } from './filewidget/FileWidget';
 import { MasterDetailWidgetPlugin } from './masterdetailwidget/MasterDetailWidget';
 import { MultiSelectWidgetPlugin } from './MultiSelectWidget';
@@ -37,6 +36,5 @@ export const widgets: WidgetPlugin[] = [
     NumberWidgetPlugin,
     BooleanWidgetPlugin,
     NullWidgetPlugin,
-    ErrorWidgetPlugin,
     UnknownWidgetPlugin
 ];

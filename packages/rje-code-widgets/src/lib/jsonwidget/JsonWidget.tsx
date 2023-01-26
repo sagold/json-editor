@@ -1,14 +1,22 @@
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
+import { classNames } from '../classNames';
 import { Form, Label } from 'semantic-ui-react';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
-import { jsonSchemaLinter } from './jsonSchemaLinter';
-import { linter, lintGutter } from '@codemirror/lint';
-import { StringNode, ParentNode, json, DefaultNodeOptions, JsonSchema } from 'headless-json-editor';
-import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
-import { useState, useCallback, useMemo } from 'react';
-import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
-import { jsonSchemaTooltip } from './jsonSchemaTooltip';
 import { jsonSchemaCompletion } from './jsonSchemaCompletion';
+import { jsonSchemaLinter } from './jsonSchemaLinter';
+import { jsonSchemaTooltip } from './jsonSchemaTooltip';
+import { linter, lintGutter } from '@codemirror/lint';
+import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
+import { useState, useCallback, useMemo } from 'react';
+import {
+    widget,
+    WidgetPlugin,
+    StringNode,
+    ParentNode,
+    json,
+    DefaultNodeOptions,
+    JsonSchema
+} from '@sagold/react-json-editor';
 
 export const JsonWidget = (props) => {
     if (props.node.schema.type === 'string') {

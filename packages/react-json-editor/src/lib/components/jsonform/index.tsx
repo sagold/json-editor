@@ -1,4 +1,3 @@
-import { Form } from 'semantic-ui-react';
 import {
     RemoteEnumOptionsPlugin,
     JsonSchema,
@@ -14,9 +13,6 @@ import { WidgetPlugin } from '../../decorators';
 import { Widget } from '../widget/Widget';
 import { JsonEditor } from '../../JsonEditor';
 import { forwardRef, useImperativeHandle } from 'react';
-
-// import { createContext } from 'react';
-// export const ModalContext = createContext({});
 
 export type JsonFormProps = {
     schema: JsonSchema;
@@ -76,14 +72,14 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         const specificRootNode = get(rootNode, pointer);
         if (isJsonError(specificRootNode)) {
             console.error(`There is no node at '${pointer}', returning empty form`);
-            return <Form error />;
+            return <div className={`ui error form${style ? ` ${style}` : ''}`} />;
         }
         node = specificRootNode;
     }
 
     return (
-        <Form error style={style}>
+        <div className={`ui error form${style ? ` ${style}` : ''}`}>
             <Widget node={node} editor={instance} options={options} />
-        </Form>
+        </div>
     );
 });

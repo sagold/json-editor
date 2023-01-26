@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { MasterDetailWidget } from './MasterDetailWidget';
-import { RemoteEnumOptionsPlugin, ParentNode } from 'headless-json-editor';
+import { RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

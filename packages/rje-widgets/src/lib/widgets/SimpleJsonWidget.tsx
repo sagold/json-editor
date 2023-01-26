@@ -1,4 +1,4 @@
-import { StringNode, ParentNode, json } from 'headless-json-editor';
+import { StringNode, ParentNode, json } from '@sagold/react-json-editor';
 import { Form } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 import TextareaAutosize from 'react-textarea-autosize';

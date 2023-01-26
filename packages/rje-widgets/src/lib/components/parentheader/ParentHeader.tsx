@@ -1,7 +1,7 @@
+import { classNames } from '../../classNames';
+import { DefaultNodeOptions, Node } from '@sagold/react-json-editor';
 import { Segment, Header, SemanticCOLORS } from 'semantic-ui-react';
-import { DefaultNodeOptions, Node } from 'headless-json-editor';
 import { split } from '@sagold/json-pointer';
-import { classNames } from '@sagold/react-json-editor';
 
 function getNodeDepth(node: Node, max = 4) {
     const depth = split(node.pointer).length;

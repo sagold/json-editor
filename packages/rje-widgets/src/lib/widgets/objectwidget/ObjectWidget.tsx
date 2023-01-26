@@ -1,13 +1,13 @@
-import { ObjectNode, DefaultNodeOptions } from 'headless-json-editor';
 import { Button, Card, Icon, SemanticCOLORS } from 'semantic-ui-react';
-import { useState } from 'react';
-import { ObjectLayout } from './buildObjectLayout';
-import { widget, WidgetPlugin, classNames } from '@sagold/react-json-editor';
-import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
-import { ParentHeader } from '../../components/parentheader/ParentHeader';
+import { classNames } from '../../classNames';
 import { ObjectActionPanel } from './ObjectActionPanel';
-import { ValidationErrors } from '../../components/ValidationErrors';
+import { ObjectLayout } from './buildObjectLayout';
 import { ObjectProperties } from './ObjectProperties';
+import { ParentHeader } from '../../components/parentheader/ParentHeader';
+import { useState } from 'react';
+import { ValidationErrors } from '../../components/ValidationErrors';
+import { widget, WidgetPlugin, ObjectNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
 
 export type ObjectOptions = {
     /** additional classnames for object editor */

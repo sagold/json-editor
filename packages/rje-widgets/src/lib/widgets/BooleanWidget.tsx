@@ -1,5 +1,5 @@
 import { Form, Checkbox } from 'semantic-ui-react';
-import { BooleanNode, DefaultNodeOptions } from 'headless-json-editor';
+import { BooleanNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { WidgetPlugin, widget } from '@sagold/react-json-editor';
 
 export type BooleanOptions = {

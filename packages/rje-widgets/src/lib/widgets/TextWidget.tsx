@@ -1,4 +1,4 @@
-import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
+import { StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { Form, Label } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 import TextareaAutosize from 'react-textarea-autosize';

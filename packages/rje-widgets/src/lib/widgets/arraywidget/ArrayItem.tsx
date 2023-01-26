@@ -1,7 +1,5 @@
-import { Node } from 'headless-json-editor';
 import { Button, Card, Popup, Icon } from 'semantic-ui-react';
-import { JsonEditor } from '@sagold/react-json-editor';
-import { Widget } from '../../components/widget/Widget';
+import { JsonEditor, Widget, Node } from '@sagold/react-json-editor';
 
 export type ArrayItemProps = {
     editor: JsonEditor;

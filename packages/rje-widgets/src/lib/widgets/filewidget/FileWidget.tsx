@@ -1,7 +1,6 @@
-import { StringNode, DefaultNodeOptions } from 'headless-json-editor';
 import { Form, Button, Message, Input, Icon, Label, Item, SemanticICONS } from 'semantic-ui-react';
-import { widget, WidgetPlugin } from '@sagold/react-json-editor';
-import { render } from '../../../render';
+import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { render } from '../../render';
 import { deepEqual } from 'fast-equals';
 import { useState } from 'react';
 
