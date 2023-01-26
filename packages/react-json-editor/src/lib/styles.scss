@@ -93,20 +93,6 @@
     padding: 0.75em 1em;
 }
 
-.ed-object-item {
-    display: flex;
-    & > div {
-        flex-grow: 1;
-    }
-    .ed-object-item__actions {
-        flex-grow: 0;
-        align-self: center;
-        button.ui.button {
-            box-shadow: none;
-        }
-    }
-}
-
 .ed-array__items--default .with-drag-handle {
     padding-left: 10px;
 }

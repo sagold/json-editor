@@ -51,7 +51,8 @@ DefaultWidget.args = {
         required: ['propertyString'],
         properties: {
             propertyString: { type: 'string' },
-            optionalProperty: { type: 'number' }
+            optionalProperty: { type: 'number' },
+            description: { type: 'string' }
         }
     }
 };

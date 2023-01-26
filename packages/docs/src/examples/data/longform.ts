@@ -189,7 +189,7 @@ export const schema: JSONSchema = {
             format: 'table',
             options: {
                 layout: {
-                    type: 'cards'
+                    // type: 'cards'
                 }
             },
             items: {
