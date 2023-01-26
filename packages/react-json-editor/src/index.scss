@@ -13,26 +13,6 @@
     margin-top: 0.15em;
 }
 
-/* fix: button in header */
-.ed-header__actions button:last-child {
-    margin-right: 0;
-}
-
-/* fix: padding in header */
-.ed-header .header,
-.ed-header .segment {
-    margin-bottom: 0;
-    padding-right: 0;
-}
-
-/* adjust: header with icon to be aligned with other contents */
-.ed-header .segment.with-icon {
-    padding-left: 0.3em;
-    .sub.header {
-        padding-left: 2.7em;
-    }
-}
-
 /* adjust: description following form field */
 .ui.form .ed-value .field {
     margin-bottom: 4px;

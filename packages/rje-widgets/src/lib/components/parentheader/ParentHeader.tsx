@@ -32,7 +32,7 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
     }
 
     return (
-        <div className="ed-header">
+        <div className="rje-header">
             <Segment
                 basic
                 clearing
@@ -47,7 +47,7 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
                     {description && <Header.Subheader>{description}</Header.Subheader>}
                 </Header>
                 {children && (
-                    <div className="ed-header__actions" style={{ float: 'right' }}>
+                    <div className="rje-header__actions" style={{ float: 'right' }}>
                         {children}
                     </div>
                 )}
