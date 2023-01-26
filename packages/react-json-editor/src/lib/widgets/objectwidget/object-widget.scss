@@ -5,11 +5,15 @@
 .rje-object__options {
     .item .item,
     .item .content {
-        padding: 4px;
+        padding: 2px 4px 4px 4px;
+    }
+
+    em {
+        opacity: 0.6;
     }
 }
 
-.ed-object-item__actions {
+.rje-object__actions {
     line-height: 2.5em;
     button.ui.button {
         box-shadow: none;
@@ -24,13 +28,14 @@
     }
 }
 
-.ed-object-item {
+.rje-object__property {
     display: flex;
+    align-items: baseline;
     & > div {
         flex-grow: 1;
     }
-    .ed-object-item__actions {
+    .rje-object__actions {
         flex-grow: 0;
-        align-self: flex-start;
+        // align-self: flex-start;
     }
 }

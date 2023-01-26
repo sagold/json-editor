@@ -1,6 +1,50 @@
 {
-    "root": true,
-    "ignorePatterns": ["**/*"],
-    "plugins": [],
-    "overrides": []
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript",
+        "plugin:no-unsanitized/DOM",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended"
+    ],
+    "globals": {
+        "__DEVELOPMENT__": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": ["@typescript-eslint", "import", "no-unsanitized", "react", "react-hooks"],
+    "rules": {
+        // Lot's of complaints about the way we use PropTypes currently. Can be enabled again when prop-types dependency is removed.
+        "import/no-named-as-default-member": "off",
+        // Re-enable when typescript is used throughout the whole project source code
+        "@typescript-eslint/no-explicit-any": "off",
+        // Allow while transitioning to typescript
+        "@typescript-eslint/ban-ts-comment": "off",
+        // Allows to omit properties from an object by using destructuring
+        "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+    },
+    "settings": {
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+        },
+        "import/resolver": {
+            "typescript": {
+                // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+                "alwaysTryTypes": true
+            }
+        },
+        "react": {
+            "version": "detect"
+        }
+    }
 }

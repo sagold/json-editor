@@ -56,3 +56,25 @@ DefaultWidget.args = {
         }
     }
 };
+
+export const NestedObjectWidget = Template.bind({});
+NestedObjectWidget.args = {
+    options,
+    schema: {
+        type: 'object',
+        title: 'Nested Objects',
+        description: '',
+        required: ['description', 'object'],
+        properties: {
+            description: { type: 'string' },
+            object: {
+                type: 'object',
+                properties: {
+                    title: { type: 'string' },
+                    caption: { type: 'string' }
+                }
+            },
+            optionalProperty: { type: 'number' }
+        }
+    }
+};

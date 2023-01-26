@@ -24,8 +24,6 @@ export function ArrayItemDefault({
     optional,
     options = {}
 }: ArrayItemProps) {
-    // options.title = undefined;
-    // options.description = undefined;
     return (
         <div data-type="array-item" className={['array-item', withDragHandle ? 'with-drag-handle' : ''].join(' ')}>
             {withDragHandle && (

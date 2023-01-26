@@ -13,7 +13,7 @@
         "markdown-to-jsx": "^7.1.7"
     },
     "peerDependencies": {
-        "@sagold/react-json-editor": "^0.21.0",
+        "@sagold/react-json-editor": "^0.22.0",
         "headless-json-editor": "^0.21.0",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-react": "^2.1.3"

@@ -1,15 +1,17 @@
 import Sortable from 'sortablejs';
 import { ArrayNode, Node, DefaultNodeOptions } from 'headless-json-editor';
-import { Button, Icon, Message, SemanticCOLORS } from 'semantic-ui-react';
+import { Button, Icon, SemanticCOLORS } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '../decorators';
 import { JsonEditor } from '../../JsonEditor';
 import { useState, useRef, useEffect } from 'react';
 import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { WidgetModal, WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
+import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
 import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
 import { classNames } from '../../classNames';
 import Ref from '@semantic-ui-react/component-ref';
+import { ValidationErrors } from '../../components/ValidationErrors';
+import { ArrayActionPanel } from './ArrayActionPanel';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -31,6 +33,10 @@ export type ArrayOptions = {
         /** if true, will update on each change if input is a valid json format */
         liveUpdate?: boolean;
     };
+    /** Is set internally to true to add a delete option for this object. */
+    isOptional?: boolean;
+    /** set to true to show inline button at the end of the array to add another item */
+    inlineAddItemOption?: boolean;
     /** ui layout options for array */
     layout?: {
         /** layout of array children, defaults */
@@ -64,14 +70,8 @@ function createOnSortEnd(editor: JsonEditor, node: Node) {
 }
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
-    if (!Array.isArray(node.children)) {
-        console.log('Invalid array node', node);
-        return null;
-    }
-
-    const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const [openModal, setModalOpen] = useState<boolean>(false);
-    const [isEditModalOpen, openEditModal] = useState<boolean>(false);
+    const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     let sortable = options.sortable;
     if (sortable == null) {
         sortable = { enabled: false };
@@ -108,9 +108,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
     const minItems = node.schema.minItems || 0;
     const { title, description, collapsed, editJson = {} } = options;
-
     const isDeleteEnabled = minItems < node.children.length;
-
     let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
     if (
         Array.isArray(node.schema.items) &&
@@ -140,20 +138,17 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         )
                     }
                 >
-                    <Button basic icon="add" onClick={insertItem} disabled={!isAddEnabled} />
-                    {editJson.enabled && <Button basic icon="edit outline" onClick={() => openEditModal(true)} />}
+                    <ArrayActionPanel
+                        editor={editor}
+                        node={node}
+                        options={options}
+                        isAddEnabled={isAddEnabled}
+                        insertItem={insertItem}
+                    />
                 </ParentHeader>
             )}
 
-            {node.errors.length > 0 && (
-                <Message error>
-                    <Message.List>
-                        {node.errors.map((e) => (
-                            <Message.Item key={e.message}>{e.message}</Message.Item>
-                        ))}
-                    </Message.List>
-                </Message>
-            )}
+            <ValidationErrors errors={node.errors} />
 
             <Ref innerRef={ref}>
                 <div className={`ed-array__items ed-array__items--${options.layout?.type ?? 'default'}`}>
@@ -185,18 +180,12 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                               )))}
                 </div>
             </Ref>
-
-            <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
-
-            {editJson.enabled && (
-                <WidgetModal
-                    editor={editor}
-                    node={node}
-                    options={{ modalSize: editJson.modalSize, ...options, widget: 'json' }}
-                    isOpen={isEditModalOpen}
-                    closeModal={() => openEditModal(false)}
-                />
+            {options.inlineAddItemOption !== false && (
+                <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
+                    <Button icon="add" size="mini" color="black" onClick={insertItem} />
+                </div>
             )}
+            <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
         </div>
     );
 });
