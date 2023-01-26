@@ -8,7 +8,7 @@
     "scripts": {
         "bump": "./tools/bump.js",
         "publish": "./tools/publish.js",
-        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn code:dist; yarn sb:dist",
+        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn code:dist; yarn docs:dist",
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
         "hje:bundle": "NODE_ENV=production PACKAGE_NAME=headless-json-editor webpack",
         "hje:ts": "(cd packages/headless-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
@@ -21,8 +21,8 @@
         "code:bundle": "NODE_ENV=production PACKAGE_NAME=rje-code-widgets webpack",
         "code:ts": "(cd packages/rje-code-widgets && tsc --build .)",
         "code:analyze": "mkdir tmp; PACKAGE_NAME=rje-code-widgets webpack --profile --json > tmp/rje-cw-stats.json; webpack-bundle-analyzer tmp/rje-cw-stats.json",
-        "sb": "start-storybook -p 6006",
-        "sb:dist": "build-storybook --output-dir ./docs",
+        "docs": "start-storybook -p 6006",
+        "docs:dist": "build-storybook --output-dir ./docs",
         "test": "jest --maxWorkers=2",
         "test:coverage": "yarn test --collect-coverage",
         "test:ci": "jest --maxWorkers=2 --ci --reporters=default --reporters=jest-junit"
