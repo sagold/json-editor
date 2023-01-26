@@ -192,7 +192,7 @@ export class HeadlessJsonEditor {
 
         const [state, changes] = set(this.draft, this.state, pointer, value);
         if (isJsonError(state)) {
-            console.error(`error setting '${pointer}' = ${value}`);
+            console.error(`error setting '${pointer}' = ${JSON.stringify(value)}`);
             console.log(state);
             return this.state;
         }

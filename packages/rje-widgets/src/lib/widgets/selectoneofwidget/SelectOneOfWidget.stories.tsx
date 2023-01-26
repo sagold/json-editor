@@ -58,6 +58,7 @@ DefaultEditor.args = {
                     {
                         type: 'object',
                         title: 'first option',
+                        required: ['type', 'title'],
                         properties: {
                             type: { type: 'string', const: 'first' },
                             title: { type: 'string', title: 'header 1' }
@@ -66,6 +67,7 @@ DefaultEditor.args = {
                     {
                         type: 'object',
                         title: 'second option',
+                        required: ['type', 'title'],
                         properties: {
                             type: { type: 'string', const: 'second' },
                             title: { type: 'string', title: 'header 2' }
