@@ -1,17 +1,17 @@
+import { WidgetPlugin } from '@sagold/react-json-editor';
 import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
-import { BooleanWidgetPlugin } from './BooleanWidget';
+import { BooleanWidgetPlugin } from './booleanwidget/BooleanWidget';
 import { FileWidgetPlugin } from './filewidget/FileWidget';
 import { MasterDetailWidgetPlugin } from './masterdetailwidget/MasterDetailWidget';
-import { MultiSelectWidgetPlugin } from './MultiSelectWidget';
-import { NullWidgetPlugin } from './NullWidget';
-import { NumberWidgetPlugin } from './NumberWidget';
+import { MultiSelectWidgetPlugin } from './multiselectwidget/MultiSelectWidget';
+import { NullWidgetPlugin } from './nullwidget/NullWidget';
+import { NumberWidgetPlugin } from './numberwidget/NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
 import { SelectOneOfWidgetPlugin } from './selectoneofwidget/SelectOneOfWidget';
-import { StringWidgetPlugin, SelectWidget } from './StringWidget';
-import { TextWidgetPlugin } from './TextWidget';
-import { SimpleJsonWidgetPlugin } from './SimpleJsonWidget';
-import { UnknownWidgetPlugin } from './UnknownWidget';
-import { WidgetPlugin } from '@sagold/react-json-editor';
+import { StringWidgetPlugin, SelectWidget } from './stringwidget/StringWidget';
+import { TextWidgetPlugin } from './textwidget/TextWidget';
+import { SimpleJsonWidgetPlugin } from './simplejsonwidget/SimpleJsonWidget';
+import { UnknownWidgetPlugin } from './unknownwidget/UnknownWidget';
 
 export const widgets: WidgetPlugin[] = [
     {
