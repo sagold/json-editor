@@ -19,10 +19,15 @@ export function WidgetModal({ isOpen, closeModal, editor, node, options }: Widge
         console.log(node);
         return null;
     }
+
+    // @todo for some reason title is a boolean sometimes
+    let title = options?.title ?? node.options.title;
+    title = title === true ? false : title;
+
     const Widget = editor.getWidget(node, options);
     return (
         <Modal open={isOpen} onClose={closeModal} size={options.modalSize}>
-            <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>
+            {title && <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>}
             <Modal.Content scrolling>
                 <Form error style={{ maxWidth: 'none' }}>
                     <Widget node={node} editor={editor} options={{ ...options, title: undefined }} />

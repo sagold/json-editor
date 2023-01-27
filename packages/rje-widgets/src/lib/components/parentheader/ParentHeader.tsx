@@ -27,8 +27,9 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
     const { title, description, header = {} } = options;
     const depth = getNodeDepth(node);
 
-    if (!title && !description && !icon && !children) {
-        return <></>;
+    const showHeader = title || description || icon;
+    if (!showHeader && !children) {
+        return null;
     }
 
     return (
@@ -40,12 +41,13 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
                 color={header?.color}
                 className={classNames(icon && 'with-icon', description && 'with-description')}
             >
-                <Header as={`h${depth}`} inverted={inverted} floated="left">
-                    {icon && <Header.Content floated="left">{icon}</Header.Content>}
-                    {/*@todo flag required*/}
-                    <Header.Content>{title}</Header.Content>
-                    {description && <Header.Subheader>{description}</Header.Subheader>}
-                </Header>
+                {showHeader && (
+                    <Header as={`h${depth}`} inverted={inverted} floated="left">
+                        {icon && <Header.Content floated="left">{icon}</Header.Content>}
+                        {title && typeof title !== 'boolean' && <Header.Content>{title}</Header.Content>}
+                        {description && <Header.Subheader>{description}</Header.Subheader>}
+                    </Header>
+                )}
                 {children && (
                     <div className="rje-header__actions" style={{ float: 'right' }}>
                         {children}
