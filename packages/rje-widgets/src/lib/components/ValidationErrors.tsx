@@ -7,12 +7,12 @@ export function ValidationErrors({ errors }: { errors: JsonError[] }) {
     }
 
     return (
-        <Segment basic>
+        <Message error>
             <Message.List>
                 {errors.map((e) => (
                     <Message.Item key={e.message}>{e.message}</Message.Item>
                 ))}
             </Message.List>
-        </Segment>
+        </Message>
     );
 }
