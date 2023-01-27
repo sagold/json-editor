@@ -100,7 +100,7 @@ const defaultSchema = {
         jsonData: {
             type: 'object',
             format: 'json',
-            properties: propertySchema.properties
+            $ref: '#/$defs/propertySchema'
         }
     },
     $defs: {
