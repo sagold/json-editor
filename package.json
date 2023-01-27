@@ -12,7 +12,7 @@
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
         "hje:bundle": "NODE_ENV=production PACKAGE_NAME=headless-json-editor webpack",
         "hje:ts": "(cd packages/headless-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
-        "hje:analyze": "mkdir tmp; webpack --config webpack.hje.js --profile --json > tmp/hje-stats.json; webpack-bundle-analyzer tmp/hje-stats.json",
+        "hje:analyze": "mkdir tmp; PACKAGE_NAME=headless-json-editor webpack --profile --json > tmp/hje-stats.json; webpack-bundle-analyzer tmp/hje-stats.json",
         "rje:dist": "rm -rf packages/react-json-editor/dist; yarn rje:bundle; yarn rje:ts",
         "rje:bundle": "NODE_ENV=production PACKAGE_NAME=react-json-editor webpack",
         "rje:ts": "(cd packages/react-json-editor && tsc --build .)",
