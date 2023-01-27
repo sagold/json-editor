@@ -26,6 +26,8 @@ import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
 // validation
 import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
+// bundled tools
+export { deepEqual } from 'fast-equals';
 // types and type guards
 import {
     ArrayNode,

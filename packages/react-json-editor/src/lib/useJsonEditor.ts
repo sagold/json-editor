@@ -5,11 +5,11 @@ import {
     Node,
     OnChangePlugin,
     OnChangeListener,
-    JsonSchema
+    JsonSchema,
+    deepEqual
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
-import { deepEqual } from 'fast-equals';
 
 export type UseJsonEditorOptions = {
     widgets: WidgetPlugin[];

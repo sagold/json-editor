@@ -1,7 +1,6 @@
 import { Form, Button, Message, Input, Icon, Label, Item, SemanticICONS } from 'semantic-ui-react';
-import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, deepEqual } from '@sagold/react-json-editor';
 import { render } from '../../render';
-import { deepEqual } from 'fast-equals';
 import { useState } from 'react';
 
 const isFile = (v): v is File => Object.prototype.toString.call(v) === '[object File]';

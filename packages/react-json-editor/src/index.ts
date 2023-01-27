@@ -18,6 +18,7 @@ export type {
 // re-exports from headless-json-editor & json-schema-library
 import {
     create,
+    deepEqual,
     errors,
     EventLoggerPlugin,
     find,
@@ -70,6 +71,7 @@ import { JsonError } from 'json-schema-library';
 export {
     create,
     errors,
+    deepEqual,
     EventLoggerPlugin,
     find,
     flat,
