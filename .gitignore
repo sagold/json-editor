@@ -5,6 +5,7 @@
 /out-tsc
 test-*.json
 /packages/*/dist
+/packages/*/dev
 
 # dependencies
 node_modules
