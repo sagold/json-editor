@@ -23,7 +23,7 @@ export function WidgetModal({ isOpen, closeModal, editor, node, options }: Widge
     return (
         <Modal open={isOpen} onClose={closeModal} size={options.modalSize}>
             <Modal.Header>{options?.title ?? node.options.title}</Modal.Header>
-            <Modal.Content>
+            <Modal.Content scrolling>
                 <Form error style={{ maxWidth: 'none' }}>
                     <Widget node={node} editor={editor} options={{ ...options, title: undefined }} />
                 </Form>
