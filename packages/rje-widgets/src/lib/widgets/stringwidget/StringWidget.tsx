@@ -1,5 +1,5 @@
 import { StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { Form, Dropdown, Label, Input, SemanticICONS } from 'semantic-ui-react';
+import { Form, Dropdown, Label, Input, SemanticICONS, SemanticShorthandItem, LabelProps } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 import { useState, useMemo } from 'react';
 
@@ -9,8 +9,8 @@ export type StringOptions = {
     inline?: true;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
-    // label?: SemanticShorthandItem<LabelProps>;
-    // labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
+    label?: SemanticShorthandItem<LabelProps>;
+    labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
 } & DefaultNodeOptions;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
@@ -28,6 +28,20 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
     const changeListener = {
         [options.liveUpdate ? 'onChange' : 'onBlur']: onChange
     };
+
+    const attributes: Record<string, unknown> = {};
+    if (options.icon) {
+        attributes.icon = options.icon;
+        if (options.iconPosition) {
+            attributes.iconPosition = options.iconPosition;
+        }
+    }
+    if (options.label) {
+        attributes.label = options.label;
+        if (options.labelPosition) {
+            attributes.labelPosition = options.labelPosition;
+        }
+    }
 
     return (
         <div
@@ -53,11 +67,9 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                     disabled={disabled}
                     placeholder={options.placeholder}
                     readOnly={options.readOnly === true}
-                    // icon={options.icon}
-                    // iconPosition={options.iconPosition}
                     defaultValue={node.value}
+                    {...attributes}
                     {...changeListener}
-                    // onChange={(event) => setInputValue(event.target.value)}
                 />
                 {node.errors.length > 0 && (
                     <Label color="red" basic prompt pointing="above">
