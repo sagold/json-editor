@@ -1,7 +1,10 @@
 // shortcut with widgets assigned
 export { JsonForm } from './lib/components/JsonForm';
+// main export
+import { widgets } from './lib/widgets/index';
+export { widgets };
+export default { widgets };
 // widgets
-export { widgets } from './lib/widgets/index';
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
 export { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
 export { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
@@ -14,6 +17,3 @@ export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/select
 export { StringWidget, StringWidgetPlugin } from './lib/widgets/stringwidget/StringWidget';
 export { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
 export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
-
-// @ts-ignore
-// window.rjeDefaultWidgets = widgets;
