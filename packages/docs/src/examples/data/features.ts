@@ -42,6 +42,7 @@ export const schema = {
         'typeSelection',
         'anyOf',
         'nullField',
+        'nullSeparator',
         'remoteNestedEnum',
         'list',
         'switch',
@@ -245,7 +246,15 @@ export const schema = {
         nullField: {
             type: 'null',
             title: 'Field of type "null"',
-            description: 'from rjsf - use for extra information'
+            description: 'use for extra information'
+        },
+        nullSeparator: {
+            options: {
+                separator: true
+            },
+            type: 'null',
+            title: 'Field of type "null" with separator set to true',
+            description: 'use as inline headline'
         },
         remoteNestedEnum: {
             title: 'remote enum in array',
