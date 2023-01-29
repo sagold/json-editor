@@ -2,23 +2,37 @@ import { ErrorWidget } from './components/ErrorWidget';
 import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Node, isNode } from 'headless-json-editor';
 import { Widget, WidgetPlugin } from './decorators';
 
+let defaultWidgets: WidgetPlugin[] = [];
+export function setDefaultWidgets(widgets: WidgetPlugin[]) {
+    defaultWidgets = widgets;
+}
+
 export type JsonEditorOptions = HeadlessJsonEditorOptions & {
-    widgets: WidgetPlugin[];
+    widgets?: WidgetPlugin[];
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
+    /** if true disables all editors */
+    disabled?: boolean;
 };
 
 export class JsonEditor extends HeadlessJsonEditor {
     widgets: WidgetPlugin[];
-    /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     widgetOptions: {
+        /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
         liveUpdate?: boolean;
+        /** if true disables all editors */
+        disabled?: boolean;
     } = {};
 
     constructor(options: JsonEditorOptions) {
         super(options);
-        this.widgetOptions.liveUpdate = options.liveUpdate;
-        this.widgets = options.widgets;
+        if (typeof options?.liveUpdate === 'boolean') {
+            this.widgetOptions.liveUpdate = options.liveUpdate;
+        }
+        if (typeof options?.disabled === 'boolean') {
+            this.widgetOptions.disabled = options.disabled;
+        }
+        this.widgets = Array.isArray(options?.widgets) ? options.widgets : defaultWidgets;
     }
 
     getWidget(node: Node, options?: Record<string, unknown>): Widget {

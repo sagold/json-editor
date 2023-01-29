@@ -31,6 +31,8 @@ export type JsonFormProps = {
     validate?: boolean;
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
+    /** if true disables all editors */
+    disabled?: boolean;
     style?: React.CSSProperties;
 };
 
@@ -39,7 +41,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         schema,
         data,
         pointer,
-        widgets = [],
+        widgets,
         plugins = [RemoteEnumOptionsPlugin],
         onChange,
         options,

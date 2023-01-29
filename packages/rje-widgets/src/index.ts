@@ -3,7 +3,7 @@ export { JsonForm } from './lib/components/JsonForm';
 // main export
 import { widgets } from './lib/widgets/index';
 export { widgets };
-export default { widgets };
+export default widgets;
 // widgets
 export { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
 export { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';

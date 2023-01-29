@@ -1,9 +1,9 @@
-import { JsonEditor, JsonEditorOptions } from './lib/JsonEditor';
+import { JsonEditor, JsonEditorOptions, setDefaultWidgets } from './lib/JsonEditor';
 import { JsonForm, JsonFormProps } from './lib/components/jsonform';
 import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
 import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/decorators';
 import { Widget, WidgetProps } from './lib/components/widget/Widget';
-export { Widget, widget, JsonEditor, JsonForm, useJsonEditor };
+export { Widget, widget, JsonEditor, JsonForm, setDefaultWidgets, useJsonEditor };
 // types
 export type {
     JsonFormProps,

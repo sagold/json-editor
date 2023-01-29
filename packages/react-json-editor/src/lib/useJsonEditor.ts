@@ -12,7 +12,7 @@ import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
 
 export type UseJsonEditorOptions = {
-    widgets: WidgetPlugin[];
+    widgets?: WidgetPlugin[];
     schema: JsonSchema;
     data?: unknown;
     validate?: boolean;
