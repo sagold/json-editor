@@ -1,3 +1,4 @@
+import { Form, Checkbox } from 'semantic-ui-react';
 import { WidgetPlugin } from '@sagold/react-json-editor';
 import { Node, DefaultNodeOptions, NullNode, widget } from '@sagold/react-json-editor';
 
@@ -10,7 +11,12 @@ export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }
     const { description, title, pointer, separator } = options;
     return (
         <div className="ed-form ed-value" data-type="null" data-id={pointer}>
-            <div className="field" style={{ display: 'flex', alignItems: 'center' }}>
+            <Form.Field
+                id={node.id}
+                error={node.errors.length > 0 && node.errors.map((e) => e.message)}
+                style={{ display: 'flex', alignItems: 'center' }}
+                disabled={options.disabled}
+            >
                 <label>{title as string}</label>
                 {separator && (
                     <div
@@ -24,7 +30,7 @@ export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }
                         }}
                     ></div>
                 )}
-            </div>
+            </Form.Field>
             {description && <em className="ed-description">{description}</em>}
         </div>
     );

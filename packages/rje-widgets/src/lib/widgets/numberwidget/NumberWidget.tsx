@@ -1,6 +1,6 @@
 import { NumberNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { WidgetPlugin } from '@sagold/react-json-editor';
-import { Form, SemanticICONS, Input, Label /*, SemanticShorthandItem, LabelProps*/ } from 'semantic-ui-react';
+import { Form, SemanticICONS, Input, Label, SemanticShorthandItem, LabelProps } from 'semantic-ui-react';
 import { widget } from '@sagold/react-json-editor';
 import { useCallback, useState, useMemo } from 'react';
 
@@ -10,8 +10,8 @@ type NumberOptions = {
     inline?: true;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
-    // label?: SemanticShorthandItem<LabelProps>;
-    // labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
+    label?: SemanticShorthandItem<LabelProps>;
+    labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
 } & DefaultNodeOptions;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
@@ -22,6 +22,20 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
             inputRef.value = node.value;
         }
     }, [node.value]);
+
+    const attributes: Record<string, unknown> = {};
+    if (options.icon) {
+        attributes.icon = options.icon;
+        if (options.iconPosition) {
+            attributes.iconPosition = options.iconPosition;
+        }
+    }
+    if (options.label) {
+        attributes.label = options.label;
+        if (options.labelPosition) {
+            attributes.labelPosition = options.labelPosition;
+        }
+    }
 
     const onChange = useCallback(
         (event: Event | React.ChangeEvent<HTMLInputElement>) => {
@@ -63,10 +77,9 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
                     disabled={options.disabled === true}
                     placeholder={options.placeholder}
                     readOnly={options.readOnly === true}
-                    icon={options.icon}
-                    iconPosition={options.iconPosition}
                     defaultValue={node.value}
                     required={options.required === true}
+                    {...attributes}
                     {...changeListener}
                 />
                 {node.errors.length > 0 && (
