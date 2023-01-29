@@ -47,7 +47,8 @@ DefaultWidget.args = {
     ],
     schema: {
         title: 'Array Example',
-        description: 'description displayed as subheader',
+        description:
+            'Description displayed as subheader. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Post enim Chrysippum eum non sane est disputatum. Scientiam pollicentur, quam non erat mirum sapientiae cupido patria esse cariorem. Satis est ad hoc responsum. Hoc est vim afferre, Torquate, sensibus, extorquere ex animis cognitiones verborum, quibus inbuti sumus. Quid ergo attinet gloriose loqui, nisi constanter loquare? Aliter enim nosmet ipsos nosse non possumus. Sin tantum modo ad indicia veteris memoriae cognoscenda, curiosorum. Duo Reges: constructio interrete. Quid enim mihi potest esse optatius quam cum Catone, omnium virtutum auctore, de virtutibus disputare? Quantum Aristoxeni ingenium consumptum videmus in musicis?',
         type: 'array',
         items: {
             title: 'content item',
@@ -65,6 +66,7 @@ DefaultWidget.args = {
         sortable: {
             enabled: true
         },
+        collapsed: false,
         header: {
             inverted: false,
             color: undefined

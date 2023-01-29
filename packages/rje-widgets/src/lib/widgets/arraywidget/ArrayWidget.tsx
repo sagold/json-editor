@@ -180,7 +180,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             </Ref>
             {options.inlineAddItemOption !== false && (
                 <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
-                    <Button disabled={!isAddEnabled} icon="add" size="mini" color="black" onClick={insertItem} />
+                    <Button disabled={!isAddEnabled} icon="add" size="mini" onClick={insertItem} />
                 </div>
             )}
             <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />

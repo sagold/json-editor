@@ -27,8 +27,8 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
     const { title, description, header = {} } = options;
     const depth = getNodeDepth(node);
 
-    const showHeader = title || description || icon;
-    if (!showHeader && !children) {
+    const showHeader = title || description || icon || children;
+    if (!showHeader) {
         return null;
     }
 
@@ -41,17 +41,21 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
                 color={header?.color}
                 className={classNames(icon && 'with-icon', description && 'with-description')}
             >
-                {showHeader && (
-                    <Header as={`h${depth}`} inverted={inverted} floated="left">
-                        {icon && <Header.Content floated="left">{icon}</Header.Content>}
-                        {title && typeof title !== 'boolean' && <Header.Content>{title}</Header.Content>}
+                {(showHeader || children) && (
+                    <Header as={`h${depth}`} inverted={inverted}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            {icon && <Header.Content>{icon}</Header.Content>}
+                            {title && typeof title !== 'boolean' && (
+                                <Header.Content style={{ flexGrow: 1 }}>{title}</Header.Content>
+                            )}
+                            {children && (
+                                <div className="rje-header__actions" style={{ textAlign: 'right' }}>
+                                    {children}
+                                </div>
+                            )}
+                        </div>
                         {description && <Header.Subheader>{description}</Header.Subheader>}
                     </Header>
-                )}
-                {children && (
-                    <div className="rje-header__actions" style={{ float: 'right' }}>
-                        {children}
-                    </div>
                 )}
             </Segment>
         </div>
