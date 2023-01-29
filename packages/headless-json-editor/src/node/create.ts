@@ -67,18 +67,18 @@ export function getOptions(schema: JsonSchema, property: string) {
     }
     const uiOptions = schema.options ?? {};
     const options: DefaultNodeOptions = {
-        title: schema.title || property,
-        description: schema.description,
+        title: uiOptions.showTitle == false ? undefined : schema.title,
+        description: uiOptions.showDescription === false ? undefined : schema.description,
         disabled: false,
         hidden: false,
         ...uiOptions
     };
-    if (uiOptions.showTitle === false) {
-        delete options.title;
+
+    if (options.title == null && uiOptions.showTitle !== false && property !== '#') {
+        // @todo json-schema-library createSchema should add title=property
+        options.title = property;
     }
-    if (uiOptions.showDescription === false) {
-        delete options.description;
-    }
+
     return options;
 }
 

@@ -77,6 +77,9 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
     }, [cacheKey]);
 
     // @ts-ignore
+    window.rje = editor;
+
+    // @ts-ignore
     const editorWasCreatedNow = editor.createdAt === now;
     if (editorWasCreatedNow) {
         return [editor.getState() as T, editor];
