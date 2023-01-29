@@ -49,7 +49,7 @@ export function ParentHeader({ node, icon, options, children }: ParentHeaderProp
                                 <Header.Content style={{ flexGrow: 1 }}>{title}</Header.Content>
                             )}
                             {children && (
-                                <div className="rje-header__actions" style={{ textAlign: 'right' }}>
+                                <div className="rje-header__actions" style={{ flexGrow: 1, textAlign: 'right' }}>
                                     {children}
                                 </div>
                             )}
