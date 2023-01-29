@@ -27,6 +27,19 @@ const TEMPLATE_OPTIONS = {
     addOptionalProps: false
 };
 
+function propertySortResult(aIndex: number, bIndex: number) {
+    if (aIndex === -1 && bIndex === -1) {
+        return 0;
+    }
+    if (aIndex === -1) {
+        return 1;
+    }
+    if (bIndex === -1) {
+        return -1;
+    }
+    return aIndex - bIndex;
+}
+
 export type DefaultNodeOptions = {
     /** additional classnames the ui should add to the root of this data point */
     classNames?: string[];
@@ -193,7 +206,9 @@ export const NODES: Record<NodeType, CreateNode> = {
 
         // simplified solution to maintain order as is given by json-schema
         // should probably use combination of additionalProperties, dependencies, etc
-        node.children.sort((a, b) => listOfProperties.indexOf(a.property) - listOfProperties.indexOf(b.property));
+        node.children.sort((a, b) =>
+            propertySortResult(listOfProperties.indexOf(a.property), listOfProperties.indexOf(b.property))
+        );
 
         return node;
     },

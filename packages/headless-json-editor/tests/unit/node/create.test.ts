@@ -169,6 +169,19 @@ describe('create', () => {
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.missingProperties, ['one', 'two']);
         });
+
+        it('should sort unknown additional as last itms', () => {
+            draft.setSchema({
+                type: 'object',
+                properties: {
+                    one: { type: 'string' }
+                }
+            });
+            const root = create(draft, { one: 'string', two: 'string' }) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.optionalProperties, ['one', 'two']);
+            assert.deepEqual(root.children[0].property, 'one');
+        });
     });
 
     describe('dynamic', () => {
