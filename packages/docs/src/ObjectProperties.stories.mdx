@@ -131,6 +131,30 @@ Using additionalProperties with a json-schema, will apply this schema to any unk
 
 > _Note_ Currently no user interface is offered to add additional data. You can enable the `editJson` option to allow users to add additional properties as json or you can create a custom object widget that supports this.
 
+Example Object with **editJson** option
+
+`options: { editJson: { enabled: true } }`
+
+<Canvas>
+  <JsonForm
+    data={{ additionalProperty: 'property without schema' }}
+    schema={{
+      type: 'object',
+      title: 'EditJson Example',
+      description:
+        'Using an object with a title will switch actions for optional properties to be placed in the actions-icon besides its title. Inline delete options are moved into their panel for a cleaner ui. Using EditJson action from the actions panel will allow the user to add additional data in json format.',
+      options: {
+        editJson: {
+          enabled: true
+        }
+      },
+      additionalProperties: {
+        type: 'string'
+      }
+    }}
+  />
+</Canvas>
+
 ## oneOf
 
 json-schema containing an oneOf statement will show a selection to choose the sub schema:
@@ -210,7 +234,7 @@ Note that json-schema requires distinguishable json-schema. If there is an undis
   />
 </Canvas>
 
-To ensure oneOf schemas can be distinguished it is recommended to add a unique property:
+To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique property:
 
 ```ts
 // valid oneOf-schema
@@ -255,7 +279,7 @@ To ensure oneOf schemas can be distinguished it is recommended to add a unique p
   />
 </Canvas>
 
-> _Note_ You can set `{ options: { hidden: true }}` to each property _id_ to hide the control variable from user interface. Still, the id will be exported in data.
+> _Note_ You can set `{ options: { hidden: true }}` to each property _id_ to hide the control variable from user interface. Still, _id_ will be exported in data.
 
 In case you want a selection to always be associated with the selected schema, identified by an _id_, it his highly recommended tp use the additional flag `oneOfProperty`. This will always select the corresponding schema, regardless of additional validation errors. So for the above example we add
 
