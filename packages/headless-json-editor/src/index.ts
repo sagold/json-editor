@@ -44,8 +44,7 @@ import {
     ValueNode,
     isNode,
     isParentNode,
-    isValueNode,
-    isJsonError
+    isValueNode
 } from './types';
 
 export {
@@ -60,7 +59,6 @@ export {
     getOptions,
     HeadlessJsonEditor,
     HistoryPlugin,
-    isJsonError,
     isNode,
     isParentNode,
     isValueNode,
@@ -98,3 +96,6 @@ export type {
     StringNode,
     ValueNode
 };
+// jlib export
+import { isJsonError } from 'json-schema-library';
+export { isJsonError };

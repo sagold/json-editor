@@ -1,5 +1,5 @@
-import { StringNode, Node, json } from '@sagold/react-json-editor';
-import { Form, Dropdown, DropdownItemProps, Message } from 'semantic-ui-react';
+import { ArrayNode, Node, json } from '@sagold/react-json-editor';
+import { Form, Dropdown, DropdownItemProps, Message, Label } from 'semantic-ui-react';
 import { widget, WidgetPlugin } from '@sagold/react-json-editor';
 
 // @todo is building enum options job of syntax-tree?
@@ -20,7 +20,7 @@ function hasEnumOptions(itemsSchema): itemsSchema is { enum: string[] } {
     return Array.isArray(itemsSchema?.enum);
 }
 
-export const MultiSelectWidget = widget<StringNode, string>(({ node, options, setValue }) => {
+export const MultiSelectWidget = widget<ArrayNode, string[]>(({ node, options, setValue }) => {
     const listData = json(node) as string[];
     // two modes: free strings or fixed enum
     let allowAdditions = true;
@@ -48,21 +48,19 @@ export const MultiSelectWidget = widget<StringNode, string>(({ node, options, se
                 <Dropdown
                     allowAdditions={allowAdditions}
                     multiple
-                    onChange={(e, { value }) => setValue(value as string)}
+                    onChange={(e, { value }) => setValue(value as string[])}
                     options={dropdownOptions}
                     readOnly={options.readOnly === true}
                     search
                     selection
                     value={listData}
                 />
+                {node.errors.length > 0 && (
+                    <Label color="red" basic prompt pointing="above">
+                        {node.errors.map((e) => e.message).join(';')}
+                    </Label>
+                )}
             </Form.Field>
-            {node.errors.length > 0 && (
-                <Message error>
-                    {node.errors.map((e) => (
-                        <Message.Item key={e.message}>{e.message}</Message.Item>
-                    ))}
-                </Message>
-            )}
             {options.description && <em className="ed-description">{options.description}</em>}
         </div>
     );
