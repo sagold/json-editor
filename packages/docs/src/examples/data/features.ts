@@ -21,28 +21,35 @@ export const data = {
 export const schema = {
     type: 'object',
     title: 'Widgets Overview',
-    description: 'this is the root object',
+    description: 'This form consists of all basic widgets exposed by rje-widgets and some of their variations',
     options: {
         editJson: { enabled: true, liveUpdate: true }
     },
     required: [
         'string',
         'stringPlaceholder',
+        'stringValidation',
         'stringReadonly',
         'stringDisabled',
         'text',
+        'nullHeadline',
+        'nullField',
+        'numberHeadline',
         'number',
         'numberIcons',
+        'booleanHeadline',
         'boolean',
-        'isInteractive',
-        'file',
+        'booleanOptions',
+        'selectionHeadline',
+        'selection',
+        'constHeadline',
         'const',
+        'fileHeadline',
+        'file',
         'imageFile',
         'readOnlyFile',
         'typeSelection',
         'anyOf',
-        'nullField',
-        'nullSeparator',
         'remoteNestedEnum',
         'list',
         'switch',
@@ -53,29 +60,35 @@ export const schema = {
     ],
     properties: {
         string: {
-            title: 'Required string input',
-            type: 'string',
-            description:
-                'set an input field as required by adding it to the "required" list of properties and add a "minLength: 1" validation',
-            minLength: 1
+            title: 'Simple text input',
+            type: 'string'
         },
         stringPlaceholder: {
-            title: 'Text input with placeholder',
+            title: 'Text input with formatting options',
             type: 'string',
             options: {
                 icon: 'user',
                 iconPosition: 'left',
-                placeholder: 'your last name'
+                label: { basic: true, content: 'username' },
+                labelPosition: 'right',
+                placeholder: 'your username'
             },
-            description: 'text inputs can have a placeholder and icon'
+            description: 'Text inputs can have a placeholder, icon and label'
+        },
+        stringValidation: {
+            title: 'Text input with valiation rules',
+            type: 'string',
+            description:
+                'The required option is triggered by adding a property to required properties and adding a `minLength: 1` validation rule',
+            minLength: 1
         },
         stringReadonly: {
             options: {
                 readOnly: true
             },
-            title: 'Text input set to readonly',
+            title: 'Read only text input',
             type: 'string',
-            default: 'value that can be selected'
+            default: 'Using readOnly option, the input text is still selectable by a user'
         },
         stringDisabled: {
             options: {
@@ -83,93 +96,121 @@ export const schema = {
             },
             title: 'Disabled text input',
             type: 'string',
-            default: 'some value that cannot be interacted with'
+            default: 'Note that disabled text input prevent user interaction like selecting the text'
         },
-        // stringLabel: {
-        //     title: 'Text with semantic ui label',
-        //     type: 'string',
-        //     options: {
-        //         label: { content: 'kg' },
-        //         labelPosition: 'left corner'
-        //     },
-        //     description: 'text inputs can have a placeholder and icon'
-        // },
         text: {
             options: {
                 disabled: false
             },
             type: 'string',
+            title: 'Textarea',
             format: 'textarea',
-            description: 'textarea for multiline contents',
+            description: 'Setting `format: textarea` triggers the textarea widget for strings',
             minLength: 1
         },
-        number: {
-            type: 'number',
-            options: {
-                required: true
-            },
-            default: 2019,
-            maximum: 2020,
-            description: 'number input with maximum 2020'
+        nullHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'Inline header',
+            description:
+                'json-schema `null`-type can be used to add additional information. With the option `separator:true` you can add an additional horizontal line.'
+        },
+        nullField: {
+            type: 'null',
+            title: '',
+            description: 'Null type with empty title and without separator'
+        },
+        numberHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'NUMBER INPUT'
         },
         numberIcons: {
+            title: 'Number input with formatting options',
+            description: 'also numbers can have icons',
             type: 'number',
             options: {
                 icon: 'birthday',
-                placeholder: 'your last name'
+                placeholder: 'your last name',
+                label: 'year'
             },
-            defaultValue: null,
-            description: 'also numbers can have icons'
+            defaultValue: null
+        },
+        number: {
+            title: 'Number input with validation rules',
+            description: 'Number input allowing a maximum of 2020',
+            type: 'number',
+            default: 2023,
+            maximum: 2020
+        },
+        booleanHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'BOOLEAN INPUT'
         },
         boolean: {
-            title: 'True if should be interactive',
-            description: 'default boolean checkbox',
-            type: 'boolean',
-            default: true
+            title: 'Default boolean input',
+            description: 'Boolean value without any options',
+            type: 'boolean'
         },
-        isInteractive: {
+        booleanOptions: {
             title: 'True if should be interactive',
-            description: 'boolean with options: { type: "checkbox"}',
+            description: 'Adding `options: { type: "checkbox"}` will render the boolean as checkbox',
             type: 'boolean',
             options: {
                 type: 'checkbox'
             },
             default: true
         },
+        selectionHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'ENUM INPUT'
+        },
         selection: {
-            title: 'Enum selection with custom titles',
+            title: 'Enum selection',
+            description: 'Enum selection with custom title values',
             type: 'string',
             enum: ['dark', 'light'],
             defaultValue: 'dark theme',
             options: {
-                enum: ['Zeige dunkel an', 'Zeige hell an']
+                enum: ['Select option "dark"', 'Select option "light"']
             }
+        },
+        constHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'CONST',
+            description: 'const values are disabled when correct'
         },
         const: {
             // @todo without string we received an unknown node - should be string
             type: 'string',
             title: 'const value',
-            const: 'schema form tree',
-            description: 'probably to be disabled when correct (or autocorrect)'
+            const: 'schema form tree'
         },
-        file: {
-            title: 'file selection',
-            description: 'file selection with preview of selected value',
-            type: ['string', 'object'],
-            format: 'file',
-            minLength: 1
+        fileHeadline: {
+            type: 'null',
+            options: { separator: true },
+            title: 'FILE INPUT'
         },
         imageFile: {
-            title: 'image file selection',
-            description: 'file selection can have valid types restricted, e.g. to images',
+            title: 'File selection with mime type',
+            description: 'File selection can have valid types restricted, e.g. to images',
             options: {
                 accept: 'image/*'
             },
             type: ['string', 'object'],
             format: 'file'
         },
+        file: {
+            title: 'Required file selection',
+            type: ['string', 'object'],
+            format: 'file',
+            minLength: 1
+        },
         readOnlyFile: {
-            title: 'image set to readonly',
+            title: 'Read only file selection with image preview',
             description: 'file selection can have an imageUrlTemplate to render images',
             options: {
                 accept: 'image/*',
@@ -242,19 +283,6 @@ export const schema = {
                     }
                 }
             ]
-        },
-        nullField: {
-            type: 'null',
-            title: 'Field of type "null"',
-            description: 'use for extra information'
-        },
-        nullSeparator: {
-            options: {
-                separator: true
-            },
-            type: 'null',
-            title: 'Field of type "null" with separator set to true',
-            description: 'use as inline headline'
         },
         remoteNestedEnum: {
             title: 'remote enum in array',
