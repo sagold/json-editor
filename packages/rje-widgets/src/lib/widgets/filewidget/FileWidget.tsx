@@ -137,7 +137,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
 
     return (
         <div
-            className={`ed-form ed-value ${disabled ? 'disabled' : 'enabled'}`}
+            className={`rje-form rje-value ${disabled ? 'disabled' : 'enabled'}`}
             data-type="string"
             data-id={node.pointer}
         >
@@ -264,7 +264,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                     </Label>
                 )}
             </Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

@@ -34,7 +34,7 @@ export const MultiSelectWidget = widget<ArrayNode, string[]>(({ node, options, s
 
     return (
         <div
-            className={`ed-form ed-value ${options.disabled ? 'disabled' : 'enabled'}`}
+            className={`rje-form rje-value ${options.disabled ? 'disabled' : 'enabled'}`}
             data-type="string"
             data-id={node.pointer}
         >
@@ -61,7 +61,7 @@ export const MultiSelectWidget = widget<ArrayNode, string[]>(({ node, options, s
                     </Label>
                 )}
             </Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

@@ -16,7 +16,7 @@ export const UnknownWidget = ({ node }: { node: Node }) => (
         >
             <label>Unknown widget for node at '{node.pointer}'</label>
         </Form.Field>
-        <em className="ed-description">{JSON.stringify({ ...node }, null, 2)}</em>
+        <em className="rje-description">{JSON.stringify({ ...node }, null, 2)}</em>
     </div>
 );
 

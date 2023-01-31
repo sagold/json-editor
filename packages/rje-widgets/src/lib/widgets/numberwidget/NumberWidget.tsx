@@ -58,7 +58,7 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
     };
 
     return (
-        <div className="ed-form ed-value" data-type="number" data-id={node.pointer}>
+        <div className="rje-form rje-value" data-type="number" data-id={node.pointer}>
             <Form.Field
                 id={node.id}
                 inline={options.inline === true}
@@ -88,7 +88,7 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
                     </Label>
                 )}
             </Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

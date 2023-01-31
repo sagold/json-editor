@@ -45,7 +45,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
 
     return (
         <div
-            className={`ed-form ed-value ${disabled ? 'disabled' : 'enabled'}`}
+            className={`rje-form rje-value ${disabled ? 'disabled' : 'enabled'}`}
             data-type="string"
             data-id={node.pointer}
         >
@@ -77,7 +77,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                     </Label>
                 )}
             </Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });
@@ -99,7 +99,7 @@ export const SelectWidget = widget<StringNode, string>(({ node, options, setValu
     }));
 
     return (
-        <div className="ed-form ed-value" data-type="string">
+        <div className="rje-form rje-value" data-type="string">
             <Form.Field
                 required={options.required === true}
                 id={node.pointer}
@@ -113,7 +113,7 @@ export const SelectWidget = widget<StringNode, string>(({ node, options, setValu
                     options={selectOptions}
                 />
             </Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

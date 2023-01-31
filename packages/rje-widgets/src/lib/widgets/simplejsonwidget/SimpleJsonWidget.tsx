@@ -23,7 +23,7 @@ export const SimpleJsonStringWidget = widget<StringNode, string>(({ node, option
 
     return (
         <div
-            className={`ed-form ed-value ${options.disabled ? 'disabled' : 'enabled'}`}
+            className={`rje-form rje-value ${options.disabled ? 'disabled' : 'enabled'}`}
             data-type={node.type}
             data-id={node.pointer}
         >
@@ -44,7 +44,7 @@ export const SimpleJsonStringWidget = widget<StringNode, string>(({ node, option
                     setValue(e.target.value);
                 }}
             ></Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });
@@ -55,7 +55,7 @@ export const SimpleJsonDataWidget = widget<ParentNode, string>(({ node, options,
 
     return (
         <div
-            className={`ed-form ed-value ${options.disabled ? 'disabled' : 'enabled'}`}
+            className={`rje-form rje-value ${options.disabled ? 'disabled' : 'enabled'}`}
             data-type={node.type}
             data-id={node.pointer}
         >
@@ -81,7 +81,7 @@ export const SimpleJsonDataWidget = widget<ParentNode, string>(({ node, options,
                     }
                 }}
             ></Form.Field>
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

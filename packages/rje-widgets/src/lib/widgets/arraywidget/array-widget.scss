@@ -22,11 +22,11 @@ $color-border: rgba(7, 23, 32, 0.08);
     padding: 0;
     border-top: 1px solid $color-border;
 
-    & > .ed-form {
+    & > .rje-form {
         flex-grow: 1;
     }
 
-    & > .ed-array-item__actions {
+    & > .rje-array-item__actions {
         button {
             box-shadow: none;
             margin-right: 0;
@@ -42,17 +42,17 @@ $color-border: rgba(7, 23, 32, 0.08);
     background-color: $color-alternate;
 }
 
-.ui.form .ed-array__items .ed-array__items {
+.ui.form .rje-array__items .rje-array__items {
     padding-right: 0;
 }
 
-.ed-array__items--default .with-drag-handle {
+.rje-array__items--default .with-drag-handle {
     padding-left: 10px;
 }
 
 /* feature: sortable */
 .sortable-drag {
-    .ed-array-item__divider {
+    .rje-array-item__divider {
         visibility: hidden;
     }
 }
@@ -61,7 +61,7 @@ $color-border: rgba(7, 23, 32, 0.08);
     background: rgba(0, 181, 173, 0.5);
 }
 
-.ed-drag__container {
+.rje-drag__container {
     color: #999;
     cursor: pointer;
     align-self: center;

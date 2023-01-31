@@ -61,7 +61,7 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
     useEffect(() => {
         if (ref.current && !disabled && !readOnly) {
             Sortable.create(ref.current, {
-                handle: '.ed-nav-item__handle',
+                handle: '.rje-nav-item__handle',
                 swapThreshold: 4,
                 ...sortable,
                 onEnd: (event) => onSortEnd(editor, node, event)
@@ -112,7 +112,7 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
                                     >
                                         {getNavigationTitle(childchild)}
                                     </List.Content>
-                                    <List.Content floated="right" className="ed-nav-item__handle">
+                                    <List.Content floated="right" className="rje-nav-item__handle">
                                         <Icon link name="bars" />
                                     </List.Content>
                                 </List.Item>

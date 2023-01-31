@@ -40,7 +40,7 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
     const oneOfSchema = origin.schema;
 
     return (
-        <div className="ed-form ed-form--parent ed-oneof">
+        <div className="rje-form rje-form--parent rje-oneof">
             <ParentHeader node={node} options={getOptions(oneOfSchema as JsonSchema, node.property)} />
 
             <Divider horizontal>
@@ -53,7 +53,7 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
                 />
             </Divider>
 
-            <div className="ed-children">
+            <div className="rje-children">
                 <Widget
                     node={node}
                     editor={editor}

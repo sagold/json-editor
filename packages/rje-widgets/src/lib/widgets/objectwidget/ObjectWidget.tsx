@@ -79,7 +79,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
 
     return (
         <div
-            className={classNames('ed-form ed-form--parent rje-object', options.classNames)}
+            className={classNames('rje-form rje-form--parent rje-object', options.classNames)}
             data-type="object"
             data-id={node.pointer}
         >

@@ -36,7 +36,7 @@ export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ edi
     const { title } = options;
     return (
         <div
-            className={`ed-form ${isParentNode(node) ? 'ed-parent' : 'ed-value'}`}
+            className={`rje-form ${isParentNode(node) ? 'rje-parent' : 'rje-value'}`}
             data-type={node.schema.type}
             data-id={node.pointer}
         >

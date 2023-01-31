@@ -10,7 +10,7 @@ export type NullOptions = {
 export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }) => {
     const { description, title, pointer, separator } = options;
     return (
-        <div className="ed-form ed-value" data-type="null" data-id={pointer}>
+        <div className="rje-form rje-value" data-type="null" data-id={pointer}>
             <Form.Field
                 id={node.id}
                 error={node.errors.length > 0 && node.errors.map((e) => e.message)}
@@ -31,7 +31,7 @@ export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }
                     ></div>
                 )}
             </Form.Field>
-            {description && <em className="ed-description">{description}</em>}
+            {description && <em className="rje-description">{description}</em>}
         </div>
     );
 });

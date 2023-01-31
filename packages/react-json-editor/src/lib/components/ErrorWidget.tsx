@@ -20,7 +20,7 @@ export const ErrorWidget = ({ node, editor }: { node: Node; editor: HeadlessJson
                 ))}
             </div>
 
-            {description && <em className="ed-description">{description}</em>}
+            {description && <em className="rje-description">{description}</em>}
             {
                 <p style={{ background: 'rgb(208, 120, 132)', padding: '8px' }}>
                     {JSON.stringify({ ...node.schema }, null, 2)}

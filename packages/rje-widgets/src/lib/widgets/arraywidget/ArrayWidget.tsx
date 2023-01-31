@@ -95,7 +95,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     useEffect(() => {
         if (sortable?.enabled && ref.current && !options.disabled && !options.readOnly) {
             Sortable.create(ref.current, {
-                handle: '.ed-drag__handle',
+                handle: '.rje-drag__handle',
                 swapThreshold: 4,
                 // delay: 250,
                 ...sortable,
@@ -117,7 +117,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
     return (
         <div
-            className={classNames('ed-form ed-form--parent ed-array', options.classNames)}
+            className={classNames('rje-form rje-form--parent rje-array', options.classNames)}
             data-type="array"
             data-id={node.pointer}
         >
@@ -149,7 +149,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             <ValidationErrors errors={node.errors} />
 
             <Ref innerRef={ref}>
-                <div className={`ed-array__items ed-array__items--${options.layout?.type ?? 'default'}`}>
+                <div className={`rje-array__items rje-array__items--${options.layout?.type ?? 'default'}`}>
                     {showContent &&
                         (options.layout?.type === 'cards'
                             ? node.children.map((child, index) => (

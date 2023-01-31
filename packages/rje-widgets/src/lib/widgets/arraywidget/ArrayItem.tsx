@@ -25,17 +25,17 @@ export function ArrayItemDefault({
     return (
         <div data-type="array-item" className={['array-item', withDragHandle ? 'with-drag-handle' : ''].join(' ')}>
             {withDragHandle && (
-                <div className="ed-drag__handle ed-drag__container">
+                <div className="rje-drag__handle rje-drag__container">
                     <Icon name="bars" />
                 </div>
             )}
             <Widget editor={editor} node={node} options={options} />
-            <div className={`ed-array-item__actions`}>
+            <div className={`rje-array-item__actions`}>
                 <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable disabled={disabled}>
                     <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
                 </Popup>
             </div>
-            {/*{size - 1 > parseInt(node.property) && <div className="ed-array-item__divider" />}*/}
+            {/*{size - 1 > parseInt(node.property) && <div className="rje-array-item__divider" />}*/}
         </div>
     );
 }
@@ -54,8 +54,8 @@ export function ArrayItemCard({
 
     return (
         <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
-            <Card.Content key="header" className={withDragHandle ? 'ed-drag__handle' : ''}>
-                {/*<Grid.Column width="15">{withDragHandle && <div className="ed-array-item__handle"></div>}</Grid.Column>*/}
+            <Card.Content key="header" className={withDragHandle ? 'rje-drag__handle' : ''}>
+                {/*<Grid.Column width="15">{withDragHandle && <div className="rje-array-item__handle"></div>}</Grid.Column>*/}
                 <Popup
                     trigger={<Button basic floated="right" icon="ellipsis vertical" />}
                     disabled={disabled}
