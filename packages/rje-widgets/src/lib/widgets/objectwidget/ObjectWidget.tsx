@@ -52,9 +52,15 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         return (
             <Card fluid data-type="object" data-id={node.pointer} className={options.classNames?.join(' ')}>
                 <Card.Content key="header" style={{ background: header?.color }}>
-                    <ObjectActionPanel editor={editor} node={node} options={options} />
-                    <Card.Header>{title}</Card.Header>
-                    <Card.Meta>{description}</Card.Meta>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div>
+                            <Card.Header>{title}</Card.Header>
+                            <Card.Meta>{description}</Card.Meta>
+                        </div>
+                        <div style={{ flexGrow: 1, textAlign: 'right' }}>
+                            <ObjectActionPanel editor={editor} node={node} options={options} />
+                        </div>
+                    </div>
                 </Card.Content>
                 <Card.Content key="content">
                     <ValidationErrors errors={node.errors} />

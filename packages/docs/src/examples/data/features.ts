@@ -1,16 +1,8 @@
 export const data = {
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita multo sanguine profuso in laetitia et in victoria est mortuus. Graccho, eius fere, aequalí? Illum mallem levares, quo optimum atque humanissimum virum, Cn. Quod dicit Epicurus etiam de voluptate, quae minime sint voluptates, eas obscurari saepe et obrui. Duo Reges: constructio interrete. Sed mehercule pergrata mihi oratio tua. Omnis enim est natura diligens sui. Illa argumenta propria videamus, cur omnia sint paria peccata. Atque his de rebus et splendida est eorum et illustris oratio.',
-    switch: [
-        {
-            type: 'header',
-            text: 'my header'
-        },
-        {
-            type: 'paragraph',
-            text: 'Lorem ipsum sit dolor'
-        }
-    ],
-    dependency: {}
+    anUnknownItem: {
+        description: 'unknown items are optional if `additionalItems!=false` and can be removed'
+    }
     // @todo additionalProperties = false => should add error to additional property and add delete option
     // @todo additionalProperties = true => results in wron schema (root) for property
     // @todo no add.Props => returns error instead of schema. should be derived schema?
@@ -44,19 +36,16 @@ export const schema = {
         'selection',
         'constHeadline',
         'const',
+        'objectIntro',
         'fileHeadline',
         'file',
         'imageFile',
         'readOnlyFile',
-        'typeSelection',
-        'anyOf',
-        'remoteNestedEnum',
-        'list',
-        'switch',
-        'dependency',
-        'ifthenelse',
-        'ifthen',
-        'html'
+        'array',
+        'arrayOfStrings',
+        'arrayOfUniqueStrings',
+        'arrayItemSelection',
+        'arrayHeadline'
     ],
     properties: {
         string: {
@@ -222,93 +211,265 @@ export const schema = {
             format: 'file',
             default: 'photo-1666694421187-75957423ee77'
         },
-        typeSelection: {
+        objectIntro: {
             type: 'object',
-            oneOfProperty: 'type',
-            description: 'description only for object typeSelection',
-            oneOf: [
-                {
-                    type: 'object',
-                    title: 'first option',
-                    required: ['type', 'title'],
-                    properties: {
-                        type: { type: 'string', const: 'first' },
-                        title: { type: 'string', title: 'header 1' }
-                    }
-                },
-                {
-                    type: 'object',
-                    title: 'second option',
-                    required: ['type', 'title'],
-                    properties: {
-                        type: { type: 'string', const: 'second' },
-                        title: { type: 'string', title: 'header 2' }
-                    }
-                }
-            ]
-        },
-        anyOf: {
-            title: 'any of simple value',
-            description:
-                'This example uses card layout and editJson options. @todo any of is not yet supported in user interface.',
-            type: 'object',
-            options: {
-                classNames: ['my-custom-class'],
-                editJson: { enabled: true, liveUpdate: true },
-                layout: {
-                    type: 'card'
-                }
-            },
+            title: 'Objects',
+            description: 'Objects wrap children, they can have their own header, description and actions.',
+            required: [
+                'typeSelection',
+                'property',
+                'dependency',
+                'ifthenelse',
+                'ifthen',
+                'headline1',
+                'headline2',
+                'collapsible',
+                'card'
+            ],
             properties: {
-                staticProperty: {
-                    title: 'static property',
-                    type: 'string'
-                }
-            },
-            anyOf: [
-                {
+                property: { type: 'string' },
+                headline2: {
+                    type: 'object',
+                    title: 'Nested object headline inverted',
+                    description: 'Object colors can also be inverted, e.g. `{options: { header: { inverted: true }}}`',
+                    options: {
+                        header: {
+                            inverted: true,
+                            color: 'blue'
+                        }
+                    },
+                    required: ['property'],
                     properties: {
-                        firstProperty: {
-                            title: 'first dynamic property',
+                        property: { type: 'string' }
+                    }
+                },
+                headline1: {
+                    type: 'object',
+                    title: 'Nested object headline with color',
+                    description:
+                        "Object support a color option, e.g. `{options: { header: { color: 'blue' }}}`. This object contains an optional property which will show an options button to add this property.",
+                    options: {
+                        header: {
+                            color: 'blue'
+                        }
+                    },
+                    required: ['property'],
+                    properties: {
+                        property: { type: 'string' },
+                        optionalProperty: { type: 'string' }
+                    }
+                },
+                typeSelection: {
+                    type: 'object',
+                    title: 'Form type selection',
+                    description: 'Type selection using oneOf schema',
+                    options: {
+                        header: { color: 'black' }
+                    },
+                    oneOfProperty: 'type',
+                    oneOf: [
+                        {
+                            type: 'object',
+                            title: 'Schema Type One',
+                            required: ['type', 'property'],
+                            properties: {
+                                type: { type: 'string', const: 'first' },
+                                property: { type: 'number', title: 'A number for option one', default: 1 }
+                            }
+                        },
+                        {
+                            type: 'object',
+                            title: 'Schema Type Two',
+                            required: ['type', 'property'],
+                            properties: {
+                                type: { type: 'string', const: 'second' },
+                                property: { type: 'string', title: 'Schema two property', default: 'a string' }
+                            }
+                        }
+                    ]
+                },
+                dependency: {
+                    options: {
+                        header: { color: 'black' }
+                    },
+                    title: 'dependency',
+                    description:
+                        'support for schema dependencies, where an additional schema is activated if a given input exists',
+                    type: 'object',
+                    properties: {
+                        firstname: {
+                            title: 'first name',
+                            description: 'if a name is given, last name will be active',
                             type: 'string'
+                        }
+                    },
+                    dependencies: {
+                        firstname: {
+                            required: ['lastname'],
+                            properties: {
+                                lastname: {
+                                    title: 'last name',
+                                    type: 'string'
+                                }
+                            }
                         }
                     }
                 },
-                {
+                ifthenelse: {
+                    title: 'if-then-else',
+                    description: 'switch schema based on schema validation. ',
+                    type: 'object',
+                    options: {
+                        header: { color: 'black' }
+                    },
+                    required: ['toggle'],
                     properties: {
-                        secondProperty: {
-                            title: 'second dynamic property',
-                            type: 'string'
+                        toggle: {
+                            title: 'Toggle for conditional schema',
+                            description:
+                                'if this content contains more than five characters another schema will be used',
+                            type: 'string',
+                            default: '123456'
+                        }
+                    },
+                    if: {
+                        required: ['toggle'],
+                        properties: {
+                            toggle: {
+                                type: 'string',
+                                maxLength: 5
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['toggleOn'],
+                        properties: {
+                            toggleOn: {
+                                title: 'toggle off',
+                                description: 'the toggle has less than 5 characters',
+                                type: 'string'
+                            }
+                        }
+                    },
+                    else: {
+                        required: ['toggleOff'],
+                        properties: {
+                            toggleOff: {
+                                title: 'toggle on',
+                                description: 'the toggle has more than 5 characters',
+                                type: 'string',
+                                enum: ['select 1', 'select 2', 'select 3']
+                            }
                         }
                     }
+                },
+                ifthen: {
+                    title: 'if-then',
+                    description: 'switch schema based on schema validation. ',
+                    type: 'object',
+                    options: {
+                        header: {
+                            inverted: false,
+                            color: 'black'
+                        }
+                    },
+                    required: ['toggle'],
+                    properties: {
+                        toggle: {
+                            title: 'Toggle for conditional schema',
+                            description:
+                                'if this content contains more than five characters an additional schema will be used',
+                            type: 'string'
+                        }
+                    },
+                    if: {
+                        required: ['toggle'],
+                        properties: {
+                            toggle: {
+                                type: 'string',
+                                minLength: 6
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['toggleOff'],
+                        properties: {
+                            toggleOff: {
+                                title: 'dynamic schema',
+                                description: 'the toggle has more than 5 characters',
+                                type: 'string',
+                                enum: ['select 1', 'select 2', 'select 3']
+                            }
+                        }
+                    }
+                },
+                collapsible: {
+                    type: 'object',
+                    title: 'Nested object headline inverted',
+                    description: 'Object which is initially collapsed using `{ options: { collapsed: true }}`',
+                    options: {
+                        collapsed: true,
+                        header: { color: 'black' }
+                    },
+                    required: ['property'],
+                    properties: {
+                        property: { type: 'string' }
+                    }
+                },
+                card: {
+                    type: 'object',
+                    title: 'Object with card layout',
+                    description: "You can style objects in card layoue using `options:{ layout: { type: 'card' } }`",
+                    options: {
+                        // header: {
+                        //     inverted: false
+                        // },
+                        layout: {
+                            type: 'card'
+                        }
+                    },
+                    required: ['property'],
+                    properties: {
+                        property: { type: 'string' },
+                        optionalProperty: { type: 'string' }
+                    }
                 }
-            ]
+            }
         },
-        remoteNestedEnum: {
-            title: 'remote enum in array',
+        array: {
+            title: 'Default Array',
+            description: 'A list of strings that accepts an any number of items',
             type: 'array',
-            options: {
-                syncEnum: {
-                    source: '#/list'
-                }
-            },
             items: {
-                type: 'string',
-                enum: ['everyone', 'system', 'it_administrator_internal']
-            },
-            uniqueItems: true
+                type: 'object',
+                title: 'object with a property',
+                required: ['property'],
+                properties: {
+                    property: {
+                        type: 'string'
+                    }
+                }
+            }
         },
-        list: {
-            title: 'List of strings',
-            description: 'Array with string items only. At least one item is required.',
+        arrayOfStrings: {
+            title: 'Array of strings',
+            description: 'Multiselect widget has been configured to register for a simple list of strings',
             type: 'array',
             items: {
                 type: 'string'
             },
-            minItems: 1,
             default: ['first item']
         },
-        switch: {
+        arrayOfUniqueStrings: {
+            title: 'Array of unique strings',
+            type: 'array',
+            items: {
+                type: 'string'
+            },
+            uniqueItems: true,
+            default: ['one', 'one']
+        },
+        arrayItemSelection: {
             type: 'array',
             title: 'Array with item selection',
             description: 'Array with items.oneOf statement and activated drag&drop support.',
@@ -354,137 +515,27 @@ export const schema = {
                                     hidden: true
                                 }
                             },
+                            format: 'textarea',
                             text: { type: 'string' }
                         }
                     }
                 ]
             }
         },
-        dependency: {
+        arrayHeadline: {
+            type: 'array',
+            title: 'Array headline options',
             options: {
-                layout: {
-                    type: 'card'
+                header: {
+                    inverted: true,
+                    color: 'teal'
                 }
             },
-            title: 'dependency',
+            items: {
+                type: 'number'
+            },
             description:
-                'support for schema dependencies, where an additional schema is activated if a given input has a value',
-            type: 'object',
-            required: ['firstname'],
-            properties: {
-                firstname: {
-                    title: 'first name',
-                    description: 'if a name is given, last name will be active',
-                    type: 'string'
-                }
-            },
-            dependencies: {
-                firstname: {
-                    required: ['lastname'],
-                    properties: {
-                        lastname: {
-                            title: 'last name',
-                            type: 'string',
-                            minLength: 1
-                        }
-                    }
-                }
-            }
-        },
-        ifthenelse: {
-            title: 'if-then-else',
-            description: 'switch schema based on schema validation. ',
-            type: 'object',
-            options: {
-                header: {
-                    color: 'blue'
-                }
-            },
-            required: ['toggle'],
-            properties: {
-                toggle: {
-                    title: 'Toggle for conditional schema',
-                    description: 'if this content contains more than five characters another schema will be used',
-                    type: 'string',
-                    default: '123456'
-                }
-            },
-            if: {
-                required: ['toggle'],
-                properties: {
-                    toggle: {
-                        type: 'string',
-                        maxLength: 5
-                    }
-                }
-            },
-            then: {
-                required: ['toggleOn'],
-                properties: {
-                    toggleOn: {
-                        title: 'toggle off',
-                        description: 'the toggle has less than 5 characters',
-                        type: 'string'
-                    }
-                }
-            },
-            else: {
-                required: ['toggleOff'],
-                properties: {
-                    toggleOff: {
-                        title: 'toggle on',
-                        description: 'the toggle has more than 5 characters',
-                        type: 'string',
-                        enum: ['select 1', 'select 2', 'select 3']
-                    }
-                }
-            }
-        },
-        ifthen: {
-            title: 'if-then',
-            description: 'switch schema based on schema validation. ',
-            type: 'object',
-            options: {
-                header: {
-                    inverted: false,
-                    color: 'blue'
-                }
-            },
-            required: ['toggle'],
-            properties: {
-                toggle: {
-                    title: 'Toggle for conditional schema',
-                    description: 'if this content contains more than five characters an additional schema will be used',
-                    type: 'string'
-                }
-            },
-            if: {
-                required: ['toggle'],
-                properties: {
-                    toggle: {
-                        type: 'string',
-                        minLength: 6
-                    }
-                }
-            },
-            then: {
-                required: ['toggleOff'],
-                properties: {
-                    toggleOff: {
-                        title: 'dynamic schema',
-                        description: 'the toggle has more than 5 characters',
-                        type: 'string',
-                        enum: ['select 1', 'select 2', 'select 3']
-                    }
-                }
-            }
-        },
-        html: {
-            title: 'this could be an input field for html',
-            type: 'string',
-            format: 'html',
-            description: 'textarea for multiline contents',
-            minLength: 1
+                'Array headline options are the same as for object headlines. They can be inverted and have a color'
         }
     }
 };

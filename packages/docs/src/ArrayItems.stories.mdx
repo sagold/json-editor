@@ -11,10 +11,10 @@ import { widgets } from '@sagold/rje-widgets';
 Validation of data is fully supported, the following lists tracks support by the user interface:
 
 - ❎ [**items** array-schema](#items-items-schema) - only in conjunction with an additionalItems defined as false or with a schema
+- ❎ [**additionalItems**](additionalItems) - not supported when set to true
 - ✅ [**items** object-schema](#items-object-schema) - object schema for child-items
 - ✅ [**items** oneOf](#items-oneof)
 - ✅ [length](#length) support for **minItems** and **maxItems**
-- ❎ [**additionalItems**](additionalItems) - not supported when set to true
 - ✅ [**if-then-else**](#if-then-else)
 - ❌ **enum** - only supported by validation not by user interface
 
@@ -24,15 +24,16 @@ validation only
 - ✅ uniqueItems - but unique items error is not assigned to actual value
 - ❌ **contains** - not yet supported
 
-## items object-array
+## items array schema
 
-array with fixed elements and `additionaItems=undefined` (equals empty schema -> everything is allowed === true)
+Fixed number and schema of array items
 
 <Canvas>
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
     options={{ title: true }}
+    data={['a title', 'a subtitle', 'an additional item']}
     schema={{
       title: 'Content with any additional items',
       type: 'array',
@@ -52,16 +53,16 @@ array with fixed elements and `additionaItems=undefined` (equals empty schema ->
 
 ## additionalItems
 
-array with fixed elements and `additionaItems=false`
+Per default, `additionaItems` defaults to `true`
 
 <Canvas>
   <JsonForm
     widgets={widgets}
-    validate={true}
     addOptionalProps={false}
-    data={['first', 'second', 'invalid']}
+    options={{ title: true }}
+    data={['a title', 'a subtitle', 'an additional item']}
     schema={{
-      title: 'Content with no additional items',
+      title: 'Content with any additional items',
       type: 'array',
       items: [
         {
@@ -72,25 +73,26 @@ array with fixed elements and `additionaItems=false`
           title: 'Subtitle',
           type: 'string'
         }
-      ],
-      additionalItems: false
+      ]
     }}
   />
 </Canvas>
-
-array with fixed elements and `additionaItems=true`
 
 - ⚠️ items object-array should allow adding any item. Here, item is initialized with `null` as no schema can be derived. Thus, no input element is renderer (null-widget) for adding items. Any input items are accepted.
 - **This feature need support to define custom data, initially offering an json-editor.**
 
+`additionaItems: true`
+
 <Canvas>
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
-    data={['first', 'second', 'unknown', 42, { title: 'schema is retrieved from input data' }]}
+    options={{ title: true }}
+    data={['a title', 'a subtitle', 'an additional item']}
     schema={{
-      title: 'Content with any additional item',
+      title: 'Content with any additional items',
       type: 'array',
+      additionalItems: true,
       items: [
         {
           title: 'Title',
@@ -100,20 +102,45 @@ array with fixed elements and `additionaItems=true`
           title: 'Subtitle',
           type: 'string'
         }
-      ],
-      additionalItems: true
+      ]
     }}
   />
 </Canvas>
 
-array with fixed elements and `additionaItems={ type: "number" }`
+`additionaItems: false`
+
+**⚠️ Note** `additionaItems=false` should show an error
+
+<Canvas>
+  <JsonForm
+    validate={true}
+    options={{ title: true }}
+    data={['a title', 'a subtitle', 'an additional item']}
+    schema={{
+      title: 'Content with any additional items',
+      type: 'array',
+      additionaItems: false,
+      items: [
+        {
+          title: 'Title',
+          type: 'string'
+        },
+        {
+          title: 'Subtitle',
+          type: 'string'
+        }
+      ]
+    }}
+  />
+</Canvas>
+
+`additionaItems: { type: "number" }`
 
 <Canvas>
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
     schema={{
-      title: 'Content with additional numbers',
       type: 'array',
       items: [
         {
@@ -154,8 +181,6 @@ Array items can contain any supported json-schema. You can set items as simple v
 </Canvas>
 
 or complex objects
-
-> ⚠️ **TODO** array object item does not show title
 
 <Canvas>
   <JsonForm
