@@ -6967,17 +6967,6 @@ he@^1.2.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-headless-json-editor@^0.21.0:
-  version "0.21.2"
-  resolved "https://registry.yarnpkg.com/headless-json-editor/-/headless-json-editor-0.21.2.tgz#cb59f9af0f5bdbe5676120cff769d6abf4264513"
-  integrity sha512-xhSwzISKoIDpqFA0f/NFZnYMAjtVMwy6YsyyUj/KhVXI/uuY2/6/dzRaCrSTX3QpKcza6d33xneBqovxtK4isg==
-  dependencies:
-    "@sagold/json-pointer" "^5.0.1"
-    "@types/uuid" "^8.3.4"
-    fast-equals "^4.0.1"
-    json-schema-library "^8.0.0-rc1"
-    uuid "^8.3.2"
-
 hmac-drbg@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
@@ -8216,10 +8205,10 @@ json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
   integrity sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==
 
-json-schema-library@^8.0.0-rc1:
-  version "8.0.0-rc1"
-  resolved "https://registry.yarnpkg.com/json-schema-library/-/json-schema-library-8.0.0-rc1.tgz#d9b870cf74ec5774609f7f8768ebb8d17c54a665"
-  integrity sha512-Yy2XgX1pLfAWYHQqo+mdNp1B7GZzlB96PcmzcXyUxKND4Xunc1hT6+Oa2JZZV8hGa8/kkaoqFi5tQFr/iRsGSQ==
+json-schema-library@^8.0.0-rc3:
+  version "8.0.0-rc3"
+  resolved "https://registry.yarnpkg.com/json-schema-library/-/json-schema-library-8.0.0-rc3.tgz#3fe07b1dbd90656f8c4245559d881e80771bab9e"
+  integrity sha512-D7zhl20kjhwMTxysc84vWggXTLyfWr3lEWkkChP1ODKA15M8U9INrK06B7BZyXirhAKUgtaHpanPdr8z4YN0sg==
   dependencies:
     "@sagold/json-pointer" "^5.0.1"
     "@sagold/json-query" "^6.0.0"
