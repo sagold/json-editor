@@ -13,10 +13,10 @@ Validation of data is fully supported, the following lists tracks support by the
 - ✅ [**properties**](#properties)
 - ✅ [**required**](#required-properties) - per default, only required properties will be added
 - ❎ [**additionalProperties**](#additional-properties) - actions to add additional properties are not available
-- ❎ [**oneOf**](#oneof)
-- ❎ [**allOf**](#allof) - partially. Attention: subschemas are merged
-- ✅ [**dependencies**](#dependencies) - Attention: subschemas are merged
-- ✅ [**if-then-else**](#if-then-else) - Attention: subschema is merged
+- ✅ [**oneOf**](#oneof)
+- ✅ [**allOf**](#allof) - support by merging subschema to a single schema. Validation still treats schemas separate
+- ✅ [**dependencies**](#dependencies) - support by merging subschema to a single schema. Validation still treats schemas separate
+- ✅ [**if-then-else**](#if-then-else) - support by merging subschema to a single schema. Validation still treats schemas separate
 - ❌ **patternProperties** - not yet supported
 - ❌ **anyOf** - not yet supported
 
@@ -337,11 +337,12 @@ The following example has conflicting validation rules, where the last statement
 
 <Canvas>
   <JsonForm
-    widgets={widgets}
     validate={true}
+    data={{ title: 'five!' }}
     schema={{
       type: 'object',
       options: { title: false },
+      required: ['title'],
       properties: {
         title: { type: 'string' }
       },
