@@ -61,14 +61,26 @@ $color-border: rgba(7, 23, 32, 0.08);
     background: rgba(0, 181, 173, 0.5);
 }
 
-.rje-drag__container {
-    color: #999;
-    cursor: pointer;
-    align-self: center;
-    i.icon {
-        pointer-events: none;
-        width: auto;
-        margin: 0;
-        padding: 0;
+.with-drag-handle {
+    position: relative;
+
+    .rje-drag__container {
+        color: #999;
+        cursor: pointer;
+        align-self: center;
+        position: absolute;
+        left: -8px;
+        top: 4px;
+        bottom: 4px;
+        width: 18px;
+
+        // striped background
+        // background: repeating-linear-gradient(-45deg, transparent 0px 2px, rgba(0, 0, 0, 0.15) 3px 4px);
+
+        // dotted background
+        background-image: radial-gradient(circle at 1.5px 1.5px, rgba(0, 0, 0, 0.2) 1.5px, transparent 0);
+        background-size: 6px 10px;
+        top: 12px;
+        bottom: 12px;
     }
 }

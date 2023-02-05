@@ -24,11 +24,7 @@ export function ArrayItemDefault({
 }: ArrayItemProps) {
     return (
         <div data-type="array-item" className={['array-item', withDragHandle ? 'with-drag-handle' : ''].join(' ')}>
-            {withDragHandle && (
-                <div className="rje-drag__handle rje-drag__container">
-                    <Icon name="bars" />
-                </div>
-            )}
+            {withDragHandle && <div className="rje-drag__handle rje-drag__container"></div>}
             <Widget editor={editor} node={node} options={options} />
             <div className={`rje-array-item__actions`}>
                 <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable disabled={disabled}>
