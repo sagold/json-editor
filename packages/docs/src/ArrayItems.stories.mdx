@@ -10,8 +10,8 @@ import { widgets } from '@sagold/rje-widgets';
 
 Validation of data is fully supported, the following lists tracks support by the user interface:
 
-- ❎ [**items** array-schema](#items-items-schema) - only in conjunction with an additionalItems defined as false or with a schema
-- ❎ [**additionalItems**](additionalItems) - not supported when set to true
+- ✅ [**items** array-schema](#items-items-schema) - defined set of array items
+- ❎ [**additionalItems**](additionalItems) - ui does not support adding any data
 - ✅ [**items** object-schema](#items-object-schema) - object schema for child-items
 - ✅ [**items** oneOf](#items-oneof)
 - ✅ [length](#length) support for **minItems** and **maxItems**
@@ -20,21 +20,22 @@ Validation of data is fully supported, the following lists tracks support by the
 
 validation only
 
-- ❎ [**not**](#not) - incomprehensible error message
-- ✅ uniqueItems - but unique items error is not assigned to actual value
-- ❌ **contains** - not yet supported
+- ✅ [**not**](#not) - exlude specific arrays
+- ✅ [**uniqueItems**](#uniqueitems) - but unique items error is not assigned to actual value
+- ✅ [**contains**](#contains)
 
 ## items array schema
 
 Fixed number and schema of array items
 
+`items: [ schema, schema ]`
+
 <Canvas>
   <JsonForm
     validate={true}
-    options={{ title: true }}
-    data={['a title', 'a subtitle', 'an additional item']}
+    data={['a title', 'a subtitle']}
     schema={{
-      title: 'Content with any additional items',
+      title: 'items: []',
       type: 'array',
       items: [
         {
@@ -50,17 +51,20 @@ Fixed number and schema of array items
   />
 </Canvas>
 
-## additionalItems
+### additionalItems
 
-Per default, `additionaItems` defaults to `true`
+With items defined by an items-array, `additionalItems=undefined` or set to `true` will allow any additional child.
+
+- **Note**, for a missing `additionalItems` setting, add-options are disabled
+
+`additionalItems=undefined`
 
 <Canvas>
   <JsonForm
     validate={true}
-    options={{ title: true }}
     data={['a title', 'a subtitle', 'an additional item']}
     schema={{
-      title: 'Content with any additional items',
+      title: 'additionalItems: undefined',
       type: 'array',
       items: [
         {
@@ -76,18 +80,18 @@ Per default, `additionaItems` defaults to `true`
   />
 </Canvas>
 
-- ⚠️ items object-array should allow adding any item. Here, item is initialized with `null` as no schema can be derived. Thus, no input element is renderer (null-widget) for adding items. Any input items are accepted.
-- **This feature need support to define custom data, initially offering an json-editor.**
+With items defined by an items-array, `additionalItems=true`, the add option is available. Here, item is initialized with `null` as no schema can be derived. Thus, no input element is renderer (null-widget) for adding items. Any input items are accepted.
 
-`additionaItems: true`
+- **Note** This feature will need support to define custom data, initially offering an json-editor
+
+`additionalItems: true`
 
 <Canvas>
   <JsonForm
     validate={true}
-    options={{ title: true }}
     data={['a title', 'a subtitle', 'an additional item']}
     schema={{
-      title: 'Content with any additional items',
+      title: 'additionalItems: true',
       type: 'array',
       additionalItems: true,
       items: [
@@ -104,19 +108,18 @@ Per default, `additionaItems` defaults to `true`
   />
 </Canvas>
 
-`additionaItems: false`
+Preventing additional items will disable add-options and remove any undefined item from user form and exported data. In the following example, the array is initialized with three values:
 
-**⚠️ Note** `additionaItems=false` should show an error
+`additionalItems: false`
 
 <Canvas>
   <JsonForm
     validate={true}
-    options={{ title: true }}
     data={['a title', 'a subtitle', 'an additional item']}
     schema={{
-      title: 'Content with any additional items',
+      title: 'additionalItems: false',
       type: 'array',
-      additionaItems: false,
+      additionalItems: false,
       items: [
         {
           title: 'Title',
@@ -131,14 +134,16 @@ Per default, `additionaItems` defaults to `true`
   />
 </Canvas>
 
-`additionaItems: { type: "number" }`
+With items defined by an items-array and `additionalItems` set to a valid json-schema, items may be added in the for the given format.
+
+`additionalItems: { type: "number" }`
 
 <Canvas>
   <JsonForm
     widgets={widgets}
-    addOptionalProps={false}
     schema={{
       type: 'array',
+      title: 'additionalItems: { schema }',
       items: [
         {
           title: 'Title',
@@ -150,6 +155,7 @@ Per default, `additionaItems` defaults to `true`
         }
       ],
       additionalItems: {
+        title: 'Additional number',
         type: 'number'
       }
     }}
@@ -158,7 +164,9 @@ Per default, `additionaItems` defaults to `true`
 
 ## items object-schema
 
-Array items can contain any supported json-schema. You can set items as simple values:
+Array items can contain any supported json-schema:
+
+`items: { schema }`
 
 <Canvas>
   <JsonForm
@@ -166,27 +174,8 @@ Array items can contain any supported json-schema. You can set items as simple v
     addOptionalProps={false}
     data={[2023]}
     schema={{
+      title: 'items: { object }',
       type: 'array',
-      items: {
-        title: 'item',
-        type: 'number',
-        default: 1
-      },
-      options: { title: true }
-    }}
-  />
-</Canvas>
-
-or complex objects
-
-<Canvas>
-  <JsonForm
-    widgets={widgets}
-    addOptionalProps={false}
-    data={[2023]}
-    schema={{
-      type: 'array',
-      options: { title: true },
       items: {
         type: 'object',
         required: ['alt', 'image'],
@@ -212,7 +201,11 @@ or complex objects
   />
 </Canvas>
 
-## items oneOf
+### items oneOf
+
+When using an items-object definition containing a `oneOf` statement, adding an item will show a selection dialog for each oneOf schema
+
+`items: { oneOf: [] }`
 
 <Canvas>
   <JsonForm
@@ -277,6 +270,8 @@ or complex objects
 
 support for `minItems` and `maxItems` length restrictions:
 
+`minItems: 1, maxItems: 2`
+
 <Canvas>
   <JsonForm
     widgets={widgets}
@@ -284,7 +279,7 @@ support for `minItems` and `maxItems` length restrictions:
     schema={{
       type: 'array',
       minItems: 1,
-      maxItems: 3,
+      maxItems: 2,
       items: {
         title: 'item',
         type: 'number',
@@ -298,6 +293,8 @@ support for `minItems` and `maxItems` length restrictions:
 ## if-then-else
 
 example: if any number is above 1 the list is restricted to one item, else no item is allowed
+
+`if: { items: { maximum: 1 } }`
 
 <Canvas>
   <JsonForm
@@ -357,14 +354,14 @@ example: if any number is above 1 the list is restricted to one item, else no it
 
 ## not
 
-support for `not` schema
+Using a `not` schema, allows specific arrays to be invalidated, showing an error when `not` validates. The following example invalidates arrays that only consist of 123. If one of the array items differs from 123, the schema is valid again (as not expects a schema for all items).
 
-- ⚠️ error message is unreadable
+`not: { items: { const: 123 }}`
 
 <Canvas>
   <JsonForm
     widgets={widgets}
-    addOptionalProps={false}
+    validate={true}
     data={[123]}
     schema={{
       title: 'Array using not',
@@ -379,18 +376,17 @@ support for `not` schema
       items: {
         title: 'item',
         type: 'number',
-        default: 1
-      },
-      options: { title: true }
+        default: 123
+      }
     }}
   />
 </Canvas>
 
-## unique items
+## uniqueItems
 
-support for `uniqueItems` schema
+`uniqueItems` prevents duplication in array items
 
-- **TODO** unique items error could be assigned to actual value
+`uniqueItems: true`
 
 <Canvas>
   <JsonForm
@@ -406,8 +402,34 @@ support for `uniqueItems` schema
         title: 'item',
         type: 'number',
         default: 1
+      }
+    }}
+  />
+</Canvas>
+
+## contains
+
+While the items schema must be valid for every item in the array, the `contains` schema only needs to validate against one or more items in the array.
+
+`contains: { const: 1 }`
+
+<Canvas>
+  <JsonForm
+    widgets={widgets}
+    validate={true}
+    data={[2, 3]}
+    schema={{
+      title: 'Array must contain 1',
+      type: 'array',
+      items: {
+        title: 'item',
+        type: 'number',
+        default: 1
       },
-      options: { title: true }
+      contains: {
+        type: 'number',
+        const: 1
+      }
     }}
   />
 </Canvas>

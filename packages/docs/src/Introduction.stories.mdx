@@ -22,6 +22,30 @@ installation
 
 ## Current features in development
 
-testing json code-editor `type=object` with `$ref`
+Missing error message
+
+`additionaItems: false`
+
+<Canvas>
+  <JsonForm
+    validate={true}
+    data={['a title', 'a subtitle', 'an additional item', 123]}
+    schema={{
+      title: 'additionaItems: false',
+      type: 'array',
+      additionalItems: false,
+      items: [
+        {
+          title: 'Title',
+          type: 'string'
+        },
+        {
+          title: 'Subtitle',
+          type: 'string'
+        }
+      ]
+    }}
+  />
+</Canvas>
 
 ## roadmap
