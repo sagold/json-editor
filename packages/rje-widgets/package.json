@@ -1,6 +1,6 @@
 {
     "name": "@sagold/rje-widgets",
-    "version": "0.24.0",
+    "version": "0.25.0",
     "license": "MIT",
     "type": "module",
     "module": "./dist/es6/src/index.js",
@@ -8,7 +8,7 @@
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
         "@semantic-ui-react/component-ref": "*",
-        "@sagold/react-json-editor": "^0.24.0",
+        "@sagold/react-json-editor": "^0.25.1",
         "react-is": "*",
         "react-textarea-autosize": "^8.3.4",
         "semantic-ui-css": "^2.5.0",
