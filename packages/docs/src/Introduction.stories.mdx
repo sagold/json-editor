@@ -22,30 +22,33 @@ installation
 
 ## Current features in development
 
-Missing error message
-
-`additionaItems: false`
-
-<Canvas>
-  <JsonForm
-    validate={true}
-    data={['a title', 'a subtitle', 'an additional item', 123]}
-    schema={{
-      title: 'additionaItems: false',
-      type: 'array',
-      additionalItems: false,
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ]
-    }}
-  />
-</Canvas>
+Reduce and maybe replace react-semantic-ui by a headless component library
 
 ## roadmap
+
+**v1**
+
+- add password widget
+
+**v2 - stability**
+
+- test weird/incorrect states (change of schema types, errors in dynamic schemas, wrong input data)
+- improve update flow (using diff to patch less nodes and ensure current input does not lose focus)
+- add integration test setup
+
+**v3 - drag&rop features**
+
+- drag html-widget into array to add items
+- drag items across arrays
+- drag validation of wrong items while dragging
+
+**further topics**
+
+- rework validation function & logic (errors and node assignments)
+- async validation errors and update
+- i18n
+- support undefined properties/items via ui
+- wizard option (gathering as pages)
+- delegation editor support (portal for widget details)
+- can we have sortableJS as plugin?
+- logic to support un/collapse all option

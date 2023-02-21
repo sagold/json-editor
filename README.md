@@ -11,7 +11,7 @@
 [![Npm package version](https://badgen.net/npm/v/headless-json-editor)](https://github.com/sagold/headless-json-editor/actions/workflows/ci.yaml)
 ![Types](https://badgen.net/npm/types/headless-json-editor)
 
-A simple beautiful api for your custom form generator powered by json-schema. _headless-json-editor_ build a syntax tree of your json-schema and input data, which can be easily walked through to be rendered or processed further.
+A simple beautiful api for your custom form generator powered by json-schema. _headless-json-editor_ builds a syntax tree of your json-schema and input data. The result can be easily walked through for rendering or further processing.
 
 ```sh
 yarn add headless-json-editor

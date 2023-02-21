@@ -8,7 +8,7 @@ import { widgets } from '@sagold/rje-widgets';
 
 > _json-schema_ has a set of definitions for array items. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
 
-Validation of data is fully supported, the following lists tracks support by the user interface:
+Validation of data is fully supported, the following list tracks support of the user interface:
 
 - ✅ [**items** array-schema](#items-items-schema) - defined set of array items
 - ❎ [**additionalItems**](additionalItems) - ui does not support adding any data
@@ -20,15 +20,15 @@ Validation of data is fully supported, the following lists tracks support by the
 
 validation only
 
-- ✅ [**not**](#not) - exlude specific arrays
-- ✅ [**uniqueItems**](#uniqueitems) - but unique items error is not assigned to actual value
-- ✅ [**contains**](#contains)
+- ✅ [**not**](#not) - exlude specific item types
+- ✅ [**uniqueItems**](#uniqueitems) - exclude redundant items
+- ✅ [**contains**](#contains) - ensure a specific item is present
 
 ## items array schema
 
 Fixed number and schema of array items
 
-`items: [ schema, schema ]`
+`items: [schema, schema]`
 
 <Canvas>
   <JsonForm
@@ -53,7 +53,7 @@ Fixed number and schema of array items
 
 ### additionalItems
 
-With items defined by an items-array, `additionalItems=undefined` or set to `true` will allow any additional child.
+With items defined by an items-array, `additionalItems=undefined` or `additionalItems=true` will allow any additional child.
 
 - **Note**, for a missing `additionalItems` setting, add-options are disabled
 
