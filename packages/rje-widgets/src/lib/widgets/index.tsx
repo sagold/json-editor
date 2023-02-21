@@ -8,7 +8,8 @@ import { NullWidgetPlugin } from './nullwidget/NullWidget';
 import { NumberWidgetPlugin } from './numberwidget/NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
 import { SelectOneOfWidgetPlugin } from './selectoneofwidget/SelectOneOfWidget';
-import { StringWidgetPlugin, SelectWidget } from './stringwidget/StringWidget';
+import { StringWidgetPlugin } from './stringwidget/StringWidget';
+import { SelectWidgetPlugin } from './selectwidget/SelectWidget';
 import { TextWidgetPlugin } from './textwidget/TextWidget';
 import { SimpleJsonWidgetPlugin } from './simplejsonwidget/SimpleJsonWidget';
 import { UnknownWidgetPlugin } from './unknownwidget/UnknownWidget';
@@ -25,11 +26,7 @@ export const widgets: WidgetPlugin[] = [
     MultiSelectWidgetPlugin,
     ArrayWidgetPlugin,
     ObjectWidgetPlugin,
-    {
-        id: 'select-string-widget',
-        use: (node) => node.schema.type === 'string' && Array.isArray(node.schema.enum),
-        Widget: SelectWidget
-    },
+    SelectWidgetPlugin,
     FileWidgetPlugin,
     TextWidgetPlugin,
     StringWidgetPlugin,

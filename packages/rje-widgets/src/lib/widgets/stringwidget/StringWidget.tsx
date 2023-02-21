@@ -87,33 +87,3 @@ export const StringWidgetPlugin: WidgetPlugin = {
     use: (node) => node.schema.type === 'string',
     Widget: StringWidget
 };
-
-export const SelectWidget = widget<StringNode, string>(({ node, options, setValue }) => {
-    const enumValues = (node.schema.enum || []) as string[];
-
-    const titles = (options.enum as string[]) ?? [];
-    const selectOptions = enumValues.map((value, index) => ({
-        key: index,
-        value,
-        text: titles[index] ?? value
-    }));
-
-    return (
-        <div className="rje-form rje-value" data-type="string">
-            <Form.Field
-                required={options.required === true}
-                id={node.pointer}
-                error={node.errors.length > 0 && node.errors.map((e) => e.message)}
-            >
-                <label>{options.title ?? node.property}</label>
-                <Dropdown
-                    selection
-                    onChange={(event, { value }) => setValue(value as string)}
-                    value={node.value}
-                    options={selectOptions}
-                />
-            </Form.Field>
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
-    );
-});

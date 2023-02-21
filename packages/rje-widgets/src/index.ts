@@ -15,5 +15,6 @@ export { NumberWidget, NumberWidgetPlugin } from './lib/widgets/numberwidget/Num
 export { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
 export { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
 export { StringWidget, StringWidgetPlugin } from './lib/widgets/stringwidget/StringWidget';
+export { SelectWidget, SelectWidgetPlugin } from './lib/widgets/selectwidget/SelectWidget';
 export { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
 export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
