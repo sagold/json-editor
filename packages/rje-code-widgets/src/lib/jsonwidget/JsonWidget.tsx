@@ -67,7 +67,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
 
     return (
         <div
-            className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
+            className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
             data-type="object"
             data-id={node.pointer}
         >
@@ -97,7 +97,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                     Invalid json format. Changes will be applied only if the json is valid.
                 </Label>
             )}
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });
@@ -142,7 +142,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
 
     return (
         <div
-            className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
+            className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
             data-type="object"
             data-id={node.pointer}
         >
@@ -172,7 +172,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                     Invalid json format. Changes will be applied only if the json is valid.
                 </Label>
             )}
-            {options.description && <em className="ed-description">{options.description}</em>}
+            {options.description && <em className="rje-description">{options.description}</em>}
         </div>
     );
 });

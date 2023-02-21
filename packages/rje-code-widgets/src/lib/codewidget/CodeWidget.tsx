@@ -34,7 +34,7 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
             }
             return (
                 <div
-                    className={classNames('ed-form ed-form--value ed-value ed-code', options.classNames)}
+                    className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
                     data-type="object"
                     data-id={node.pointer}
                 >
@@ -56,7 +56,7 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
                             {...onChangeListener}
                         />
                     </Form.Field>
-                    {options.description && <em className="ed-description">{options.description}</em>}
+                    {options.description && <em className="rje-description">{options.description}</em>}
                 </div>
             );
         })
