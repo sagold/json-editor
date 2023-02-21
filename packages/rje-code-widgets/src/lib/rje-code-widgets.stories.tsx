@@ -2,8 +2,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
 import { Button, Icon } from 'semantic-ui-react';
-import { useState, useRef } from 'react';
-import { widgets } from '@sagold/rje-widgets';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import widgets from '@sagold/rje-widgets';
 import './rje-code-widgets.scss';
 
 const propertySchema = {
@@ -126,26 +126,29 @@ export default {
 } as ComponentMeta<typeof JsonWidget>;
 
 const Template: ComponentStory<typeof JsonWidget> = (args) => {
-    const editor = useRef<JsonEditor>(null);
-    const history = editor.current?.plugin('history') as HistoryPluginInstance;
-    const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
-    const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
-
+    const editorRef = useRef<JsonEditor>(null);
+    const [data, setData] = useState<unknown>(null);
+    const [history, setHistory] = useState<HistoryPluginInstance>();
+    useEffect(() => {
+        editorRef.current && setHistory(editorRef.current.plugin('history') as HistoryPluginInstance);
+    });
     return (
         <div>
             <Button.Group icon>
-                <Button icon onClick={() => history?.undo()} disabled={!isUndoEnabled}>
+                <Button icon onClick={() => history?.undo()} disabled={history?.getUndoCount() === 0}>
                     <Icon name="undo" />
                 </Button>
-                <Button icon onClick={() => history?.redo()} disabled={!isRedoEnabled}>
+                <Button icon onClick={() => history?.redo()} disabled={history?.getRedoCount() === 0}>
                     <Icon name="redo" />
                 </Button>
             </Button.Group>
             <JsonForm
+                style={{ maxWidth: 680 }}
                 addOptionalProps={false}
                 schema={args.schema}
+                onChange={setData}
                 data={args.data}
-                ref={editor}
+                ref={editorRef}
                 plugins={[HistoryPlugin]}
                 widgets={[JsonWidgetPlugin, ...widgets]}
             />
