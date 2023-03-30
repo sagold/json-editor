@@ -5,7 +5,12 @@ import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './l
 import { Widget, WidgetProps } from './lib/components/widget/Widget';
 import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widget/WidgetDescription';
 import { WidgetError, WidgetErrorProps } from './lib/components/widget/WidgetError';
-import { WidgetField, WidgetFieldProps } from './lib/components/widget/WidgetField';
+import {
+    WidgetField,
+    WidgetFieldProps,
+    WidgetFieldHeaderProps,
+    WidgetFieldBarProps
+} from './lib/components/widget/WidgetField';
 import { Label } from './lib/components/label/Label';
 export {
     // components
@@ -25,15 +30,17 @@ export {
 // types
 export type {
     JsonFormProps,
+    DecoratedWidget,
+    DecoratedWidgetProps,
     JsonEditorOptions,
     UseJsonEditorOptions,
-    WidgetProps,
-    WidgetPlugin,
-    DecoratedWidgetProps,
-    DecoratedWidget,
     WidgetDescriptionProps,
     WidgetErrorProps,
-    WidgetFieldProps
+    WidgetFieldBarProps,
+    WidgetFieldHeaderProps,
+    WidgetFieldProps,
+    WidgetPlugin,
+    WidgetProps
 };
 
 // re-exports from headless-json-editor & json-schema-library

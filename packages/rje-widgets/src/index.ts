@@ -45,9 +45,4 @@ export { TextArea, TextAreaProps } from './lib/components/textarea/TextArea';
 export { useTooltip, UseTooltipProps, Tooltip, TooltipProps } from './lib/components/tooltip/Tooltip';
 export { WidgetDescription } from './lib/components/widgetdescription/WidgetDescription';
 export { WidgetError, WidgetErrorProps } from './lib/components/widgeterror/WidgetError';
-export {
-    WidgetField,
-    WidgetFieldProps,
-    WidgetFieldBarProps,
-    WidgetFieldHeaderProps
-} from './lib/components/widgetfield/WidgetField';
+export { WidgetField, WidgetFieldProps, WidgetFieldBarProps, WidgetFieldHeaderProps } from '@sagold/react-json-editor';
