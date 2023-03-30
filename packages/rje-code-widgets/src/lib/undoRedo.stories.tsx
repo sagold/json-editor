@@ -1,15 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import widgets from '@sagold/rje-widgets';
-import { Form, Button } from 'semantic-ui-react';
-import {
-    JsonForm,
-    Node,
-    Widget,
-    JsonSchema,
-    useJsonEditor,
-    HistoryPlugin,
-    HistoryPluginInstance
-} from '@sagold/react-json-editor';
+import { Widget, JsonSchema, useJsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
+import theme from '../../../rje-widgets/src/lib/theme';
+import widgets, { Button } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetOptions, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { useRef } from 'react';
 
@@ -38,23 +30,21 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
     console.log('history', historyPlugin.current);
 
     return (
-        <>
-            <div>
+        <div className="rje-form rje-theme--light" style={theme}>
+            <div style={{ display: 'flex', gap: 8 }}>
                 <Button
-                    content="undo"
-                    onClick={() => historyPlugin.current.undo()}
+                    icon="undo"
+                    onPress={() => historyPlugin.current.undo()}
                     disabled={historyPlugin.current?.getUndoCount() === 0}
                 />
                 <Button
-                    content="redo"
-                    onClick={() => historyPlugin.current.redo()}
+                    icon="redo"
+                    onPress={() => historyPlugin.current.redo()}
                     disabled={historyPlugin.current?.getRedoCount() === 0}
                 />
             </div>
-            <Form error>
-                <Widget editor={editor} node={node} />
-            </Form>
-        </>
+            <Widget editor={editor} node={node} />
+        </div>
     );
 };
 

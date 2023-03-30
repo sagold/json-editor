@@ -10,9 +10,7 @@
         "@codemirror/lang-json": "*",
         "@codemirror/lint": "*",
         "@uiw/react-codemirror": "*",
-        "markdown-to-jsx": "^7.1.7",
-        "semantic-ui-react": "*",
-        "semantic-ui-css": "*"
+        "markdown-to-jsx": "^7.1.7"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "^0.26.0"

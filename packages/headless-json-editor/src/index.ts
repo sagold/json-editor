@@ -97,5 +97,5 @@ export type {
     ValueNode
 };
 // jlib export
-import { isJsonError } from 'json-schema-library';
-export { isJsonError };
+import { isJsonError, JsonError } from 'json-schema-library';
+export { isJsonError, JsonError };

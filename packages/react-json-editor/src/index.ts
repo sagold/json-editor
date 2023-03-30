@@ -3,7 +3,25 @@ import { JsonForm, JsonFormProps } from './lib/components/jsonform';
 import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
 import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/decorators';
 import { Widget, WidgetProps } from './lib/components/widget/Widget';
-export { Widget, widget, JsonEditor, JsonForm, setDefaultWidgets, useJsonEditor };
+import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widget/WidgetDescription';
+import { WidgetError, WidgetErrorProps } from './lib/components/widget/WidgetError';
+import { WidgetField, WidgetFieldProps } from './lib/components/widget/WidgetField';
+import { Label } from './lib/components/label/Label';
+export {
+    // components
+    JsonForm,
+    Label,
+    Widget,
+    WidgetDescription,
+    WidgetError,
+    WidgetField,
+    // integration
+    widget,
+    // core
+    JsonEditor,
+    setDefaultWidgets,
+    useJsonEditor
+};
 // types
 export type {
     JsonFormProps,
@@ -12,7 +30,10 @@ export type {
     WidgetProps,
     WidgetPlugin,
     DecoratedWidgetProps,
-    DecoratedWidget
+    DecoratedWidget,
+    WidgetDescriptionProps,
+    WidgetErrorProps,
+    WidgetFieldProps
 };
 
 // re-exports from headless-json-editor & json-schema-library
@@ -53,6 +74,7 @@ import {
     DefaultNodeOptions,
     HeadlessJsonEditorOptions,
     HistoryPluginInstance,
+    JsonError,
     JsonSchema,
     Plugin,
     Node,
@@ -65,8 +87,6 @@ import {
     StringNode,
     ValueNode
 } from 'headless-json-editor';
-
-import { JsonError } from 'json-schema-library';
 
 export {
     create,

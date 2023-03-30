@@ -1,13 +1,13 @@
+import { useState, useCallback, useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
-import { classNames } from '../classNames';
-import { Form, Label } from 'semantic-ui-react';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
+import { Widget, Label, JsonError } from '@sagold/react-json-editor';
 import { jsonSchemaCompletion } from './jsonSchemaCompletion';
 import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { jsonSchemaTooltip } from './jsonSchemaTooltip';
 import { linter, lintGutter } from '@codemirror/lint';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
-import { useState, useCallback, useMemo } from 'react';
+
 import {
     widget,
     WidgetPlugin,
@@ -17,6 +17,13 @@ import {
     DefaultNodeOptions,
     JsonSchema
 } from '@sagold/react-json-editor';
+
+const InvalidJsonError: JsonError = {
+    type: 'error',
+    name: 'InvalidJsonError',
+    code: 'invalid-json-error',
+    message: 'Invalid json format. Changes will be applied only if the json is valid.'
+} as const;
 
 export const JsonWidget = (props) => {
     if (props.node.schema.type === 'string') {
@@ -66,39 +73,32 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
     ];
 
     return (
-        <div
-            className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
-            data-type="object"
-            data-id={node.pointer}
+        <Widget.Field
+            widgetType="json"
+            node={node}
+            options={options}
+            additionalError={validJson ? undefined : InvalidJsonError}
         >
-            <Form.Field id={node.id} error={!validJson} disabled={options.disabled}>
-                <label>{options.title as string}</label>
-                {/*https://uiwjs.github.io/react-codemirror/*/}
-                <CodeMirror
-                    value={JSON.stringify(json(node), null, 2)}
-                    basicSetup={options.setup}
-                    editable={options.disabled === false}
-                    extensions={extensions}
-                    height={options.height}
-                    minHeight={options.minHeight}
-                    maxHeight={options.maxHeight}
-                    indentWithTab={options.indentWithTab}
-                    placeholder={options.placeholder}
-                    readOnly={options.readOnly}
-                    theme={options.theme ?? 'light'}
-                    {...onChangeListener}
-                    style={{
-                        border: '1px solid silver'
-                    }}
-                />
-            </Form.Field>
-            {!validJson && (
-                <Label color="red" basic prompt pointing="above">
-                    Invalid json format. Changes will be applied only if the json is valid.
-                </Label>
-            )}
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+            <Label>{options.title as string}</Label>
+            {/*https://uiwjs.github.io/react-codemirror/*/}
+            <CodeMirror
+                value={JSON.stringify(json(node), null, 2)}
+                basicSetup={options.setup}
+                editable={options.disabled === false}
+                extensions={extensions}
+                height={options.height}
+                minHeight={options.minHeight}
+                maxHeight={options.maxHeight}
+                indentWithTab={options.indentWithTab}
+                placeholder={options.placeholder}
+                readOnly={options.readOnly}
+                theme={options.theme ?? 'light'}
+                {...onChangeListener}
+                style={{
+                    border: '1px solid silver'
+                }}
+            />
+        </Widget.Field>
     );
 });
 
@@ -141,39 +141,32 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
     }
 
     return (
-        <div
-            className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
-            data-type="object"
-            data-id={node.pointer}
+        <Widget.Field
+            widgetType="json"
+            node={node}
+            options={options}
+            additionalError={validJson ? undefined : InvalidJsonError}
         >
-            <Form.Field id={node.id} error={node.errors.length > 0 || !validJson} disabled={options.disabled}>
-                <label>{options.title as string}</label>
-                {/*https://uiwjs.github.io/react-codemirror/*/}
-                <CodeMirror
-                    value={node.value}
-                    basicSetup={options.setup}
-                    editable={options.disabled === false}
-                    extensions={extensions}
-                    height={options.height}
-                    minHeight={options.minHeight}
-                    maxHeight={options.maxHeight}
-                    indentWithTab={options.indentWithTab}
-                    placeholder={options.placeholder}
-                    readOnly={options.readOnly}
-                    theme={options.theme ?? 'light'}
-                    {...onChangeListener}
-                    style={{
-                        border: '1px solid silver'
-                    }}
-                />
-            </Form.Field>
-            {!validJson && (
-                <Label color="red" basic prompt pointing="above">
-                    Invalid json format. Changes will be applied only if the json is valid.
-                </Label>
-            )}
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+            <Label>{options.title as string}</Label>
+            {/*https://uiwjs.github.io/react-codemirror/*/}
+            <CodeMirror
+                value={node.value}
+                basicSetup={options.setup}
+                editable={options.disabled === false}
+                extensions={extensions}
+                height={options.height}
+                minHeight={options.minHeight}
+                maxHeight={options.maxHeight}
+                indentWithTab={options.indentWithTab}
+                placeholder={options.placeholder}
+                readOnly={options.readOnly}
+                theme={options.theme ?? 'light'}
+                {...onChangeListener}
+                style={{
+                    border: '1px solid silver'
+                }}
+            />
+        </Widget.Field>
     );
 });
 

@@ -1,9 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
-import { Button, Icon } from 'semantic-ui-react';
-import { useState, useRef, useEffect, useCallback } from 'react';
-import widgets from '@sagold/rje-widgets';
+import widgets, { Button, Icon } from '@sagold/rje-widgets';
+import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
+import { useState, useRef, useEffect } from 'react';
+import theme from '../../../rje-widgets/src/lib/theme';
 import './rje-code-widgets.scss';
 
 const propertySchema = {
@@ -133,15 +133,11 @@ const Template: ComponentStory<typeof JsonWidget> = (args) => {
         editorRef.current && setHistory(editorRef.current.plugin('history') as HistoryPluginInstance);
     });
     return (
-        <div>
-            <Button.Group icon>
-                <Button icon onClick={() => history?.undo()} disabled={history?.getUndoCount() === 0}>
-                    <Icon name="undo" />
-                </Button>
-                <Button icon onClick={() => history?.redo()} disabled={history?.getRedoCount() === 0}>
-                    <Icon name="redo" />
-                </Button>
-            </Button.Group>
+        <div className="rje-form rje-theme--light" style={theme}>
+            <div style={{ display: 'flex', gap: 8 }}>
+                <Button icon="undo" onPress={() => history?.undo()} disabled={history?.getUndoCount() === 0}></Button>
+                <Button icon="redo" onPress={() => history?.redo()} disabled={history?.getRedoCount() === 0}></Button>
+            </div>
             <JsonForm
                 style={{ maxWidth: 680 }}
                 addOptionalProps={false}

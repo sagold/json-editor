@@ -1,8 +1,6 @@
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
-import { classNames } from '../classNames';
-import { Form } from 'semantic-ui-react';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
-import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { widget, Widget, Label, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 
 export type CodeWidgetOptions = {
     setup?: ReactCodeMirrorProps['basicSetup'];
@@ -33,31 +31,24 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
                 onChangeListener['ref'] = ref;
             }
             return (
-                <div
-                    className={classNames('rje-form rje-form--value rje-value rje-code', options.classNames)}
-                    data-type="object"
-                    data-id={node.pointer}
-                >
-                    <Form.Field id={node.id} error={node.errors.length > 0} disabled={options.disabled}>
-                        <label>{options.title as string}</label>
-                        {/*https://uiwjs.github.io/react-codemirror/*/}
-                        <CodeMirror
-                            value={node.value}
-                            basicSetup={options.setup}
-                            editable={options.disabled === false}
-                            extensions={extensions}
-                            height={options.height}
-                            minHeight={options.minHeight}
-                            maxHeight={options.maxHeight}
-                            indentWithTab={options.indentWithTab}
-                            placeholder={options.placeholder}
-                            readOnly={options.readOnly}
-                            theme={options.theme ?? 'light'}
-                            {...onChangeListener}
-                        />
-                    </Form.Field>
-                    {options.description && <em className="rje-description">{options.description}</em>}
-                </div>
+                <Widget.Field widgetType="code" node={node} options={options}>
+                    <Label>{options.title as string}</Label>
+                    {/*https://uiwjs.github.io/react-codemirror/*/}
+                    <CodeMirror
+                        value={node.value}
+                        basicSetup={options.setup}
+                        editable={options.disabled === false}
+                        extensions={extensions}
+                        height={options.height}
+                        minHeight={options.minHeight}
+                        maxHeight={options.maxHeight}
+                        indentWithTab={options.indentWithTab}
+                        placeholder={options.placeholder}
+                        readOnly={options.readOnly}
+                        theme={options.theme ?? 'light'}
+                        {...onChangeListener}
+                    />
+                </Widget.Field>
             );
         })
     };
