@@ -1,5 +1,6 @@
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
+import Markdown from 'markdown-to-jsx';
 import { widget, Widget, Label, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 
 export type CodeWidgetOptions = {
@@ -31,7 +32,7 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
                 onChangeListener['ref'] = ref;
             }
             return (
-                <Widget.Field widgetType="code" node={node} options={options}>
+                <Widget.Field widgetType="code" node={node} options={options} showDescription={false}>
                     <Label>{options.title as string}</Label>
                     {/*https://uiwjs.github.io/react-codemirror/*/}
                     <CodeMirror
@@ -48,6 +49,11 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
                         theme={options.theme ?? 'light'}
                         {...onChangeListener}
                     />
+                    {options.description && (
+                        <Widget.Description>
+                            <Markdown>{options.description}</Markdown>
+                        </Widget.Description>
+                    )}
                 </Widget.Field>
             );
         })

@@ -1,3 +1,4 @@
+import Markdown from 'markdown-to-jsx';
 import { useState, useCallback, useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
@@ -78,6 +79,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
             node={node}
             options={options}
             additionalError={validJson ? undefined : InvalidJsonError}
+            showDescription={false}
         >
             <Label>{options.title as string}</Label>
             {/*https://uiwjs.github.io/react-codemirror/*/}
@@ -98,6 +100,11 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                     border: '1px solid silver'
                 }}
             />
+            {options.description && (
+                <Widget.Description>
+                    <Markdown>{options.description}</Markdown>
+                </Widget.Description>
+            )}
         </Widget.Field>
     );
 });
@@ -146,6 +153,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
             node={node}
             options={options}
             additionalError={validJson ? undefined : InvalidJsonError}
+            showDescription={false}
         >
             <Label>{options.title as string}</Label>
             {/*https://uiwjs.github.io/react-codemirror/*/}
@@ -166,6 +174,11 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                     border: '1px solid silver'
                 }}
             />
+            {options.description && (
+                <Widget.Description>
+                    <Markdown>{options.description}</Markdown>
+                </Widget.Description>
+            )}
         </Widget.Field>
     );
 });
