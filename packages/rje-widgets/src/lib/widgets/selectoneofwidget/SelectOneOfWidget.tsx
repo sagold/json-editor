@@ -1,7 +1,6 @@
-import { Dropdown, DropdownProps, Divider } from 'semantic-ui-react';
-import { getOptions } from '@sagold/react-json-editor';
-import { ParentHeader } from '../../components/parentheader/ParentHeader';
 import { widget, WidgetPlugin, Widget, JsonSchema } from '@sagold/react-json-editor';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { Select } from '../../components/select/Select';
 
 type SelectedOneOfSchema = JsonSchema & {
     getOneOfOrigin: () => {
@@ -25,33 +24,40 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
         return null;
     }
 
-    const onChange = (e, { value }: DropdownProps) => {
+    const onChange = (value) => {
         const oneOfSchema = oneOf[`${value}`];
         const data = editor.getTemplateData(oneOfSchema);
         editor.setValue(node.pointer, data);
     };
 
     const selectOptions = oneOf.map((s, index) => ({
-        key: index,
-        value: index,
+        value: `${index}`,
         text: s.title
     }));
 
-    const oneOfSchema = origin.schema;
+    // const oneOfSchema = origin.schema;
 
     return (
-        <div className="rje-form rje-form--parent rje-oneof">
-            <ParentHeader node={node} options={getOptions(oneOfSchema as JsonSchema, node.property)} />
-
-            <Divider horizontal>
-                <Dropdown
-                    compact
-                    onChange={onChange}
-                    options={selectOptions}
-                    readOnly={options.readOnly === true}
-                    value={origin.index}
-                />
-            </Divider>
+        <WidgetField widgetType="oneof" node={node} options={options} showDescription={false} showError={false}>
+            <WidgetField.Header>
+                <WidgetField.Bar>
+                    <Select
+                        id={node.id}
+                        title={options.title}
+                        placeholder={options.placeholder}
+                        required={options.required}
+                        disabled={options.disabled}
+                        selectedKey={`${origin.index}`}
+                        setValue={onChange}
+                    >
+                        {selectOptions.map((option, index) => (
+                            <Select.Option key={option.value}>{option.text}</Select.Option>
+                        ))}
+                    </Select>
+                </WidgetField.Bar>
+                <WidgetField.Description>{options.description}</WidgetField.Description>
+                <WidgetField.Error errors={node.errors} />
+            </WidgetField.Header>
 
             <div className="rje-children">
                 <Widget
@@ -60,7 +66,7 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
                     options={{ title: undefined, description: undefined, skipSelectOneOf: true }}
                 />
             </div>
-        </div>
+        </WidgetField>
     );
 });
 

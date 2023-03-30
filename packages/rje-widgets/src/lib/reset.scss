@@ -1,0 +1,48 @@
+@mixin reset-button() {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    border-radius: 0;
+    border-spacing: 0;
+    outline: 0;
+    user-select: none;
+    &::-moz-focus-inner,
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+    &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+    }
+}
+
+@mixin reset-select() {
+    @include reset-input;
+    &:-moz-focusring {
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+    }
+
+    * {
+        @include reset-input;
+    }
+}
+
+@mixin reset-input() {
+    background-color: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    &::-ms-expand {
+        // IE 11
+        display: none;
+    }
+    border-radius: 0;
+    border: medium none;
+    font-size: inherit;
+}
+
+@mixin reset-box() {
+    margin: 0;
+    padding: 0;
+}

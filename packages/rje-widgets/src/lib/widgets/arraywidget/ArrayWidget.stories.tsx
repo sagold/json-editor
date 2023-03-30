@@ -1,9 +1,9 @@
 import { ArrayWidget, ArrayOptions } from './ArrayWidget';
 import { ComponentStory } from '@storybook/react';
-import { Form } from 'semantic-ui-react';
 import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
+import theme from '../../theme';
 
 export default {
     title: 'packages/rje-widgets/ArrayWidget',
@@ -31,9 +31,9 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
         validate: true
     });
     return (
-        <Form error>
+        <div className="rje-form rje-theme--light" style={theme}>
             <ArrayWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 
@@ -64,9 +64,8 @@ DefaultWidget.args = {
     },
     options: {
         sortable: {
-            enabled: true
+            enabled: false
         },
-        collapsed: false,
         header: {
             inverted: false,
             color: undefined
@@ -81,11 +80,50 @@ DefaultWidget.args = {
     }
 };
 
+export const ItemSelection = Template.bind({});
+ItemSelection.args = {
+    options: {
+        collapsed: false
+    },
+    schema: {
+        title: 'Array Item Selection Example',
+        description:
+            'Description displayed as subheader. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Post enim Chrysippum eum non sane est disputatum. Scientiam pollicentur, quam non erat mirum sapientiae cupido patria esse cariorem. Satis est ad hoc responsum. Hoc est vim afferre, Torquate, sensibus, extorquere ex animis cognitiones verborum, quibus inbuti sumus. Quid ergo attinet gloriose loqui, nisi constanter loquare? Aliter enim nosmet ipsos nosse non possumus. Sin tantum modo ad indicia veteris memoriae cognoscenda, curiosorum. Duo Reges: constructio interrete. Quid enim mihi potest esse optatius quam cum Catone, omnium virtutum auctore, de virtutibus disputare? Quantum Aristoxeni ingenium consumptum videmus in musicis?',
+        type: 'array',
+        items: {
+            oneOfProperty: 'type',
+            oneOf: [
+                {
+                    title: 'header',
+                    type: 'object',
+                    required: ['type', 'title'],
+                    properties: {
+                        type: { type: 'string', const: 'header', options: { hidden: true } },
+                        title: { type: 'string', title: 'title', format: 'textarea' }
+                    }
+                },
+                {
+                    title: 'article',
+                    type: 'object',
+                    required: ['type', 'content'],
+                    properties: {
+                        type: { type: 'string', const: 'article', options: { hidden: true } },
+                        content: { type: 'string', title: 'content', format: 'textarea' }
+                    }
+                }
+            ]
+        }
+    }
+};
+
 export const DragAndDrop = Template.bind({});
 DragAndDrop.args = {
     ...DefaultWidget.args,
     options: {
         sortable: {
+            enabled: true
+        },
+        editJson: {
             enabled: true
         }
     }
@@ -99,25 +137,25 @@ Collapsible.args = {
     }
 };
 
-export const LayoutOptions = Template.bind({});
-LayoutOptions.args = {
-    ...DefaultWidget.args,
-    options: {
-        layout: {
-            type: 'cards'
-        }
-    }
-};
+// export const LayoutOptions = Template.bind({});
+// LayoutOptions.args = {
+//     ...DefaultWidget.args,
+//     options: {
+//         layout: {
+//             type: 'cards'
+//         }
+//     }
+// };
 
-export const HeaderOptions = Template.bind({});
-HeaderOptions.args = {
-    ...DefaultWidget.args,
-    options: {
-        header: {
-            inverted: true
-        }
-    }
-};
+// export const HeaderOptions = Template.bind({});
+// HeaderOptions.args = {
+//     ...DefaultWidget.args,
+//     options: {
+//         header: {
+//             inverted: true
+//         }
+//     }
+// };
 
 export const EditJsonOptions = Template.bind({});
 EditJsonOptions.args = {

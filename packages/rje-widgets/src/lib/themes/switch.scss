@@ -1,0 +1,144 @@
+@import '../design';
+@import '../components/switch/switch';
+
+@mixin switch-light {
+    @include switch-component;
+
+    .rje-switch-input:checked {
+        @include primary-elevated-light;
+        border-radius: $switch-radius;
+
+        &:after {
+            color: rgb(var(--rje-color-light-primary));
+        }
+
+        #{$switch-state--focus} {
+            @include primary-elevated-light;
+            border-radius: $switch-radius;
+            background-color: rgb(var(--rje-color-light-secondary));
+            &:after {
+                color: rgb(var(--rje-color-light-secondary));
+            }
+        }
+
+        #{$switch-state--active} {
+            @include primary-flat-light;
+            border-radius: $switch-radius;
+            border-width: 0.5px 0.5px 0 0;
+            background-color: rgb(var(--rje-color-light-text));
+            &:after {
+                color: rgb(var(--rje-color-light-text));
+            }
+        }
+
+        #{$switch-state--disabled} {
+            @include primary-flat-light;
+            border-radius: $switch-radius;
+            &:after {
+                color: $color-light-grey-1;
+            }
+        }
+    }
+
+    .rje-switch-input:not(:checked) {
+        @include flat-light;
+        border-radius: $switch-radius;
+        background: $color-white;
+        // border-width: 0.5px 0.5px 0 0;
+        &:after {
+            background-color: rgb(var(--rje-color-light-primary));
+            border-radius: $switch-radius;
+            color: $color-white;
+        }
+
+        #{$switch-state--focus} {
+            &:after {
+                background-color: rgb(var(--rje-color-light-secondary));
+            }
+        }
+
+        #{$switch-state--active} {
+            &:after {
+                background-color: rgb(var(--rje-color-light-text));
+            }
+        }
+
+        #{$switch-state--disabled} {
+            @include flat-light;
+            border-radius: $switch-radius;
+            &:after {
+                background-color: $color-light-grey-1;
+            }
+        }
+    }
+}
+
+@mixin switch-dark {
+    @include switch-component;
+
+    .rje-switch-input:checked {
+        @include primary-elevated-dark;
+        border-radius: $switch-radius;
+        &:after {
+            background: $color-black;
+            color: rgb(var(--rje-color-dark-primary));
+        }
+
+        #{$switch-state--focus} {
+            @include primary-elevated-dark;
+            border-radius: $switch-radius;
+            background-color: rgb(var(--rje-color-dark-secondary));
+            &:after {
+                color: rgb(var(--rje-color-dark-secondary));
+            }
+        }
+
+        #{$switch-state--active} {
+            @include primary-flat-dark;
+            border-radius: $switch-radius;
+            border-width: 0.5px 0.5px 0 0;
+            background-color: rgb(var(--rje-color-dark-text));
+            &:after {
+                color: rgb(var(--rje-color-dark-text));
+            }
+        }
+
+        #{$switch-state--disabled} {
+            @include primary-flat-dark;
+            border-radius: $switch-radius;
+            background-color: $color-dark-grey-1;
+            &:after {
+                color: $color-dark-grey-1;
+            }
+        }
+    }
+    .rje-switch-input:not(:checked) {
+        @include elevated-dark;
+        border-radius: $switch-radius;
+        &:after {
+            background: rgb(var(--rje-color-dark-primary));
+            border-radius: $switch-radius;
+            color: $color-black;
+        }
+
+        #{$switch-state--focus} {
+            &:after {
+                background-color: rgb(var(--rje-color-dark-secondary));
+            }
+        }
+
+        #{$switch-state--active} {
+            &:after {
+                background-color: rgb(var(--rje-color-dark-text));
+            }
+        }
+
+        #{$switch-state--disabled} {
+            @include flat-dark;
+            border-radius: $switch-radius;
+            &:after {
+                background-color: $color-dark-grey-1;
+            }
+        }
+    }
+}

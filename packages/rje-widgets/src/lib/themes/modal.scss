@@ -1,0 +1,18 @@
+@import '../design';
+@import '../components/modal/modal';
+
+@mixin modal-light {
+    @include modal-component;
+
+    .rje-modal {
+        @include surface-modal-light;
+    }
+}
+
+@mixin modal-dark {
+    @include modal-component;
+
+    .rje-modal {
+        @include surface-modal-dark;
+    }
+}

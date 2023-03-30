@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { Form, Button, Icon } from 'semantic-ui-react';
 import { ComponentStory } from '@storybook/react';
 import { widgets } from '@sagold/rje-widgets';
+import { Button } from '../../../rje-widgets/src/lib/components/button/Button';
+import { Icon } from '../../../rje-widgets/src/lib/components/icon/Icon';
+import theme from '../../../rje-widgets/src/lib/theme';
 
 const schema = {
     type: 'object',
@@ -33,17 +35,12 @@ const schema = {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Examples/UndoRedo',
-    // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-    argTypes: {
-        data: { control: { type: 'object' }, defaultValue: {} },
-        schema: { control: { type: 'object' }, defaultValue: schema }
-    }
+    title: 'Examples/UndoRedo'
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, editor] = useJsonEditor({ data, schema, widgets, plugins: [HistoryPlugin] });
+const Template: ComponentStory<any> = () => {
+    const [node, editor] = useJsonEditor({ data: {}, schema, widgets, plugins: [HistoryPlugin] });
     const historyPlugin = useRef<HistoryPluginInstance>(editor.plugin('history') as HistoryPluginInstance);
     const Widget = editor.getWidget(node);
     const history = historyPlugin.current;
@@ -51,18 +48,14 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
 
     return (
-        <div>
-            <Button.Group icon>
-                <Button icon onClick={() => historyPlugin.current?.undo()} disabled={!isUndoEnabled}>
-                    <Icon name="undo" />
-                </Button>
-                <Button icon onClick={() => historyPlugin.current?.redo()} disabled={!isRedoEnabled}>
-                    <Icon name="redo" />
-                </Button>
-            </Button.Group>
-            <Form error>
+        <div className="rje-form rje-theme--light" style={theme}>
+            <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
+                <Button icon="undo" onPress={() => historyPlugin.current?.undo()} disabled={!isUndoEnabled}></Button>
+                <Button icon="redo" onPress={() => historyPlugin.current?.redo()} disabled={!isRedoEnabled}></Button>
+            </div>
+            <div className="rje-form">
                 <Widget node={node} editor={editor} />
-            </Form>
+            </div>
         </div>
     );
 };

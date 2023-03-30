@@ -1,8 +1,7 @@
-import { ObjectNode, getChildNode } from '@sagold/react-json-editor';
-import { Grid, Button } from 'semantic-ui-react';
-import { buildObjectLayout } from './buildObjectLayout';
-import { Widget, JsonEditor } from '@sagold/react-json-editor';
+import { ObjectNode, getChildNode, Widget, JsonEditor } from '@sagold/react-json-editor';
 import { ObjectOptions } from './ObjectWidget';
+import { Button } from '../../components/button/Button';
+import { Icon } from '../../components/icon/Icon';
 
 type ObjectPropertiesProps = {
     node: ObjectNode<ObjectOptions>;
@@ -15,28 +14,6 @@ export function ObjectProperties({ node, editor, options, withInlineDelete }: Ob
     const childOptions: Record<string, any> = {};
     options.disabled && (childOptions.disabled = true);
     options.readOnly && (childOptions.readOnly = true);
-
-    if (options.layout && Array.isArray(options.layout.cells)) {
-        const cells = buildObjectLayout(node, options.layout);
-        return (
-            <div className="rje-object__properties rje-object__properties--grid">
-                <Grid stackable columns="equal">
-                    {cells.map((cell) => {
-                        const child = getChildNode(node, cell.prop);
-                        if (child == null) {
-                            return null;
-                        }
-                        return (
-                            <Grid.Column key={cell.prop} width={cell.width ?? 16} style={{ padding: 0 }}>
-                                <Widget node={child} editor={editor} key={child.id} options={childOptions} />
-                            </Grid.Column>
-                        );
-                    })}
-                </Grid>
-            </div>
-        );
-    }
-
     return (
         <div className="rje-object__properties" style={{ boxShadow: 'none', border: 0 }}>
             {node.children.map((child) => (
@@ -49,11 +26,13 @@ export function ObjectProperties({ node, editor, options, withInlineDelete }: Ob
                     {withInlineDelete && node.optionalProperties.includes(child.property) && (
                         <div className="rje-object__actions">
                             <Button
-                                onClick={() => editor.removeValue(child.pointer)}
-                                size="mini"
-                                basic
-                                icon="trash alternate outline"
-                            />
+                                variant="text"
+                                onPress={() => {
+                                    editor.removeValue(child.pointer);
+                                }}
+                            >
+                                <Icon>delete</Icon>
+                            </Button>
                         </div>
                     )}
                 </div>

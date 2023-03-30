@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { SimpleJsonWidget } from './SimpleJsonWidget';
-import { Form } from 'semantic-ui-react';
 
 export default {
     title: 'packages/rje-widgets/SimpleJsonWidget',
@@ -28,9 +27,9 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <SimpleJsonWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 

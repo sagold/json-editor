@@ -1,61 +1,45 @@
-@import './lib/components/parentheader/parent-header';
-@import './lib/widgets/objectwidget/object-widget';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @import './lib/widgets/arraywidget/array-widget';
+@import './lib/widgets/numberwidget/number-widget';
+@import './lib/widgets/objectwidget/object-widget';
+@import './lib/widgets/selectwidget/select-widget';
+@import './lib/widgets/selectoneofwidget/select-oneof';
+@import './lib/widgets/navigationwidget/navigation-widget';
 
-/** tweak semantic ui styles */
-.ui.form.rje-form .field > label {
-    font-size: 1rem;
-    font-weight: normal;
+@import './lib/design';
+@import './lib/themes/themes';
+
+body {
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
 }
 
-/* fix: semantic ui dropdown within grid */
-.ui.dropdown,
-.ui.dropdown.selection {
-    min-width: auto;
-}
+.rje-form {
+    .rje-input-decorator {
+        width: -moz-available;
+        width: -webkit-fill-available;
+    }
 
-/* fix: rotated icon in header */
-.icon.rotated.counterclockwise {
-    margin-top: 0.15em;
-}
+    input[type='text'],
+    input[type='number'] {
+        width: 100%;
+    }
 
-/* adjust: description following form field */
-.ui.form .rje-value .field {
-    margin-bottom: 4px;
-}
+    .rje-field__header {
+        padding-bottom: em(16);
+    }
 
-.ui.form .ui.card {
-    position: static;
-}
+    .rje-object__property ~ .rje-object__property {
+        padding-top: em(24);
+    }
 
-.ui.card:last-child {
-    margin-bottom: 8px;
-}
+    & > .rje-field--parent:first-child > .rje-field__header {
+        padding-top: 0;
+    }
 
-// temp for above
-.ui.form {
-    // max-width: 800px;
-    margin: 0 auto;
-}
-
-/* style: form description */
-.rje-description {
-    font-style: italic;
-    color: #999;
-}
-
-.rje-form.disabled .rje-description {
-    opacity: 0.45;
-}
-
-/* layout: value forms have same padding to align with segments */
-.rje-value,
-.rje-object__items--grid,
-.rje-array__items--grid {
-    padding: 0.75em 1em;
-}
-
-/* layout: inline headers should have more padding to above content then below */
-.rje-form ~ .rje-form--parent > .rje-header {
-    padding-top: 2em;
+    /* layout: inline headers should have more padding to above content then below */
+    & ~ .rje-form--parent > .rje-header {
+        padding-top: 2em;
+    }
 }

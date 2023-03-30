@@ -77,13 +77,13 @@ const config = {
             commonjs2: 'react-dom/client',
             amd: 'react-dom/client',
             root: 'ReactDOM'
-        },
-        'semantic-ui-react': {
-            commonjs: 'semantic-ui-react',
-            commonjs2: 'semantic-ui-react',
-            amd: 'semantic-ui-react',
-            root: 'semanticUIReact'
         }
+        // 'semantic-ui-react': {
+        //     commonjs: 'semantic-ui-react',
+        //     commonjs2: 'semantic-ui-react',
+        //     amd: 'semantic-ui-react',
+        //     root: 'semanticUIReact'
+        // }
     },
     resolve: {
         modules: [

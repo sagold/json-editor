@@ -1,0 +1,40 @@
+@import '../design';
+@import '../components/sectionheader/section-header';
+
+@mixin section-header-light {
+    @include section-header-component;
+
+    .rje-section-header__separator {
+        border-top: 1px solid rgba(var(--rje-color-light-text), 0.15);
+        border-bottom: 1px solid rgba($color-white, 0.8);
+    }
+
+    .rje-section-header__label {
+        .rje-button:not([disabled]) {
+            color: $color-black;
+        }
+    }
+
+    .rje-popover.rje-section-header__description {
+        @include primary-flat-light;
+    }
+}
+
+@mixin section-header-dark {
+    @include section-header-component;
+
+    .rje-section-header__separator {
+        border-top: 1px solid rgba($color-black, 0.15);
+        border-bottom: 1px solid rgba($color-white, 0.1);
+    }
+
+    .rje-section-header__label {
+        .rje-button:not([disabled]) {
+            color: $color-white;
+        }
+    }
+
+    .rje-popover.rje-section-header__description {
+        @include primary-flat-dark;
+    }
+}

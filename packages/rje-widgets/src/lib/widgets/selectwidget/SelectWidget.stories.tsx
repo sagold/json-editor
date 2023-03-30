@@ -1,31 +1,41 @@
 import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
-import { widgets } from '../index';
-import { SelectWidget } from './SelectWidget';
-import { Form } from 'semantic-ui-react';
+import widgets, { SelectWidget } from '@sagold/rje-widgets';
 
 export default {
     title: 'packages/rje-widgets/SelectWidget',
-    argTypes: {}
+    argTypes: {
+        placeholder: {
+            control: { type: 'text' }
+        },
+        disabled: {
+            control: { type: 'boolean' }
+        },
+        readOnly: {
+            control: { type: 'boolean' }
+        },
+        required: {
+            control: { type: 'boolean' }
+        }
+    }
 };
 
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <SelectWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 
 export const Default = Template.bind({});
 Default.args = {
     data: 'apple',
-    // liveUpdate: false,
-    // disabled: false,
-    // hidden: false,
-    // readOnly: false,
-    // required: false,
+    placeholder: 'Choose your juice',
+    disabled: false,
+    readOnly: false,
+    required: false,
     schema: {
         title: 'Default string selection widget',
         type: 'string',

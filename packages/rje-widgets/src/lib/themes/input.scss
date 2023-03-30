@@ -1,0 +1,99 @@
+@use 'sass:math';
+@import '../design';
+@import '../components/input/input';
+
+@mixin input-light {
+    @include input-component;
+
+    .rje-input {
+        input {
+            @include input-elevated-light;
+            color: $color-black;
+            &:focus,
+            &:hover {
+                border-color: rgb(var(--rje-color-light-primary));
+            }
+        }
+
+        .rje-icon {
+            color: rgb(var(--rje-color-light-primary));
+        }
+
+        input::placeholder,
+        .rje-tag {
+            color: $color-light-grey-2;
+        }
+    }
+
+    .rje-input--invalid:not(.rje-input--disabled) {
+        .rje-icon {
+            color: $color-light-error;
+        }
+
+        input,
+        input:hover,
+        input:focus {
+            border-color: $color-light-error;
+        }
+    }
+
+    .rje-input--disabled {
+        .rje-icon,
+        .rje-tag {
+            color: $color-light-grey-1;
+        }
+
+        input[disabled] {
+            @include input-flat-light;
+            color: $color-light-grey-1;
+        }
+    }
+}
+
+@mixin input-dark {
+    @include input-component;
+
+    .rje-input {
+        input {
+            @include input-elevated-dark;
+            color: $color-white;
+            &:focus,
+            &:hover {
+                border-color: rgb(var(--rje-color-dark-primary));
+            }
+        }
+
+        .rje-icon {
+            color: rgb(var(--rje-color-dark-primary));
+        }
+
+        input::placeholder,
+        .rje-tag {
+            color: $color-dark-grey-2;
+        }
+    }
+
+    .rje-input--invalid:not(.rje-input--disabled) {
+        .rje-icon {
+            color: $color-dark-error;
+        }
+
+        input,
+        input:hover,
+        input:focus {
+            border-color: $color-dark-error !important;
+        }
+    }
+
+    .rje-input--disabled {
+        .rje-icon,
+        .rje-tag {
+            color: $color-dark-grey-1;
+        }
+
+        input[disabled] {
+            @include input-flat-dark;
+            color: $color-dark-grey-1;
+        }
+    }
+}

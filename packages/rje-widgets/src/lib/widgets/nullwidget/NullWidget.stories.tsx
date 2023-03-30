@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { NullWidget } from './NullWidget';
-import { Form } from 'semantic-ui-react';
 
 export default {
     title: 'packages/rje-widgets/NullWidget',
@@ -23,9 +22,9 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <NullWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 

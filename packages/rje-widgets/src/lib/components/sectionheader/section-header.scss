@@ -1,0 +1,46 @@
+@import '../../design';
+
+@mixin section-header-component {
+    .rje-section-header__separator {
+        width: 100%;
+        height: 0px;
+    }
+
+    .rje-section-header {
+        align-items: center;
+        display: flex;
+        gap: em($unit);
+        justify-content: space-between;
+        width: 100%;
+
+        .rje-section-header__label {
+            align-items: center;
+            align-self: left;
+            display: flex;
+            flex-grow: 1;
+            font-size: 1em;
+            font-weight: 600;
+            gap: em($unit);
+            line-height: em(2.5 * $unit);
+            white-space: nowrap;
+
+            .rje-icon {
+                font-size: em(2.5 * $unit);
+            }
+        }
+
+        .rje-section-header__separator {
+            flex-grow: 1;
+            height: 0;
+            margin-top: 0.2em;
+        }
+    }
+
+    .rje-popover.rje-section-header__description {
+        color: $color-white;
+        font-weight: normal;
+        max-width: em(100 * $unit);
+        padding: em($unit);
+        white-space: pre-wrap;
+    }
+}

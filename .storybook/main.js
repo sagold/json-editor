@@ -1,15 +1,22 @@
 const path = require('path');
-
 module.exports = {
+    babel: (config) => {
+        return { ...config, rootMode: 'upward' };
+    },
     stories: [
         '../packages/docs/src/Introduction.stories.mdx',
         '../packages/*/src/**/*.stories.tsx',
-        '../packages/*/src/**/*.stories.mdx'
+        '../packages/*/src/**/*.mdx'
     ],
-    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
-    framework: '@storybook/react',
-    core: {
-        builder: '@storybook/builder-webpack5'
+    addons: [
+        '@storybook/addon-links',
+        '@storybook/addon-essentials',
+        '@storybook/addon-interactions',
+        '@storybook/addon-mdx-gfm'
+    ],
+    framework: {
+        name: '@storybook/react-webpack5',
+        options: {}
     },
     webpackFinal: async (config, { configType }) => {
         config.resolve.alias = config.resolve.alias || {};
@@ -35,7 +42,6 @@ module.exports = {
             'rje-code-widgets',
             'src'
         );
-
         config.module.rules.push({
             test: /\.scss$/,
             use: [
@@ -47,17 +53,23 @@ module.exports = {
                         sourceMap: true
                     }
                 },
-                { loader: 'resolve-url-loader' },
+                {
+                    loader: 'resolve-url-loader'
+                },
                 {
                     loader: 'sass-loader',
                     options: {
-                        sassOptions: { outputStyle: 'compressed' },
+                        sassOptions: {
+                            outputStyle: 'compressed'
+                        },
                         sourceMap: true
                     }
                 }
             ]
         });
-
         return config;
+    },
+    docs: {
+        autodocs: true
     }
 };

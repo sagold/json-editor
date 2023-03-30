@@ -1,0 +1,9 @@
+@import '../components/widgetfield/widget-field';
+
+@mixin widget-field-light {
+    @include widget-field-component;
+}
+
+@mixin widget-field-dark {
+    @include widget-field-component;
+}

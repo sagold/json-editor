@@ -7,13 +7,12 @@
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
-        "@semantic-ui-react/component-ref": "*",
         "@sagold/react-json-editor": "^0.25.1",
-        "react-is": "*",
+        "react-aria": "^3.23.0",
+        "react-stately": "^3.21.0",
         "react-textarea-autosize": "^8.3.4",
-        "semantic-ui-css": "^2.5.0",
-        "semantic-ui-react": "^2.1.4",
-        "sortablejs": "^1.15.0"
+        "sortablejs": "^1.15.0",
+        "classnames": "^2.3.2"
     },
     "devDependencies": {
         "@types/sortablejs": "*"

@@ -1,6 +1,12 @@
-import { Form, Checkbox } from 'semantic-ui-react';
-import { BooleanNode, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { WidgetPlugin, widget } from '@sagold/react-json-editor';
+import { BooleanNode, DefaultNodeOptions, WidgetPlugin, widget } from '@sagold/react-json-editor';
+import { useToggleState } from 'react-stately';
+import { AriaSwitchProps, useFocusRing, useSwitch, useCheckbox, VisuallyHidden } from 'react-aria';
+import { useRef } from 'react';
+import { Label } from '../../components/label/Label';
+import { Switch } from '../../components/switch/Switch';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { Checkbox } from '../../components/checkbox/Checkbox';
+import theme from '../../theme';
 
 export type BooleanOptions = {
     type?: 'checkbox' | 'toggle';
@@ -10,20 +16,53 @@ export const booleanDefaultOptions = {
     type: 'toggle'
 };
 
-export const BooleanWidget = widget<BooleanNode<BooleanOptions>, boolean>(({ node, options, setValue }) => (
-    <div className="rje-form rje-value" data-type="boolean" data-id={node.pointer}>
-        <Form.Field id={node.id} error={node.errors.length > 0 && node.errors.map((e) => e.message)}>
+export const BooleanWidget = function (props) {
+    const type = (props.node.options?.type || props.options.type) ?? booleanDefaultOptions.type;
+    if (type === 'checkbox') {
+        return <CheckboxWidget {...props} />;
+    }
+    return <ToggleWidget {...props} />;
+};
+
+export const CheckboxWidget = widget<BooleanNode, boolean>(({ node, options, setValue }) => {
+    const hasError = node.errors.length > 0;
+    const isValidConst = node.schema.const != null && !hasError;
+    const ariaLabel = options.title ?? node.pointer;
+    return (
+        <WidgetField widgetType="checkbox" node={node} options={options}>
             <Checkbox
-                checked={node.value}
-                label={options.title as string}
-                onChange={(e, { checked }) => setValue(checked === true)}
-                readOnly={options.readOnly === true}
-                toggle={options.type ? options.type === 'toggle' : booleanDefaultOptions.type === 'toggle'}
-            />
-        </Form.Field>
-        {options.description && <em className="rje-description">{options.description}</em>}
-    </div>
-));
+                aria-label={ariaLabel}
+                onChange={setValue}
+                disabled={options.disabled}
+                required={options.required}
+                error={isValidConst}
+                isSelected={node.value}
+            >
+                {options.title}
+            </Checkbox>
+        </WidgetField>
+    );
+});
+
+export const ToggleWidget = widget<BooleanNode, boolean>(({ node, options, setValue }) => {
+    const hasError = node.errors.length > 0;
+    const isValidConst = node.schema.const != null && !hasError;
+    const ariaLabel = options.title ?? node.pointer;
+    return (
+        <WidgetField widgetType="toggle" node={node} options={options}>
+            <Switch
+                aria-label={ariaLabel}
+                onChange={setValue}
+                disabled={options.disabled}
+                required={options.required}
+                error={isValidConst}
+                isSelected={node.value}
+            >
+                {options.title}
+            </Switch>
+        </WidgetField>
+    );
+});
 
 export const BooleanWidgetPlugin: WidgetPlugin = {
     id: 'boolean-widget',

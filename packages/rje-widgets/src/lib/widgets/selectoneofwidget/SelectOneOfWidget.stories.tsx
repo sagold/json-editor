@@ -3,7 +3,6 @@ import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { SelectOneOfWidget } from './SelectOneOfWidget';
 import { JsonSchema, ParentNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { Form } from 'semantic-ui-react';
 
 export default {
     title: 'packages/rje-widgets/SelectOneOfWidget',
@@ -31,9 +30,9 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
         validate: true
     });
     return (
-        <Form error>
+        <div className="rje-form">
             <SelectOneOfWidget node={node.children[0] as Node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 

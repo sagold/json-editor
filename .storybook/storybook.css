@@ -1,3 +1,11 @@
+@font-face {
+    font-family: Icon;
+    font-style: normal;
+    font-weight: 100 700;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v88/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2)
+        format(woff2);
+}
+
 #docs-root > .sbdocs.sbdocs-wrapper {
     background-color: rgba(0, 0, 0, 0.01);
 }
@@ -19,4 +27,42 @@
     padding: 16px;
     padding-bottom: 32px;
     /*    background-color: rgba(30, 112, 191, 0.02);*/
+}
+
+.story-columns {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.story-columns ~ .story-columns {
+    padding-top: 8px;
+}
+
+#storybook-docs {
+    --rje-font-family: Inter, sans-serif;
+    --rje-color-light-primary: 31, 101, 141;
+    --rje-color-light-secondary: 9, 66, 98;
+    --rje-color-light-text: 7, 23, 32;
+    --rje-color-dark-primary: 50, 133, 180;
+    --rje-color-dark-secondary: 145, 192, 218;
+    --rje-color-dark-text: 235, 240, 241;
+}
+
+.theme {
+    display: flex;
+}
+
+.theme > * {
+    flex-grow: 1;
+}
+
+.theme .rje-theme--light {
+    padding: 16px;
+    background: rgba(243, 243, 241, 1);
+}
+
+.theme .rje-theme--dark {
+    padding: 16px;
+    background: rgba(26, 27, 25, 1);
 }

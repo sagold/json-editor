@@ -1,7 +1,7 @@
-import { Form } from 'semantic-ui-react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/longform';
 import { NavigationWidget, widgets } from '@sagold/rje-widgets';
+import theme from '../../../rje-widgets/src/lib/theme';
 
 export default {
     title: 'Examples/LargeForm',
@@ -16,9 +16,10 @@ export const LargeForm = () => {
     const WidgetComponent = editor.getWidget(node);
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', ...theme }} className="rje-theme--light">
             <div
                 style={{
+                    zIndex: 100,
                     width: '20%',
                     position: 'fixed',
                     height: '100%',
@@ -34,9 +35,9 @@ export const LargeForm = () => {
                 </div>
             </div>
             <div style={{ marginLeft: '20%', paddingLeft: 48 }}>
-                <Form error>
+                <div className="rje-form">
                     <WidgetComponent node={node} editor={editor} />
-                </Form>
+                </div>
             </div>
         </div>
     );

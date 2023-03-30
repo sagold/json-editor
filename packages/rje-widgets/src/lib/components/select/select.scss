@@ -1,0 +1,60 @@
+@import '../../design';
+
+@mixin select-component {
+    .rje-select-field {
+        .rje-label {
+            display: inline-block;
+            padding-bottom: em(0.5 * $unit);
+        }
+    }
+
+    .rje-select__button {
+        font-size: 1em;
+        font-family: inherit;
+        padding: em(0.75 * $unit) em($unit);
+        padding-right: em(0.5 * $unit);
+
+        // states
+        @include clickable;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+
+        .rje-icon {
+            padding-top: 0;
+            padding-bottom: 0;
+            font-size: em(3 * $unit);
+        }
+    }
+
+    .rje-select {
+        min-width: 200px;
+        max-width: 200px;
+
+        .rje-overlay--select,
+        .rje-select__button {
+            width: 100%;
+        }
+
+        .rje-selected__value {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+
+    .rje-overlay--select {
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    ul.rje-select__options {
+        min-width: 200px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+}

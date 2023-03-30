@@ -1,15 +1,19 @@
-import { Button, Card, Popup, Icon } from 'semantic-ui-react';
+import { RefObject } from 'react';
 import { JsonEditor, Widget, Node } from '@sagold/react-json-editor';
+import { Button, ButtonControlled } from '../../components/button/Button';
+import { Popover, usePopover } from '../../components/popover/Popover';
+import classnames from 'classnames';
 
 export type ArrayItemProps = {
     editor: JsonEditor;
     /** child node */
     node: Node;
     size: number;
+    portalContainer: RefObject<Element>;
     withDragHandle?: boolean;
     disabled?: boolean;
     options?: Record<string, any>;
-    /** if item can be deleted */
+    /** set to true, if item can be deleted */
     optional?: boolean;
 };
 
@@ -19,54 +23,22 @@ export function ArrayItemDefault({
     withDragHandle,
     disabled,
     size,
+    portalContainer,
     optional,
     options = {}
 }: ArrayItemProps) {
+    const { popoverTriggerProps, popoverProps } = usePopover({ placement: 'bottom end' });
     return (
-        <div data-type="array-item" className={['array-item', withDragHandle ? 'with-drag-handle' : ''].join(' ')}>
+        <div data-type="array-item" className={classnames('rje-array-item', { 'with-drag-handle': withDragHandle })}>
             {withDragHandle && <div className="rje-drag__handle rje-drag__container"></div>}
             <Widget editor={editor} node={node} options={options} />
-            <div className={`rje-array-item__actions`}>
-                <Popup trigger={<Button basic icon="ellipsis vertical" />} flowing hoverable disabled={disabled}>
+            <div className={`rje-array-item__menu`}>
+                <ButtonControlled {...popoverTriggerProps} variant="text" icon="more_vert" disabled={disabled} />
+                <Popover {...popoverProps} portalContainer={portalContainer}>
                     <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
-                </Popup>
+                </Popover>
             </div>
-            {/*{size - 1 > parseInt(node.property) && <div className="rje-array-item__divider" />}*/}
         </div>
-    );
-}
-
-export function ArrayItemCard({
-    editor,
-    node,
-    withDragHandle,
-    disabled,
-    size,
-    optional,
-    options = {}
-}: ArrayItemProps) {
-    options.title = undefined;
-    options.description = undefined;
-
-    return (
-        <Card fluid data-type="array-item" key={node.id} className={withDragHandle ? 'with-drag-handle' : ''}>
-            <Card.Content key="header" className={withDragHandle ? 'rje-drag__handle' : ''}>
-                {/*<Grid.Column width="15">{withDragHandle && <div className="rje-array-item__handle"></div>}</Grid.Column>*/}
-                <Popup
-                    trigger={<Button basic floated="right" icon="ellipsis vertical" />}
-                    disabled={disabled}
-                    flowing
-                    hoverable
-                >
-                    <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
-                </Popup>
-                <Card.Header>{node.options.title}</Card.Header>
-                <Card.Meta>{node.options.description}</Card.Meta>
-            </Card.Content>
-            <Card.Content key="item">
-                <Widget editor={editor} node={node} options={options} />
-            </Card.Content>
-        </Card>
     );
 }
 
@@ -74,26 +46,26 @@ export type ArrayItemActionProps = { node: Node; editor: JsonEditor; size: numbe
 
 export function ArrayItemActions({ node, editor, size, optional }: ArrayItemActionProps) {
     return (
-        <>
+        <div className="rje-array-item__actions">
             <Button
-                basic
+                icon="delete"
+                variant="text"
                 disabled={optional === false}
-                icon="trash alternate outline"
-                onClick={() => editor.removeValue(node.pointer)}
+                onPress={() => editor.removeValue(node.pointer)}
             />
             <Button
-                basic
-                icon="caret up"
+                icon="keyboard_arrow_up"
+                variant="text"
                 disabled={node.property === '0'}
-                onClick={() => editor.moveItem(node.pointer, parseInt(node.property) - 1)}
+                onPress={() => editor.moveItem(node.pointer, parseInt(node.property) - 1)}
             />
 
             <Button
-                basic
-                icon="caret down"
+                icon="keyboard_arrow_down"
+                variant="text"
                 disabled={node.property === `${size - 1}`}
-                onClick={() => editor.moveItem(node.pointer, parseInt(node.property) + 1)}
+                onPress={() => editor.moveItem(node.pointer, parseInt(node.property) + 1)}
             />
-        </>
+        </div>
     );
 }

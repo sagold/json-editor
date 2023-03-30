@@ -16,7 +16,7 @@
         "@types/uuid": "^8.3.4",
         "fast-equals": "^4.0.1",
         "@sagold/json-pointer": "^5.0.1",
-        "json-schema-library": "^8.0.0-rc4",
+        "json-schema-library": "^8.0.0-rc5",
         "uuid": "^8.3.2"
     }
 }

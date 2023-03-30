@@ -1,0 +1,87 @@
+@import '../design';
+@import '../components/select/select';
+
+@mixin select-light {
+    @include select-component;
+
+    .rje-select__button {
+        @include input-elevated-light;
+        &:focus,
+        &:hover {
+            @include input-elevated-light;
+            border-color: rgb(var(--rje-color-light-primary));
+        }
+        &:active,
+        &.rje-select__button--pressed,
+        &[aria-expanded='true'] {
+            @include input-flat-light;
+            border-color: rgb(var(--rje-color-light-primary));
+        }
+        &[disabled] {
+            @include input-flat-light;
+            color: $color-light-grey-1;
+            background-color: $color-light-fill;
+        }
+    }
+
+    .rje-selected__value--placeholder {
+        color: $color-light-grey-2;
+    }
+
+    .rje-select-field--invalid {
+        .rje-icon,
+        .rje-label {
+            color: $color-light-error;
+        }
+        .rje-select__button {
+            border-color: $color-light-error;
+        }
+    }
+
+    .rje-overlay .rje-select__options {
+        background: $color-white;
+    }
+}
+
+@mixin select-dark {
+    @include select-component;
+
+    .rje-select__button {
+        color: rgb(var(--rje-color-dark-text));
+        @include input-elevated-dark;
+        &:focus,
+        &:hover {
+            @include input-elevated-dark;
+            border-color: rgb(var(--rje-color-dark-primary));
+        }
+        &:active,
+        &.rje-select__button--pressed,
+        &[aria-expanded='true'] {
+            @include input-flat-dark;
+            border-color: rgb(var(--rje-color-dark-primary));
+        }
+        &[disabled] {
+            @include input-flat-dark;
+            color: $color-dark-grey-1;
+            background-color: $color-dark-fill;
+        }
+    }
+
+    .rje-selected__value--placeholder {
+        color: $color-dark-grey-2;
+    }
+
+    .rje-select-field--invalid {
+        .rje-icon,
+        .rje-label {
+            color: $color-dark-error;
+        }
+        .rje-select__button {
+            border-color: $color-dark-error;
+        }
+    }
+
+    .rje-overlay .rje-select__options {
+        background: $color-black;
+    }
+}

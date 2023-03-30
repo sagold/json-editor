@@ -3,7 +3,6 @@ import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
 import { BooleanWidgetPlugin } from './booleanwidget/BooleanWidget';
 import { FileWidgetPlugin } from './filewidget/FileWidget';
 import { MasterDetailWidgetPlugin } from './masterdetailwidget/MasterDetailWidget';
-import { MultiSelectWidgetPlugin } from './multiselectwidget/MultiSelectWidget';
 import { NullWidgetPlugin } from './nullwidget/NullWidget';
 import { NumberWidgetPlugin } from './numberwidget/NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
@@ -23,7 +22,6 @@ export const widgets: WidgetPlugin[] = [
     SimpleJsonWidgetPlugin,
     MasterDetailWidgetPlugin,
     SelectOneOfWidgetPlugin,
-    MultiSelectWidgetPlugin,
     ArrayWidgetPlugin,
     ObjectWidgetPlugin,
     SelectWidgetPlugin,

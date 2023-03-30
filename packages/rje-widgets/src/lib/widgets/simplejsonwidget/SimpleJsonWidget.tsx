@@ -1,8 +1,24 @@
-import { StringNode, ParentNode, json } from '@sagold/react-json-editor';
-import { Form } from 'semantic-ui-react';
-import { widget, WidgetPlugin } from '@sagold/react-json-editor';
-import TextareaAutosize from 'react-textarea-autosize';
 import { useState } from 'react';
+import {
+    widget,
+    WidgetPlugin,
+    StringNode,
+    ParentNode,
+    json,
+    JsonError,
+    DefaultNodeOptions
+} from '@sagold/react-json-editor';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { TextArea } from '../../components/textarea/TextArea';
+
+const invalidJsonError: JsonError = {
+    type: 'error',
+    name: 'InvalidJsonError',
+    code: 'invalid-json-error',
+    message: 'Invalid json format'
+} as const;
+
+export type SimpleJsonOptions = {} & DefaultNodeOptions;
 
 export const SimpleJsonWidget = (props) => {
     if (props.node.schema.type === 'string') {
@@ -11,7 +27,8 @@ export const SimpleJsonWidget = (props) => {
     return <SimpleJsonDataWidget {...props} />;
 };
 
-export const SimpleJsonStringWidget = widget<StringNode, string>(({ node, options, setValue }) => {
+export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, string>(({ node, options, setValue }) => {
+    const [error, setError] = useState<JsonError | undefined>();
     let value = node.value;
     if (value) {
         try {
@@ -21,68 +38,73 @@ export const SimpleJsonStringWidget = widget<StringNode, string>(({ node, option
         }
     }
 
+    const isValidConst = node.schema.const != null && node.errors.length === 0;
     return (
-        <div
-            className={`rje-form rje-value ${options.disabled ? 'disabled' : 'enabled'}`}
-            data-type={node.type}
-            data-id={node.pointer}
-        >
-            <Form.Field
-                disabled={options.disabled === true}
-                control={TextareaAutosize}
-                id={node.id}
-                rows={1}
-                required={options.required === true}
+        <WidgetField widgetType="simple-json" node={node} options={options} additionalError={error}>
+            <TextArea
+                defaultValue={node.value}
+                disabled={options.disabled || isValidConst}
+                liveUpdate={false}
+                maxLength={node.schema.maxLength}
+                minLength={node.schema.minLength}
+                placeholder={options.placeholder}
                 readOnly={options.readOnly === true}
+                required={options.required === true}
+                setValue={(value: string) => {
+                    try {
+                        const data = JSON.parse(value);
+                        if (options.liveUpdate === false) {
+                            // format
+                            value = JSON.stringify(data, null, 2);
+                        }
+                        setError(undefined);
+                        setValue(value);
+                    } catch (e) {
+                        setError(invalidJsonError);
+                        setValue(value);
+                    }
+                }}
+                title={options.title}
+                value={node.value}
+                rows={1}
                 minRows={10}
                 maxRows={40}
-                cacheMeasurements
-                defaultValue={value}
-                error={node.errors.length === 0 ? false : { content: node.errors.map((e) => e.message).join(';') }}
-                label={options.title}
-                onChange={(e) => {
-                    setValue(e.target.value);
-                }}
-            ></Form.Field>
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+            />
+        </WidgetField>
     );
 });
 
-export const SimpleJsonDataWidget = widget<ParentNode, string>(({ node, options, setValue }) => {
+export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string>(({ node, options, setValue }) => {
     const value = json(node);
-    const [error, setError] = useState(false);
-
+    const valueString = JSON.stringify(value, null, 2);
+    const [error, setError] = useState<JsonError | undefined>();
+    const isValidConst = node.schema.const != null && node.errors.length === 0;
     return (
-        <div
-            className={`rje-form rje-value ${options.disabled ? 'disabled' : 'enabled'}`}
-            data-type={node.type}
-            data-id={node.pointer}
-        >
-            <Form.Field
-                disabled={options.disabled === true}
-                control={TextareaAutosize}
-                id={node.id}
-                rows={1}
-                required={options.required === true}
+        <WidgetField widgetType="simple-json" node={node} options={options} additionalError={error}>
+            <TextArea
+                defaultValue={valueString}
+                disabled={options.disabled || isValidConst}
+                maxLength={node.schema.maxLength}
+                minLength={node.schema.minLength}
+                placeholder={options.placeholder}
+                liveUpdate={false}
                 readOnly={options.readOnly === true}
-                minRows={10}
-                maxRows={40}
-                cacheMeasurements
-                defaultValue={JSON.stringify(value, null, 2)}
-                error={error ? { content: 'Invalid json format' } : false}
-                label={options.title}
-                onChange={(e) => {
+                required={options.required === true}
+                setValue={(value: string) => {
                     try {
-                        setValue(JSON.parse(e.target.value));
-                        setError(false);
+                        setValue(JSON.parse(value));
+                        setError(undefined);
                     } catch (e) {
-                        setError(true);
+                        setError(invalidJsonError);
                     }
                 }}
-            ></Form.Field>
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+                title={options.title}
+                value={valueString}
+                rows={1}
+                minRows={10}
+                maxRows={40}
+            />
+        </WidgetField>
     );
 });
 

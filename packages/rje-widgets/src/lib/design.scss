@@ -1,0 +1,166 @@
+@use 'sass:math';
+
+$unit: 8;
+$border-radius: 4px;
+$base-font-size: 16;
+$color-black: rgb(0, 0, 0);
+$color-white: rgb(255, 255, 255);
+
+$color-light-grey-1: rgb(202, 205, 206);
+$color-light-grey-2: rgb(120, 123, 124);
+$color-light-fill: rgba(255, 255, 255, 0.6);
+$color-light-stroke: rgba(255, 255, 255, 0.7);
+$color-light-error: rgb(174, 36, 45);
+
+$color-dark-grey-1: rgb(71, 72, 73);
+$color-dark-grey-2: rgb(120, 123, 124);
+$color-dark-fill: rgba(255, 255, 255, 0.05);
+$color-dark-stroke: rgba(255, 255, 255, 0.1);
+$color-dark-error: rgb(241, 31, 44);
+
+@mixin icon-font() {
+    user-select: none;
+    max-width: 2em;
+    font-family: 'Icon';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin surface-modal-light() {
+    background: $color-light-fill;
+    border-width: 0.5px 0.5px 0px 0px;
+    border-style: solid;
+    border-color: $color-light-stroke;
+    border-radius: $border-radius;
+}
+
+@mixin surface-modal-dark() {
+    background: $color-dark-fill;
+    border-width: 0.5px 0.5px 0px 0px;
+    border-style: solid;
+    border-color: $color-dark-stroke;
+    border-radius: $border-radius;
+}
+
+@mixin primary-elevated-light() {
+    background: rgb(var(--rje-color-light-primary));
+    border-color: $color-light-stroke;
+    border-radius: $border-radius;
+    border-style: solid;
+    border-width: 0.5px 0.5px 0px 0px;
+    box-sizing: border-box;
+}
+
+@mixin primary-flat-light() {
+    background: $color-light-grey-1;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-light-grey-1;
+    box-sizing: border-box;
+}
+
+@mixin input-elevated-light() {
+    background: $color-light-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-light-grey-1;
+    box-sizing: border-box;
+    caret-color: rgb(var(--rje-color-light-primary));
+    outline: 0;
+}
+
+@mixin input-flat-light() {
+    background: $color-light-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-light-grey-1;
+    box-sizing: border-box;
+    caret-color: rgb(var(--rje-color-light-primary));
+    outline: 0;
+}
+
+@mixin elevated-light() {
+    background: $color-light-fill;
+    border-color: $color-light-stroke;
+    border-radius: $border-radius;
+    border-style: solid;
+    border-width: 0.5px 0.5px 0px 0px;
+    box-sizing: border-box;
+}
+
+@mixin flat-light() {
+    background: $color-light-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-light-grey-1;
+    box-sizing: border-box;
+}
+
+@mixin primary-elevated-dark() {
+    box-sizing: border-box;
+    background: rgb(var(--rje-color-dark-primary));
+    border-color: $color-dark-stroke;
+    border-width: 0.5px 0.5px 0px 0px;
+    border-style: solid;
+    border-radius: $border-radius;
+}
+
+@mixin primary-flat-dark() {
+    box-sizing: border-box;
+    background: $color-dark-grey-2;
+    border: 0.5px solid $color-dark-stroke;
+    border-radius: $border-radius;
+}
+
+@mixin input-elevated-dark() {
+    background: $color-dark-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-dark-grey-2;
+    box-sizing: border-box;
+    caret-color: rgb(var(--rje-color-dark-primary));
+    outline: 0;
+}
+
+@mixin input-flat-dark() {
+    background: $color-dark-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-dark-grey-2;
+    box-sizing: border-box;
+    caret-color: rgb(var(--rje-color-dark-primary));
+    outline: 0;
+}
+
+@mixin elevated-dark() {
+    background: $color-dark-fill;
+    border-color: $color-dark-stroke;
+    border-radius: $border-radius;
+    border-style: solid;
+    border-width: 0.5px 0.5px 0px 0px;
+    box-sizing: border-box;
+}
+
+@mixin flat-dark() {
+    background: $color-dark-fill;
+    border-radius: $border-radius;
+    border: 0.5px solid $color-dark-grey-2;
+    box-sizing: border-box;
+}
+
+@mixin clickable() {
+    &:not([disabled]) {
+        cursor: pointer;
+        pointer-events: all;
+    }
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    user-select: none;
+    outline: 0;
+}
+
+@function em($px, $base: $base-font-size) {
+    @return math.div($px, $base) * 1em;
+}

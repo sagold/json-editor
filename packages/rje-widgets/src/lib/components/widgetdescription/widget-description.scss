@@ -1,0 +1,15 @@
+@import '../../design';
+
+@mixin widget-description-component {
+    .rje-description {
+        font-size: em($base-font-size);
+        line-height: 1.2em;
+        font-weight: 400;
+
+        padding-top: $unit * 0.5px;
+    }
+
+    .rje-field.disabled .rje-description {
+        opacity: 0.45;
+    }
+}

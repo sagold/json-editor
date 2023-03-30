@@ -1,0 +1,22 @@
+@import '../../design';
+
+$textarea-state--focus: '&:focus, &:hover';
+$textarea-state--disabled: '&[disabled]';
+$textarea-placeholder--enabled: '&::placeholder:not([disabled])';
+$textarea-placeholder--disabled: '&[disabled]::placeholder';
+
+@mixin textarea-component {
+    .rje-textarea-field {
+        .rje-label {
+            display: inline-block;
+            padding-bottom: $unit * 0.5px;
+        }
+    }
+
+    .rje-textarea {
+        display: block;
+        font-size: 1em;
+        font-family: inherit;
+        padding: em($unit);
+    }
+}

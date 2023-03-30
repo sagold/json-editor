@@ -1,0 +1,100 @@
+@import '../../design';
+
+@mixin input-component {
+    .rje-input {
+        input {
+            font-family: inherit;
+            font-size: 1em;
+            font-weight: 400;
+            padding: em(0.75 * $unit) em($unit);
+        }
+
+        .rje-label {
+            display: block;
+            padding-bottom: em(0.5 * $unit);
+        }
+
+        .rje-icon {
+            font-size: em(3 * $unit);
+        }
+
+        .rje-tag {
+            font-size: em(1.75 * $unit);
+            font-weight: 400;
+        }
+    }
+
+    .rje-form .rje-input,
+    .rje-form .rje-input-decorator {
+        width: 100%;
+    }
+
+    .rje-form .rje-input .rje-label {
+        display: inline-block;
+        padding-bottom: 4px;
+    }
+
+    .rje-input input {
+        box-sizing: border-box;
+    }
+
+    .rje-input-decorator {
+        display: inline-flex;
+        align-items: stretch;
+        position: relative;
+
+        .rje-input-decorator__decor {
+            align-items: center;
+            display: flex;
+            height: 100%;
+            pointer-events: none;
+            position: absolute;
+            z-index: 1;
+        }
+
+        .rje-icon {
+            padding: 0 0.4em;
+            opacity: 0.8;
+        }
+
+        .rje-tag {
+            padding: 0 0.5em;
+        }
+
+        &.with-icon--left {
+            input {
+                padding-left: 2.5em;
+            }
+            .rje-icon {
+                left: 0;
+            }
+        }
+
+        &.with-icon--right {
+            input {
+                padding-right: 2.5em;
+            }
+            .rje-icon {
+                right: 0;
+            }
+        }
+
+        &.with-tag--left {
+            input {
+                padding-left: calc(var(--rje-tag-width) * 1px);
+            }
+            .rje-tag {
+                left: 0;
+            }
+        }
+
+        &.with-tag--right {
+            input {
+                padding-right: calc(var(--rje-tag-width) * 1px);
+            }
+            .rje-tag {
+                right: 0;
+            }
+        }
+    }
+}

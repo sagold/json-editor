@@ -1,0 +1,19 @@
+@import '../../design';
+
+@mixin checkbox-field-component {
+    .rje-checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: em($unit);
+    }
+
+    .rje-checkbox {
+        @include clickable;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        font-size: em(19);
+        text-align: center;
+        box-sizing: border-box;
+    }
+}

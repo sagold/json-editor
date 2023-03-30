@@ -19,7 +19,10 @@ export type Widget<T extends Node = Node> = (props: WidgetProps<T>) => JSX.Eleme
 /**
  * react memo node comparison
  */
-const isEqual = (prev: WidgetProps, next: WidgetProps) => prev.node === next.node && prev.options === next.options;
+const isEqual = (prev: WidgetProps, next: WidgetProps) => {
+    const equal = prev.node === next.node && prev.options === next.options;
+    return equal;
+};
 
 /**
  * props of your decorated editor

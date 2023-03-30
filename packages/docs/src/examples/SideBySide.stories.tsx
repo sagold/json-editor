@@ -21,6 +21,7 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
     return (
         <section
             id="side-by-side"
+            className="rje-form rje-theme--light"
             style={{
                 padding: 12,
                 display: 'flex',
@@ -39,16 +40,11 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Examples/SideBySide',
-    // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-    argTypes: {
-        data: { control: { type: 'object' }, defaultValue: data },
-        schema: { control: { type: 'object' }, defaultValue: schema }
-    }
+    title: 'Examples/SideBySide'
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<any> = ({ data, schema }) => {
+const Template: ComponentStory<any> = () => {
     return (
         <div>
             <p>The following is the same editor rendered twice to test update mechanism</p>

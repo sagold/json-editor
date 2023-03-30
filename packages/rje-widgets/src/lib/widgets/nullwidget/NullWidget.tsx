@@ -1,38 +1,33 @@
-import { Form, Checkbox } from 'semantic-ui-react';
-import { WidgetPlugin } from '@sagold/react-json-editor';
-import { Node, DefaultNodeOptions, NullNode, widget } from '@sagold/react-json-editor';
+import { DefaultNodeOptions, NullNode, widget, WidgetPlugin } from '@sagold/react-json-editor';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { SectionHeader } from '../../components/sectionheader/SectionHeader';
 
 export type NullOptions = {
     /** if true, shows a separator line */
     separator?: boolean;
+    /** if true, shows descriptions inline, defaults to false resulting in a tooltip display */
+    descriptionInline?: boolean;
+    /** title font size relative to 1 (em). Defaults to 1 */
+    fontSize?: number;
 } & DefaultNodeOptions;
 
 export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }) => {
-    const { description, title, pointer, separator } = options;
     return (
-        <div className="rje-form rje-value" data-type="null" data-id={pointer}>
-            <Form.Field
-                id={node.id}
-                error={node.errors.length > 0 && node.errors.map((e) => e.message)}
-                style={{ display: 'flex', alignItems: 'center' }}
-                disabled={options.disabled}
-            >
-                <label>{title as string}</label>
-                {separator && (
-                    <div
-                        className="separator"
-                        style={{
-                            flexGrow: 1,
-                            height: 1,
-                            background: 'RGBA(7,23,32,0.8)',
-                            borderBottom: '1px solid rgba(255,255,255,0.8)',
-                            marginLeft: 8
-                        }}
-                    ></div>
-                )}
-            </Form.Field>
-            {description && <em className="rje-description">{description}</em>}
-        </div>
+        <WidgetField
+            widgetType="null"
+            node={node}
+            options={options}
+            showDescription={options.descriptionInline === true}
+        >
+            <SectionHeader>
+                <SectionHeader.Label
+                    title={options.title}
+                    size={options.fontSize}
+                    separator={options.separator === true}
+                    description={options.descriptionInline !== true ? options.description : undefined}
+                />
+            </SectionHeader>
+        </WidgetField>
     );
 });
 

@@ -1,0 +1,62 @@
+@import '../design';
+@import '../components/textarea/textarea';
+
+@mixin textarea-light {
+    @include textarea-component;
+
+    .rje-textarea {
+        @include input-elevated-light;
+        color: rgb(var(--rje-color-light-text));
+
+        #{$textarea-state--focus} {
+            border-color: rgb(var(--rje-color-light-primary));
+        }
+
+        #{$textarea-placeholder--enabled} {
+            color: $color-light-grey-2;
+        }
+
+        #{$textarea-state--disabled} {
+            @include input-flat-light;
+            color: $color-light-grey-1;
+        }
+
+        #{$textarea-placeholder--disabled} {
+            color: $color-light-grey-1;
+        }
+    }
+
+    .rje-textarea-field--invalid:not(.rje-textarea-field--disabled) .rje-textarea {
+        border-color: $color-light-error;
+    }
+}
+
+@mixin textarea-dark {
+    @include textarea-component;
+
+    .rje-textarea {
+        @include input-elevated-dark;
+        color: rgb(var(--rje-color-dark-text));
+
+        #{$textarea-state--focus} {
+            border-color: rgb(var(--rje-color-light-primary));
+        }
+
+        #{$textarea-placeholder--enabled} {
+            color: $color-dark-grey-2;
+        }
+
+        #{$textarea-state--disabled} {
+            @include input-flat-dark;
+            color: $color-dark-grey-1;
+        }
+
+        #{$textarea-placeholder--disabled} {
+            color: $color-dark-grey-1;
+        }
+    }
+
+    .rje-textarea-field--invalid:not(.rje-textarea-field--disabled) .rje-textarea {
+        border-color: $color-dark-error;
+    }
+}

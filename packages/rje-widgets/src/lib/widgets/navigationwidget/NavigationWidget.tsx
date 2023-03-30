@@ -1,11 +1,18 @@
-import Ref from '@semantic-ui-react/component-ref';
 import Sortable from 'sortablejs';
-import { widget } from '@sagold/react-json-editor';
-import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { JsonEditor } from '@sagold/react-json-editor';
-import { List, Accordion, Icon } from 'semantic-ui-react';
-import { ParentNode, ArrayNode, ObjectNode, DefaultNodeOptions, Node, isJsonError } from '@sagold/react-json-editor';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, RefObject } from 'react';
+import {
+    widget,
+    JsonEditor,
+    ParentNode,
+    ArrayNode,
+    ObjectNode,
+    DefaultNodeOptions,
+    Node
+} from '@sagold/react-json-editor';
+import { ModalContentSelectItem } from '../arraywidget/ArrayWidget';
+import { Icon } from '../../components/icon/Icon';
+import { Button, ButtonControlled } from '../../components/button/Button';
+import { useModal, Modal } from '../../components/modal/Modal';
 
 function scrollTo(node: Node) {
     const pointer = node.pointer;
@@ -32,32 +39,34 @@ function onSortEnd(editor: JsonEditor, node: ArrayNode, event: Sortable.Sortable
     if (isNaN(targetIndex)) {
         return;
     }
-
     const { /*to,*/ from, oldIndex, /*newIndex,*/ item } = event;
-
     // always remove node - we create it from data
     item?.parentNode?.removeChild(item);
-
     // 1. if container or pointer (different widgets) are the same, its a move within a list
     // 2. if item is dragged to the same position, but to another widget. now, the dragged
     // element is removeChild from original list. We readd it here, to fix this
-
     if (oldIndex != null) {
         // readd removed child - we move it through data
         from.insertBefore(event.item, from.childNodes[oldIndex]);
     }
-
     // change data
     editor.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
 }
 
-function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>; editor: JsonEditor }) {
-    const ref = useRef<HTMLDivElement>();
-    const [isModalOpen, showSelectItemModal] = useState(false);
+function ArrayChildNavigation({
+    node,
+    editor,
+    portalContainer
+}: {
+    node: ArrayNode<ArrayOptions>;
+    editor: JsonEditor;
+    portalContainer: RefObject<Element>;
+}) {
+    const ref = useRef<HTMLUListElement>(null);
+    const { modalTriggerProps: insertModalTriggerProps, modalProps: insertModalProps } = useModal<HTMLButtonElement>();
     const [toggleState, setToggleState] = useState<boolean>(false);
 
     const { sortable = {}, disabled = false, readOnly = false } = node.options;
-    const useActions = !disabled && !readOnly;
     useEffect(() => {
         if (ref.current && !disabled && !readOnly) {
             Sortable.create(ref.current, {
@@ -69,132 +78,106 @@ function ArrayChildNavigation({ node, editor }: { node: ArrayNode<ArrayOptions>;
         }
     }, [editor, node, sortable, disabled, readOnly]);
 
-    function insertItem() {
-        if (useActions === false) {
-            return;
-        }
-        const insertOptions = editor.getArrayAddOptions(node);
-        if (isJsonError(insertOptions)) {
-            console.log(insertOptions);
-            return;
-        }
-        if (insertOptions.length === 1) {
-            editor.appendItem(node, insertOptions[0]);
-            return;
-        }
-        showSelectItemModal(true);
-    }
+    const insertOptions = editor.getArrayAddOptions(node);
+    const insertItem = useCallback(() => {
+        editor.appendItem(node, insertOptions[0]);
+    }, [node, editor, insertOptions]);
 
     return (
-        <Accordion>
-            <Accordion.Title active={toggleState}>
-                <List.Content floated="right">
-                    <Icon name="add" link onClick={insertItem} />
-                </List.Content>
-                <List.Header className="clickable">
-                    <Icon name="dropdown" link onClick={() => setToggleState(!toggleState)} />
-                    <span className="clickable" onClick={() => scrollTo(node)}>
-                        {getNavigationTitle(node)}
-                    </span>
-                </List.Header>
-            </Accordion.Title>
-            <Accordion.Content active={toggleState}>
-                <Ref innerRef={ref}>
-                    <List.List className="children">
-                        {node.children.map((childchild: Node) => {
-                            // @todo configurable title location for parent-nodes
-                            return (
-                                <List.Item key={childchild.id + 'nav'} style={{ display: 'flex' }}>
-                                    <List.Content
-                                        onClick={() => scrollTo(childchild)}
-                                        style={{ flexGrow: 1 }}
-                                        className="clickable"
-                                    >
-                                        {getNavigationTitle(childchild)}
-                                    </List.Content>
-                                    <List.Content floated="right" className="rje-nav-item__handle">
-                                        <Icon link name="bars" />
-                                    </List.Content>
-                                </List.Item>
-                            );
-                        })}
-                    </List.List>
-                </Ref>
-            </Accordion.Content>
-            <InsertItemModal
-                editor={editor}
-                node={node}
-                isOpen={isModalOpen}
-                onClose={() => showSelectItemModal(false)}
-            />
-        </Accordion>
+        <div>
+            <div className="rje-navigation__group rje-navigation__group--parent">
+                <Button
+                    className="rje-navigation__collapse"
+                    variant="text"
+                    icon={toggleState ? 'expand_less' : 'expand_more'}
+                    onPress={() => setToggleState(!toggleState)}
+                />
+                <NavigationLink node={node} />
+                {insertOptions.length > 1 ? (
+                    <ButtonControlled {...insertModalTriggerProps} variant="text" icon="add" />
+                ) : (
+                    <Button variant="text" icon="add" onPress={insertItem} />
+                )}
+            </div>
+
+            {toggleState && (
+                <ul className="rje-navigation__children" ref={ref}>
+                    {node.children.map((childchild: Node) => {
+                        // @todo configurable title location for parent-nodes
+                        return (
+                            <li key={childchild.id + 'nav'} className="rje-navigation__group">
+                                <NavigationLink node={childchild} />
+                                <button className="rje-button rje-button--text">
+                                    <Icon className="rje-nav-item__handle">drag_handle</Icon>
+                                </button>
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
+            <Modal {...insertModalProps} portalContainer={portalContainer} isDismissable={true}>
+                {(close) => <ModalContentSelectItem editor={editor} node={node} close={close} items={insertOptions} />}
+            </Modal>
+        </div>
     );
 }
 
-function ObjectPropertyNavigation({ node, editor }: { node: ObjectNode; editor: JsonEditor }) {
+function ObjectPropertyNavigation({
+    node,
+    editor,
+    portalContainer
+}: {
+    node: ObjectNode;
+    editor: JsonEditor;
+    portalContainer: RefObject<Element>;
+}) {
     const [toggleState, setToggleState] = useState<boolean>(false);
     return (
-        <Accordion>
-            <Accordion.Title active={toggleState}>
-                <List.Header className="clickable">
-                    <Icon name="dropdown" link onClick={() => setToggleState(!toggleState)} />
-                    <span className="clickable" onClick={() => scrollTo(node)}>
-                        {getNavigationTitle(node)}
-                    </span>
-                </List.Header>
-            </Accordion.Title>
-            <Accordion.Content active={toggleState}>
-                <Ref>
-                    <List.List className="children">
-                        {node.children.map((childchild: Node) => {
-                            // @todo configurable title location for parent-nodes
-                            return (
-                                <List.Item key={childchild.id + 'nav'} style={{ display: 'flex' }}>
-                                    <List.Content
-                                        onClick={() => scrollTo(childchild)}
-                                        style={{ flexGrow: 1 }}
-                                        className="clickable"
-                                    >
-                                        {getNavigationTitle(childchild)}
-                                    </List.Content>
-                                </List.Item>
-                            );
-                        })}
-                    </List.List>
-                </Ref>
-            </Accordion.Content>
-        </Accordion>
+        <div>
+            <div className="rje-navigation__group rje-navigation__group--parent">
+                <Button variant="text" icon="dropdown" onPress={() => setToggleState(!toggleState)} />
+                <NavigationLink node={node} />
+            </div>
+            {toggleState && (
+                <ul className="rje-navigation__children">
+                    {node.children.map((childchild: Node) => {
+                        // @todo configurable title location for parent-nodes
+                        return (
+                            <li key={childchild.id + 'nav'}>
+                                <NavigationLink node={node} />
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
+        </div>
     );
 }
+
+const NavigationLink = ({ node }) => (
+    <a className="rje-navigation__link" onClick={() => scrollTo(node)}>
+        {getNavigationTitle(node)}
+    </a>
+);
 
 function ChildNavigation({
     node,
     editor,
-    options
+    options,
+    portalContainer
 }: {
     node: Node;
     editor: JsonEditor;
     options: NavigationWidgetOptions;
+    portalContainer: RefObject<Element>;
 }) {
     if (node.type === 'array') {
-        return <ArrayChildNavigation node={node} editor={editor} />;
+        return <ArrayChildNavigation node={node} editor={editor} portalContainer={portalContainer} />;
     }
-    if (node.type === 'object') {
-        if (options.showProperties) {
-            return <ObjectPropertyNavigation node={node} editor={editor} />;
-        }
-
-        return (
-            <List.Header className="clickable" onClick={() => scrollTo(node)}>
-                {getNavigationTitle(node)}
-            </List.Header>
-        );
+    if (node.type === 'object' && options.showProperties) {
+        return <ObjectPropertyNavigation node={node} editor={editor} portalContainer={portalContainer} />;
     }
-    return (
-        <List.Header className="clickable" onClick={() => scrollTo(node)}>
-            {getNavigationTitle(node)}
-        </List.Header>
-    );
+    return <NavigationLink node={node} />;
 }
 
 export type NavigationWidgetOptions = {
@@ -218,24 +201,24 @@ export type NavigationWidgetOptions = {
  * ```
  */
 export const NavigationWidget = widget<ParentNode<NavigationWidgetOptions>>(({ node, editor, options }) => {
+    const portalContainer = useRef<HTMLUListElement>(null);
     return (
-        <List divided relaxed="very">
+        <ul className="rje-navigation" ref={portalContainer}>
             {node.children.map((child: Node) => {
                 if (child.options.hidden) {
                     return null;
                 }
                 return (
-                    <List.Item key={child.id}>
-                        <ChildNavigation node={child} editor={editor} options={options} />
-                    </List.Item>
+                    <li key={child.id}>
+                        <ChildNavigation
+                            node={child}
+                            editor={editor}
+                            options={options}
+                            portalContainer={portalContainer}
+                        />
+                    </li>
                 );
             })}
-        </List>
+        </ul>
     );
 });
-
-// export const NavigationEditorPlugin: EditorPlugin = {
-//     id: 'navigation-widget',
-//     use: (node) => node.schema.type === 'object',
-//     Editor: NavigationEditor
-// };

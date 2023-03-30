@@ -1,84 +1,36 @@
-import { StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { Form, Dropdown, Label, Input, SemanticICONS, SemanticShorthandItem, LabelProps } from 'semantic-ui-react';
-import { widget, WidgetPlugin } from '@sagold/react-json-editor';
-import { useState, useMemo } from 'react';
+import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { StringInput } from '../../components/input/StringInput';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
 
 export type StringOptions = {
-    icon?: SemanticICONS;
-    iconPosition?: 'left';
-    inline?: true;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
-    label?: SemanticShorthandItem<LabelProps>;
-    labelPosition?: 'left' | 'right' | 'right corner' | 'left corner';
+    icon?: string;
+    tag?: string;
+    swapIconPosition?: boolean;
 } & DefaultNodeOptions;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
-    const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
-    useMemo(() => {
-        if (inputRef) {
-            inputRef.value = node.value ?? '';
-        }
-    }, [node.value]);
-
-    const isValidConst = node.schema.const != null && node.errors.length === 0;
-    const disabled = options.disabled || isValidConst;
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
-    const changeListener = {
-        [options.liveUpdate ? 'onChange' : 'onBlur']: onChange
-    };
-
-    const attributes: Record<string, unknown> = {};
-    if (options.icon) {
-        attributes.icon = options.icon;
-        if (options.iconPosition) {
-            attributes.iconPosition = options.iconPosition;
-        }
-    }
-    if (options.label) {
-        attributes.label = options.label;
-        if (options.labelPosition) {
-            attributes.labelPosition = options.labelPosition;
-        }
-    }
-
+    const hasError = node.errors.length > 0;
+    const isValidConst = node.schema.const != null && !hasError;
     return (
-        <div
-            className={`rje-form rje-value ${disabled ? 'disabled' : 'enabled'}`}
-            data-type="string"
-            data-id={node.pointer}
-        >
-            <Form.Field
+        <WidgetField widgetType="string" node={node} options={options}>
+            <StringInput
                 id={node.id}
-                inline={options.inline === true}
-                disabled={disabled}
-                required={options.required === true}
-                error={node.errors.length > 0}
-            >
-                <label htmlFor={node.id}>{options.title}</label>
-                <Input
-                    ref={(ref) => {
-                        const input = ref as unknown as { inputRef: { current: HTMLInputElement | null } };
-                        setInputRef(input?.inputRef?.current);
-                    }}
-                    id={node.id}
-                    type="text"
-                    disabled={disabled}
-                    placeholder={options.placeholder}
-                    readOnly={options.readOnly === true}
-                    defaultValue={node.value}
-                    {...attributes}
-                    {...changeListener}
-                />
-                {node.errors.length > 0 && (
-                    <Label color="red" basic prompt pointing="above">
-                        {node.errors.map((e) => e.message).join(';')}
-                    </Label>
-                )}
-            </Form.Field>
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+                icon={options.icon}
+                tag={options.tag}
+                title={options.title}
+                value={node.value}
+                iconPosition={options.swapIconPosition ? 'right' : 'left'}
+                error={hasError}
+                readOnly={options.readOnly}
+                required={options.required}
+                placeholder={options.placeholder}
+                emitOnChange={options.liveUpdate}
+                onPress={setValue}
+                disabled={options.disabled || isValidConst}
+            />
+        </WidgetField>
     );
 });
 

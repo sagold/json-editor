@@ -2,7 +2,6 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { TextWidget } from './TextWidget';
-import { Form } from 'semantic-ui-react';
 
 export default {
     title: 'packages/rje-widgets/TextWidget',
@@ -10,12 +9,6 @@ export default {
         data: {
             control: { type: 'text' }
         },
-        inline: {
-            control: { type: 'boolean' }
-        },
-        // placeholder: {
-        //     control: { type: 'text' }
-        // },
         liveUpdate: {
             control: { type: 'boolean' }
         },
@@ -34,9 +27,9 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <TextWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 
@@ -45,14 +38,13 @@ Default.args = {
     data: 'some input string',
     liveUpdate: false,
     disabled: false,
-    hidden: false,
     readOnly: false,
     required: false,
     schema: {
         title: 'Default string widget',
         type: 'string',
         format: 'textarea',
-        maxLength: 20,
+        maxLength: 200,
         description: 'options could go into storybook controls'
     }
 };
@@ -60,6 +52,7 @@ Default.args = {
 export const ErrorState = Template.bind({});
 ErrorState.args = {
     data: 'some input string',
+    liveUpdate: true,
     schema: {
         title: 'Default string widget',
         type: 'string',

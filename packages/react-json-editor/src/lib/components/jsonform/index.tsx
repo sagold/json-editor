@@ -84,7 +84,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
     }
 
     return (
-        <div className={`ui error form rje-form${classNames ? ` ${classNames}` : ''}`} style={style}>
+        <div className={`rje-form${classNames ? ` ${classNames}` : ''}`} style={style}>
             <Widget node={node} editor={instance} options={options} />
         </div>
     );

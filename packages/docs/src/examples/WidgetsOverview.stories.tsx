@@ -4,16 +4,13 @@ import { errors, json } from 'headless-json-editor';
 import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { useEffect, useRef, useState } from 'react';
 import { widgets } from '@sagold/rje-widgets';
+import theme from '../../../rje-widgets/src/lib/theme';
 
 export default {
-    title: 'Examples/Widgets',
-    argTypes: {
-        data: { control: { type: 'object' }, defaultValue: data },
-        schema: { control: { type: 'object' }, defaultValue: schema }
-    }
+    title: 'Examples/Widgets'
 };
 
-const Template: ComponentStory<any> = ({ data, schema }) => {
+const Template: ComponentStory<any> = () => {
     const editor = useRef<JsonEditor>(null);
     const [editorData, setEditorData] = useState(data);
     useEffect(() => {
@@ -29,6 +26,8 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
 
     return (
         <JsonForm
+            classNames="rje-form rje-theme--light"
+            style={theme}
             widgets={widgets}
             ref={editor}
             data={editorData}

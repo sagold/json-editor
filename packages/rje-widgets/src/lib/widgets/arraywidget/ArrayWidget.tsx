@@ -1,15 +1,22 @@
-import Ref from '@semantic-ui-react/component-ref';
-import Sortable from 'sortablejs';
-import { ArrayActionPanel } from './ArrayActionPanel';
-import { ArrayItemCard, ArrayItemDefault } from './ArrayItem';
-import { Button, Icon, SemanticCOLORS } from 'semantic-ui-react';
-import { classNames } from '../../classNames';
-import { InsertItemModal } from '../../components/insertitemmodal/InsertItemModal';
-import { JsonEditor, widget, WidgetPlugin, ArrayNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { ParentHeader } from '../../components/parentheader/ParentHeader';
-import { useState, useRef, useEffect } from 'react';
-import { ValidationErrors } from '../../components/ValidationErrors';
-import { WidgetModalSize } from '../../components/widgetmodal/WidgetModal';
+import classnames from 'classnames';
+import { ArrayItemDefault } from './ArrayItem';
+import { ArrayWidgetActions } from './ArrayWidgetActions';
+import { Button, ButtonControlled } from '../../components/button/Button';
+import {
+    widget,
+    WidgetPlugin,
+    ArrayNode,
+    DefaultNodeOptions,
+    JsonEditor,
+    JsonError,
+    JsonSchema
+} from '@sagold/react-json-editor';
+import { Modal, useModal } from '../../components/modal/Modal';
+import { SectionHeader } from '../../components/sectionheader/SectionHeader';
+import { Select } from '../../components/select/Select';
+import { useState, useRef, useCallback } from 'react';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { useDraggableItems, SortableOptions } from './useDraggableItems';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -19,15 +26,11 @@ export type ArrayOptions = {
     classNames?: string[];
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
-    sortable?: {
-        // sortable options: https://github.com/SortableJS/Sortable
-        enabled?: boolean;
-        group?: string; // name of sortable group, defaults to json-pointer
-    };
+    sortable?: SortableOptions;
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
     editJson?: {
         enabled?: boolean;
-        modalSize?: WidgetModalSize;
+        // modalSize?: WidgetModalSize;
         /** if true, will update on each change if input is a valid json format */
         liveUpdate?: boolean;
     };
@@ -35,78 +38,14 @@ export type ArrayOptions = {
     isOptional?: boolean;
     /** set to true to show inline button at the end of the array to add another item */
     inlineAddItemOption?: boolean;
-    /** ui layout options for array */
-    layout?: {
-        /** layout of array children, defaults */
-        type?: 'cards' | 'default';
-    };
-    header?: {
-        inverted?: boolean;
-        color?: SemanticCOLORS;
-    };
+    /** if true will add a separator line to the header */
+    headerSeparator?: boolean;
+    /** header font size relative to 1 (em). Defaults to 1 */
+    headerFontSize?: number;
 } & DefaultNodeOptions;
 
-function createOnSortEnd(editor: JsonEditor, node: Node) {
-    return function onSortEnd(event: Sortable.SortableEvent) {
-        const targetIndex = parseInt(`${event.newIndex}`);
-        if (isNaN(targetIndex)) {
-            return;
-        }
-        const { to, from, oldIndex, newIndex, item } = event;
-        // always remove node - we create it from data
-        item?.parentNode?.removeChild(item);
-        // 1. if container or pointer (different editors) are the same, its a move within a list
-        // 2. if item is dragged to the same position, but to another editor. now, the dragged
-        // element is removeChild from original list. We readd it here, to fix this
-        if (oldIndex != null) {
-            // readd removed child - we move it through data
-            from.insertBefore(event.item, from.childNodes[oldIndex]);
-        }
-        // console.log('move item', `${node.pointer}/${event.oldIndex}`, targetIndex);
-        editor.moveItem(`${node.pointer}/${event.oldIndex}`, targetIndex);
-    };
-}
-
-export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
-    const [openModal, setModalOpen] = useState<boolean>(false);
-    const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
-    let sortable = options.sortable;
-    if (sortable == null) {
-        sortable = { enabled: false };
-    }
-    sortable.enabled = sortable.enabled ?? false;
-    sortable.group = sortable.group ?? node.pointer;
-
-    const childOptions: Record<string, any> = {};
-    options.disabled && (childOptions.disabled = true);
-    options.readOnly && (childOptions.readOnly = true);
-
-    function insertItem() {
-        const options = editor.getArrayAddOptions(node);
-        if (options.length === 1) {
-            editor.appendItem(node, options[0]);
-        } else {
-            setModalOpen(true);
-        }
-        setShowContent(true);
-    }
-
-    const ref = useRef<HTMLDivElement>();
-    useEffect(() => {
-        if (sortable?.enabled && ref.current && !options.disabled && !options.readOnly) {
-            Sortable.create(ref.current, {
-                handle: '.rje-drag__handle',
-                swapThreshold: 4,
-                // delay: 250,
-                ...sortable,
-                onEnd: createOnSortEnd(editor, node)
-            });
-        }
-    }, [sortable, editor]);
-
+function getActionStates(node: ArrayNode) {
     const minItems = node.schema.minItems || 0;
-    const { title, description, collapsed, editJson = {} } = options;
-    const isDeleteEnabled = minItems < node.children.length;
     let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
     if (
         Array.isArray(node.schema.items) &&
@@ -114,79 +53,168 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     ) {
         isAddEnabled = node.children.length < node.schema.items.length;
     }
+    return { isAddEnabled, isDeleteEnabled: minItems < node.children.length };
+}
+
+export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
+    const portalContainer = useRef<HTMLDivElement>(null);
+    const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
+    const { modalTriggerProps: insertModalTriggerProps, modalProps: insertModalProps } = useModal<HTMLButtonElement>();
+
+    const childOptions: Record<string, any> = {};
+    options.disabled && (childOptions.disabled = true);
+    options.readOnly && (childOptions.readOnly = true);
+
+    const ref = useRef<HTMLDivElement>(null);
+    const { sortableEnabled } = useDraggableItems(
+        editor,
+        {
+            pointer: node.pointer,
+            disabled: options.disabled,
+            readOnly: options.readOnly,
+            sortable: options.sortable
+        },
+        ref
+    );
+
+    const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
+    const { description, editJson = { enabled: false } } = options;
+    const showHeader = editJson.enabled || options.title || description || options.collapsed != null;
+
+    const insertOptions = editor.getArrayAddOptions(node);
+    const insertItem = useCallback(() => {
+        editor.appendItem(node, insertOptions[0]);
+        setShowContent(true);
+    }, [node, editor, insertOptions]);
+
+    const addItemButton =
+        insertOptions.length > 1 ? (
+            <ButtonControlled key="add" variant="text" disabled={!isAddEnabled} icon="add" {...insertModalTriggerProps}>
+                add item
+            </ButtonControlled>
+        ) : (
+            <Button key="add" disabled={!isAddEnabled} variant="text" icon="add" onPress={insertItem}>
+                add item
+            </Button>
+        );
 
     return (
-        <div
-            className={classNames('rje-form rje-form--parent rje-array', options.classNames)}
-            data-type="array"
-            data-id={node.pointer}
+        <WidgetField
+            widgetType="array"
+            node={node}
+            options={options}
+            showError={false}
+            showDescription={false}
+            className={classnames(options.classNames)}
+            ref={portalContainer}
         >
-            {(title || description || editJson.enabled || collapsed != null) && (
-                <ParentHeader
-                    node={node}
-                    options={options}
-                    icon={
-                        options.collapsed != null && (
-                            <Icon
-                                link
-                                rotated={!showContent ? 'counterclockwise' : undefined}
-                                name="dropdown"
-                                onClick={() => setShowContent(!showContent)}
+            {showHeader && (
+                <WidgetField.Header>
+                    <SectionHeader>
+                        {options.collapsed != null && (
+                            <Button
+                                variant="text"
+                                className="rje-widget-action"
+                                onPress={() => setShowContent(!showContent)}
+                                icon={showContent ? 'expand_more' : 'expand_less'}
                             />
-                        )
-                    }
-                >
-                    <ArrayActionPanel
+                        )}
+                        <SectionHeader.Label
+                            title={options.title}
+                            size={options.headerFontSize}
+                            separator={options.headerSeparator || true}
+                            description={options.descrptionInline ? undefined : description}
+                        />
+                        <ArrayWidgetActions
+                            editor={editor}
+                            node={node}
+                            options={options}
+                            actions={[addItemButton]}
+                            portalContainer={portalContainer}
+                        />
+                    </SectionHeader>
+                    <WidgetField.Description enabled={options.descriptionInline === true}>
+                        {description}
+                    </WidgetField.Description>
+                    <WidgetField.Error errors={node.errors} />
+                </WidgetField.Header>
+            )}
+
+            <div className="rje-array__items" ref={ref}>
+                {showContent &&
+                    node.children.map((child) => (
+                        <ArrayItemDefault
+                            disabled={options.disabled || options.readOnly}
+                            editor={editor}
+                            key={child.id}
+                            node={child}
+                            portalContainer={portalContainer}
+                            size={node.children.length}
+                            withDragHandle={sortableEnabled}
+                            options={childOptions}
+                            optional={isDeleteEnabled}
+                        />
+                    ))}
+            </div>
+            {showContent && options.inlineAddItemOption !== false && (
+                <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
+                    {insertOptions.length > 1 ? (
+                        <ButtonControlled disabled={!isAddEnabled} icon="add" {...insertModalTriggerProps} />
+                    ) : (
+                        <Button disabled={!isAddEnabled} icon="add" onPress={insertItem} />
+                    )}
+                </div>
+            )}
+            <Modal {...insertModalProps} portalContainer={portalContainer} isDismissable={true}>
+                {(close) => (
+                    <ModalContentSelectItem
                         editor={editor}
                         node={node}
-                        options={options}
-                        isAddEnabled={isAddEnabled}
-                        insertItem={insertItem}
+                        close={close}
+                        items={insertOptions}
+                        onInsertItem={() => setShowContent(true)}
                     />
-                </ParentHeader>
-            )}
-
-            <ValidationErrors errors={node.errors} />
-
-            <Ref innerRef={ref}>
-                <div className={`rje-array__items rje-array__items--${options.layout?.type ?? 'default'}`}>
-                    {showContent &&
-                        (options.layout?.type === 'cards'
-                            ? node.children.map((child, index) => (
-                                  <ArrayItemCard
-                                      disabled={options.disabled || options.readOnly}
-                                      editor={editor}
-                                      key={child.id}
-                                      node={child}
-                                      size={node.children.length}
-                                      withDragHandle={sortable?.enabled}
-                                      options={childOptions}
-                                      optional={isDeleteEnabled}
-                                  />
-                              ))
-                            : node.children.map((child) => (
-                                  <ArrayItemDefault
-                                      disabled={options.disabled || options.readOnly}
-                                      editor={editor}
-                                      key={child.id}
-                                      node={child}
-                                      size={node.children.length}
-                                      withDragHandle={sortable?.enabled}
-                                      options={childOptions}
-                                      optional={isDeleteEnabled}
-                                  />
-                              )))}
-                </div>
-            </Ref>
-            {options.inlineAddItemOption !== false && (
-                <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
-                    <Button disabled={!isAddEnabled} icon="add" size="mini" onClick={insertItem} />
-                </div>
-            )}
-            <InsertItemModal editor={editor} node={node} isOpen={openModal} onClose={() => setModalOpen(false)} />
-        </div>
+                )}
+            </Modal>
+        </WidgetField>
     );
 });
+
+export type ModalContentSelectItemProps = {
+    close: () => void;
+    editor: JsonEditor;
+    node: ArrayNode;
+    items: JsonError | JsonSchema[];
+    onInsertItem?: () => void;
+};
+
+export function ModalContentSelectItem({ close, editor, node, items, onInsertItem }: ModalContentSelectItemProps) {
+    const [selected, setSelected] = useState<string | number>(0);
+    return (
+        <>
+            <Select defaultSelectedKey={`${selected}`} setValue={setSelected}>
+                {items.map((o, index) => (
+                    <Select.Option key={index}>{o.title}</Select.Option>
+                ))}
+            </Select>
+            <div className="rje-modal__footer">
+                <Button variant="text" onPress={close}>
+                    cancel
+                </Button>
+                <Button
+                    variant="primary"
+                    onPress={() => {
+                        editor.appendItem(node, items[selected]);
+                        onInsertItem && onInsertItem();
+                        close();
+                    }}
+                >
+                    insert item
+                </Button>
+            </div>
+        </>
+    );
+}
 
 export const ArrayWidgetPlugin: WidgetPlugin = {
     id: 'array-widget',

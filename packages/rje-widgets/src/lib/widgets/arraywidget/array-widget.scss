@@ -1,53 +1,65 @@
+@import '../../design';
+
 $color-alternate: rgba(7, 23, 32, 0.03);
 $color-border: rgba(7, 23, 32, 0.08);
 
+/** separate action row at end of array list */
 .rje-array__actions {
     padding: 0.75em 1em;
-    // transform: translateY(-25%);
-
     display: flex;
     justify-content: space-around;
     border-bottom: 1px solid $color-border;
     margin-bottom: 1.5em;
 
-    &.even {
+    &.odd {
         background-color: rgba(0, 0, 0, 0.03);
     }
 }
 
+/** main array actions in header */
+.rje-widget-actions {
+}
+
+/** per item action menu items */
+.rje-array-item__actions {
+    padding: em(8);
+    gap: 0.5em;
+    display: flex;
+}
+
 /* feature: array item actions on right side */
-.ui.form .array-item {
+.rje-array-item {
     display: flex;
     justify-content: stretch;
-    padding: 0;
+    padding: em(8) 0 em(8) em(16);
     border-top: 1px solid $color-border;
 
-    & > .rje-form {
+    & > .rje-field {
         flex-grow: 1;
     }
 
-    & > .rje-array-item__actions {
-        button {
-            box-shadow: none;
-            margin-right: 0;
-        }
-    }
+    // & > .rje-array-item__actions {
+    //     button {
+    //         box-shadow: none;
+    //         margin-right: 0;
+    //     }
+    // }
 
     &:last-child {
         border-bottom: 1px solid $color-border;
     }
 }
 
-.ui.form .array-item:nth-child(2n) {
+.rje-array-item:nth-child(odd) {
     background-color: $color-alternate;
 }
 
-.ui.form .rje-array__items .rje-array__items {
+.rje-field--array .rje-array__items .rje-array__items {
     padding-right: 0;
 }
 
 .rje-array__items--default .with-drag-handle {
-    padding-left: 10px;
+    // padding-left: em(16);
 }
 
 /* feature: sortable */
@@ -61,25 +73,26 @@ $color-border: rgba(7, 23, 32, 0.08);
     background: rgba(0, 181, 173, 0.5);
 }
 
-.with-drag-handle {
+.rje-array-item.with-drag-handle {
     position: relative;
+    padding-left: 0;
+    padding-right: 0;
+
+    .rje-field {
+        padding-left: em(4);
+        padding-bottom: em(4);
+    }
 
     .rje-drag__container {
         color: #999;
         cursor: pointer;
-        align-self: center;
-        position: absolute;
-        left: -8px;
-        top: 4px;
-        bottom: 4px;
-        width: 18px;
-
+        width: em(24);
         // striped background
-        // background: repeating-linear-gradient(-45deg, transparent 0px 2px, rgba(0, 0, 0, 0.15) 3px 4px);
+        background: repeating-linear-gradient(-45deg, transparent 0px 4px, rgba(0, 0, 0, 0.075) 4px 6px);
 
         // dotted background
-        background-image: radial-gradient(circle at 1.5px 1.5px, rgba(0, 0, 0, 0.2) 1.5px, transparent 0);
-        background-size: 6px 10px;
+        // background-image: radial-gradient(circle at 1.5px 1.5px, rgba(0, 0, 0, 0.2) 1.5px, transparent 0);
+        // background-size: 6px 10px;
         top: 12px;
         bottom: 12px;
     }

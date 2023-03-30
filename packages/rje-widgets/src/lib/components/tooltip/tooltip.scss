@@ -1,0 +1,17 @@
+@import '../../design';
+
+@mixin tooltip-component {
+    .rje-tooltip {
+        background-color: white;
+        border: 1px solid gray;
+        box-sizing: border-box;
+        font-weight: normal;
+        left: 0px;
+        max-width: em(600);
+        padding: em($unit);
+        position: absolute;
+        white-space: initial;
+        z-index: 1;
+        top: 100%;
+    }
+}

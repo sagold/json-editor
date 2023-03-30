@@ -1,11 +1,10 @@
 import { ObjectNode } from '@sagold/react-json-editor';
-import { SemanticWIDTHS } from 'semantic-ui-react';
 
 const GRID_COLUMNS = 16 as const;
 
 export type ObjectLayoutCell = {
     prop: string;
-    width?: SemanticWIDTHS;
+    width?: number;
 };
 
 export type ObjectLayout = {

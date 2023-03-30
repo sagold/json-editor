@@ -1,0 +1,8 @@
+@import '../../design';
+
+@mixin select-options-component {
+    .rje-select__option {
+        outline: 0;
+        padding: em(0.5 * $unit) em($unit);
+    }
+}

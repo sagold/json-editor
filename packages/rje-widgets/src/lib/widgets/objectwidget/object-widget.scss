@@ -1,5 +1,19 @@
+@import '../../design';
+
+.rje-widget-actions {
+    padding: em($unit);
+}
+
 .rje-object__missing-properties {
-    padding: 0.75em 1em;
+    padding: 0.75em 0;
+    display: flex;
+    gap: em($unit);
+}
+
+.rje-object__property > .rje-object__actions {
+    button:not(:hover) {
+        opacity: 0.3;
+    }
 }
 
 .rje-object__options {
@@ -13,24 +27,9 @@
     }
 }
 
-.rje-object__actions {
-    line-height: 2.5em;
-    button.ui.button {
-        box-shadow: none;
-        i.icon {
-            opacity: 0.33;
-        }
-        &:hover {
-            i.icon {
-                opacity: 9;
-            }
-        }
-    }
-}
-
 .rje-object__property {
     display: flex;
-    align-items: baseline;
+    // align-items: baseline;
     & > div {
         flex-grow: 1;
     }

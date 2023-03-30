@@ -1,0 +1,25 @@
+@mixin popover-component {
+    .rje-popover {
+        z-index: 10;
+        position: absolute;
+        // position: fixed;
+
+        .rje-popover__arrow {
+            position: absolute;
+        }
+
+        &[data-placement='bottom'] {
+            transform: translateX(-50%) rotate(180deg);
+            transform-origin: top;
+        }
+
+        &[data-placement='top'] {
+            bottom: 0;
+            transform: translateY(100%);
+        }
+    }
+
+    .rje-popover__panel {
+        outline: none;
+    }
+}

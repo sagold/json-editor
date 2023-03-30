@@ -1,0 +1,57 @@
+@import '../design';
+@import '../components/checkbox/checkbox';
+
+@mixin checkbox-light {
+    @include checkbox-field-component;
+
+    .rje-checkbox--unset,
+    .rje-checkbox--checked {
+        @include primary-elevated-light;
+        color: $color-white;
+    }
+
+    .rje-checkbox--unchecked {
+        @include input-elevated-light;
+    }
+
+    .rje-checkbox--focused {
+        border-color: rgb(var(--rje-color-light-primary));
+    }
+
+    .rje-checkbox-field.rje-label--disabled {
+        .rje-checkbox--checked {
+            @include primary-flat-light;
+        }
+
+        .rje-checkbox--unchecked {
+            @include input-flat-light;
+        }
+    }
+}
+
+@mixin checkbox-dark {
+    @include checkbox-field-component;
+
+    .rje-checkbox--unset,
+    .rje-checkbox--checked {
+        @include primary-elevated-dark;
+        color: $color-black;
+    }
+
+    .rje-checkbox--unchecked {
+        @include input-elevated-dark;
+    }
+
+    .rje-checkbox--focused {
+        border-color: rgb(var(--rje-color-dark-primary));
+    }
+
+    .rje-checkbox-field.rje-label--disabled {
+        .rje-checkbox--checked {
+            @include primary-flat-dark;
+        }
+        .rje-checkbox--unchecked {
+            @include input-flat-dark;
+        }
+    }
+}

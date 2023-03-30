@@ -1,0 +1,81 @@
+@import './button';
+@import './checkbox';
+@import './icon';
+@import './input';
+@import './label';
+@import './modal';
+@import './popover';
+@import './section-header';
+@import './select';
+@import './select-options';
+@import './switch';
+@import './textarea';
+@import './tooltip';
+@import './widget-description';
+@import './widget-field';
+
+@mixin light-theme() {
+    @include button-light();
+    @include checkbox-light();
+    @include icon-light();
+    @include input-light();
+    @include label-light();
+    @include modal-light();
+    @include popover-light();
+    @include section-header-light();
+    @include select-light();
+    @include select-options-light();
+    @include switch-light();
+    @include textarea-light();
+    @include tooltip-light();
+    @include widget-description-light();
+    @include widget-field-light();
+
+    color: rgb(var(--rje-color-light-text));
+    .rje-widget-action:not(:hover) .rje-icon {
+        color: $color-light-grey-1;
+    }
+}
+
+@mixin dark-theme() {
+    @include button-dark();
+    @include checkbox-dark();
+    @include icon-dark();
+    @include input-dark();
+    @include label-dark();
+    @include modal-dark();
+    @include popover-dark();
+    @include section-header-dark();
+    @include select-dark();
+    @include select-options-dark();
+    @include switch-dark();
+    @include textarea-dark();
+    @include tooltip-dark();
+    @include widget-description-dark();
+    @include widget-field-dark();
+
+    color: rgb(var(--rje-color-dark-text));
+    .rje-widget-action:not(:hover) .rje-icon {
+        color: $color-dark-grey-1;
+    }
+}
+
+.rje-theme--light {
+    @include light-theme;
+
+    .rje-theme--inverted {
+        @include dark-theme;
+        padding: 8px;
+        background: $color-black;
+    }
+}
+
+.rje-theme--dark {
+    @include dark-theme;
+
+    .rje-theme--inverted {
+        @include light-theme;
+        padding: 8px;
+        background: $color-white;
+    }
+}

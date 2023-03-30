@@ -15,6 +15,8 @@ export const schema = {
     title: 'Widgets Overview',
     description: 'This form consists of all basic widgets exposed by rje-widgets and some of their variations',
     options: {
+        descriptionInline: true,
+        headerFontSize: 1.75,
         editJson: { enabled: true, liveUpdate: true }
     },
     required: [
@@ -56,10 +58,8 @@ export const schema = {
             title: 'Text input with formatting options',
             type: 'string',
             options: {
-                icon: 'user',
-                iconPosition: 'left',
-                label: { basic: true, content: 'username' },
-                labelPosition: 'right',
+                icon: 'sentiment_calm',
+                label: 'username',
                 placeholder: 'your username'
             },
             description: 'Text inputs can have a placeholder, icon and label'
@@ -67,6 +67,10 @@ export const schema = {
         stringValidation: {
             title: 'Text input with valiation rules',
             type: 'string',
+            options: {
+                icon: 'app_registration',
+                swapIconPosition: true
+            },
             description:
                 'The required option is triggered by adding a property to required properties and adding a `minLength: 1` validation rule',
             minLength: 1
@@ -119,7 +123,7 @@ export const schema = {
             description: 'also numbers can have icons',
             type: 'number',
             options: {
-                icon: 'birthday',
+                icon: 'cake',
                 placeholder: 'your last name',
                 label: 'year'
             },
@@ -233,6 +237,7 @@ export const schema = {
                     title: 'Nested object headline inverted',
                     description: 'Object colors can also be inverted, e.g. `{options: { header: { inverted: true }}}`',
                     options: {
+                        classNames: ['rje-theme--inverted'],
                         header: {
                             inverted: true,
                             color: 'blue'
@@ -440,6 +445,9 @@ export const schema = {
             title: 'Default Array',
             description: 'A list of strings that accepts an any number of items',
             type: 'array',
+            options: {
+                classNames: ['rje-theme--inverted']
+            },
             items: {
                 type: 'object',
                 title: 'object with a property',

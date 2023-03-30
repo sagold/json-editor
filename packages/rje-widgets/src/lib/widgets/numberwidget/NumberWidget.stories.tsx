@@ -1,8 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
-import { widgets } from '../index';
-import { NumberWidget } from './NumberWidget';
-import { Form } from 'semantic-ui-react';
+import { widgets, NumberWidget } from '@sagold/rje-widgets';
 
 export default {
     title: 'packages/rje-widgets/NumberWidget',
@@ -10,32 +8,20 @@ export default {
         data: {
             control: { type: 'number' }
         },
-        inline: {
-            control: { type: 'boolean' }
-        },
         placeholder: {
             control: { type: 'text' }
         },
-        liveUpdate: {
+        withButtons: {
+            control: { type: 'boolean' }
+        },
+        swapIconPosition: {
             control: { type: 'boolean' }
         },
         icon: {
             control: { type: 'text' }
         },
-        iconPosition: {
-            control: {
-                options: ['left', 'right'],
-                type: 'select'
-            }
-        },
-        label: {
+        tag: {
             control: { type: 'text' }
-        },
-        labelPosition: {
-            control: {
-                options: ['left', 'right', 'right corner', 'left corner'],
-                type: 'select'
-            }
         },
         disabled: {
             control: { type: 'boolean' }
@@ -52,19 +38,19 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <NumberWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 
 export const Default = Template.bind({});
 Default.args = {
     data: 2023,
-    inline: false,
-    liveUpdate: false,
-    icon: undefined,
-    iconPosition: 'left',
+    icon: 'person',
+    tag: 'year',
+    swapIconPosition: false,
+    withButtons: false,
     disabled: false,
     hidden: false,
     readOnly: false,

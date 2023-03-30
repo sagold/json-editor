@@ -1,7 +1,12 @@
-import { Form, Button, Message, Input, Icon, Label, Item, SemanticICONS } from 'semantic-ui-react';
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, deepEqual } from '@sagold/react-json-editor';
 import { render } from '../../render';
 import { useState } from 'react';
+import { Button } from '../../components/button/Button';
+import { Label } from '../../components/label/Label';
+import { WidgetField } from '../../components/widgetfield/WidgetField';
+import { FileField } from '../../components/filefield';
+import { Icon } from '../../components/icon/Icon';
+import { StringInput } from '../../components/input/StringInput';
 
 const isFile = (v): v is File => Object.prototype.toString.call(v) === '[object File]';
 
@@ -23,20 +28,21 @@ export type FileWidgetOptions = {
     imageUrlTemplate?: string;
 } & DefaultNodeOptions;
 
-const MIME_TO_ICON: Record<string, SemanticICONS> = {
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'file excel', // .xlsx
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'file word', // .docx
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'file powerpoint', // .pptx
-    'text/csv': 'file excel', // .csv
-    'text/plain': 'file text', // .txt
-    'text/html': 'file code', // .html
-    'application/zip': 'file archive', // .zip
-    'application/pdf': 'file pdf', // .pdf
-    'application/json': 'file code', // .json
-    'video/mp4': 'file video', // .mp4
-    'image/png': 'file image', // .png
-    'image/jpeg': 'file image', // .jpg
-    'image/gif': 'file image' // .gif
+const MIME_TO_ICON: Record<string, string> = {
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'insert_drive_file', // .xlsx
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'article', // .docx
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'insert_drive_file', // .pptx
+    'text/csv': 'article', // .csv
+    'text/plain': 'insert_drive_file', // .txt
+    'text/html': 'article', // .html
+    'application/zip': 'insert_drive_file', // .zip
+    'application/pdf': 'insert_drive_file', // .pdf
+    'application/json': 'article', // .json
+    'video/mp4': 'video_file', // .mp4
+    'image/png': 'photo', // .png
+    'image/jpeg': 'photo', // .jpg
+    'image/gif': 'photo', // .gif
+    default: 'insert_drive_file'
 };
 
 function getFileIcon(file: File) {
@@ -44,16 +50,16 @@ function getFileIcon(file: File) {
         return MIME_TO_ICON[file.type];
     }
     if (file.type.startsWith('image')) {
-        return 'file image';
+        return 'photo';
     }
     if (file.type.startsWith('video')) {
-        return 'file video';
+        return 'video_file';
     }
     if (file.type.startsWith('text')) {
-        return 'file text';
+        return 'article';
     }
     console.log('unknown file type', file.type);
-    return 'file';
+    return 'insert_drive_file';
 }
 
 function isImageFile(file: File) {
@@ -96,11 +102,8 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         }
     }
 
-    function change(event) {
-        const files = event.target.files;
-        if (files != null) {
-            setFile(files[0]);
-        }
+    function change(file: File) {
+        setFile(file);
     }
 
     function drop(event) {
@@ -118,7 +121,8 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
 
     const resetButton = (
         <Button
-            icon="trash"
+            variant="text"
+            icon="delete"
             style={{
                 position: 'absolute',
                 top: '50%',
@@ -127,145 +131,84 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 zIndex: 19
             }}
             disabled={options.readOnly || disabled}
-            onClick={reset}
+            onPress={reset}
         />
     );
 
-    const preventDefault = (event) => event.preventDefault();
     const hasError = node.errors.length > 0;
-    const errors = node.errors?.map((e) => e.message).join(';');
-
     return (
-        <div
-            className={`rje-form rje-value ${disabled ? 'disabled' : 'enabled'}`}
-            data-type="string"
-            data-id={node.pointer}
-        >
-            <Form.Field
-                id={node.id}
-                error={hasError}
-                required={options.required === true}
-                onDragOver={preventDefault}
-                onDragEnter={preventDefault}
-                onDrop={drop}
-                readOnly={options.readOnly === true}
-            >
-                <label htmlFor={node.id}>{options.title}</label>
+        <WidgetField widgetType="file" node={node} options={options} style={{ position: 'relative' }}>
+            {status === 'empty' && (
+                <FileField
+                    label={options.title}
+                    buttonText={'choose a file'}
+                    accept={options.accept}
+                    error={hasError}
+                    id={node.id}
+                    disabled={disabled || options.readOnly}
+                    onPress={change}
+                />
+            )}
 
-                {status === 'empty' && (
-                    <Message attached style={{ cursor: 'pointer' }} error={hasError}>
-                        <Message.Content>
-                            <Button icon labelPosition="left" size="large">
-                                <Icon name="folder open" />
-                                choose a file
-                            </Button>
-                        </Message.Content>
-                        <Input
-                            style={{
-                                position: 'absolute',
-                                opacity: 0,
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0
-                            }}
-                            accept={options.accept}
-                            type="file"
-                            error={hasError}
-                            id={node.id}
-                            disabled={disabled || options.readOnly}
-                            onChange={change}
-                        >
-                            <input style={{ cursor: 'pointer' }} />
-                        </Input>
-                    </Message>
-                )}
+            {status === 'filename' && (
+                <div className="rje-preview" style={{ display: 'flex', gap: 8 }}>
+                    <div>
+                        {!imageUrlTemplate && <Icon>{getFileIcon({ type: options.accept || '' } as File)}</Icon>}
+                        {imageUrlTemplate && (
+                            <img
+                                style={{ maxHeight: 76, overflow: 'hidden' }}
+                                src={render(imageUrlTemplate, { value })}
+                            />
+                        )}
+                    </div>
+                    <div>
+                        <Label required={options.required}>{options.title}</Label>
+                        <StringInput readOnly={true} value={value} />
+                        {downloadUrlTemplate && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    right: 16,
+                                    zIndex: 19
+                                }}
+                            >
+                                <a
+                                    // icon="download"
+                                    target="_blank"
+                                    download
+                                    href={render(downloadUrlTemplate, { value })}
+                                />
+                                <Button
+                                    variant="text"
+                                    icon="delete"
+                                    onPress={reset}
+                                    disabled={options.readOnly || disabled}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    {resetButton}
+                </div>
+            )}
 
-                {status === 'filename' && (
-                    <Message attached icon={!imageUrlTemplate} error={hasError}>
-                        {!imageUrlTemplate && <Icon name={getFileIcon({ type: options.accept || '' } as File)} />}
-                        <Message.Content>
-                            <Item.Group unstackable style={{ margin: 0 }}>
-                                <Item>
-                                    {imageUrlTemplate && (
-                                        <Item.Image
-                                            style={{ maxHeight: 76, overflow: 'hidden' }}
-                                            size="tiny"
-                                            src={render(imageUrlTemplate, { value })}
-                                        />
-                                    )}
-                                    <Item.Content verticalAlign="middle">
-                                        <Item.Header>{value}</Item.Header>
-                                        {downloadUrlTemplate && (
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '50%',
-                                                    transform: 'translateY(-50%)',
-                                                    right: 16,
-                                                    zIndex: 19
-                                                }}
-                                            >
-                                                <Button
-                                                    as="a"
-                                                    icon="download"
-                                                    target="_blank"
-                                                    download
-                                                    href={render(downloadUrlTemplate, { value })}
-                                                />
-                                                <Button
-                                                    icon="trash"
-                                                    onClick={reset}
-                                                    disabled={options.readOnly || disabled}
-                                                />
-                                            </div>
-                                        )}
-                                        {resetButton}
-                                    </Item.Content>
-                                </Item>
-                            </Item.Group>
-                        </Message.Content>
-                    </Message>
-                )}
-
-                {isFile(value) && (
-                    <Message attached icon={status === 'file'} error={hasError}>
-                        {status === 'file' && isFile(value) && <Icon name={getFileIcon(value)} />}
-                        <Message.Content>
-                            <Item.Group unstackable style={{ margin: 0 }}>
-                                <Item>
-                                    {status === 'imageData' && (
-                                        <Item.Image
-                                            style={{ maxHeight: 76, overflow: 'hidden' }}
-                                            size="tiny"
-                                            src={imageData}
-                                        />
-                                    )}
-                                    <Item.Content verticalAlign="middle">
-                                        <Item.Header>{value.name}</Item.Header>
-                                        <Item.Meta>
-                                            {new Date(value.lastModified).toString().replace(/ GMT.*/, '')}
-                                        </Item.Meta>
-                                        <Item.Extra>
-                                            <Label color="yellow" size="tiny">
-                                                added
-                                            </Label>
-                                        </Item.Extra>
-                                        {resetButton}
-                                    </Item.Content>
-                                </Item>
-                            </Item.Group>
-                        </Message.Content>
-                    </Message>
-                )}
-                {hasError && (
-                    <Label color="red" basic prompt pointing="above">
-                        {errors}
-                    </Label>
-                )}
-            </Form.Field>
-            {options.description && <em className="rje-description">{options.description}</em>}
-        </div>
+            {isFile(value) && (
+                <>
+                    <Label required={options.required}>{options.title}</Label>
+                    {status === 'file' && isFile(value) && <Icon>{getFileIcon(value)}</Icon>}
+                    {status === 'imageData' && (
+                        <>
+                            <img style={{ maxHeight: 76, overflow: 'hidden' }} src={imageData} />
+                            <StringInput readOnly={true} value={value.name} />
+                            {new Date(value.lastModified).toString().replace(/ GMT.*/, '')}
+                            <Label color="yellow">added</Label>
+                        </>
+                    )}
+                    {resetButton}
+                </>
+            )}
+        </WidgetField>
     );
 });
 

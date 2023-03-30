@@ -2,16 +2,12 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { StringWidget } from './StringWidget';
-import { Form } from 'semantic-ui-react';
 
 export default {
     title: 'packages/rje-widgets/StringWidget',
     argTypes: {
         data: {
             control: { type: 'text' }
-        },
-        inline: {
-            control: { type: 'boolean' }
         },
         placeholder: {
             control: { type: 'text' }
@@ -22,20 +18,11 @@ export default {
         icon: {
             control: { type: 'text' }
         },
-        iconPosition: {
-            control: {
-                options: ['left', 'right'],
-                type: 'select'
-            }
+        swapIconPosition: {
+            control: { type: 'boolean' }
         },
-        label: {
+        tag: {
             control: { type: 'text' }
-        },
-        labelPosition: {
-            control: {
-                options: ['left', 'right', 'right corner', 'left corner'],
-                type: 'select'
-            }
         },
         disabled: {
             control: { type: 'boolean' }
@@ -52,21 +39,20 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <Form error>
+        <div className="rje-form">
             <StringWidget node={node} editor={editor} options={options} />
-        </Form>
+        </div>
     );
 };
 
 export const Default = Template.bind({});
 Default.args = {
     data: 'some input string',
-    inline: false,
     liveUpdate: false,
     icon: undefined,
-    iconPosition: 'left',
+    tag: undefined,
+    swapIconPosition: false,
     disabled: false,
-    hidden: false,
     readOnly: false,
     required: false,
     schema: {

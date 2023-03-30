@@ -1,0 +1,38 @@
+@import '../design';
+@import '../components/label/label';
+
+@mixin label-light {
+    @include label-component;
+
+    .rje-label--valid {
+        color: rgb(var(--rje-color-light-text));
+    }
+
+    .rje-required-flag,
+    .rje-label--invalid {
+        color: $color-light-error;
+    }
+
+    .rje-label--disabled,
+    .rje-label--disabled .rje-required-flag {
+        color: $color-light-grey-1;
+    }
+}
+
+@mixin label-dark {
+    @include label-component;
+
+    .rje-label--valid {
+        color: rgb(var(--rje-color-dark-text));
+    }
+
+    .rje-required-flag,
+    .rje-label--invalid {
+        color: $color-dark-error;
+    }
+
+    .rje-label--disabled,
+    .rje-label--disabled .rje-required-flag {
+        color: $color-dark-grey-1;
+    }
+}

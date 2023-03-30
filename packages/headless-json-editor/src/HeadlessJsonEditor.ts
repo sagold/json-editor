@@ -53,23 +53,6 @@ function validateState(draft: Draft, root: Node, pointer = '#') {
     updateErrors(draft, root, validationTarget);
 }
 
-function runPlugins(plugins: PluginInstance[], oldState: Node, newState: Node, changes: PluginEvent[]) {
-    // @notify change
-    changes.forEach((change) => {
-        plugins.forEach((p) => {
-            const returnValue = p.onEvent(newState, change);
-            if (returnValue) {
-                newState = returnValue[0];
-                changes.push(...returnValue[1]);
-            }
-        });
-    });
-    // @notify done
-    const done: DoneEvent = { type: 'done', previous: oldState, next: newState, changes };
-    plugins.forEach((p) => p.onEvent(newState, done));
-    return newState;
-}
-
 export type HeadlessJsonEditorOptions = {
     schema: JsonSchema;
     data?: unknown;
@@ -119,7 +102,7 @@ export class HeadlessJsonEditor {
         );
         this.options.validate === true && this.validate();
         const changes: Change[] = flat(this.state).map((node) => ({ type: 'create', node }));
-        this.state = runPlugins(this.plugins, previousState, this.state, changes);
+        this.state = this.runPlugins(previousState, this.state, changes);
         return this.state;
     }
 
@@ -135,13 +118,13 @@ export class HeadlessJsonEditor {
         const state = unlinkAll(this.state);
         validateState(this.draft, state);
         const validationErrors = errors(this.state);
-        this.state = runPlugins(this.plugins, this.state, state, [
+        this.state = this.runPlugins(this.state, state, [
             { type: 'validation', previous: this.state, next: state, errors: validationErrors }
         ]);
     }
 
     setState(state: Node, changes: PluginEvent[]) {
-        this.state = runPlugins(this.plugins, this.state, state, changes);
+        this.state = this.runPlugins(this.state, state, changes);
         return this.state;
     }
 
@@ -165,6 +148,25 @@ export class HeadlessJsonEditor {
         if (p && p.id) {
             this.plugins.push(p);
         }
+    }
+
+    runPlugins(oldState: Node, newState: Node, changes: PluginEvent[]) {
+        const plugins = this.plugins;
+        // @notify change
+        changes.forEach((change) => {
+            plugins.forEach((p) => {
+                const returnValue = p.onEvent(newState, change);
+                if (returnValue) {
+                    newState = returnValue[0];
+                    changes.push(...returnValue[1]);
+                }
+            });
+        });
+        this.state = newState;
+        // @notify done
+        const done: DoneEvent = { type: 'done', previous: oldState, next: newState, changes };
+        plugins.forEach((p) => p.onEvent(newState, done));
+        return newState;
     }
 
     /**
@@ -206,8 +208,7 @@ export class HeadlessJsonEditor {
         validateState(this.draft, state, getRootChange(changes));
 
         this.changes.push(...changes);
-        this.state = runPlugins(this.plugins, this.state, state, changes);
-
+        this.state = this.runPlugins(this.state, state, changes);
         return this.state;
     }
 
@@ -229,7 +230,7 @@ export class HeadlessJsonEditor {
         // since we already cloned this location using remove
         validateState(this.draft, state, parent);
         this.changes.push(...changes);
-        this.state = runPlugins(this.plugins, this.state, state, changes);
+        this.state = this.runPlugins(this.state, state, changes);
         return this.state;
     }
 
@@ -251,7 +252,7 @@ export class HeadlessJsonEditor {
         // since we already cloned this location using set
         validateState(this.draft, state, pointer);
         this.changes.push(...changes);
-        this.state = runPlugins(this.plugins, this.state, state, changes);
+        this.state = this.runPlugins(this.state, state, changes);
         return this.state;
     }
 
@@ -272,7 +273,10 @@ export class HeadlessJsonEditor {
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
         validateState(this.draft, state, node.pointer);
-        let newState = runPlugins(this.plugins, this.state, state, changes);
+        const oldState = this.state;
+        let newState = state;
+        this.state = newState;
+        newState = this.runPlugins(oldState, newState, changes);
         if (isJsonError(newState)) {
             console.error(`error from state returned by plugins '${node.pointer}'`);
             console.log(newState);
