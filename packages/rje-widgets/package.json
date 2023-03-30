@@ -1,13 +1,13 @@
 {
     "name": "@sagold/rje-widgets",
-    "version": "0.25.0",
+    "version": "0.26.0",
     "license": "MIT",
     "type": "module",
     "module": "./dist/es6/src/index.js",
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
-        "@sagold/react-json-editor": "^0.25.1",
+        "@sagold/react-json-editor": "^0.26.0",
         "react-aria": "^3.23.0",
         "react-stately": "^3.21.0",
         "react-textarea-autosize": "^8.3.4",
