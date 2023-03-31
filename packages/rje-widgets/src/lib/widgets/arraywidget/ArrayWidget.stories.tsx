@@ -3,7 +3,7 @@ import { ComponentStory } from '@storybook/react';
 import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
-import theme from '../../theme';
+import { Theme } from '../../components/theme/Theme';
 
 export default {
     title: 'packages/rje-widgets/ArrayWidget',
@@ -31,9 +31,9 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
         validate: true
     });
     return (
-        <div className="rje-form rje-theme--light" style={theme}>
+        <Theme>
             <ArrayWidget node={node} editor={editor} options={options} />
-        </div>
+        </Theme>
     );
 };
 

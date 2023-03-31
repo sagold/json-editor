@@ -3,7 +3,7 @@ import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { ObjectWidget, ObjectOptions } from './ObjectWidget';
 import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
-import theme from '../../theme';
+import { Theme } from '../../components/theme/Theme';
 
 export default {
     title: 'packages/rje-widgets/ObjectWidget',
@@ -32,9 +32,9 @@ const Template: ComponentStory<any> = ({ data, schema, options = {} }: Component
         validate: true
     });
     return (
-        <div className="rje-form rje-theme--light" style={theme}>
+        <Theme>
             <ObjectWidget node={node} editor={editor} options={options} />
-        </div>
+        </Theme>
     );
 };
 

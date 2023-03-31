@@ -3,6 +3,7 @@ import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { MasterDetailWidget } from './MasterDetailWidget';
 import { RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
+import { Theme } from '../../components/theme/Theme';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -25,9 +26,9 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
         validate: true
     });
     return (
-        <div style={{ width: '400px' }}>
+        <Theme style={{ width: 400 }}>
             <MasterDetailWidget node={node} editor={editor} options={{ header: { inverted: true } }} />
-        </div>
+        </Theme>
     );
 };
 
@@ -40,8 +41,10 @@ List.args = {
     ],
     schema: {
         title: 'Contents',
+        description: 'MasterDetailWidget will delegates child widgets to a modal window',
         type: 'array',
         options: {
+            descriptionInline: true,
             sortable: {
                 enabled: true
             }

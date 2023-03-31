@@ -36,14 +36,14 @@ export type JsonFormProps = {
     /** custom styles applied for form element */
     style?: React.CSSProperties;
     /** custom classNames added to form element */
-    classNames?: string;
+    className?: string;
 };
 
 export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
     {
         schema,
         data,
-        classNames,
+        className,
         pointer,
         widgets,
         plugins = [RemoteEnumOptionsPlugin],
@@ -84,7 +84,7 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
     }
 
     return (
-        <div className={`rje-form${classNames ? ` ${classNames}` : ''}`} style={style}>
+        <div className={`rje-form ${className ?? ''}`.trim()} style={style}>
             <Widget node={node} editor={instance} options={options} />
         </div>
     );

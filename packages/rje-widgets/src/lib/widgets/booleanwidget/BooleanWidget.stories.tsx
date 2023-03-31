@@ -2,6 +2,7 @@ import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { BooleanWidget } from './BooleanWidget';
+import { Theme } from '../../components/theme/Theme';
 
 export default {
     title: 'packages/rje-widgets/BooleanWidget',
@@ -28,9 +29,9 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
     const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
     return (
-        <div className="rje-form">
+        <Theme>
             <BooleanWidget node={node} editor={editor} options={options} />
-        </div>
+        </Theme>
     );
 };
 

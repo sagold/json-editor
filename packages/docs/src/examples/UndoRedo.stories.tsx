@@ -5,7 +5,7 @@ import { ComponentStory } from '@storybook/react';
 import { widgets } from '@sagold/rje-widgets';
 import { Button } from '../../../rje-widgets/src/lib/components/button/Button';
 import { Icon } from '../../../rje-widgets/src/lib/components/icon/Icon';
-import theme from '../../../rje-widgets/src/lib/theme';
+import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 const schema = {
     type: 'object',
@@ -48,7 +48,7 @@ const Template: ComponentStory<any> = () => {
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
 
     return (
-        <div className="rje-form rje-theme--light" style={theme}>
+        <Theme>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
                 <Button icon="undo" onPress={() => historyPlugin.current?.undo()} disabled={!isUndoEnabled}></Button>
                 <Button icon="redo" onPress={() => historyPlugin.current?.redo()} disabled={!isRedoEnabled}></Button>
@@ -56,7 +56,7 @@ const Template: ComponentStory<any> = () => {
             <div className="rje-form">
                 <Widget node={node} editor={editor} />
             </div>
-        </div>
+        </Theme>
     );
 };
 

@@ -5,12 +5,7 @@ import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './l
 import { Widget, WidgetProps } from './lib/components/widget/Widget';
 import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widget/WidgetDescription';
 import { WidgetError, WidgetErrorProps } from './lib/components/widget/WidgetError';
-import {
-    WidgetField,
-    WidgetFieldProps,
-    WidgetFieldHeaderProps,
-    WidgetFieldBarProps
-} from './lib/components/widget/WidgetField';
+import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from './lib/components/widget/WidgetField';
 import { Label } from './lib/components/label/Label';
 export {
     // components
@@ -36,7 +31,6 @@ export type {
     UseJsonEditorOptions,
     WidgetDescriptionProps,
     WidgetErrorProps,
-    WidgetFieldBarProps,
     WidgetFieldHeaderProps,
     WidgetFieldProps,
     WidgetPlugin,

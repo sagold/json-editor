@@ -1,6 +1,7 @@
-import { widget, WidgetPlugin, Widget, JsonSchema } from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, Widget, JsonSchema, ValueNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { Select } from '../../components/select/Select';
+import { SectionHeader } from '../../components/sectionheader/SectionHeader';
 
 type SelectedOneOfSchema = JsonSchema & {
     getOneOfOrigin: () => {
@@ -10,12 +11,18 @@ type SelectedOneOfSchema = JsonSchema & {
     };
 };
 
+export type OneOfOptions = {
+    /** header font size relative to 1 (em). Defaults to 1 */
+    headerFontSize?: number;
+    descriptionInline?: boolean;
+} & DefaultNodeOptions;
+
 export function useSelectOneOfWidget(node, { skipSelectOneOf = false } = {}) {
     const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && node.schema.getOneOfOrigin;
     return chooseThisWidget;
 }
 
-export const SelectOneOfWidget = widget(({ editor, node, options }) => {
+export const SelectOneOfWidget = widget<ValueNode<OneOfOptions>>(({ editor, node, options }) => {
     const selectedSchema = node.schema as SelectedOneOfSchema;
     const origin = selectedSchema.getOneOfOrigin();
     const oneOf = origin.schema.oneOf as JsonSchema[];
@@ -40,10 +47,16 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
     return (
         <WidgetField widgetType="oneof" node={node} options={options} showDescription={false} showError={false}>
             <WidgetField.Header>
-                <WidgetField.Bar>
+                <SectionHeader>
+                    <SectionHeader.Label
+                        title={options.title}
+                        size={options.headerFontSize}
+                        separator={true}
+                        description={options.descriptionInline ? undefined : options.description}
+                    />
                     <Select
                         id={node.id}
-                        title={options.title}
+                        // title={options.title}
                         placeholder={options.placeholder}
                         required={options.required}
                         disabled={options.disabled}
@@ -54,9 +67,11 @@ export const SelectOneOfWidget = widget(({ editor, node, options }) => {
                             <Select.Option key={option.value}>{option.text}</Select.Option>
                         ))}
                     </Select>
-                </WidgetField.Bar>
-                <WidgetField.Description>{options.description}</WidgetField.Description>
-                <WidgetField.Error errors={node.errors} />
+                    {options.descriptionInline && (
+                        <WidgetField.Description>{options.description}</WidgetField.Description>
+                    )}
+                    <WidgetField.Error errors={node.errors} />
+                </SectionHeader>
             </WidgetField.Header>
 
             <div className="rje-children">

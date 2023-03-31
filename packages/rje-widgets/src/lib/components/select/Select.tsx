@@ -89,9 +89,11 @@ export function Select({
             className={classNames('rje-select-field', error ? 'rje-select-field--invalid' : 'rje-select-field--valid')}
             ref={parentRef}
         >
-            <Label {...labelProps} disabled={disabled} required={required}>
-                {title}
-            </Label>
+            {title && (
+                <Label {...labelProps} disabled={disabled} required={required}>
+                    {title}
+                </Label>
+            )}
             <div className="rje-select">
                 <HiddenSelect state={state} triggerRef={selectButtonRef} label={placeholder} name={id} />
                 <SelectButton {...triggerProps} buttonRef={selectButtonRef}>

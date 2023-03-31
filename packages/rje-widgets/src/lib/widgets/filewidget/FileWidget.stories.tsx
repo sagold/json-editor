@@ -3,6 +3,7 @@ import { useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { FileWidget } from './FileWidget';
 import { RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
+import { Theme } from '../../components/theme/Theme';
 
 export default {
     title: 'packages/rje-widgets/FileWidget',
@@ -25,9 +26,9 @@ const Template: ComponentStory<any> = ({ data, schema }) => {
     const fileNode = get(node, '/file') as StringNode;
 
     return (
-        <div className="rje-form">
+        <Theme>
             <FileWidget node={fileNode} editor={editor} />
-        </div>
+        </Theme>
     );
 };
 

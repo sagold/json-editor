@@ -21,7 +21,6 @@ type WidgetFieldComponent = ForwardRefExoticComponent<
     Header: typeof WidgetFieldHeader;
     Error: typeof WidgetError;
     Description: typeof WidgetDescription;
-    Bar: typeof WidgetFieldBar;
 };
 
 /**
@@ -57,7 +56,6 @@ export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function
 WidgetField.Header = WidgetFieldHeader;
 WidgetField.Error = WidgetError;
 WidgetField.Description = WidgetDescription;
-WidgetField.Bar = WidgetFieldBar;
 
 export type WidgetFieldHeaderProps = {
     children?: ReactNode | ReactNode[] | null;
@@ -68,13 +66,4 @@ function WidgetFieldHeader({ children }: WidgetFieldHeaderProps) {
         return null;
     }
     return <div className="rje-field__header">{children}</div>;
-}
-
-export type WidgetFieldBarProps = {};
-function WidgetFieldBar({ children }: { children?: ReactNode }) {
-    return (
-        <div className="rje-header__bar" style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-            {children}
-        </div>
-    );
 }

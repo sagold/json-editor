@@ -66,3 +66,5 @@ export const ButtonControlled = forwardRef<HTMLButtonElement, ButtonControlledPr
         </button>
     );
 });
+
+Button.Controlled = ButtonControlled;

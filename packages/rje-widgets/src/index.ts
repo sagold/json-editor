@@ -42,7 +42,8 @@ export {
 } from './lib/components/selectoptions/SelectOptions';
 export { Switch, SwitchProps } from './lib/components/switch/Switch';
 export { TextArea, TextAreaProps } from './lib/components/textarea/TextArea';
+export { Theme, ThemeProps } from './lib/components/theme/Theme';
 export { useTooltip, UseTooltipProps, Tooltip, TooltipProps } from './lib/components/tooltip/Tooltip';
 export { WidgetDescription } from './lib/components/widgetdescription/WidgetDescription';
 export { WidgetError, WidgetErrorProps } from './lib/components/widgeterror/WidgetError';
-export { WidgetField, WidgetFieldProps, WidgetFieldBarProps, WidgetFieldHeaderProps } from '@sagold/react-json-editor';
+export { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from '@sagold/react-json-editor';

@@ -1,7 +1,7 @@
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/longform';
 import { NavigationWidget, widgets } from '@sagold/rje-widgets';
-import theme from '../../../rje-widgets/src/lib/theme';
+import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 export default {
     title: 'Examples/LargeForm',
@@ -16,7 +16,7 @@ export const LargeForm = () => {
     const WidgetComponent = editor.getWidget(node);
 
     return (
-        <div style={{ display: 'flex', ...theme }} className="rje-theme--light">
+        <Theme>
             <div
                 style={{
                     zIndex: 100,
@@ -39,6 +39,6 @@ export const LargeForm = () => {
                     <WidgetComponent node={node} editor={editor} />
                 </div>
             </div>
-        </div>
+        </Theme>
     );
 };

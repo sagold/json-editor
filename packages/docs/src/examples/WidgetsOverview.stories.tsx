@@ -4,7 +4,7 @@ import { errors, json } from 'headless-json-editor';
 import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { useEffect, useRef, useState } from 'react';
 import { widgets } from '@sagold/rje-widgets';
-import theme from '../../../rje-widgets/src/lib/theme';
+import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 export default {
     title: 'Examples/Widgets'
@@ -25,20 +25,20 @@ const Template: ComponentStory<any> = () => {
     }, [data]);
 
     return (
-        <JsonForm
-            classNames="rje-form rje-theme--light"
-            style={theme}
-            widgets={widgets}
-            ref={editor}
-            data={editorData}
-            schema={schema}
-            validate={true}
-            liveUpdate={true}
-            onChange={(data) => {
-                // console.log('change data in editor', editor);
-                // setEditorData({ text: 'mimimi' });
-            }}
-        />
+        <Theme>
+            <JsonForm
+                widgets={widgets}
+                ref={editor}
+                data={editorData}
+                schema={schema}
+                validate={true}
+                liveUpdate={true}
+                onChange={(data) => {
+                    // console.log('change data in editor', editor);
+                    // setEditorData({ text: 'mimimi' });
+                }}
+            />
+        </Theme>
     );
 };
 

@@ -1,11 +1,13 @@
 import { get as getPointer } from '@sagold/json-pointer';
 import { DefaultNodeOptions, ParentNode, Node, json, widget, WidgetPlugin } from '@sagold/react-json-editor';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useModal, Modal } from '../../components/modal/Modal';
 import { Button } from '../../components/button/Button';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { Label } from '../../components/label/Label';
 import { Icon } from '../../components/icon/Icon';
+import { Theme } from '../../components/theme/Theme';
+import { SectionHeader } from '../../components/sectionheader/SectionHeader';
 
 function getPreviewText(node: Node) {
     if (typeof node.options.previewValue !== 'string') {
@@ -21,40 +23,54 @@ function getPreviewText(node: Node) {
 }
 
 export type MasterDetailOptions = {
-    header?: {
-        inverted?: boolean;
-        color?: string;
-    };
+    /** header font size relative to 1 (em). Defaults to 1 */
+    headerFontSize?: number;
+    descriptionInline?: boolean;
+    /** if true will add a separator line to the header */
+    headerSeparator?: boolean;
 } & DefaultNodeOptions;
 
 /**
  * Master-Detail Editor for object or array values
  */
 export const MasterDetailWidget = widget<ParentNode<MasterDetailOptions>>(({ editor, node, options }) => {
+    const portalContainer = useRef<HTMLDivElement>(null);
     const { modalTriggerProps, modalProps } = useModal();
     return (
-        <WidgetField widgetType="master-detail" node={node} options={options} showError={false} showDescription={false}>
+        <WidgetField
+            widgetType="master-detail"
+            node={node}
+            options={options}
+            showError={false}
+            showDescription={false}
+            ref={portalContainer}
+        >
             <WidgetField.Header>
-                <WidgetField.Bar>
-                    <Label>{options.title}</Label>
-                    <button className="clickable" {...modalTriggerProps}>
-                        <Icon>edit_note</Icon>
-                    </button>
-                </WidgetField.Bar>
-                <WidgetField.Description>{options.description}</WidgetField.Description>
+                <SectionHeader>
+                    <Button.Controlled {...modalTriggerProps} variant="text" icon="edit_note" />
+                    <SectionHeader.Label
+                        title={options.title}
+                        size={options.headerFontSize}
+                        separator={options.headerSeparator === true}
+                        description={options.descriptionInline ? undefined : options.description}
+                    />
+                </SectionHeader>
+                <WidgetField.Description enabled={options.descriptionInline === true}>
+                    {options.description}
+                </WidgetField.Description>
                 <WidgetField.Error errors={node.errors} />
             </WidgetField.Header>
-            {node.type === 'array' && (
+            {/*{node.type === 'array' && (
                 <div style={{ flexGrow: 1 }}>
                     <span>{options.title}</span>
                     <span>{getPreviewText(node)}</span>
                 </div>
-            )}
-            <Modal isDismissable={false} {...modalProps}>
+            )}*/}
+            <Modal isDismissable={false} {...modalProps} portalContainer={portalContainer}>
                 {(close) => (
-                    <div style={{ background: '#fff' }}>
+                    <Theme>
                         <WidgetDialog editor={editor} node={node} options={options} closeModal={close} />
-                    </div>
+                    </Theme>
                 )}
             </Modal>
         </WidgetField>

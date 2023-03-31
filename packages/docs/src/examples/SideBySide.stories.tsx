@@ -4,6 +4,7 @@ import { data, schema } from './data/features';
 import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import { widgets } from '../../../rje-widgets/src';
+import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
     const [node, editor] = useJsonEditor({
@@ -19,22 +20,23 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
 
     const ChildWidget = editor.getWidget(node);
     return (
-        <section
-            id="side-by-side"
-            className="rje-form rje-theme--light"
-            style={{
-                padding: 12,
-                display: 'flex',
-                justifyContent: 'space-evenly'
-            }}
-        >
-            <Form error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
-                <ChildWidget node={node} editor={editor} />
-            </Form>
-            <Form error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
-                <ChildWidget node={node} editor={editor} />
-            </Form>
-        </section>
+        <Theme>
+            <section
+                id="side-by-side"
+                style={{
+                    padding: 12,
+                    display: 'flex',
+                    justifyContent: 'space-evenly'
+                }}
+            >
+                <Form error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
+                    <ChildWidget node={node} editor={editor} />
+                </Form>
+                <Form error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
+                    <ChildWidget node={node} editor={editor} />
+                </Form>
+            </section>
+        </Theme>
     );
 }
 
