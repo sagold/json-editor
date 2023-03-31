@@ -20,7 +20,7 @@ export { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/
 // components
 export { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
 export { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
-export { FileField, FileFieldProps } from './lib/components/filefield';
+export { FileField, FileFieldProps } from './lib/components/filefield/FileField';
 export { Icon, IconProps } from './lib/components/icon/Icon';
 export { StringInput, StringInputProps } from './lib/components/input/StringInput';
 export { NumberInput, NumberInputProps } from './lib/components/input/NumberInput';

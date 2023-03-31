@@ -1,0 +1,12 @@
+@import '../../design';
+
+@mixin widget-error-component {
+    .rje-error {
+        .rje-icon {
+            display: inline-block;
+            top: em(0.25 * $unit);
+            position: relative;
+            padding-right: em(0.25 * $unit);
+        }
+    }
+}

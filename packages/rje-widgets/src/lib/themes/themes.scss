@@ -12,6 +12,7 @@
 @import './textarea';
 @import './tooltip';
 @import './widget-description';
+@import './widget-error';
 @import './widget-field';
 
 @mixin light-theme() {
@@ -29,6 +30,7 @@
     @include textarea-light();
     @include tooltip-light();
     @include widget-description-light();
+    @include widget-error-light();
     @include widget-field-light();
 
     color: rgb(var(--rje-color-light-text));
@@ -52,6 +54,7 @@
     @include textarea-dark();
     @include tooltip-dark();
     @include widget-description-dark();
+    @include widget-error-dark();
     @include widget-field-dark();
 
     color: rgb(var(--rje-color-dark-text));

@@ -1,5 +1,4 @@
 @import '../../design';
-$color-error: #9f3a38;
 
 @mixin widget-field-component {
     .rje-field ~ .rje-field {
@@ -15,26 +14,11 @@ $color-error: #9f3a38;
 
     /* style: form description */
     .rje-field--error {
-        label {
-            color: $color-error;
-        }
         textarea,
         input {
-            border-color: $color-error;
             border-width: 1px;
             border-style: solid;
         }
-    }
-
-    .rje-field .rje-error {
-        display: flex;
-        align-items: center;
-        column-gap: 4px;
-        color: $color-error;
-    }
-
-    .rje-field .rje-required-flag {
-        color: $color-error;
     }
 
     .rje-field__header .rje-description {

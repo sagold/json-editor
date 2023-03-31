@@ -1,22 +1,26 @@
 @use 'sass:math';
 
-$unit: 8;
-$border-radius: 4px;
-$base-font-size: 16;
-$color-black: rgb(0, 0, 0);
-$color-white: rgb(255, 255, 255);
+$unit: 8 !default;
+$border-radius: 4px !default;
+$base-font-size: 16 !default;
+$color-black: rgb(0, 0, 0) !default;
+$color-white: rgb(255, 255, 255) !default;
 
-$color-light-grey-1: rgb(202, 205, 206);
-$color-light-grey-2: rgb(120, 123, 124);
-$color-light-fill: rgba(255, 255, 255, 0.6);
-$color-light-stroke: rgba(255, 255, 255, 0.7);
-$color-light-error: rgb(174, 36, 45);
+$color-light-grey-1: rgb(202, 205, 206) !default;
+$color-light-grey-2: rgb(120, 123, 124) !default;
+$color-light-fill: rgba(255, 255, 255, 0.6) !default;
+$color-light-stroke: rgba(255, 255, 255, 0.7) !default;
+$color-light-error: rgb(174, 36, 45) !default;
+$color-light-warning: rgb(231, 171, 15) !default;
+$color-light-success: rgb(37, 165, 65) !default;
 
-$color-dark-grey-1: rgb(71, 72, 73);
-$color-dark-grey-2: rgb(120, 123, 124);
-$color-dark-fill: rgba(255, 255, 255, 0.05);
-$color-dark-stroke: rgba(255, 255, 255, 0.1);
-$color-dark-error: rgb(241, 31, 44);
+$color-dark-grey-1: rgb(71, 72, 73) !default;
+$color-dark-grey-2: rgb(120, 123, 124) !default;
+$color-dark-fill: rgba(255, 255, 255, 0.05) !default;
+$color-dark-stroke: rgba(255, 255, 255, 0.1) !default;
+$color-dark-error: rgb(241, 31, 44) !default;
+$color-dark-warning: rgb(248, 193, 49) !default;
+$color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin icon-font() {
     user-select: none;

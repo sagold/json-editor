@@ -44,7 +44,7 @@ export type ButtonControlledProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const ButtonControlled = forwardRef<HTMLButtonElement, ButtonControlledProps>(function _ButtonControlled(
-    { children, className, icon, iconPosition, isPressed, style, variant = 'primary', ...buttonProps },
+    { children, className, icon, iconPosition, isPressed, style, variant = 'secondary', ...buttonProps },
     ref
 ) {
     const iconLeft = icon && iconPosition !== 'right';

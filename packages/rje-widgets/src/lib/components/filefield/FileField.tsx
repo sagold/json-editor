@@ -29,7 +29,7 @@ export function FileField({ onPress, error, ...props }: FileFieldProps) {
                 {props.label}
             </Label>
             <div style={{ position: 'relative' }}>
-                <ButtonControlled icon="folder_open" {...buttonProps}>
+                <ButtonControlled icon="folder_open" {...buttonProps} style={{ zIndex: 1 }}>
                     {props.buttonText}
                 </ButtonControlled>
                 <input
@@ -41,7 +41,8 @@ export function FileField({ onPress, error, ...props }: FileFieldProps) {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        cursor: 'pointer'
+                        zIndex: 0,
+                        pointerEvents: 'none'
                     }}
                     accept={props.accept}
                     id={props.id}

@@ -2,8 +2,36 @@
 
 @mixin widget-field-light {
     @include widget-field-component;
+
+    .rje-field--error {
+        label {
+            color: $color-light-error;
+        }
+        textarea,
+        input {
+            border-color: $color-light-error;
+        }
+    }
+
+    .rje-field .rje-required-flag {
+        color: $color-light-error;
+    }
 }
 
 @mixin widget-field-dark {
     @include widget-field-component;
+
+    .rje-field--error {
+        label {
+            color: $color-dark-error;
+        }
+        textarea,
+        input {
+            border-color: $color-dark-error;
+        }
+    }
+
+    .rje-field .rje-required-flag {
+        color: $color-dark-error;
+    }
 }
