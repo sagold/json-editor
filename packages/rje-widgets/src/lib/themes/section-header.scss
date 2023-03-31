@@ -16,7 +16,10 @@
     }
 
     .rje-popover.rje-section-header__description {
-        @include primary-flat-light;
+        @include primary-elevated-light;
+        * {
+            color: rgb(var(--rje-color-dark-text));
+        }
     }
 }
 
@@ -35,6 +38,9 @@
     }
 
     .rje-popover.rje-section-header__description {
-        @include primary-flat-dark;
+        @include primary-elevated-dark;
+        * {
+            color: rgb(var(--rje-color-light-text));
+        }
     }
 }

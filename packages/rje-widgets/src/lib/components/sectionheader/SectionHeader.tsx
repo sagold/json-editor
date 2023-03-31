@@ -30,8 +30,8 @@ export function SectionHeaderLabel({
     ...labelProps
 }: SectionHeaderLabelProps) {
     const portalContainer = useRef<HTMLDivElement>(null);
-    const { tooltipProps, tooltipTriggerProps } = useTooltip({
-        delay: 200
+    const { popoverProps, popoverTriggerProps } = usePopover({
+        placement: 'bottom'
         //     placement: 'top'
     });
 
@@ -51,15 +51,19 @@ export function SectionHeaderLabel({
             {description && (
                 <>
                     <ButtonControlled
-                        {...tooltipTriggerProps}
+                        {...popoverTriggerProps}
                         disabled={disabled}
                         className="rje-section-header__info"
                         icon="info"
                         variant="text"
                     />
-                    <Tooltip {...tooltipProps} className="rje-section-header__description">
+                    <Popover
+                        {...popoverProps}
+                        className="rje-section-header__description"
+                        portalContainer={portalContainer}
+                    >
                         <WidgetDescription className="rje-description--tooltip">{description}</WidgetDescription>
-                    </Tooltip>
+                    </Popover>
                 </>
             )}
             {separator && <div className="rje-section-header__separator"></div>}
