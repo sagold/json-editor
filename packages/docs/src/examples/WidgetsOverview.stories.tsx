@@ -5,6 +5,7 @@ import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { useEffect, useRef, useState } from 'react';
 import { widgets } from '@sagold/rje-widgets';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
+import { JsonWidgetPlugin } from '@sagold/rje-code-widgets';
 
 export default {
     title: 'Examples/Widgets'
@@ -27,7 +28,7 @@ const Template: ComponentStory<any> = () => {
     return (
         <Theme>
             <JsonForm
-                widgets={widgets}
+                widgets={[JsonWidgetPlugin, ...widgets]}
                 ref={editor}
                 data={editorData}
                 schema={schema}

@@ -8,9 +8,9 @@
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
         "@sagold/react-json-editor": "^0.26.2",
-        "react-aria": "^3.23.0",
-        "react-stately": "^3.21.0",
-        "react-textarea-autosize": "^8.3.4",
+        "react-aria": "^3.26.0",
+        "react-stately": "^3.24.0",
+        "react-textarea-autosize": "^8.5.2",
         "sortablejs": "^1.15.0",
         "classnames": "^2.3.2"
     },

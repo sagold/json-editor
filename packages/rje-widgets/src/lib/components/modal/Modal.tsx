@@ -14,12 +14,12 @@
  *  </Modal.Overlay>
  * ```
  */
-import { DOMAttributes, useRef, cloneElement } from 'react';
-import { AriaModalOverlayProps, Overlay, useModalOverlay } from 'react-aria';
+import { useRef, cloneElement } from 'react';
+import { Overlay, useModalOverlay } from 'react-aria';
 
 import { useOverlayTrigger, useButton } from 'react-aria';
 import { useOverlayTriggerState, OverlayTriggerState } from 'react-stately';
-import { FocusableElement } from '@react-types/shared';
+import { DOMProps } from '@react-types/shared';
 
 export type UseModalProps = {
     // # OverlayTriggerProps
@@ -46,7 +46,7 @@ export function useModal<T extends HTMLElement = HTMLButtonElement>(props: UseMo
 
 export type ModalProps = {
     overlayTriggerState: OverlayTriggerState;
-    overlayProps: DOMAttributes<FocusableElement>;
+    overlayProps: DOMProps;
     portalContainer?: React.RefObject<Element>;
     children: (close: () => void) => React.ReactElement;
     // # AriaModalOverlayProps

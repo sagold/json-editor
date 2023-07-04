@@ -11,7 +11,8 @@ export { Item };
 export type SelectOptionsControlledProps = {
     label?: ReactNode;
     state: ListState<object> | SelectState<object>;
-} & AriaListBoxProps<object>;
+    children?: CollectionChildren<object>;
+} & Omit<AriaListBoxProps<object>, 'children'>;
 
 export function SelectOptionsControlled({ state, ...props }: SelectOptionsControlledProps) {
     const ref = useRef<HTMLUListElement>(null);

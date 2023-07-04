@@ -1,5 +1,5 @@
 import { Node } from 'headless-json-editor';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, ReactNode } from 'react';
 import { JsonEditor } from './JsonEditor';
 
 type AnyOption = Record<string, unknown>;
@@ -14,7 +14,7 @@ export type WidgetProps<T extends Node = Node> = {
  * interface of generic json editor component.
  * it takes the current editor and the current node along with a localized option interface
  */
-export type Widget<T extends Node = Node> = (props: WidgetProps<T>) => JSX.Element | null;
+export type Widget<T extends Node = Node> = (props: WidgetProps<T>) => ReactNode | null;
 
 /**
  * react memo node comparison
@@ -37,7 +37,7 @@ export type DecoratedWidgetProps<T extends Node, V = unknown> = {
 /**
  * interface to your decorated editor
  */
-export type DecoratedWidget<T extends Node, V = unknown> = (props: DecoratedWidgetProps<T, V>) => JSX.Element | null;
+export type DecoratedWidget<T extends Node, V = unknown> = (props: DecoratedWidgetProps<T, V>) => ReactNode | null;
 
 /**
  * add setValue helper to editor component and reduce update cycles

@@ -90,6 +90,10 @@ export class HeadlessJsonEditor {
         options.validate && this.validate();
     }
 
+    get optionalProperties() {
+        return this.templateOptions.addOptionalProps === false;
+    }
+
     // import diff from 'microdiff';
     setData(data?: unknown): Node {
         const { draft } = this;

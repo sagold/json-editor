@@ -25,7 +25,7 @@ import {
     AriaPositionProps
 } from 'react-aria';
 import { useOverlayTriggerState, OverlayTriggerState } from 'react-stately';
-import { FocusableElement } from '@react-types/shared';
+import { FocusableElement, DOMProps } from '@react-types/shared';
 import classnames from 'classnames';
 
 export type UsePopoverProps = {
@@ -60,7 +60,7 @@ export type PopoverProps = {
     /** overlay trigger state exposing close action */
     overlayTriggerState: OverlayTriggerState;
     children: React.ReactNode;
-    overlayProps: DOMAttributes<FocusableElement>;
+    overlayProps: DOMProps;
     disabled?: boolean;
     portalContainer?: React.RefObject<Element>;
 } & Omit<AriaPopoverProps, 'popoverRef' | 'triggerRef'>;

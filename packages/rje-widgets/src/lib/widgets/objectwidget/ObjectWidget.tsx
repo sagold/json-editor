@@ -100,7 +100,7 @@ function WidgetActions({ editor, node, options }) {
                             Edit Json
                         </ButtonControlled>
                     )}
-                    {node.optionalProperties.length > 0 && (
+                    {editor.optionalProperties && node.optionalProperties.length > 0 && (
                         <div>
                             <WidgetDescription>Optional Properties</WidgetDescription>
                             {node.optionalProperties.map((property) =>

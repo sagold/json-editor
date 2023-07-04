@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import { Label } from '../label/Label';
 import { ButtonControlled } from '../button/Button';
 import { Popover, usePopover } from '../../components/popover/Popover';
-import { Tooltip, useTooltip } from '../tooltip/Tooltip';
 import classNames from 'classnames';
 import { WidgetDescription } from '../widgetdescription/WidgetDescription';
 

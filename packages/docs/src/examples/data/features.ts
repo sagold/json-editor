@@ -47,7 +47,8 @@ export const schema = {
         'arrayOfStrings',
         'arrayOfUniqueStrings',
         'arrayItemSelection',
-        'arrayHeadline'
+        'arrayHeadline',
+        'json'
     ],
     properties: {
         string: {
@@ -544,6 +545,23 @@ export const schema = {
             },
             description:
                 'Array headline options are the same as for object headlines. They can be inverted and have a color'
+        },
+        json: {
+            type: 'object',
+            format: 'json',
+            required: ['title', 'subtitle'],
+            properties: {
+                title: {
+                    type: 'string',
+                    minLength: 1
+                },
+                subtitle: {
+                    type: 'string'
+                },
+                version: {
+                    type: 'number'
+                }
+            }
         }
     }
 };

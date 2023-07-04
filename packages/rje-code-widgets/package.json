@@ -8,9 +8,9 @@
     "main": "dist/rjeCodeWidgets.min.js",
     "dependencies": {
         "@codemirror/lang-json": "*",
-        "@codemirror/lint": "*",
-        "@uiw/react-codemirror": "*",
-        "markdown-to-jsx": "^7.1.7"
+        "@codemirror/lint": "^6.4.0",
+        "@uiw/react-codemirror": "^4.21.7",
+        "markdown-to-jsx": "^7.2.1"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "^0.26.2"

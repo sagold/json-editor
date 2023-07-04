@@ -23,18 +23,20 @@ export function ObjectProperties({ node, editor, options, withInlineDelete }: Ob
                         editor={editor}
                         options={{ ...childOptions, isOptional: node.optionalProperties.includes(child.property) }}
                     />
-                    {withInlineDelete && node.optionalProperties.includes(child.property) && (
-                        <div className="rje-object__actions">
-                            <Button
-                                variant="text"
-                                onPress={() => {
-                                    editor.removeValue(child.pointer);
-                                }}
-                            >
-                                <Icon>delete</Icon>
-                            </Button>
-                        </div>
-                    )}
+                    {withInlineDelete &&
+                        editor.optionalProperties &&
+                        node.optionalProperties.includes(child.property) && (
+                            <div className="rje-object__actions">
+                                <Button
+                                    variant="text"
+                                    onPress={() => {
+                                        editor.removeValue(child.pointer);
+                                    }}
+                                >
+                                    <Icon>delete</Icon>
+                                </Button>
+                            </div>
+                        )}
                 </div>
             ))}
         </div>
