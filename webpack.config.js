@@ -1,23 +1,23 @@
 const path = require('path');
-const fs = require('fs');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const PACKAGE_NAME = process.env.PACKAGE_NAME;
+const project = require(path.resolve(__dirname, `./packages/${PACKAGE_NAME}/project.json`));
 
 const dashedToCamelCase = (v) =>
     v.replace(/-([a-z])/g, function (g) {
         return g[1].toUpperCase();
     });
 
-const entry = { main: `./packages/${PACKAGE_NAME}/src/index.ts` };
-if (fs.existsSync(path.resolve(__dirname, `./packages/${PACKAGE_NAME}/src/index.scss`))) {
-    entry['styles'] = `./packages/${PACKAGE_NAME}/src/index.scss`;
-}
-
 // console.log(
 //     `package: ${PACKAGE_NAME} - production: ${PRODUCTION} - ${entry.length === 2 ? 'with styles' : 'no styles'}`
 // );
+
+const entry = {};
+Object.keys(project.entry).forEach(
+    (id) => (entry[id] = path.resolve(__dirname, `./packages/${PACKAGE_NAME}`, project.entry[id]))
+);
 
 const config = {
     entry,

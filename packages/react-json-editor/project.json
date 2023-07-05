@@ -1,0 +1,5 @@
+{
+    "entry": {
+        "main": "./src/index.ts"
+    }
+}

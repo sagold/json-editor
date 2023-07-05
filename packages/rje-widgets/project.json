@@ -1,0 +1,6 @@
+{
+    "entry": {
+        "main": "./src/index.ts",
+        "styles": "./src/index.scss"
+    }
+}
