@@ -8,6 +8,10 @@
 @import './lib/widgets/navigationwidget/navigation-widget';
 
 .rje-form {
+    .rje-form--parent {
+        width: 100%;
+    }
+
     .rje-input-decorator {
         width: -moz-available;
         width: -webkit-fill-available;
