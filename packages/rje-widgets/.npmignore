@@ -1,9 +1,9 @@
+.eslintrc.json
+/dist/ignore
 /docs
 /node_modules
-/src/*.tsx
 /src/*.ts
+/src/*.tsx
 /tests
-.eslintrc.json
 tsconfig.json
 yarn*
-/dist/styles.css

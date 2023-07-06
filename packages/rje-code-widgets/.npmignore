@@ -1,7 +1,8 @@
+.eslintrc.json
+/dist/ignore
 /docs
 /node_modules
-/tests
 /src
-.eslintrc.json
+/tests
 tsconfig.json
 yarn*
