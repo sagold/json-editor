@@ -38,4 +38,6 @@ function setVersion(version) {
 }
 
 setVersion(version);
-sh(`git add ./packages/*/package.json && git tag v${version}`);
+sh(`git add ./packages/*/package.json && git commit -m 'release: bump version to ${version}' && git tag v${version}`)
+    .then(console.log)
+    .catch(console.log);
