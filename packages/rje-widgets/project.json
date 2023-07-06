@@ -1,6 +1,10 @@
 {
     "entry": {
         "main": "./src/index.ts",
-        "styles": "./src/index.scss"
+        "styles": "./src/index.scss",
+        "rje-widgets": "./src/rje-widgets.scss",
+        "rje-theme": "./src/rje-theme.scss",
+        "rje-theme--light": "./src/rje-theme--light.scss",
+        "rje-theme--dark": "./src/rje-theme--dark.scss"
     }
 }

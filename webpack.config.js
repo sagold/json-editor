@@ -1,3 +1,4 @@
+/* global __dirname, process */
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,10 +10,6 @@ const dashedToCamelCase = (v) =>
     v.replace(/-([a-z])/g, function (g) {
         return g[1].toUpperCase();
     });
-
-// console.log(
-//     `package: ${PACKAGE_NAME} - production: ${PRODUCTION} - ${entry.length === 2 ? 'with styles' : 'no styles'}`
-// );
 
 const entry = {};
 Object.keys(project.entry).forEach(
@@ -29,11 +26,13 @@ const config = {
     output: {
         path: path.resolve(__dirname, 'packages', PACKAGE_NAME, PRODUCTION ? 'dist' : 'dev'),
         filename: (entry) => {
-            if (entry.runtime === 'styles') {
-                return `styles.css`;
-            }
             if (entry.runtime === 'main') {
                 return `${dashedToCamelCase(PACKAGE_NAME)}${PRODUCTION ? '.min' : ''}.js`;
+            }
+            // simple check to ignore any css files, as they have been extracted by cssminify
+            // and this is only the webpack shell
+            if (entry.chunk.files.has(`${entry.chunk.name}.css`)) {
+                return `ignore/${entry.chunk.name}`;
             }
         },
         libraryTarget: 'umd',
@@ -78,12 +77,6 @@ const config = {
             amd: 'react-dom/client',
             root: 'ReactDOM'
         }
-        // 'semantic-ui-react': {
-        //     commonjs: 'semantic-ui-react',
-        //     commonjs2: 'semantic-ui-react',
-        //     amd: 'semantic-ui-react',
-        //     root: 'semanticUIReact'
-        // }
     },
     resolve: {
         modules: [
@@ -141,13 +134,7 @@ const config = {
     optimization: {
         minimizer: [new TerserPlugin()]
     },
-    plugins: PRODUCTION
-        ? [
-              new MiniCssExtractPlugin({
-                  filename: `${PACKAGE_NAME}.css`
-              })
-          ]
-        : []
+    plugins: PRODUCTION ? [new MiniCssExtractPlugin()] : []
 };
 
 module.exports = config;
