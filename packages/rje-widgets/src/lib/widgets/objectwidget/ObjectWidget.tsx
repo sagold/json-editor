@@ -1,8 +1,7 @@
-import { useState, forwardRef, useRef } from 'react';
-import { widget, WidgetPlugin, ObjectNode, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { useState, useRef } from 'react';
+import { widget, WidgetPlugin, ObjectNode, DefaultNodeOptions, JsonEditor } from '@sagold/react-json-editor';
 import { Button, ButtonControlled } from '../../components/button/Button';
 import { Icon } from '../../components/icon/Icon';
-import { ObjectLayout } from './buildObjectLayout';
 import { ObjectProperties } from './ObjectProperties';
 import { Popover, usePopover } from '../../components/popover/Popover';
 import { SectionHeader } from '../../components/sectionheader/SectionHeader';
@@ -35,24 +34,15 @@ export type ObjectOptions = {
     inlineDeletePropertyOption?: boolean;
 } & DefaultNodeOptions;
 
-import { DOMAttributes } from '@react-types/shared';
+type WidgetDialogProps = {
+    editor: JsonEditor;
+    node: ObjectNode;
+    options: ObjectOptions;
+    closeModal: () => void;
+};
 
-type TriggerProps = {
-    children: React.ReactNode;
-} & DOMAttributes;
-const Trigger = forwardRef<HTMLSpanElement, TriggerProps>(({ children, ...props }, ref) => {
-    return (
-        <span {...props} ref={ref}>
-            {children}
-        </span>
-    );
-});
-
-function WidgetDialog({ editor, node, options, closeModal }) {
+function WidgetDialog({ editor, node, options, closeModal }: WidgetDialogProps) {
     // @todo for some reason title is a boolean sometimes
-    let title = options?.title ?? node.options.title;
-    title = title === true ? false : title;
-
     const Widget = editor.getWidget(node, options);
     return (
         <>
@@ -66,10 +56,14 @@ function WidgetDialog({ editor, node, options, closeModal }) {
     );
 }
 
-function WidgetActions({ editor, node, options }) {
-    const { editJson = {}, layout, header, isOptional } = options;
-    // const inverted = header?.inverted ?? false;
-    // const [isEditModalOpen, openEditModal] = useState<boolean>(false);
+type WidgetActionsProps = {
+    editor: JsonEditor;
+    node: ObjectNode;
+    options: ObjectOptions;
+};
+
+function WidgetActions({ editor, node, options }: WidgetActionsProps) {
+    const { editJson = {}, /* layout, header,*/ isOptional } = options;
     const hasActions = isOptional === true || editJson.enabled === true || node.optionalProperties.length > 0;
     const { modalTriggerProps, modalProps } = useModal<HTMLButtonElement>({
         onOpenChange(isOpen) {
@@ -144,9 +138,9 @@ function WidgetActions({ editor, node, options }) {
     );
 }
 
-export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor, setValue }) => {
+export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
     const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
-    const { title, description, editJson = {}, layout, header } = options;
+    const { title, description, editJson = {} /*, layout, header*/ } = options;
     const showHeader = editJson.enabled || title || description || options.collapsed != null;
     const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
     const withInlineAdd = options.inlineAddPropertyOption ?? !showHeader;
