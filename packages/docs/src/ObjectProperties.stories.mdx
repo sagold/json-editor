@@ -26,7 +26,7 @@ Per default, missing properties will only be added when they are required. Optio
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     schema={{
       type: 'object',
       properties: {
@@ -40,7 +40,7 @@ Optional properties containing data from input will be added automatically:
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ optionalProperty: 'input data' }}
     schema={{
       type: 'object',
@@ -57,7 +57,7 @@ You can change this behaviour to add optional properties initially by passing
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     addOptionalProps={true}
     schema={{
       type: 'object',
@@ -76,7 +76,7 @@ With a property set as required, it will always be available in the form:
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     schema={{
       type: 'object',
       required: ['requiredProperty'],
@@ -94,7 +94,7 @@ Additional properties that are not defined within json-schema will be shown by d
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ additionalProperty: 'property without schema' }}
     schema={{
       type: 'object'
@@ -108,7 +108,7 @@ If you set additionalProperties to false, any additional data will be removed fr
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ additionalProperty: 'property without schema' }}
     schema={{
       type: 'object',
@@ -123,7 +123,7 @@ Using additionalProperties with a json-schema, will apply this schema to any unk
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     validate={true}
     data={{ additionalProperty: 'property without schema' }}
     schema={{
@@ -144,7 +144,7 @@ Example Object with **editJson** option
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ additionalProperty: 'property without schema' }}
     schema={{
       type: 'object',
@@ -169,7 +169,7 @@ json-schema containing an oneOf statement will show a selection to choose the su
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     schema={{
       oneOf: [
         {
@@ -213,7 +213,7 @@ Note that json-schema requires distinguishable json-schema. If there is an undis
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ one: 'input data' }}
     schema={{
       oneOf: [
@@ -258,7 +258,7 @@ To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     schema={{
       oneOf: [
         {
@@ -303,7 +303,7 @@ In case you want a selection to always be associated with the selected schema, i
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     data={{ id: 'B', one: 'B' }}
     validate={true}
     schema={{
@@ -349,7 +349,7 @@ The following example has conflicting validation rules, where the last statement
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     validate={true}
     data={{ title: 'five!' }}
     schema={{
@@ -384,7 +384,7 @@ _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-els
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     validate={true}
     liveUpdate={true}
@@ -427,7 +427,7 @@ Dependencies are not added per default
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     data={{}}
     onChange={(data, root) => console.log(data, root)}
@@ -449,7 +449,7 @@ Dependencies are added when they are required by another property which has been
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     data={{ one: 'input value' }}
     addOptionalProps={false}
@@ -474,7 +474,7 @@ Dependent schemas are not added per default for a missing dependent property
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     addOptionalProps={false}
     schema={{
@@ -499,7 +499,7 @@ Dependent schemas are added if the dependent property is set (`!== undefined`)
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     addOptionalProps={false}
     schema={{
@@ -527,7 +527,7 @@ _if-then_ statement, adding or removing a schema with its data depending on the 
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     addOptionalProps={false}
     schema={{
@@ -556,7 +556,7 @@ Same setup as above, but with property `addition` set as required:
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     addOptionalProps={false}
     schema={{
@@ -588,7 +588,7 @@ _if-then-else_ statement used to switch sub-schemas
 
 <Canvas>
   <JsonForm
-    className="rje-theme--light"
+    className="rje-theme rje-theme--light"
     widgets={widgets}
     validate={true}
     addOptionalProps={false}

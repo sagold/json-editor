@@ -1,6 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
-import { widgets } from '@sagold/rje-widgets';
+import { widgets, Theme } from '@sagold/rje-widgets';
 
 <Meta title="Cookbook/ConditionalForms" />
 
@@ -15,55 +15,57 @@ import { widgets } from '@sagold/rje-widgets';
 The following example will persist user input, even if the additional user form is deactivated. The data of the user form is still stored on data and thus being exported. In case you do not want to have the data set on export, you need to remove the data on your own.
 
 <Canvas>
-  <JsonForm
-    widgets={widgets}
-    options={{ title: false }}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      title: 'allOf with single if-then-else statements',
-      required: ['trigger'],
-      properties: {
-        trigger: {
-          title: 'with additional field',
-          type: 'boolean',
-          default: false
-        },
-        optional: {
-          options: { hidden: true, title: false },
-          type: 'object',
-          required: ['title'],
-          properties: {
-            title: {
-              title: 'Optional form',
-              type: 'string'
-            }
-          }
-        }
-      },
-      allOf: [
-        {
-          if: {
-            required: ['trigger'],
-            properties: {
-              trigger: {
-                const: true
-              }
-            }
+  <Theme>
+    <JsonForm
+      widgets={widgets}
+      options={{ title: false }}
+      addOptionalProps={false}
+      schema={{
+        type: 'object',
+        title: 'allOf with single if-then-else statements',
+        required: ['trigger'],
+        properties: {
+          trigger: {
+            title: 'with additional field',
+            type: 'boolean',
+            default: false
           },
-          then: {
-            required: ['optional'],
+          optional: {
+            options: { hidden: true, title: false },
+            type: 'object',
+            required: ['title'],
             properties: {
-              optional: {
-                options: { hidden: false },
-                minLength: 1
+              title: {
+                title: 'Optional form',
+                type: 'string'
               }
             }
           }
-        }
-      ]
-    }}
-  />
+        },
+        allOf: [
+          {
+            if: {
+              required: ['trigger'],
+              properties: {
+                trigger: {
+                  const: true
+                }
+              }
+            },
+            then: {
+              required: ['optional'],
+              properties: {
+                optional: {
+                  options: { hidden: false },
+                  minLength: 1
+                }
+              }
+            }
+          }
+        ]
+      }}
+    />
+  </Theme>
 </Canvas>
 
 Our optional property `optional` is defined on the objet properties, so that it will never be removed automatically

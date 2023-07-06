@@ -30,7 +30,7 @@ Fixed number and schema of array items
 
 `items: [schema, schema]`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     validate={true}
     data={['a title', 'a subtitle']}
@@ -61,7 +61,7 @@ With items defined by an items-array, `additionalItems=undefined` or `additional
 
 `additionalItems=undefined`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     validate={true}
     data={['a title', 'a subtitle', 'an additional item']}
@@ -88,7 +88,7 @@ With items defined by an items-array, `additionalItems=true`, the add option is 
 
 `additionalItems: true`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     validate={true}
     data={['a title', 'a subtitle', 'an additional item']}
@@ -114,7 +114,7 @@ Preventing additional items will disable add-options and remove any undefined it
 
 `additionalItems: false`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     validate={true}
     data={['a title', 'a subtitle', 'an additional item']}
@@ -140,7 +140,7 @@ With items defined by an items-array and `additionalItems` set to a valid json-s
 
 `additionalItems: { type: "number" }`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     schema={{
@@ -170,7 +170,7 @@ Array items can contain any supported json-schema:
 
 `items: { schema }`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
@@ -209,7 +209,7 @@ When using an items-object definition containing a `oneOf` statement, adding an 
 
 `items: { oneOf: [] }`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
@@ -274,7 +274,7 @@ support for `minItems` and `maxItems` length restrictions:
 
 `minItems: 1, maxItems: 2`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
@@ -298,7 +298,7 @@ example: if any number is above 1 the list is restricted to one item, else no it
 
 `if: { items: { maximum: 1 } }`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     addOptionalProps={false}
@@ -333,7 +333,7 @@ example: if any number is above 1 the list is restricted to one item, else no it
 - ⚠️ **TODO** fix initial data from getTemplate
 - **TODO** improve error message valid options display
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     validate={true}
@@ -360,7 +360,7 @@ Using a `not` schema, allows specific arrays to be invalidated, showing an error
 
 `not: { items: { const: 123 }}`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     validate={true}
@@ -390,7 +390,7 @@ Using a `not` schema, allows specific arrays to be invalidated, showing an error
 
 `uniqueItems: true`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     validate={true}
@@ -415,7 +415,7 @@ While the items schema must be valid for every item in the array, the `contains`
 
 `contains: { const: 1 }`
 
-<Canvas className="rje-theme--light">
+<Canvas className="rje-theme rje-theme--light">
   <JsonForm
     widgets={widgets}
     validate={true}
