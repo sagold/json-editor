@@ -26,6 +26,8 @@ import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
 // validation
 import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
+// jlib export
+import { isJsonError, JsonError } from 'json-schema-library';
 // bundled tools
 export { deepEqual } from 'fast-equals';
 // types and type guards
@@ -59,6 +61,7 @@ export {
     getOptions,
     HeadlessJsonEditor,
     HistoryPlugin,
+    isJsonError,
     isNode,
     isParentNode,
     isValueNode,
@@ -85,6 +88,7 @@ export type {
     HeadlessJsonEditorOptions,
     HistoryPluginInstance,
     JsonSchema,
+    JsonError,
     Plugin,
     Node,
     NodeType,
@@ -96,6 +100,3 @@ export type {
     StringNode,
     ValueNode
 };
-// jlib export
-import { isJsonError, JsonError } from 'json-schema-library';
-export { isJsonError, JsonError };

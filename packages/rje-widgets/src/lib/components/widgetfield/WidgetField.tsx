@@ -1,1 +1,3 @@
-export { WidgetField, WidgetFieldProps } from '@sagold/react-json-editor';
+import { WidgetField, WidgetFieldProps } from '@sagold/react-json-editor';
+export { WidgetField };
+export type { WidgetFieldProps };

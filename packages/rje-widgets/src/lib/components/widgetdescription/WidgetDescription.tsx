@@ -1,1 +1,3 @@
-export { WidgetDescription, WidgetDescriptionProps } from '@sagold/react-json-editor';
+import { WidgetDescription, WidgetDescriptionProps } from '@sagold/react-json-editor';
+export { WidgetDescription };
+export type { WidgetDescriptionProps };
