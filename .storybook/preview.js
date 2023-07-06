@@ -1,5 +1,5 @@
 import '../packages/rje-widgets/src/index.scss';
-import './storybook.css';
+import './storybook.scss';
 
 import widgets from '@sagold/rje-widgets';
 import { setDefaultWidgets } from '@sagold/react-json-editor';

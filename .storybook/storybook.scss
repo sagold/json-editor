@@ -1,3 +1,5 @@
+@import '../packages/rje-widgets/src/index';
+
 @font-face {
     font-family: Icon;
     font-style: normal;
@@ -49,20 +51,20 @@
     --rje-color-dark-text: 235, 240, 241;
 }
 
-.theme {
+.rje-theme {
     display: flex;
 }
 
-.theme > * {
+.rje-theme > * {
     flex-grow: 1;
 }
 
-.theme .rje-theme--light {
+.rje-theme .rje-theme--light {
     padding: 16px;
     background: rgba(243, 243, 241, 1);
 }
 
-.theme .rje-theme--dark {
+.rje-theme .rje-theme--dark {
     padding: 16px;
     background: rgba(26, 27, 25, 1);
 }
