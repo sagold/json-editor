@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 export type InputDecoratorProps = {
     icon?: string;
@@ -24,13 +24,13 @@ export function InputDecorator(props) {
         classNames.push('rje-input-decorator--error');
     }
 
-    let icon: ReactElement | null = null;
+    let icon: ReactNode | null = null;
     if (props.icon) {
         icon = <div className="rje-input-decorator__decor rje-icon">{props.icon}</div>;
         classNames.push('with-icon', swapIconPosition ? 'with-icon--right' : 'with-icon--left');
     }
 
-    let tag: ReactElement | null = null;
+    let tag: ReactNode | null = null;
     if (props.tag) {
         tag = (
             <div ref={(div) => div && setTagWidth(div.clientWidth)} className="rje-input-decorator__decor rje-tag">
