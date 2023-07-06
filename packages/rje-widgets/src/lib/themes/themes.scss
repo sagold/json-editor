@@ -62,23 +62,3 @@
         color: $color-dark-grey-1;
     }
 }
-
-.rje-theme--light {
-    @include light-theme;
-
-    .rje-theme--inverted {
-        @include dark-theme;
-        padding: 8px;
-        background: $color-black;
-    }
-}
-
-.rje-theme--dark {
-    @include dark-theme;
-
-    .rje-theme--inverted {
-        @include light-theme;
-        padding: 8px;
-        background: $color-white;
-    }
-}

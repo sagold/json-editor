@@ -1,10 +1,7 @@
 @use 'sass:math';
 @import '../design';
-@import '../components/input/input';
 
 @mixin input-light {
-    @include input-component;
-
     .rje-input {
         input {
             @include input-elevated-light;
@@ -51,8 +48,6 @@
 }
 
 @mixin input-dark {
-    @include input-component;
-
     .rje-input {
         input {
             @include input-elevated-dark;

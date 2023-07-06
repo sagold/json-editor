@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/popover/popover';
 
 @mixin popover-light {
-    @include popover-component();
-
     .rje-popover {
         background: $color-white;
         border: 1px solid $color-light-grey-1;
@@ -12,8 +9,6 @@
 }
 
 @mixin popover-dark {
-    @include popover-component();
-
     .rje-popover {
         background: $color-black;
         border: 1px solid $color-dark-grey-1;

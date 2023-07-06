@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/label/label';
 
 @mixin label-light {
-    @include label-component;
-
     .rje-label--valid {
         color: rgb(var(--rje-color-light-text));
     }
@@ -20,8 +17,6 @@
 }
 
 @mixin label-dark {
-    @include label-component;
-
     .rje-label--valid {
         color: rgb(var(--rje-color-dark-text));
     }

@@ -2,8 +2,6 @@
 @import '../components/button/button';
 
 @mixin button-light {
-    @include button-component;
-
     .rje-button--primary {
         @include primary-elevated-light;
         color: $color-white;
@@ -61,8 +59,6 @@
 }
 
 @mixin button-dark {
-    @include button-component;
-
     .rje-button--primary {
         @include primary-elevated-dark;
         color: $color-black;

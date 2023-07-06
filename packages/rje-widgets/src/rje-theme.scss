@@ -1,0 +1,36 @@
+@import './lib/design';
+@import './lib/components/button/button';
+@import './lib/components/checkbox/checkbox';
+@import './lib/components/icon/icon';
+@import './lib/components/input/input';
+@import './lib/components/label/label';
+@import './lib/components/modal/modal';
+@import './lib/components/popover/popover';
+@import './lib/components/sectionheader/section-header';
+@import './lib/components/select/select';
+@import './lib/components/selectoptions/select-options';
+@import './lib/components/switch/switch';
+@import './lib/components/textarea/textarea';
+@import './lib/components/tooltip/tooltip';
+@import './lib/components/widgetdescription/widget-description';
+@import './lib/components/widgeterror/widget-error';
+@import './lib/components/widgetfield/widget-field';
+
+.rje-theme {
+    @include button-component;
+    @include checkbox-field-component;
+    @include icon-component;
+    @include input-component;
+    @include label-component;
+    @include modal-component;
+    @include popover-component;
+    @include section-header-component;
+    @include select-options-component;
+    @include select-component;
+    @include switch-component;
+    @include textarea-component;
+    @include tooltip-component;
+    @include widget-description-component;
+    @include widget-error-component;
+    @include widget-field-component;
+}

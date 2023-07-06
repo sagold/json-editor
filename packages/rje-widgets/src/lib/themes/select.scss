@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/select/select';
 
 @mixin select-light {
-    @include select-component;
-
     .rje-select__button {
         @include input-elevated-light;
         &:focus,
@@ -44,8 +41,6 @@
 }
 
 @mixin select-dark {
-    @include select-component;
-
     .rje-select__button {
         color: rgb(var(--rje-color-dark-text));
         @include input-elevated-dark;

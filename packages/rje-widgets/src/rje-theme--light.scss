@@ -1,0 +1,11 @@
+@import './lib/themes/themes';
+
+.rje-theme--light {
+    @include light-theme;
+
+    .rje-theme--inverted {
+        @include dark-theme;
+        padding: 8px;
+        background: $color-black;
+    }
+}

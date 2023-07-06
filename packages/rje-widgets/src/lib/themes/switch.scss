@@ -2,8 +2,6 @@
 @import '../components/switch/switch';
 
 @mixin switch-light {
-    @include switch-component;
-
     .rje-switch-input:checked {
         @include primary-elevated-light;
         border-radius: $switch-radius;
@@ -74,8 +72,6 @@
 }
 
 @mixin switch-dark {
-    @include switch-component;
-
     .rje-switch-input:checked {
         @include primary-elevated-dark;
         border-radius: $switch-radius;

@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/tooltip/tooltip';
 
 @mixin tooltip-light {
-    @include tooltip-component;
-
     .rje-tooltip {
         @include primary-elevated-light;
         * {
@@ -13,8 +10,6 @@
 }
 
 @mixin tooltip-dark {
-    @include tooltip-component;
-
     .rje-tooltip {
         @include primary-elevated-dark;
         * {

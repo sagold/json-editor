@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/selectoptions/select-options';
 
 @mixin select-options-light {
-    @include select-options-component;
-
     .rje-select__options {
         @include elevated-light;
     }
@@ -36,8 +33,6 @@
 }
 
 @mixin select-options-dark {
-    @include select-options-component;
-
     .rje-select__options {
         @include elevated-dark;
     }

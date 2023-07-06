@@ -1,9 +1,6 @@
 @import '../design';
-@import '../components/widgetdescription/widget-description';
 
 @mixin widget-description-light {
-    @include widget-description-component;
-
     .rje-description {
         color: $color-light-grey-2;
     }
@@ -13,8 +10,6 @@
 }
 
 @mixin widget-description-dark {
-    @include widget-description-component;
-
     .rje-description {
         color: $color-light-grey-2;
     }

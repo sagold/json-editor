@@ -1,8 +1,6 @@
-@import '../components/widgetfield/widget-field';
+@import '../design';
 
 @mixin widget-field-light {
-    @include widget-field-component;
-
     .rje-field--error {
         label {
             color: $color-light-error;
@@ -19,8 +17,6 @@
 }
 
 @mixin widget-field-dark {
-    @include widget-field-component;
-
     .rje-field--error {
         label {
             color: $color-dark-error;

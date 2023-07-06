@@ -2,8 +2,6 @@
 @import '../components/textarea/textarea';
 
 @mixin textarea-light {
-    @include textarea-component;
-
     .rje-textarea {
         @include input-elevated-light;
         color: rgb(var(--rje-color-light-text));
@@ -32,8 +30,6 @@
 }
 
 @mixin textarea-dark {
-    @include textarea-component;
-
     .rje-textarea {
         @include input-elevated-dark;
         color: rgb(var(--rje-color-dark-text));

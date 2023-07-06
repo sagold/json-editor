@@ -1,14 +1,12 @@
-@import '../components/widgeterror/widget-error';
+@import '../design';
 
 @mixin widget-error-light {
-    @include widget-error-component;
     .rje-error {
         color: $color-light-error;
     }
 }
 
 @mixin widget-error-dark {
-    @include widget-error-component;
     .rje-error {
         color: $color-dark-error;
     }
