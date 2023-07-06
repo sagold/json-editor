@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const sh = require('./sh');
+const getPackages = require('./getPackages');
 const IS_SEMVER = /\d+\.\d+\.\d+/;
 
 const version = process.argv[process.argv.length - 1];
@@ -10,14 +11,9 @@ if (version == null || !IS_SEMVER.test(version)) {
     process.exit();
 }
 
-// fetch all packages
-const packages = fs
-    .readdirSync(path.resolve(process.cwd(), 'packages'), { withFileTypes: true })
-    .filter((d) => d.isDirectory() && fs.existsSync(path.resolve(process.cwd(), 'packages', d.name, 'package.json')))
-    .map((d) => d.name);
-
 // set version nuber of package and monorepo dependencies
 function setVersion(version) {
+    const packages = getPackages();
     packages.forEach((pkgName) => {
         const pathToPkg = path.resolve(process.cwd(), 'packages', pkgName, 'package.json');
         const json = JSON.parse(fs.readFileSync(pathToPkg));
