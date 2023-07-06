@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const path = require('path');
 const fs = require('fs');
+const sh = require('./sh');
 const IS_SEMVER = /\d+\.\d+\.\d+/;
 
 const version = process.argv[process.argv.length - 1];
@@ -16,7 +17,7 @@ const packages = fs
     .map((d) => d.name);
 
 // set version nuber of package and monorepo dependencies
-async function setVersion(version) {
+function setVersion(version) {
     packages.forEach((pkgName) => {
         const pathToPkg = path.resolve(process.cwd(), 'packages', pkgName, 'package.json');
         const json = JSON.parse(fs.readFileSync(pathToPkg));
@@ -37,3 +38,4 @@ async function setVersion(version) {
 }
 
 setVersion(version);
+sh(`git add ./packages/*/package.json && git tag v${version}`);

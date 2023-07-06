@@ -1,3 +1,8 @@
+# release
+
+`yarn dist`
+`yarn set-version 0.28.1`
+`yarn publish-all`
 
 # typescript project references
 

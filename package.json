@@ -7,7 +7,7 @@
     ],
     "scripts": {
         "set-version": "node ./tools/version.js",
-        "publish": "node ./tools/publish.js",
+        "publish-all": "node ./tools/publish.js",
         "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn widgets:dist; yarn code:dist; yarn docs:dist",
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
         "hje:bundle": "NODE_ENV=production PACKAGE_NAME=headless-json-editor webpack",
