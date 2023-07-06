@@ -1,8 +1,9 @@
 import { ComponentStory } from '@storybook/react';
 import { MultiSelectOptions, Item } from './SelectOptions';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: MultiSelectOptions,
     title: 'packages/rje-widgets/components/options/MultiSelectOptions',
     args: {
@@ -14,26 +15,11 @@ export default {
 
 const Template: ComponentStory<typeof MultiSelectOptions> = ({ ...options }) => {
     return (
-        <div className="rje-form theme" style={theme}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <MultiSelectOptions {...options}>
-                        {options.children.map((value) => (
-                            <Item key={value}>{value}</Item>
-                        ))}
-                    </MultiSelectOptions>
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <MultiSelectOptions {...options}>
-                        {options.children.map((value) => (
-                            <Item key={value}>{value}</Item>
-                        ))}
-                    </MultiSelectOptions>
-                </div>
-            </div>
-        </div>
+        <MultiSelectOptions {...options}>
+            {options.children.map((value) => (
+                <Item key={value}>{value}</Item>
+            ))}
+        </MultiSelectOptions>
     );
 };
 

@@ -1,27 +1,15 @@
 import { ComponentStory } from '@storybook/react';
 import { NumberInput } from './NumberInput';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: NumberInput,
     title: 'packages/rje-widgets/components/NumberInput'
 };
 
 const Template: ComponentStory<typeof NumberInput> = ({ ...options }) => {
-    return (
-        <div className="rje-form theme" style={theme}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <NumberInput {...options} />
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <NumberInput {...options} />
-                </div>
-            </div>
-        </div>
-    );
+    return <NumberInput {...options} />;
 };
 
 export const Default = Template.bind({});

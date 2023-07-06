@@ -1,27 +1,15 @@
 import { ComponentStory } from '@storybook/react';
 import { StringInput } from './StringInput';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: StringInput,
     title: 'packages/rje-widgets/components/StringInput'
 };
 
 const Template: ComponentStory<typeof StringInput> = ({ ...options }) => {
-    return (
-        <div className="rje-form theme" style={theme}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <StringInput {...options} />
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <StringInput {...options} />
-                </div>
-            </div>
-        </div>
-    );
+    return <StringInput {...options} />;
 };
 
 export const Default = Template.bind({});

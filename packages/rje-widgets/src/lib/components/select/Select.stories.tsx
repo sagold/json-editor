@@ -1,33 +1,21 @@
 import { ComponentStory } from '@storybook/react';
 import { Select } from './Select';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: Select,
     title: 'packages/rje-widgets/components/Select'
 };
 
 const Template: ComponentStory<typeof Select> = ({ ...options }) => {
     return (
-        <div className="rje-form theme" style={{ ...theme, height: 200 }}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <Select {...options} setValue={console.log}>
-                        {options.options.map((o) => (
-                            <Select.Option key={o.key}>{o.label}</Select.Option>
-                        ))}
-                    </Select>
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <Select {...options} setValue={console.log}>
-                        {options.options.map((o) => (
-                            <Select.Option key={o.key}>{o.label}</Select.Option>
-                        ))}
-                    </Select>
-                </div>
-            </div>
+        <div style={{ height: 200 }}>
+            <Select {...options} setValue={console.log}>
+                {options.options.map((o) => (
+                    <Select.Option key={o.key}>{o.label}</Select.Option>
+                ))}
+            </Select>
         </div>
     );
 };

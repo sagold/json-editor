@@ -1,30 +1,18 @@
 import { ComponentStory } from '@storybook/react';
 import { SectionHeader } from './SectionHeader';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: SectionHeader.Label,
     title: 'packages/rje-widgets/components/SectionHeader'
 };
 
 const Template: ComponentStory<typeof SectionHeader.Label> = ({ ...options }) => {
     return (
-        <div className="rje-form theme" style={theme}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <SectionHeader>
-                        <SectionHeader.Label {...options} />
-                    </SectionHeader>
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <SectionHeader>
-                        <SectionHeader.Label {...options} />
-                    </SectionHeader>
-                </div>
-            </div>
-        </div>
+        <SectionHeader>
+            <SectionHeader.Label {...options} />
+        </SectionHeader>
     );
 };
 

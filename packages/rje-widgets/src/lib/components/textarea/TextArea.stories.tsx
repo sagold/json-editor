@@ -1,27 +1,15 @@
 import { ComponentStory } from '@storybook/react';
 import { TextArea } from './TextArea';
-import theme from '../../theme';
+import { ThemeDecorator } from '../ThemeDecorator';
 
 export default {
+    decorators: [ThemeDecorator],
     component: TextArea,
     title: 'packages/rje-widgets/components/TextArea'
 };
 
 const Template: ComponentStory<typeof TextArea> = ({ ...options }) => {
-    return (
-        <div className="rje-form theme" style={theme}>
-            <div className="rje-theme--light">
-                <div className="story-columns">
-                    <TextArea {...options} />
-                </div>
-            </div>
-            <div className="rje-theme--dark">
-                <div className="story-columns">
-                    <TextArea {...options} />
-                </div>
-            </div>
-        </div>
-    );
+    return <TextArea {...options} />;
 };
 
 export const Default = Template.bind({});
