@@ -33,12 +33,16 @@ export default {
         },
         required: {
             control: { type: 'boolean' }
+        },
+        password: {
+            control: { type: 'boolean' }
         }
     }
 };
 
-const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
-    const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
+const Template: ComponentStory<any> = ({ data, schema, password, ...options }) => {
+    const _schema = { ...schema, format: password ? 'password' : 'text' };
+    const [node, editor] = useJsonEditor({ schema: _schema, widgets, data, validate: true });
     return (
         <Theme>
             <StringWidget node={node} editor={editor} options={options} />
@@ -56,6 +60,7 @@ Default.args = {
     disabled: false,
     readOnly: false,
     required: false,
+    password: false,
     schema: {
         title: 'Default string widget',
         type: 'string',

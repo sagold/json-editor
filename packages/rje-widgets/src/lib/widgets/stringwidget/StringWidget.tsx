@@ -13,6 +13,7 @@ export type StringOptions = {
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;
     const isValidConst = node.schema.const != null && !hasError;
+    const type = node.schema.format === 'password' ? 'password' : 'text';
     return (
         <WidgetField widgetType="string" node={node} options={options}>
             <StringInput
@@ -20,6 +21,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                 icon={options.icon}
                 tag={options.tag}
                 title={options.title}
+                type={type}
                 value={node.value}
                 iconPosition={options.swapIconPosition ? 'right' : 'left'}
                 error={hasError}

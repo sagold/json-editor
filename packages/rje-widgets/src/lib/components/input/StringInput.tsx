@@ -7,6 +7,7 @@ import classnames from 'classnames';
 export type StringInputProps = {
     id?: string;
     title?: string;
+    type?: 'text' | 'password'; // type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password' | (string & {}),
     disabled?: boolean;
     readOnly?: boolean;
     required?: boolean;
