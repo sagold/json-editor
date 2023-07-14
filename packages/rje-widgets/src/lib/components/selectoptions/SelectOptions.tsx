@@ -24,15 +24,6 @@ export function SelectOptionsControlled({ state, ...props }: SelectOptionsContro
                 {...listBoxProps}
                 className={`rje-select__options rje-select__options--${props.selectionMode ?? 'single'}`}
                 ref={ref}
-                style={{
-                    padding: 0,
-                    margin: '5px 0',
-                    listStyle: 'none',
-                    border: '1px solid gray',
-                    maxWidth: 250,
-                    maxHeight: 300,
-                    overflow: 'auto'
-                }}
             >
                 {[...state.collection].map((item) => {
                     return <SelectOption key={item.key} item={item} state={state} />;

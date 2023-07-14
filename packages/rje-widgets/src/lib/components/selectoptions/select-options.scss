@@ -5,4 +5,11 @@
         outline: 0;
         padding: em(0.5 * $unit) em($unit);
     }
+
+    .rje-select__options {
+        list-style: none;
+        max-width: 250px;
+        max-height: 300px;
+        overflow: auto;
+    }
 }
