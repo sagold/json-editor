@@ -14,6 +14,7 @@ export const SelectWidget = widget<StringNode, string | number>(({ node, options
                 title={options.title}
                 placeholder={options.placeholder}
                 required={options.required}
+                error={hasError}
                 disabled={options.disabled}
                 selectedKey={node.value}
                 setValue={setValue}

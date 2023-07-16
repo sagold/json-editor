@@ -8,7 +8,8 @@ export type TextWidgetOptions = {
 } & DefaultNodeOptions;
 
 export const TextWidget = widget<StringNode<TextWidgetOptions>, string>(({ node, options, setValue }) => {
-    const isValidConst = node.schema.const != null && node.errors.length === 0;
+    const hasError = node.errors.length > 0;
+    const isValidConst = node.schema.const != null && !hasError;
     return (
         <WidgetField widgetType="text" node={node} options={options}>
             <TextArea
@@ -18,6 +19,7 @@ export const TextWidget = widget<StringNode<TextWidgetOptions>, string>(({ node,
                 maxLength={node.schema.maxLength}
                 minLength={node.schema.minLength}
                 placeholder={options.placeholder}
+                error={hasError}
                 readOnly={options.readOnly === true}
                 required={options.required === true}
                 setValue={setValue}
