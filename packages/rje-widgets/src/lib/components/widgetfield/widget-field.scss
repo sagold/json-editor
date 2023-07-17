@@ -12,14 +12,14 @@
         box-sizing: border-box;
     }
 
-    /* style: form description */
-    .rje-field--error {
-        textarea,
-        input {
-            border-width: 1px;
-            border-style: solid;
-        }
-    }
+    /* style: form description - conflicts with theming option */
+    // .rje-field--error {
+    //     textarea,
+    //     input {
+    //         border-width: 1px;
+    //         border-style: solid;
+    //     }
+    // }
 
     .rje-field__header .rje-description {
         padding-top: 0;
