@@ -15,6 +15,7 @@ import { StringWidget, StringWidgetPlugin } from './lib/widgets/stringwidget/Str
 import { SelectWidget, SelectWidgetPlugin } from './lib/widgets/selectwidget/SelectWidget';
 import { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
 import { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
+import { TextWidget, TextWidgetPlugin } from './lib/widgets/textwidget/TextWidget';
 // components
 import { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
 import { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
@@ -73,6 +74,8 @@ export {
     SimpleJsonWidgetPlugin,
     StringWidget,
     StringWidgetPlugin,
+    TextWidget,
+    TextWidgetPlugin,
     UnknownWidget,
     UnknownWidgetPlugin,
     // components
