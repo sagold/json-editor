@@ -43,9 +43,12 @@ export type DecoratedWidget<T extends Node, V = unknown> = (props: DecoratedWidg
  * add setValue helper to editor component and reduce update cycles
  */
 export function widget<T extends Node = Node, V = unknown>(WidgetComponent: DecoratedWidget<T, V>) {
+    // eslint-disable-next-line react/display-name
     return memo((props: WidgetProps<T>) => {
         const setValue = useCallback(
+            // eslint-disable-next-line react/prop-types
             (value: V) => props.editor.setValue(props.node.pointer, value),
+            // eslint-disable-next-line react-hooks/exhaustive-deps, react/prop-types
             [props.node.id, props.node.pointer, props.editor]
         );
         return WidgetComponent({
