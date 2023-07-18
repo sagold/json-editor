@@ -64,7 +64,17 @@ type WidgetActionsProps = {
 
 function WidgetActions({ editor, node, options }: WidgetActionsProps) {
     const { editJson = {}, /* layout, header,*/ isOptional, disabled } = options;
-    const hasActions = isOptional === true || editJson.enabled === true || node.optionalProperties.length > 0;
+
+    const hasActions =
+        // this object is optional and can be removed
+        isOptional === true ||
+        // this object allows editing itself as json
+        editJson.enabled === true ||
+        // all optional properties are added per default and no property is missing (ignores pattern props)
+        (editor.options.addOptionalProps && node.missingProperties.length > 0) ||
+        // optional properties can be removed or added, but none are defined (ignores pattern props)
+        (!editor.options.addOptionalProps && node.optionalProperties.length > 0);
+
     const { modalTriggerProps, modalProps } = useModal<HTMLButtonElement>({
         onOpenChange(isOpen) {
             if (isOpen) {
