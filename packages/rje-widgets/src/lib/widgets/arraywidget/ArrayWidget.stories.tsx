@@ -116,6 +116,14 @@ ItemSelection.args = {
     }
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+    ...DefaultWidget.args,
+    options: {
+        disabled: true
+    }
+};
+
 export const DragAndDrop = Template.bind({});
 DragAndDrop.args = {
     ...DefaultWidget.args,

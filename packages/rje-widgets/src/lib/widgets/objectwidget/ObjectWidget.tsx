@@ -63,7 +63,7 @@ type WidgetActionsProps = {
 };
 
 function WidgetActions({ editor, node, options }: WidgetActionsProps) {
-    const { editJson = {}, /* layout, header,*/ isOptional } = options;
+    const { editJson = {}, /* layout, header,*/ isOptional, disabled } = options;
     const hasActions = isOptional === true || editJson.enabled === true || node.optionalProperties.length > 0;
     const { modalTriggerProps, modalProps } = useModal<HTMLButtonElement>({
         onOpenChange(isOpen) {
@@ -72,8 +72,10 @@ function WidgetActions({ editor, node, options }: WidgetActionsProps) {
             }
         }
     });
+
     const { popoverTriggerProps, popoverProps } = usePopover<HTMLButtonElement>({
-        placement: 'bottom end'
+        placement: 'bottom end',
+        disabled
     });
     const portalContainer = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);

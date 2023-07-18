@@ -27,7 +27,7 @@ export function ArrayItemDefault({
     optional,
     options = {}
 }: ArrayItemProps) {
-    const { popoverTriggerProps, popoverProps } = usePopover({ placement: 'bottom end' });
+    const { popoverTriggerProps, popoverProps } = usePopover({ placement: 'bottom end', disabled: options.disabled });
     return (
         <div data-type="array-item" className={classnames('rje-array-item', { 'with-drag-handle': withDragHandle })}>
             {withDragHandle && <div className="rje-drag__handle rje-drag__container"></div>}

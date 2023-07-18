@@ -6,8 +6,8 @@ import { Icon } from '../../components/icon/Icon';
 export type Action = { icon: string; label?: string; enabled?: boolean; action: () => void };
 
 export function ArrayWidgetActions({ editor, node, options, actions, portalContainer }) {
-    const { isOptional, editJson = {} } = options;
-    const { popoverTriggerProps, popoverProps } = usePopover({ placement: 'bottom end' });
+    const { isOptional, editJson = {}, disabled } = options;
+    const { popoverTriggerProps, popoverProps } = usePopover({ placement: 'bottom end', disabled });
     const { modalTriggerProps, modalProps } = useModal<HTMLButtonElement>();
 
     const listOfActions: React.ReactNode[] = [];

@@ -31,6 +31,7 @@ import classnames from 'classnames';
 export type UsePopoverProps = {
     /** Whether the overlay is open by default (controlled). */
     isOpen?: boolean;
+    disabled?: boolean;
     /** Whether the overlay is open by default (uncontrolled). */
     defaultOpen?: boolean;
     /** Handler that is called when the overlay's open state changes. */
@@ -41,11 +42,15 @@ export type UsePopoverProps = {
     // # AriaButtonProps
 };
 
-export function usePopover<T extends HTMLElement = HTMLButtonElement>({ placement, ...props }: UsePopoverProps = {}) {
+export function usePopover<T extends HTMLElement = HTMLButtonElement>({
+    placement,
+    disabled,
+    ...props
+}: UsePopoverProps = {}) {
     const buttonRef = useRef<T>(null);
     const overlayTriggerState = useOverlayTriggerState(props);
     const { triggerProps, overlayProps } = useOverlayTrigger({ type: 'dialog' }, overlayTriggerState, buttonRef);
-    const { buttonProps } = useButton(triggerProps, buttonRef);
+    const { buttonProps } = useButton({ ...triggerProps, isDisabled: disabled }, buttonRef);
     return {
         popoverTriggerProps: { ...buttonProps, ref: buttonRef },
         popoverProps: { overlayProps, overlayTriggerRef: buttonRef, overlayTriggerState, placement }

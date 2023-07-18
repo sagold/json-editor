@@ -58,6 +58,23 @@ DefaultWidget.args = {
     }
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+    options,
+    schema: {
+        type: 'object',
+        title: 'object title',
+        description: 'disabled object widget',
+        options: {
+            disabled: true
+        },
+        required: ['propertyString'],
+        properties: {
+            propertyString: { type: 'string' }
+        }
+    }
+};
+
 export const NestedObjectWidget = Template.bind({});
 NestedObjectWidget.args = {
     options,

@@ -89,11 +89,23 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
     const addItemButton =
         insertOptions.length > 1 ? (
-            <ButtonControlled key="add" variant="text" disabled={!isAddEnabled} icon="add" {...insertModalTriggerProps}>
+            <ButtonControlled
+                key="add"
+                variant="text"
+                disabled={!isAddEnabled || options.disabled}
+                icon="add"
+                {...insertModalTriggerProps}
+            >
                 add item
             </ButtonControlled>
         ) : (
-            <Button key="add" disabled={!isAddEnabled} variant="text" icon="add" onPress={insertItem}>
+            <Button
+                key="add"
+                disabled={!isAddEnabled || options.disabled}
+                variant="text"
+                icon="add"
+                onPress={insertItem}
+            >
                 add item
             </Button>
         );
@@ -159,9 +171,13 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             {showContent && options.inlineAddItemOption !== false && (
                 <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
                     {insertOptions.length > 1 ? (
-                        <ButtonControlled disabled={!isAddEnabled} icon="add" {...insertModalTriggerProps} />
+                        <ButtonControlled
+                            disabled={!isAddEnabled || options.disabled}
+                            icon="add"
+                            {...insertModalTriggerProps}
+                        />
                     ) : (
-                        <Button disabled={!isAddEnabled} icon="add" onPress={insertItem} />
+                        <Button disabled={!isAddEnabled || options.disabled} icon="add" onPress={insertItem} />
                     )}
                 </div>
             )}
