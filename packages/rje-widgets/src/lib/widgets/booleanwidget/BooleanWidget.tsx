@@ -1,12 +1,14 @@
-import { BooleanNode, DefaultNodeOptions, WidgetPlugin, widget } from '@sagold/react-json-editor';
-import { useToggleState } from 'react-stately';
-import { AriaSwitchProps, useFocusRing, useSwitch, useCheckbox, VisuallyHidden } from 'react-aria';
-import { useRef } from 'react';
-import { Label } from '../../components/label/Label';
+import {
+    BooleanNode,
+    DefaultNodeOptions,
+    WidgetPlugin,
+    widget,
+    DecoratedWidgetProps,
+    WidgetProps
+} from '@sagold/react-json-editor';
 import { Switch } from '../../components/switch/Switch';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { Checkbox } from '../../components/checkbox/Checkbox';
-import theme from '../../theme';
 
 export type BooleanOptions = {
     type?: 'checkbox' | 'toggle';
@@ -16,12 +18,12 @@ export const booleanDefaultOptions = {
     type: 'toggle'
 };
 
-export const BooleanWidget = function (props) {
-    const type = (props.node.options?.type || props.options.type) ?? booleanDefaultOptions.type;
-    if (type === 'checkbox') {
-        return <CheckboxWidget {...props} />;
+export const BooleanWidget = function (props: WidgetProps) {
+    const type = (props.node.options?.type || props?.options?.type) ?? booleanDefaultOptions.type;
+    if (props.node.schema.format === 'checkbox' || type === 'checkbox') {
+        return <CheckboxWidget {...(props as DecoratedWidgetProps<BooleanNode, boolean>)} />;
     }
-    return <ToggleWidget {...props} />;
+    return <ToggleWidget {...(props as DecoratedWidgetProps<BooleanNode, boolean>)} />;
 };
 
 export const CheckboxWidget = widget<BooleanNode, boolean>(({ node, options, setValue }) => {
