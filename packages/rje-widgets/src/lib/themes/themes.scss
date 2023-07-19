@@ -5,6 +5,7 @@
 @import './label';
 @import './modal';
 @import './popover';
+@import './radio-group';
 @import './section-header';
 @import './select';
 @import './select-options';
@@ -23,6 +24,7 @@
     @include label-light();
     @include modal-light();
     @include popover-light();
+    @include radiogroup-light();
     @include section-header-light();
     @include select-light();
     @include select-options-light();
@@ -47,6 +49,7 @@
     @include label-dark();
     @include modal-dark();
     @include popover-dark();
+    @include radiogroup-dark();
     @include section-header-dark();
     @include select-dark();
     @include select-options-dark();

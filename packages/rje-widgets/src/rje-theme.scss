@@ -6,6 +6,7 @@
 @import './lib/components/label/label';
 @import './lib/components/modal/modal';
 @import './lib/components/popover/popover';
+@import './lib/components/radiogroup/radio-group';
 @import './lib/components/sectionheader/section-header';
 @import './lib/components/select/select';
 @import './lib/components/selectoptions/select-options';
@@ -24,6 +25,7 @@
     @include label-component;
     @include modal-component;
     @include popover-component;
+    @include radiogroup-component;
     @include section-header-component;
     @include select-options-component;
     @include select-component;

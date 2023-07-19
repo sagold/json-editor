@@ -36,6 +36,7 @@ export const schema = {
         'booleanOptions',
         'selectionHeadline',
         'selection',
+        'radiogroup',
         'constHeadline',
         'const',
         'objectIntro',
@@ -165,6 +166,17 @@ export const schema = {
             title: 'Enum selection',
             description: 'Enum selection with custom title values',
             type: 'string',
+            enum: ['dark', 'light'],
+            defaultValue: 'dark theme',
+            options: {
+                enum: ['Select option "dark"', 'Select option "light"']
+            }
+        },
+        radiogroup: {
+            title: 'Enum selection using radiogroup',
+            description: 'selection with `format="radiogroup"`',
+            type: 'string',
+            format: 'radiogroup',
             enum: ['dark', 'light'],
             defaultValue: 'dark theme',
             options: {

@@ -1,6 +1,7 @@
 import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
-import widgets, { SelectWidget } from '@sagold/rje-widgets';
+import { SelectWidget } from './SelectWidget';
+import { widgets } from '../../../index';
 import { Theme } from '../../components/theme/Theme';
 
 export default {
@@ -17,12 +18,18 @@ export default {
         },
         required: {
             control: { type: 'boolean' }
+        },
+        format: {
+            control: { type: 'select' },
+            options: ['select', 'radiogroup']
         }
     }
 };
 
-const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
-    const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
+const Template: ComponentStory<any> = ({ data, schema, format, ...options }) => {
+    const s = { ...schema, format };
+
+    const [node, editor] = useJsonEditor({ schema: s, widgets, data, validate: true });
     return (
         <Theme>
             <SelectWidget node={node} editor={editor} options={options} />
@@ -37,6 +44,7 @@ Default.args = {
     disabled: false,
     readOnly: false,
     required: false,
+    horizontal: false,
     schema: {
         title: 'Default string selection widget',
         type: 'string',

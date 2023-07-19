@@ -1,0 +1,65 @@
+@import '../design';
+@import '../components/radiogroup/radio-group';
+
+@mixin radiogroup-light {
+    .rje-radiogroup {
+        .rje-radio {
+            border: 1px solid transparent;
+            box-sizing: border-box;
+
+            &#{$radio-state--focused} {
+                border-color: rgb(var(--rje-color-dark-primary)) !important;
+            }
+        }
+
+        .rje-radio__icon {
+            border: 1px solid $color-light-grey-1;
+            background: $color-light-fill;
+        }
+
+        #{$radio-state--selected} .rje-radio__icon {
+            border: 2px solid rgb(var(--rje-color-light-primary));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            &:after {
+                content: '';
+                border-radius: 99%;
+                display: inline-block;
+                background: rgb(var(--rje-color-light-primary));
+                border: 0.3em solid transparent;
+            }
+        }
+    }
+}
+
+@mixin radiogroup-dark {
+    .rje-radiogroup {
+        .rje-radio {
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            &#{$radio-state--focused} {
+                border-color: rgb(var(--rje-color-dark-primary)) !important;
+            }
+        }
+
+        .rje-radio__icon {
+            border: 1px solid $color-dark-grey-1;
+            background: $color-dark-fill;
+        }
+
+        #{$radio-state--selected} .rje-radio__icon {
+            border: 2px solid rgb(var(--rje-color-dark-primary));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            &:after {
+                content: '';
+                border-radius: 99%;
+                display: inline-block;
+                background: rgb(var(--rje-color-dark-primary));
+                border: 0.3em solid transparent;
+            }
+        }
+    }
+}
