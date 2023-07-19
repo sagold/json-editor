@@ -5,7 +5,13 @@ import { ThemeDecorator } from '../ThemeDecorator';
 export default {
     decorators: [ThemeDecorator],
     component: StringInput,
-    title: 'packages/rje-widgets/components/StringInput'
+    title: 'packages/rje-widgets/components/StringInput',
+    args: {
+        type: {
+            control: { type: 'select' },
+            options: ['text', 'password']
+        }
+    }
 };
 
 const Template: ComponentStory<typeof StringInput> = ({ ...options }) => {

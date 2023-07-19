@@ -6,6 +6,7 @@ import { Theme } from '../../components/theme/Theme';
 
 export default {
     title: 'packages/rje-widgets/StringWidget',
+    component: StringWidget,
     argTypes: {
         data: {
             control: { type: 'text' }
@@ -34,15 +35,16 @@ export default {
         required: {
             control: { type: 'boolean' }
         },
-        password: {
-            control: { type: 'boolean' }
+        format: {
+            control: { type: 'select' },
+            options: ['text', 'password']
         }
     }
 };
 
-const Template: ComponentStory<any> = ({ data, schema, password, ...options }) => {
-    const _schema = { ...schema, format: password ? 'password' : 'text' };
-    const [node, editor] = useJsonEditor({ schema: _schema, widgets, data, validate: true });
+const Template: ComponentStory<typeof StringWidget> = ({ data, schema, format, ...options }) => {
+    const s = { ...schema, format };
+    const [node, editor] = useJsonEditor({ schema: s, widgets, data, validate: true });
     return (
         <Theme>
             <StringWidget node={node} editor={editor} options={options} />
@@ -60,7 +62,6 @@ Default.args = {
     disabled: false,
     readOnly: false,
     required: false,
-    password: false,
     schema: {
         title: 'Default string widget',
         type: 'string',
