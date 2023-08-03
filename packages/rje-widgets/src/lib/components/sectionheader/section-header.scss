@@ -12,6 +12,7 @@
         gap: em($unit);
         justify-content: space-between;
         width: 100%;
+        flex-wrap: wrap;
 
         .rje-section-header__label {
             align-items: center;
