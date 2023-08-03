@@ -1,16 +1,25 @@
+import { dirname, join } from 'path';
 const path = require('path');
 module.exports = {
     babel: (config) => {
-        return { ...config, rootMode: 'upward' };
+        return {
+            ...config,
+            rootMode: 'upward'
+        };
     },
     stories: [
         '../packages/docs/src/Introduction.stories.mdx',
         '../packages/*/src/**/*.stories.tsx',
         '../packages/*/src/**/*.mdx'
     ],
-    addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
+    addons: [
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-essentials'),
+        getAbsolutePath('@storybook/addon-interactions'),
+        getAbsolutePath('@storybook/addon-mdx-gfm')
+    ],
     framework: {
-        name: '@storybook/react-webpack5',
+        name: getAbsolutePath('@storybook/react-webpack5'),
         options: {}
     },
     webpackFinal: async (config, { configType }) => {
@@ -68,3 +77,10 @@ module.exports = {
         autodocs: true
     }
 };
+/**
+ * This function is used to resolve the absolute path of a package.
+ * It is needed in projects that use Yarn PnP or are set up within a monorepo.
+ */
+function getAbsolutePath(value) {
+    return dirname(require.resolve(join(value, 'package.json')));
+}

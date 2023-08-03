@@ -10,11 +10,10 @@
         "email": "github@saschagoldhofer.de",
         "url": "https://github.com/sagold/"
     },
-    "devDependencies": {},
     "dependencies": {
+        "@sagold/json-pointer": "^5.1.1",
         "@types/uuid": "^9.0.2",
         "fast-equals": "^5.0.1",
-        "@sagold/json-pointer": "^5.1.1",
         "json-schema-library": "^8.0.0",
         "uuid": "^9.0.0"
     }
