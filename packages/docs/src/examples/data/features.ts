@@ -279,7 +279,7 @@ export const schema = {
                 },
                 typeSelection: {
                     type: 'object',
-                    title: 'Form type selection',
+                    title: 'OneOf Selection',
                     description: 'Type selection using oneOf schema',
                     options: {
                         header: { color: 'black' }

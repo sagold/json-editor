@@ -2,7 +2,7 @@
 
 @mixin widget-description-component {
     .rje-description {
-        font-size: em($base-font-size);
+        font-size: em(0.85 * $base-font-size);
         line-height: 1.2em;
         font-weight: 400;
 

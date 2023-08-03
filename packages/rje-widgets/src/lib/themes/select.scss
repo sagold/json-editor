@@ -38,6 +38,11 @@
     .rje-overlay .rje-select__options {
         background: $color-white;
     }
+
+    .rje-overlay--select {
+        margin-top: em(0.5 * $unit);
+        box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1), 0 6px 12px rgb(0, 0, 0, 0.08);
+    }
 }
 
 @mixin select-dark {
@@ -78,5 +83,10 @@
 
     .rje-overlay .rje-select__options {
         background: $color-black;
+    }
+
+    .rje-overlay--select {
+        margin-top: em(0.5 * $unit);
+        box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1), 0 6px 12px rgb(0, 0, 0, 0.08);
     }
 }

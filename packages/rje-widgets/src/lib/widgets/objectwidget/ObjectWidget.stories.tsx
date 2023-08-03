@@ -58,6 +58,20 @@ DefaultWidget.args = {
     }
 };
 
+export const ErrorState = Template.bind({});
+ErrorState.args = {
+    options,
+    schema: {
+        type: 'object',
+        title: 'object title',
+        description: 'error state on object widget',
+        required: ['string', 'number'],
+        properties: {
+            string: { type: 'string' }
+        }
+    }
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
     options,

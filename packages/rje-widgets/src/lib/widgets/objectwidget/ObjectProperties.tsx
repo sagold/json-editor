@@ -1,4 +1,4 @@
-import { ObjectNode, getChildNode, Widget, JsonEditor } from '@sagold/react-json-editor';
+import { ObjectNode, Widget, JsonEditor } from '@sagold/react-json-editor';
 import { ObjectOptions } from './ObjectWidget';
 import { Button } from '../../components/button/Button';
 import { Icon } from '../../components/icon/Icon';

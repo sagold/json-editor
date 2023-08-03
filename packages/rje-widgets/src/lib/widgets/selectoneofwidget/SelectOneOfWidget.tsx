@@ -53,20 +53,22 @@ export const SelectOneOfWidget = widget<ValueNode<OneOfOptions>>(({ editor, node
                         size={options.headerFontSize}
                         separator={true}
                         description={options.descriptionInline ? undefined : options.description}
-                    />
-                    <Select
-                        id={node.id}
-                        // title={options.title}
-                        placeholder={options.placeholder}
-                        required={options.required}
-                        disabled={options.disabled}
-                        selectedKey={`${origin.index}`}
-                        setValue={onChange}
                     >
-                        {selectOptions.map((option, index) => (
-                            <Select.Option key={option.value}>{option.text}</Select.Option>
-                        ))}
-                    </Select>
+                        <Select
+                            id={node.id}
+                            // title={options.title}
+                            placeholder={options.placeholder}
+                            required={options.required}
+                            disabled={options.disabled}
+                            selectedKey={`${origin.index}`}
+                            setValue={onChange}
+                        >
+                            {selectOptions.map((option, index) => (
+                                <Select.Option key={option.value}>{option.text}</Select.Option>
+                            ))}
+                        </Select>
+                    </SectionHeader.Label>
+
                     {options.descriptionInline && (
                         <WidgetField.Description>{options.description}</WidgetField.Description>
                     )}

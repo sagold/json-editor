@@ -28,7 +28,8 @@
 }
 
 .rje-object__property {
-    display: flex;
+    display: flex; // !this messes with codemirror
+
     // align-items: baseline;
     & > div {
         flex-grow: 1;
