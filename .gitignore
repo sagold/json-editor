@@ -9,7 +9,6 @@ test-*.json
 
 # dependencies
 node_modules
-.yarn
 
 # IDEs and editors
 /.idea
