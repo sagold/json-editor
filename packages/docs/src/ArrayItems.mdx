@@ -1,437 +1,103 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-widgets';
+import * as ArrayItems from './ArrayItems.stories';
 
 <Meta title="ArrayItems" />
 
-# array items
+# Array Items
 
 > _json-schema_ has a set of definitions for array items. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
 
 Validation of data is fully supported, the following list tracks support of the user interface:
 
-- ✅ [**items** array-schema](#items-items-schema) - defined set of array items
-- ❎ [**additionalItems**](additionalItems) - ui does not support adding any data
-- ✅ [**items** object-schema](#items-object-schema) - object schema for child-items
-- ✅ [**items** oneOf](#items-oneof)
-- ✅ [length](#length) support for **minItems** and **maxItems**
-- ✅ [**if-then-else**](#if-then-else)
-- ❌ **enum** - only supported by validation not by user interface
+| Status | Feature                               | Comments                                           |
+| :----: | :------------------------------------ | :------------------------------------------------- |
+|   ✅   | [items array-schema](#array-schema)   | defined set of array items                         |
+|   ❎   | [additionalItems](#additional-items)  | ui does not support adding arbitrary data          |
+|   ✅   | [items object-schema](#object-schema) | object schema for child-items                      |
+|   ✅   | [items oneOf](#one-of)                |
+|   ✅   | [length](#length)                     | support for **minItems** and **maxItems**          |
+|   ✅   | [if-then-else](#if-then-else)         |
+|   ❌   | enum                                  | only supported by validation not by user interface |
+|   ✅   | [not](#not)                           | validation only, exlude specific item types        |
+|   ✅   | [uniqueItems](#uniqueitems)           | validation only, exclude redundant items           |
+|   ✅   | [contains](#contains)                 | validation only, ensure a specific item is present |
 
-validation only
-
-- ✅ [**not**](#not) - exlude specific item types
-- ✅ [**uniqueItems**](#uniqueitems) - exclude redundant items
-- ✅ [**contains**](#contains) - ensure a specific item is present
-
-## items array schema
+## Array Schema
 
 Fixed number and schema of array items
 
-`items: [schema, schema]`
+<Canvas className="inline" of={ArrayItems.ItemsArray} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    validate={true}
-    data={['a title', 'a subtitle']}
-    schema={{
-      title: 'items: []',
-      type: 'array',
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ]
-    }}
-
-/>
-
-</Canvas>
-
-### additionalItems
+## additional items
 
 With items defined by an items-array, `additionalItems=undefined` or `additionalItems=true` will allow any additional child.
 
 - **Note**, for a missing `additionalItems` setting, add-options are disabled
 
-`additionalItems=undefined`
-
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    validate={true}
-    data={['a title', 'a subtitle', 'an additional item']}
-    schema={{
-      title: 'additionalItems: undefined',
-      type: 'array',
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.AdditionalItemsUndefined} />
 
 With items defined by an items-array, `additionalItems=true`, the add option is available. Here, item is initialized with `null` as no schema can be derived. Thus, no input element is renderer (null-widget) for adding items. Any input items are accepted.
 
 - **Note** This feature will need support to define custom data, initially offering an json-editor
 
-`additionalItems: true`
-
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    validate={true}
-    data={['a title', 'a subtitle', 'an additional item']}
-    schema={{
-      title: 'additionalItems: true',
-      type: 'array',
-      additionalItems: true,
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.AdditionalItemsTrue} />
 
 Preventing additional items will disable add-options and remove any undefined item from user form and exported data. In the following example, the array is initialized with three values:
 
-`additionalItems: false`
-
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    validate={true}
-    data={['a title', 'a subtitle', 'an additional item']}
-    schema={{
-      title: 'additionalItems: false',
-      type: 'array',
-      additionalItems: false,
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.AdditionalItemsFalse} />
 
 With items defined by an items-array and `additionalItems` set to a valid json-schema, items may be added in the given format.
 
-`additionalItems: { type: "number" }`
+<Canvas className="inline" of={ArrayItems.AdditionalItemsSchema} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    schema={{
-      type: 'array',
-      title: 'additionalItems: { schema }',
-      items: [
-        {
-          title: 'Title',
-          type: 'string'
-        },
-        {
-          title: 'Subtitle',
-          type: 'string'
-        }
-      ],
-      additionalItems: {
-        title: 'Additional number',
-        type: 'number'
-      }
-    }}
-  />
-</Canvas>
-
-## items object-schema
+## Object Schema
 
 Array items can contain any supported json-schema:
 
-`items: { schema }`
+<Canvas className="inline" of={ArrayItems.ItemsObject} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    addOptionalProps={false}
-    data={[2023]}
-    schema={{
-      title: 'items: { object }',
-      type: 'array',
-      items: {
-        type: 'object',
-        required: ['alt', 'image'],
-        title: 'Content image',
-        properties: {
-          alt: {
-            title: 'Image alt text',
-            type: 'string'
-          },
-          image: {
-            title: 'Image',
-            type: 'string',
-            format: 'file'
-          },
-          width: {
-            title: 'Width in px',
-            type: 'number',
-            default: 400
-          }
-        }
-      }
-    }}
-  />
-</Canvas>
-
-### items oneOf
+## One Of
 
 When using an items-object definition containing a `oneOf` statement, adding an item will show a selection dialog for each oneOf schema
 
-`items: { oneOf: [] }`
+<Canvas className="inline" of={ArrayItems.OneOf} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    addOptionalProps={false}
-    data={[{ type: 'header' }]}
-    schema={{
-      type: 'array',
-      items: {
-        oneOfProperty: 'type',
-        oneOf: [
-          {
-            id: 'header',
-            title: 'header',
-            type: 'object',
-            required: ['type', 'text'],
-            properties: {
-              type: {
-                type: 'string',
-                const: 'header',
-                options: {
-                  hidden: true
-                }
-              },
-              text: {
-                title: 'Header text',
-                type: 'string'
-              }
-            }
-          },
-          {
-            id: 'paragraph',
-            title: 'paragraph',
-            type: 'object',
-            required: ['type', 'text'],
-            properties: {
-              type: {
-                type: 'string',
-                const: 'paragraph',
-                options: {
-                  hidden: true
-                }
-              },
-              text: {
-                title: 'Paragraph text',
-                type: 'string'
-              }
-            }
-          }
-        ]
-      },
-      additionalItems: {
-        title: 'Width in px',
-        type: 'number',
-        default: 400
-      }
-    }}
-  />
-</Canvas>
-
-## length
+## Length
 
 support for `minItems` and `maxItems` length restrictions:
 
-`minItems: 1, maxItems: 2`
-
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    addOptionalProps={false}
-    schema={{
-      type: 'array',
-      minItems: 1,
-      maxItems: 2,
-      items: {
-        title: 'item',
-        type: 'number',
-        default: 1
-      },
-      options: { title: true }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.Length} />
 
 ## if-then-else
 
 example: if any number is above 1 the list is restricted to one item, else no item is allowed
 
-`if: { items: { maximum: 1 } }`
+<Canvas className="inline" of={ArrayItems.IfThenElse} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    addOptionalProps={false}
-    validate={true}
-    schema={{
-      type: 'array',
-      items: {
-        title: 'Item',
-        type: 'number',
-        default: 2
-      },
-      minItems: 1,
-      if: {
-        items: {
-          maximum: 1
-        }
-      },
-      then: {
-        maxItems: 1
-      },
-      else: {
-        maxItems: 0
-      },
-      options: { title: true }
-    }}
-  />
-</Canvas>
-
-## enum
+## Enum
 
 - ⚠️ **TODO** enum selection
 - ⚠️ **TODO** fix initial data from getTemplate
 - **TODO** improve error message valid options display
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    validate={true}
-    addOptionalProps={false}
-    schema={{
-      type: 'array',
-      enum: [
-        [2019, 10, 22],
-        [2023, 1, 1]
-      ],
-      items: {
-        type: 'number'
-      },
-      minItems: 3,
-      maxItems: 3,
-      options: { title: true }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.Enum} />
 
-## not
+## Not
 
 Using a `not` schema, allows specific arrays to be invalidated, showing an error when `not` validates. The following example invalidates arrays that only consist of 123. If one of the array items differs from 123, the schema is valid again (as not expects a schema for all items).
 
-`not: { items: { const: 123 }}`
+<Canvas className="inline" of={ArrayItems.Not} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    validate={true}
-    data={[123]}
-    schema={{
-      title: 'Array using not',
-      description: 'value 123 is not allowed as array item',
-      type: 'array',
-      not: {
-        type: 'array',
-        items: {
-          const: 123
-        }
-      },
-      items: {
-        title: 'item',
-        type: 'number',
-        default: 12
-      }
-    }}
-  />
-</Canvas>
-
-## uniqueItems
+## Unique items
 
 `uniqueItems` prevents duplication in array items
 
-`uniqueItems: true`
+<Canvas className="inline" of={ArrayItems.UniqueItems} />
 
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    validate={true}
-    addOptionalProps={false}
-    data={[1, 2, 2]}
-    schema={{
-      title: 'Array with unique items',
-      type: 'array',
-      uniqueItems: true,
-      items: {
-        title: 'item',
-        type: 'number',
-        default: 1
-      }
-    }}
-  />
-</Canvas>
-
-## contains
+## Contains
 
 While the items schema must be valid for every item in the array, the `contains` schema only needs to validate against one or more items in the array.
 
-`contains: { const: 1 }`
-
-<Canvas className="rje-theme rje-theme--light">
-  <JsonForm
-    widgets={widgets}
-    validate={true}
-    data={[2, 3]}
-    schema={{
-      title: 'Array must contain 1',
-      type: 'array',
-      items: {
-        title: 'item',
-        type: 'number',
-        default: 1
-      },
-      contains: {
-        type: 'number',
-        const: 1
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ArrayItems.Contains} />

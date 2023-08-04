@@ -9,37 +9,49 @@
         format(woff2);
 }
 
-#docs-root > .sbdocs.sbdocs-wrapper {
-    background-color: rgba(0, 0, 0, 0.01);
-}
+/* markdown styling */
+.sbdocs.sbdocs-content {
+    max-width: 48em;
 
-/** remove fixed height on mdx-canvas */
-.sbdocs-preview .docs-story > div > div[scale] {
-    height: auto;
+    blockquote p {
+        font-size: 1.2em;
+        line-height: 1.4;
+    }
+
+    h2 {
+        font-weight: 200;
+        text-transform: uppercase;
+        border-bottom: 0;
+        margin-top: 1.5em;
+    }
+
+    h2 + p {
+        margin-top: 0;
+    }
 }
 
 .sbdocs.sbdocs-preview {
-    border-radius: 4px;
+    // drop shadow of story box
     box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    /*    box-shadow: -2px 2px 4px rgba(100, 100, 0, 0.33);*/
-    /*    border: 1px solid rgba(0, 0, 0, 0.1);*/
+    // border: none;
 }
 
-.sbdocs-preview .docs-story > div:first-child {
-    padding: 16px;
-    padding-bottom: 32px;
-    /*    background-color: rgba(30, 112, 191, 0.02);*/
-}
+/* inline story blocks have no visual separation from content */
+.inline.sbdocs.sbdocs-preview {
+    box-shadow: none; // drop shadow of story box
+    border: none;
 
-.story-columns {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
+    .docs-story > :first-child {
+        padding: 0;
+        // padding-bottom: 1em; // padding to source action button
+    }
 
-.story-columns ~ .story-columns {
-    padding-top: 8px;
+    .docblock-code-toggle {
+        // border: 1px solid #ccc;
+        border: none;
+        border-radius: 4px;
+        // color: #8bc34a;
+    }
 }
 
 #storybook-docs {
@@ -52,20 +64,88 @@
     --rje-color-dark-text: 235, 240, 241;
 }
 
-.rje-theme {
-    display: flex;
-}
+// #docs-root > .sbdocs.sbdocs-wrapper {
+//     background-color: rgba(0, 0, 0, 0.01);
+// }
 
-.rje-theme > * {
-    flex-grow: 1;
-}
+// /** remove fixed height on mdx-canvas */
+// .sbdocs-preview .docs-story > div > div[scale] {
+//     height: auto;
+// }
 
-.rje-theme .rje-theme--light {
-    padding: 16px;
-    background: rgba(243, 243, 241, 1);
-}
+// .sbdocs.sbdocs-preview {
+//     border-radius: 4px;
+//     box-shadow: none;
+//     border: 1px solid rgba(0, 0, 0, 0.08);
+//     /*    box-shadow: -2px 2px 4px rgba(100, 100, 0, 0.33);*/
+//     /*    border: 1px solid rgba(0, 0, 0, 0.1);*/
+// }
 
-.rje-theme .rje-theme--dark {
-    padding: 16px;
-    background: rgba(26, 27, 25, 1);
-}
+// .sbdocs-preview .docs-story > div:first-child {
+//     padding: 16px;
+//     padding-bottom: 32px;
+//     /*    background-color: rgba(30, 112, 191, 0.02);*/
+// }
+
+// .story-columns {
+//     display: flex;
+//     gap: 8px;
+//     align-items: center;
+// }
+
+// .story-columns ~ .story-columns {
+//     padding-top: 8px;
+// }
+
+// #storybook-docs {
+//     --rje-font-family: Inter, sans-serif;
+//     --rje-color-light-primary: 31, 101, 141;
+//     --rje-color-light-secondary: 9, 66, 98;
+//     --rje-color-light-text: 7, 23, 32;
+//     --rje-color-dark-primary: 50, 133, 180;
+//     --rje-color-dark-secondary: 145, 192, 218;
+//     --rje-color-dark-text: 235, 240, 241;
+
+//     // .sbdocs {
+//     //     background: #fafafa;
+//     // }
+
+//     // .sbdocs-preview.rje-theme {
+//     //     border: none;
+//     //     border-radius: 0;
+//     //     background: #fff;
+//     //     // padding: 0;
+
+//     //     .docs-story {
+//     //         overflow: visible;
+
+//     //         > :first-child {
+//     //             padding: 0;
+//     //             // padding-bottom: 1em;
+//     //         }
+
+//     //         .rje-form {
+//     //             background: #fff;
+//     //             padding: 0.5em 1em;
+//     //         }
+//     //     }
+//     // }
+// }
+
+// .rje-theme {
+//     display: flex;
+// }
+
+// .rje-theme > * {
+//     flex-grow: 1;
+// }
+
+// .rje-theme .rje-theme--light {
+//     padding: 16px;
+//     background: rgba(243, 243, 241, 1);
+// }
+
+// .rje-theme .rje-theme--dark {
+//     padding: 16px;
+//     background: rgba(26, 27, 25, 1);
+// }

@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import { useJsonEditor } from '@sagold/react-json-editor';
-import { HistoryPlugin, HistoryPluginInstance } from 'headless-json-editor';
-import { ComponentStory } from '@storybook/react';
+import { HistoryPlugin, HistoryPluginInstance, JsonSchema } from 'headless-json-editor';
+import { Meta, StoryObj } from '@storybook/react';
 import { widgets } from '@sagold/rje-widgets';
 import { Button } from '../../../rje-widgets/src/lib/components/button/Button';
-import { Icon } from '../../../rje-widgets/src/lib/components/icon/Icon';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 const schema = {
@@ -31,15 +30,9 @@ const schema = {
             }
         }
     }
-};
+} as JsonSchema;
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-export default {
-    title: 'Examples/UndoRedo'
-};
-
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<any> = () => {
+function UndoRedoExample() {
     const [node, editor] = useJsonEditor({ data: {}, schema, widgets, plugins: [HistoryPlugin] });
     const historyPlugin = useRef<HistoryPluginInstance>(editor.plugin('history') as HistoryPluginInstance);
     const Widget = editor.getWidget(node);
@@ -48,7 +41,7 @@ const Template: ComponentStory<any> = () => {
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
 
     return (
-        <Theme>
+        <Theme style={{ flexDirection: 'column' }}>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
                 <Button icon="undo" onPress={() => historyPlugin.current?.undo()} disabled={!isUndoEnabled}></Button>
                 <Button icon="redo" onPress={() => historyPlugin.current?.redo()} disabled={!isRedoEnabled}></Button>
@@ -58,7 +51,17 @@ const Template: ComponentStory<any> = () => {
             </div>
         </Theme>
     );
-};
+}
 
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-export const UndoRedo = Template.bind({});
+const meta: Meta<unknown> = {
+    title: 'Examples/UndoRedo',
+    component: UndoRedoExample
+};
+export default meta;
+
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+export const UndoRedo: StoryObj<typeof UndoRedoExample> = {
+    parameters: {
+        controls: { hideNoControlsWarning: true }
+    }
+};

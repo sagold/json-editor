@@ -1,6 +1,6 @@
 @import '../../design';
 
-$color-alternate: rgba(7, 23, 32, 0.03);
+$color-alternate: rgba(7, 23, 32, 0.02);
 $color-border: rgba(7, 23, 32, 0.08);
 
 /** separate action row at end of array list */
@@ -8,11 +8,11 @@ $color-border: rgba(7, 23, 32, 0.08);
     padding: 0.75em 1em;
     display: flex;
     justify-content: space-around;
-    border-bottom: 1px solid $color-border;
+    // border-bottom: 1px solid $color-border;
     margin-bottom: 1.5em;
 
     &.odd {
-        background-color: rgba(0, 0, 0, 0.03);
+        background-color: $color-alternate;
     }
 }
 
@@ -31,23 +31,19 @@ $color-border: rgba(7, 23, 32, 0.08);
 .rje-array-item {
     display: flex;
     justify-content: stretch;
-    padding: em(8) 0 em(8) em(16);
-    border-top: 1px solid $color-border;
+    padding: em(16) 0 em(16) em(16);
 
     & > .rje-field {
         flex-grow: 1;
     }
 
-    // & > .rje-array-item__actions {
-    //     button {
-    //         box-shadow: none;
-    //         margin-right: 0;
-    //     }
-    // }
-
-    &:last-child {
-        border-bottom: 1px solid $color-border;
+    &:not(:hover) > .rje-array-item__menu .rje-button {
+        color: $color-light-grey-1;
     }
+
+    // .rje-array-item__menu .rje-button {
+    //     padding: 0;
+    // }
 }
 
 .rje-array-item:nth-child(odd) {
