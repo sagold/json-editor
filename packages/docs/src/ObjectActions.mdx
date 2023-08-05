@@ -1,47 +1,16 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-widgets';
+import * as ObjectActions from './ObjectActions.stories';
 
 <Meta title="ObjectActions" />
 
-# object actions
+# Object Actions
 
 Objects with `additionalProps=false` do not show an object action menu if no properties are missing
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    addOptionalProps={true}
-    schema={{
-      title: 'all properties are required',
-      type: 'object',
-      options: {
-        descriptionInline: true
-      },
-      properties: {
-        optionalProperty: { title: 'Optional property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectActions.AllPropertiesRequired} />
 
 Objects with `additionalProps=true` always object action menu even if no properties are missing so they can be removed again
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{
-      optionalProperty: 'initial value'
-    }}
-    schema={{
-      title: 'properties may be removed',
-      type: 'object',
-      options: {
-        descriptionInline: true
-      },
-      properties: {
-        optionalProperty: { title: 'Optional property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectActions.OptionalProperties} />

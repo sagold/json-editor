@@ -29,6 +29,7 @@ $button-state--disabled: '&[disabled]';
         // icon
         .rje-icon {
             font-size: em(3 * $unit);
+            font-weight: 300;
         }
     }
 }

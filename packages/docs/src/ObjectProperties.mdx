@@ -1,203 +1,73 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-widgets';
+import * as ObjectProperties from './ObjectProperties.stories';
 
 <Meta title="ObjectProperties" />
 
-# object properties
+# Object Properties
 
 > _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
 
 Validation of data is fully supported, the following list tracks support of the user interface:
 
-- ✅ [**properties**](#properties)
-- ✅ [**required**](#required-properties) - per default, only required properties will be added
-- ❎ [**additionalProperties**](#additional-properties) - actions to add additional properties are not available
-- ✅ [**oneOf**](#oneof)
-- ✅ [**allOf**](#allof) - support by merging subschema to a single schema. Validation still treats schemas separate
-- ✅ [**dependencies**](#dependencies) - support by merging subschema to a single schema. Validation still treats schemas separate
-- ✅ [**if-then-else**](#if-then-else) - support by merging subschema to a single schema. Validation still treats schemas separate
-- ❌ **patternProperties** - not yet supported
-- ❌ **anyOf** - not yet supported
+| Status | Feature                                        | Comments                                                                  |
+| :----: | :--------------------------------------------- | :------------------------------------------------------------------------ |
+|   ✅   | [properties](#properties)                      |
+|   ✅   | [required](#required-properties)               | per default, only required properties will be added                       |
+|   ❎   | [additionalProperties](#additional-properties) | actions to add additional properties are not available                    |
+|   ✅   | [oneOf](#one-of)                               |
+|   ✅   | [allOf](#all-of)                               | subschema are merged to single schema. Validation treats schemas separate |
+|   ✅   | [dependencies](#dependencies)                  | subschema are merged to single schema. Validation treats schemas separate |
+|   ✅   | [if-then-else](#if-then-else)                  | subschema are merged to single schema. Validation treats schemas separate |
+|   ❌   | patternProperties                              | not yet supported                                                         |
+|   ❌   | anyOf                                          | not yet supported                                                         |
 
 ## Properties
 
 Per default, missing properties will only be added when they are required. Optional properties having a schema definition can be added dynamically:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    schema={{
-      type: 'object',
-      properties: {
-        optionalProperty: { title: 'Optional property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.OptionalProperties} />
 
 Optional properties containing data from input will be added automatically:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ optionalProperty: 'input data' }}
-    schema={{
-      type: 'object',
-      properties: {
-        optionalProperty: { title: 'Optional property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.InitialOptionalProperty} />
 
 You can change this behaviour to add optional properties initially by passing
 
-`addOptionalProps: true`
-
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    addOptionalProps={true}
-    schema={{
-      type: 'object',
-      properties: {
-        optionalProperty: { title: 'Optional property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AddOptionalProps} />
 
 ## Required Properties
 
 With a property set as required, it will always be available in the form:
 
-`required: ['requiredProperty']`
-
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    schema={{
-      type: 'object',
-      required: ['requiredProperty'],
-      properties: {
-        requiredProperty: { title: 'Required Property', type: 'string' },
-        optionalProperty: { title: 'Optional Property', type: 'string' }
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.RequiredProperties} />
 
 ## Additional Properties
 
 Additional properties that are not defined within json-schema will be shown by default and may be removed:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ additionalProperty: 'property without schema' }}
-    schema={{
-      type: 'object'
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AdditionalProperties} />
 
 If you set additionalProperties to false, any additional data will be removed from user form and exported data:
 
-`additionalProperties: false`
-
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ additionalProperty: 'property without schema' }}
-    schema={{
-      type: 'object',
-      additionalProperties: false
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AdditionalPropertiesFalse} />
 
 Using additionalProperties with a json-schema, will apply this schema to any unknown property:
 
-`additionalProperties: { maxLength }`
-
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    validate={true}
-    data={{ additionalProperty: 'property without schema' }}
-    schema={{
-      type: 'object',
-      additionalProperties: {
-        type: 'string',
-        maxLength: 10
-      }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AdditionalPropertiesSchema} />
 
 > _Note_ Currently no user interface is offered to add additional data. You can enable the `editJson` option to allow users to add additional properties as json or you can create a custom object widget that supports this.
 
 Example Object with **editJson** option
 
-`options: { editJson: { enabled: true } }`
+<Canvas className="inline" of={ObjectProperties.EditJson} />
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ additionalProperty: 'property without schema' }}
-    schema={{
-      type: 'object',
-      title: 'EditJson Example',
-      description:
-        'Using an object with a title will switch actions for optional properties to be placed in the actions-icon besides its title. Inline delete options are moved into their panel for a cleaner ui. Using EditJson action from the actions panel will allow the user to add additional data in json format.',
-      options: {
-        editJson: {
-          enabled: true
-        }
-      },
-      additionalProperties: {
-        type: 'string'
-      }
-    }}
-  />
-</Canvas>
-
-## oneOf
+## One Of
 
 json-schema containing an oneOf statement will show a selection to choose the sub schema:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    schema={{
-      oneOf: [
-        {
-          type: 'object',
-          title: 'First Option',
-          required: ['one'],
-          properties: {
-            one: {
-              type: 'string',
-              title: 'Property String'
-            }
-          }
-        },
-        {
-          type: 'object',
-          title: 'Second Option',
-          required: ['one'],
-          properties: {
-            one: {
-              type: 'number',
-              title: 'Property Number'
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.OneOfObject} />
 
 Note that json-schema requires distinguishable json-schema. If there is an undistinguishable schema (same validation results) the user interface will not behave correctly:
 
@@ -211,38 +81,7 @@ Note that json-schema requires distinguishable json-schema. If there is an undis
 }
 ```
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ one: 'input data' }}
-    schema={{
-      oneOf: [
-        {
-          type: 'object',
-          title: 'First Option',
-          required: ['one'],
-          properties: {
-            one: {
-              type: 'string',
-              title: 'Property One'
-            }
-          }
-        },
-        {
-          type: 'object',
-          title: 'Unselectable Second Option',
-          required: ['one'],
-          properties: {
-            one: {
-              type: 'string',
-              title: 'Property Two'
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.InvalidOneOfObject} />
 
 To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique property:
 
@@ -256,39 +95,7 @@ To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique
 }
 ```
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    schema={{
-      oneOf: [
-        {
-          type: 'object',
-          title: 'Select A',
-          required: ['id', 'one'],
-          properties: {
-            id: { type: 'string', const: 'A' },
-            one: {
-              type: 'string',
-              title: 'Property ID A'
-            }
-          }
-        },
-        {
-          type: 'object',
-          title: 'Select B',
-          required: ['id', 'one'],
-          properties: {
-            id: { type: 'string', const: 'B' },
-            one: {
-              type: 'string',
-              title: 'Property ID B'
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.TypedOneOfObject} />
 
 > _Note_ You can set `{ options: { hidden: true }}` to each property _id_ to hide the control variable from user interface. Still, _id_ will be exported in data.
 
@@ -301,328 +108,61 @@ In case you want a selection to always be associated with the selected schema, i
 }
 ```
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    data={{ id: 'B', one: 'B' }}
-    validate={true}
-    schema={{
-      oneOfProperty: 'id',
-      oneOf: [
-        {
-          type: 'object',
-          title: 'Select A',
-          required: ['id', 'one'],
-          properties: {
-            id: { type: 'string', const: 'A', options: { hidden: true } },
-            one: {
-              type: 'string',
-              title: 'Property ID A'
-            }
-          }
-        },
-        {
-          type: 'object',
-          title: 'Select B',
-          required: ['id', 'one'],
-          properties: {
-            id: { type: 'string', const: 'B', options: { hidden: true } },
-            one: {
-              type: 'string',
-              minLength: 2,
-              title: 'Property ID B'
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.OneOfProperty} />
 
 As you can see, the selected schema is always associated with **B** although there are validation errors. This is the expected behaviour.
 
-## allOf
+## All Of
 
 _allOf_ requires all sub schemas to be valid for the given input. For a user input this all sub schemas have to be merged, thus you must ensure properties and validation rules are exclusive. At some point, the merging of subschemas might improve here, but currently any attributes woud be overriden by the last definition.
 
 The following example has conflicting validation rules, where the last statement will be applied:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    validate={true}
-    data={{ title: 'five!' }}
-    schema={{
-      type: 'object',
-      options: { title: false },
-      required: ['title'],
-      properties: {
-        title: { type: 'string' }
-      },
-      allOf: [
-        {
-          properties: {
-            title: { minLength: 1 }
-          }
-        },
-        {
-          properties: {
-            title: {
-              default: 'title',
-              minLength: 6
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AllOf} />
 
 _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-else statements
 
 > **⚠️ TODO** change in schema should not lose focus
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    validate={true}
-    liveUpdate={true}
-    schema={{
-      type: 'object',
-      options: { title: false },
-      properties: {
-        title: { type: 'string', default: 'four' }
-      },
-      allOf: [
-        {
-          if: {
-            type: 'object',
-            required: ['title'],
-            properties: {
-              title: {
-                minLength: 4
-              }
-            }
-          },
-          then: {
-            properties: {
-              title: {
-                pattern: '^[0-9]+$',
-                patternExample: 'a string with a length of 4+ should contain only numbers'
-              }
-            }
-          }
-        }
-      ]
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.AllOfIfThen} />
 
 ## dependencies
 
-**dependency required: `prop: ["prop"]`**
+`dependencies: { prop: ['prop'] }`
 
 Dependencies are not added per default
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    data={{}}
-    onChange={(data, root) => console.log(data, root)}
-    schema={{
-      type: 'object',
-      properties: {
-        one: { title: 'Property One', type: 'string' },
-        two: { title: 'dependency', type: 'string' }
-      },
-      dependencies: {
-        one: ['two']
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.DependenciesList} />
 
 Dependencies are added when they are required by another property which has been set (`!== undefined`)
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    data={{ one: 'input value' }}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      required: ['one'],
-      properties: {
-        one: { title: 'Property One', type: 'string' },
-        two: { title: 'dependency', type: 'string' }
-      },
-      dependencies: {
-        one: ['two']
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.DependenciesListActive} />
 
-**dependency schema: `prop: {}`**
+`dependencies: { prop: { schema } }`
 
 Dependent schemas are not added per default for a missing dependent property
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      properties: {
-        one: { title: 'Property One', type: 'string' }
-      },
-      dependencies: {
-        one: {
-          required: ['two'],
-          properties: {
-            two: { title: 'dependency', type: 'string' }
-          }
-        }
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.Dependencies} />
 
 Dependent schemas are added if the dependent property is set (`!== undefined`)
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      required: ['one'],
-      properties: {
-        one: { title: 'Property One', type: 'string' }
-      },
-      dependencies: {
-        one: {
-          required: ['two'],
-          properties: {
-            two: { title: 'dependency', type: 'string' }
-          }
-        }
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.DependenciesActive} />
 
 ## if-then-else
 
 _if-then_ statement, adding or removing a schema with its data depending on the property of trigger. The following toggle should not show the property per default as the property `addition` is not set as required
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      required: ['trigger'],
-      properties: {
-        trigger: { title: 'Trigger', type: 'boolean', default: false }
-      },
-      if: {
-        required: ['trigger'],
-        properties: {
-          trigger: { const: true }
-        }
-      },
-      then: {
-        properties: {
-          addition: { type: 'string' }
-        }
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.IfThenElse} />
 
 Same setup as above, but with property `addition` set as required:
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      required: ['trigger'],
-      properties: {
-        trigger: { title: 'Trigger', type: 'boolean', default: false }
-      },
-      if: {
-        required: ['trigger'],
-        properties: {
-          trigger: { const: true }
-        }
-      },
-      then: {
-        required: ['addition'],
-        properties: {
-          addition: { type: 'string' }
-        }
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.IfThenElseActive} />
 
 > If you want to persist the value entered independent of the current visbility, follow the [tutorial](?path=/story/examples-jsonschemasupport--all-of-with-conditions).
 
 _if-then-else_ statement used to switch sub-schemas
 
-<Canvas>
-  <JsonForm
-    className="rje-theme rje-theme--light"
-    widgets={widgets}
-    validate={true}
-    addOptionalProps={false}
-    schema={{
-      type: 'object',
-      required: ['switch'],
-      additionalProperties: false,
-      properties: {
-        switch: { title: 'Switch', type: 'boolean', default: false }
-      },
-      if: {
-        required: ['switch'],
-        properties: {
-          switch: { const: false }
-        }
-      },
-      then: {
-        required: ['then', 'number'],
-        properties: {
-          then: { title: 'Then statement', type: 'string' },
-          number: { title: 'Value in Then', type: 'number', minimum: 4 }
-        }
-      },
-      else: {
-        required: ['else', 'number'],
-        properties: {
-          else: { title: 'Else statement', type: 'string', enum: ['option a', 'option b'] },
-          number: { title: 'Value in Else', type: 'number', maximum: 4 }
-        }
-      },
-      options: { title: false }
-    }}
-  />
-</Canvas>
+<Canvas className="inline" of={ObjectProperties.IfThenElseSwitch} />
 
 ## references
 

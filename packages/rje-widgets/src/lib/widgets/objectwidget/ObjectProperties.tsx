@@ -33,7 +33,7 @@ export function ObjectProperties({ node, editor, options, withInlineDelete }: Ob
                                         editor.removeValue(child.pointer);
                                     }}
                                 >
-                                    <Icon>delete</Icon>
+                                    <Icon>close</Icon>
                                 </Button>
                             </div>
                         )}

@@ -191,7 +191,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 <>
                     <div className="rje-object__missing-properties" style={{ alignItems: 'center' }}>
                         <div className="rje-description" style={{ paddingTop: 0, fontSize: '0.8em' }}>
-                            add property:
+                            add
                         </div>
                         {node.missingProperties.map((name) => (
                             <Button

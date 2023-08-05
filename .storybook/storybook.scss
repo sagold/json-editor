@@ -40,10 +40,23 @@
 .inline.sbdocs.sbdocs-preview {
     box-shadow: none; // drop shadow of story box
     border: none;
+    overflow-y: visible;
+
+    .docs-story {
+        overflow-y: visible; // contents expand outside of story box
+    }
 
     .docs-story > :first-child {
         padding: 0;
-        // padding-bottom: 1em; // padding to source action button
+        z-index: 2; // contents may be above *show code* action
+        overflow-y: visible;
+    }
+
+    .docs-story > :last-child {
+        // .docblock-code-toggle wrapper div
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
     }
 
     .docblock-code-toggle {
