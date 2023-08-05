@@ -262,30 +262,25 @@ export const AllOf: Story = {
     args: {
         className: 'rje-theme rje-theme--light',
         validate: true,
-        liveUpdate: true,
+        data: { title: 'five!' },
         schema: {
             type: 'object',
             options: { title: false },
+            required: ['title'],
             properties: {
-                title: { type: 'string', default: 'four' }
+                title: { type: 'string' }
             },
             allOf: [
                 {
-                    if: {
-                        type: 'object',
-                        required: ['title'],
-                        properties: {
-                            title: {
-                                minLength: 4
-                            }
-                        }
-                    },
-                    then: {
-                        properties: {
-                            title: {
-                                pattern: '^[0-9]+$',
-                                patternExample: 'a string with a length of 4+ should contain only numbers'
-                            }
+                    properties: {
+                        title: { minLength: 1 }
+                    }
+                },
+                {
+                    properties: {
+                        title: {
+                            default: 'title',
+                            minLength: 6
                         }
                     }
                 }
