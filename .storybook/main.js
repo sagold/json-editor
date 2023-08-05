@@ -1,5 +1,8 @@
 import { dirname, join } from 'path';
 const path = require('path');
+
+const PKG_DIR = path.resolve(__dirname, '..', 'packages');
+
 module.exports = {
     babel: (config) => {
         return {
@@ -8,7 +11,7 @@ module.exports = {
         };
     },
     stories: [
-        '../packages/docs/src/Introduction.stories.mdx',
+        '../packages/docs/src/Introduction.mdx',
         '../packages/*/src/**/*.stories.tsx',
         '../packages/*/src/**/*.mdx'
     ],
@@ -24,28 +27,10 @@ module.exports = {
     },
     webpackFinal: async (config, { configType }) => {
         config.resolve.alias = config.resolve.alias || {};
-        config.resolve.alias['@sagold/react-json-editor'] = path.resolve(
-            __dirname,
-            '..',
-            'packages',
-            'react-json-editor',
-            'src'
-        );
-        config.resolve.alias['headless-json-editor'] = path.resolve(
-            __dirname,
-            '..',
-            'packages',
-            'headless-json-editor',
-            'src'
-        );
-        config.resolve.alias['@sagold/rje-widgets'] = path.resolve(__dirname, '..', 'packages', 'rje-widgets', 'src');
-        config.resolve.alias['@sagold/rje-code-widgets'] = path.resolve(
-            __dirname,
-            '..',
-            'packages',
-            'rje-code-widgets',
-            'src'
-        );
+        config.resolve.alias['@sagold/react-json-editor'] = path.resolve(PKG_DIR, 'react-json-editor', 'src');
+        config.resolve.alias['headless-json-editor'] = path.resolve(PKG_DIR, 'headless-json-editor', 'src');
+        config.resolve.alias['@sagold/rje-widgets'] = path.resolve(PKG_DIR, 'rje-widgets', 'src');
+        config.resolve.alias['@sagold/rje-code-widgets'] = path.resolve(PKG_DIR, 'rje-code-widgets', 'src');
         config.module.rules.push({
             test: /\.scss$/,
             use: [
