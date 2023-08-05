@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonForm } from '@sagold/rje-widgets';
+import { JsonSchema } from 'headless-json-editor';
 
 const meta: Meta<typeof JsonForm> = {
     component: JsonForm
@@ -71,7 +72,7 @@ export const AdditionalItemsTrue: Story = {
                     type: 'string'
                 }
             ]
-        }
+        } as JsonSchema
     }
 };
 
@@ -94,7 +95,7 @@ export const AdditionalItemsFalse: Story = {
                     type: 'string'
                 }
             ]
-        }
+        } as JsonSchema
     }
 };
 
@@ -155,7 +156,7 @@ export const ItemsObject: Story = {
                 }
             }
         }
-    }
+    } as JsonSchema
 };
 
 export const OneOf: Story = {
@@ -216,7 +217,7 @@ export const OneOf: Story = {
                 default: 400
             }
         }
-    }
+    } as JsonSchema
 };
 
 export const Length: Story = {

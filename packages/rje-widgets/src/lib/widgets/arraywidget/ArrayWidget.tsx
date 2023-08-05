@@ -82,16 +82,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const { description, editJson = { enabled: false } } = options;
     const showHeader = editJson.enabled || options.title || description || options.collapsed != null;
 
-    const _insertOptions = editor.getArrayAddOptions(node);
-    let insertOptions;
-    if (isJsonError(_insertOptions)) {
-        console.log(_insertOptions);
-        console.error('insert options returned error');
-        insertOptions = [];
-    } else {
-        insertOptions = _insertOptions;
-    }
-
+    const insertOptions = editor.getArrayAddOptions(node);
     const insertItem = useCallback(() => {
         editor.appendItem(node, insertOptions[0]);
         setShowContent(true);

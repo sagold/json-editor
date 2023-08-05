@@ -295,7 +295,11 @@ export class HeadlessJsonEditor {
      */
     getArrayAddOptions(node: ArrayNode) {
         const schema = this.draft.getSchema({ pointer: node.pointer, data: json(this.state) });
-        return this.draft.getChildSchemaSelection(node.children.length, schema);
+        const selections = this.draft.getChildSchemaSelection(node.children.length, schema);
+        if (isJsonError(selections)) {
+            return [{ type: 'string' }];
+        }
+        return selections;
     }
 
     getTemplateData(schema: JsonSchema) {
