@@ -1,8 +1,6 @@
 import { dirname, join } from 'path';
 const path = require('path');
 
-const PKG_DIR = path.resolve(__dirname, '..', 'packages');
-
 module.exports = {
     babel: (config) => {
         return {
@@ -26,11 +24,14 @@ module.exports = {
         options: {}
     },
     webpackFinal: async (config, { configType }) => {
-        config.resolve.alias = config.resolve.alias || {};
-        config.resolve.alias['@sagold/react-json-editor'] = path.resolve(PKG_DIR, 'react-json-editor', 'src');
-        config.resolve.alias['headless-json-editor'] = path.resolve(PKG_DIR, 'headless-json-editor', 'src');
-        config.resolve.alias['@sagold/rje-widgets'] = path.resolve(PKG_DIR, 'rje-widgets', 'src');
-        config.resolve.alias['@sagold/rje-code-widgets'] = path.resolve(PKG_DIR, 'rje-code-widgets', 'src');
+        config.resolve.alias = {
+            ...(config.resolve.alias ?? {}),
+            '@sagold/react-json-editor': getPackagePath('react-json-editor', 'src'),
+            'headless-json-editor': getPackagePath('headless-json-editor', 'src'),
+            '@sagold/rje-widgets': getPackagePath('rje-widgets', 'src'),
+            '@sagold/rje-code-widgets': getPackagePath('rje-code-widgets', 'src')
+        };
+
         config.module.rules.push({
             test: /\.scss$/,
             use: [
@@ -62,6 +63,11 @@ module.exports = {
         autodocs: true
     }
 };
+
+function getPackagePath(...folders) {
+    return path.resolve(__dirname, '..', 'packages', ...folders);
+}
+
 /**
  * This function is used to resolve the absolute path of a package.
  * It is needed in projects that use Yarn PnP or are set up within a monorepo.
