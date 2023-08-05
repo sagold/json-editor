@@ -2,6 +2,7 @@ import gp from '@sagold/json-pointer';
 import { invalidPathError, JsonError } from '../errors';
 import { Node } from '../types';
 import { getChildNode } from './getChildNode';
+import { json } from './json';
 
 /**
  * returns the node with the corresponding pointer
@@ -21,5 +22,5 @@ function step(node: Node, frags: string[], pointer: string[]): Node | JsonError 
     if (nextNode) {
         return step(nextNode, frags, pointer);
     }
-    return invalidPathError({ pointer: gp.join(pointer) });
+    return invalidPathError({ pointer: gp.join(pointer), schema: node.schema, value: json(node) });
 }

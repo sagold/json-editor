@@ -23,7 +23,12 @@ const InvalidJsonError: JsonError = {
     type: 'error',
     name: 'InvalidJsonError',
     code: 'invalid-json-error',
-    message: 'Invalid json format. Changes will be applied only if the json is valid.'
+    message: 'Invalid json format. Changes will be applied only if the json is valid.',
+    data: {
+        pointer: '#',
+        schema: {},
+        value: {}
+    }
 } as const;
 
 export const JsonWidget = (props) => {

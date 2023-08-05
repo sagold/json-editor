@@ -9,7 +9,8 @@ import {
     DefaultNodeOptions,
     JsonEditor,
     JsonError,
-    JsonSchema
+    JsonSchema,
+    isJsonError
 } from '@sagold/react-json-editor';
 import { Modal, useModal } from '../../components/modal/Modal';
 import { SectionHeader } from '../../components/sectionheader/SectionHeader';
@@ -81,7 +82,16 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const { description, editJson = { enabled: false } } = options;
     const showHeader = editJson.enabled || options.title || description || options.collapsed != null;
 
-    const insertOptions = editor.getArrayAddOptions(node);
+    const _insertOptions = editor.getArrayAddOptions(node);
+    let insertOptions;
+    if (isJsonError(_insertOptions)) {
+        console.log(_insertOptions);
+        console.error('insert options returned error');
+        insertOptions = [];
+    } else {
+        insertOptions = _insertOptions;
+    }
+
     const insertItem = useCallback(() => {
         editor.appendItem(node, insertOptions[0]);
         setShowContent(true);
@@ -200,7 +210,7 @@ export type ModalContentSelectItemProps = {
     close: () => void;
     editor: JsonEditor;
     node: ArrayNode;
-    items: JsonError | JsonSchema[];
+    items: JsonSchema[];
     onInsertItem?: () => void;
 };
 

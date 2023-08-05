@@ -1,26 +1,16 @@
-import {
-    Draft,
-    JsonPointer,
-    JsonError,
-    resolveAllOf,
-    isDynamicSchema,
-    resolveDynamicSchema
-} from 'json-schema-library';
+import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
 // import { deepEqual } from 'fast-equals';
 import { json } from '../../node/json';
 import { create } from '../../node/create';
-import { split, join } from '@sagold/json-pointer';
+import gp, { split, join } from '@sagold/json-pointer';
 import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
 import { invalidPathError } from '../../errors';
 import { getChildNodeIndex } from '../../node/getChildNode';
-import gp from '@sagold/json-pointer';
 import { deepEqual } from 'fast-equals';
 
 import { replaceChildNode } from './replaceChildNode';
 import { createChildNode } from './createChildNode';
 import { updateValueNode } from './updateValueNode';
-
-type UnknownObject = Record<string, unknown>;
 
 export function set<T extends Node = Node>(
     draft: Draft,
@@ -47,10 +37,10 @@ export function set<T extends Node = Node>(
         // root node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = json(ast);
-        const currentSchema = resolveDynamicSchema(draft, currentRootSchema, currentData);
+        const currentSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, currentData, pointer);
         const nextData = json(ast);
         gp.set(nextData, pointer, value);
-        const nextSchema = resolveDynamicSchema(draft, currentRootSchema, nextData);
+        const nextSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, nextData, pointer);
         if (!deepEqual(currentSchema, nextSchema)) {
             const fullNextData = draft.getTemplate(nextData, draft.getSchema(), { addOptionalProps: false });
             // console.log('root schema change', draft.getSchema(), "for", fullNextData);
@@ -99,6 +89,8 @@ function setNext(
         // given path is invalid
         return invalidPathError({
             pointer: join(parentNode.pointer, property, ...frags),
+            value,
+            schema: parentNode?.schema,
             reason: `no node found at '${parentNode.pointer}/${property}'`,
             where: 'resolving json pointer to node in `set`'
         });
@@ -146,6 +138,8 @@ function setNext(
         // given path is invalid
         return invalidPathError({
             pointer: join(parentNode.pointer, property, ...frags),
+            value: json(childNode),
+            schema: childNode.schema,
             reason: 'expected parent data to be object or array',
             where: 'resolving json pointer to node in transform.change'
         });
@@ -159,10 +153,10 @@ function setNext(
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = json(childNode);
-        const currentSchema = resolveDynamicSchema(draft, childSchema, currentData);
+        const currentSchema = resolveDynamicSchema(draft, childSchema, currentData, childNode.pointer);
         let nextData = json(childNode);
         nextData = gp.set(nextData, join(frags), value);
-        const nextSchema = resolveDynamicSchema(draft, childSchema, nextData);
+        const nextSchema = resolveDynamicSchema(draft, childSchema, nextData, childNode.pointer);
 
         if (!deepEqual(currentSchema, nextSchema)) {
             // console.log('child schema changes', currentSchema, '->', nextSchema);

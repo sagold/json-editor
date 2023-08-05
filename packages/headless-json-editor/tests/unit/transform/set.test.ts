@@ -1,4 +1,4 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { Draft07, Draft, isJsonError } from 'json-schema-library';
 import { create } from '../../../src/node/create';
 import { set } from '../../../src/transform/set';
 import { json } from '../../../src/node/json';
@@ -513,12 +513,16 @@ describe('set', () => {
         it('should switch between object schema', () => {
             const before = create(oneOf, { switch: { type: 'header', text: 'test' } }) as ObjectNode;
             const beforeSwitch = get(before, '/switch');
+            assert(!isJsonError(beforeSwitch));
+            // @ts-expect-error id is custom attribute
             assert.equal(beforeSwitch.schema.id, 'header');
 
             const [after, changes] = set(oneOf, before, '/switch/type', 'paragraph');
 
             assert(after.type !== 'error');
             const afterSwitch = get(after, '/switch');
+            assert(!isJsonError(afterSwitch));
+            // @ts-expect-error id is custom attribute
             assert.equal(afterSwitch.schema.id, 'paragraph');
             // check linking
             assertUnlinkedNodes(after, before, '/switch/type');
@@ -612,6 +616,8 @@ describe('set', () => {
 
             assert(after.type !== 'error');
             const firstNode = get(after, '/content/0');
+            assert(!isJsonError(firstNode));
+            // @ts-expect-error id is custom attribute
             assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
             // check linking
             assertUnlinkedNodes(after, before, '/content/0');
@@ -640,6 +646,9 @@ describe('set', () => {
 
             assert(after.type !== 'error');
             const firstNode = get(after, '/content/0');
+
+            assert(!isJsonError(firstNode));
+            // @ts-expect-error id is custom attribute
             assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
             assertUnlinkedNodes(after, before, '/content/0/type');
         });
@@ -666,6 +675,7 @@ describe('set', () => {
 
             const [after] = set<ObjectNode>(dependencies, before, '/test', 'with-value');
 
+            assert(!isJsonError(after));
             assert.equal(before.children[0].id, after.children[0].id);
         });
 

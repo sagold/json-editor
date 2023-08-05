@@ -15,10 +15,15 @@ const invalidJsonError: JsonError = {
     type: 'error',
     name: 'InvalidJsonError',
     code: 'invalid-json-error',
-    message: 'Invalid json format'
+    message: 'Invalid json format',
+    data: {
+        pointer: '#',
+        value: {},
+        schema: {}
+    }
 } as const;
 
-export type SimpleJsonOptions = {} & DefaultNodeOptions;
+export type SimpleJsonOptions = DefaultNodeOptions;
 
 export const SimpleJsonWidget = (props) => {
     if (props.node.schema.type === 'string') {

@@ -4,6 +4,7 @@ import gp from '@sagold/json-pointer';
 import { invalidPathError } from '../errors';
 import { updatePath } from './updatePath';
 import { unlinkPath } from './unlinkPath';
+import { json } from '../node/json';
 
 /**
  * move array item to another index
@@ -24,6 +25,8 @@ export function move(
         return [
             invalidPathError({
                 pointer: pointerToArray,
+                schema: arrayNode.schema,
+                value: json(arrayNode),
                 reason: `expected pointer to array, received ${arrayNode.type}`,
                 where: 'retrieving array in transform.insert'
             })

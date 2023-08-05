@@ -17,6 +17,9 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
     if (node.type === 'array' && !isNumber(property)) {
         return invalidPathError({
             pointer: node.pointer,
+            schema: node.schema,
+            value: json(node),
+            property,
             reason: `child property '${property}' to array is not a number`,
             where: 'resolving target node in transform.set'
         });

@@ -26,7 +26,9 @@ export function remove<T extends Node = Node>(
     if (!isParentNode(parentNode)) {
         return [
             invalidPathError({
-                pointer: pointer,
+                pointer: parentNode.pointer,
+                schema: parentNode.schema,
+                value: json(parentNode),
                 reason: `path does not lead to valid destination in data/tree at ${parentNode.pointer}`,
                 where: `transform: 'remove' data at '${pointer}'`
             })

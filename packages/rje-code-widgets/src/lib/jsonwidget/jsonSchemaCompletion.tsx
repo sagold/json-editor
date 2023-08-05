@@ -74,8 +74,8 @@ type GetCompletions = (
 const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for array values (array item) */
     array: (draft, schema, context, { pointer }) => {
-        const parentSchema = draft.getSchema(pointer, getData(context), schema);
-        if (isJsonError(parentSchema)) {
+        const parentSchema = draft.getSchema({ pointer, data: getData(context), schema });
+        if (!parentSchema || isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'array' on ${pointer}`, parentSchema);
             return null;
         }
@@ -97,6 +97,9 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         }
         if (parentSchema.items.oneOf) {
             const options = draft.getChildSchemaSelection(0, parentSchema);
+            if (isJsonError(options)) {
+                return null;
+            }
             return {
                 from: context.pos,
                 options: options.map((s: JsonSchema, index) => ({
@@ -123,8 +126,8 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     object: (draft, schema, context, { pointer }) => {
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
-        const parentSchema = draft.getSchema(pointer, data, schema);
-        if (isJsonError(parentSchema)) {
+        const parentSchema = draft.getSchema({ pointer, data, schema });
+        if (!parentSchema || isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'object' on ${pointer}`, parentSchema);
             return null;
         }
@@ -161,8 +164,8 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for a value, where no value is given */
     outside: (draft, schema, context, { pointer }) => {
         const data = getData(context);
-        const targetSchema = draft.getSchema(pointer, data, schema);
-        if (isJsonError(targetSchema)) {
+        const targetSchema = draft.getSchema({ pointer, data, schema });
+        if (!targetSchema || isJsonError(targetSchema)) {
             console.log(`failed resolving completion of 'outside' on ${pointer}`, targetSchema);
             return null;
         }
@@ -177,8 +180,8 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
         const parentPointer = getParentPointer(pointer);
         const data = getData(context);
         const targetData = get(data, pointer) ?? {};
-        const parentSchema = draft.getSchema(parentPointer, data, schema);
-        if (isJsonError(parentSchema)) {
+        const parentSchema = draft.getSchema({ pointer: parentPointer, data, schema });
+        if (!parentSchema || isJsonError(parentSchema)) {
             console.log(`failed resolving completion of 'property' on ${pointer}`, parentSchema);
             return null;
         }
@@ -206,21 +209,24 @@ const COMPLETION: Record<CursorLocationType, GetCompletions> = {
     /** completion for a partial value */
     value: (draft, schema, context, { pointer, cursor }) => {
         const data = getData(context);
-        const schemaOfLocation = draft.getSchema(pointer, data, schema) as JsonSchema;
-        if (isJsonError(schemaOfLocation)) {
+        const schemaOfLocation = draft.getSchema({ pointer, data, schema }) as JsonSchema;
+        if (!schemaOfLocation || isJsonError(schemaOfLocation)) {
             console.log(`failed resolving completion of 'value' on ${pointer}`, schemaOfLocation);
             return null;
         }
 
         if (schemaOfLocation.items && (schemaOfLocation.items as JsonSchema).oneOf) {
             const options = draft.getChildSchemaSelection(0, schemaOfLocation);
+            if (isJsonError(options)) {
+                return null;
+            }
             return {
                 from: context.pos,
                 options: options.map((s: JsonSchema, index) => ({
                     label: s.title || `${index + 1}. item (no title defined)`,
                     type: 'text',
                     info: () => renderInfo(s),
-                    detail: s.type,
+                    detail: s.type as string,
                     apply: JSON.stringify(draft.getTemplate(undefined, s))
                 }))
             };

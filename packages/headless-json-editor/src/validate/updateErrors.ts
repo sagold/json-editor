@@ -20,7 +20,7 @@ function filterErrors(errors: JsonError[]): JsonError[] {
  * perform validation and assign errors to corresponding nodes
  */
 export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') {
-    let startNode = get(root, pointer);
+    const startNode = get(root, pointer);
     if (startNode.type === 'error') {
         console.error(`Invalid pointer: '${pointer}' to validate - abort`);
         return;
@@ -42,7 +42,8 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointe
         const pointer = err.data?.pointer ?? '#';
         if (pointerToErrors[pointer] == null) {
             // retrieve new (dynamic) node
-            pointerToErrors[pointer] = get(root, pointer).errors;
+            const node = get(root, pointer) as Node; // @todo ignoring possible JsonError
+            pointerToErrors[pointer] = node.errors;
         }
         pointerToErrors[pointer].push(err);
     });

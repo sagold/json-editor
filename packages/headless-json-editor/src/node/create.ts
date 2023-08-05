@@ -1,5 +1,13 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JsonPointer, isJsonError, isDynamicSchema, reduceSchema } from 'json-schema-library';
+import {
+    getTypeOf,
+    Draft,
+    JsonPointer,
+    isJsonError,
+    isDynamicSchema,
+    reduceSchema,
+    JsonError
+} from 'json-schema-library';
 import {
     Node,
     NodeType,
@@ -149,7 +157,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             errors: []
         };
 
-        const variableSchema = getTypeOf(schema.items) === 'object' && isDynamicSchema(schema.items);
+        // const variableSchema = getTypeOf(schema.items) === 'object' && isDynamicSchema(schema.items);
         // console.log("create array items from", schema);
         // @todo replace by jlib helpers
         data.forEach((next, key) => {
@@ -168,7 +176,12 @@ export const NODES: Record<NodeType, CreateNode> = {
         const sourceSchema: JsonSchema =
             (schema.getOneOfOrigin && (schema.getOneOfOrigin().schema as JsonSchema)) || schema;
         // schema without any dynamic properties, those have been resolved by given data
-        const staticSchema = reduceSchema(draft, sourceSchema, data);
+        let staticSchema = reduceSchema(draft, sourceSchema, data, pointer);
+        // @todo reduceSchema now returns an error if a oneOf statement cannot be resolved
+        // per default the initial schema was returned, which we restore here...
+        if (staticSchema?.code === 'one-of-error') {
+            staticSchema = sourceSchema;
+        }
         // staticSchema._oneOfOrigin = schema._oneOfOrigin;
         // final data complemented with missing data from resolved static schema
         const resolvedData = draft.getTemplate(data, staticSchema, TEMPLATE_OPTIONS);

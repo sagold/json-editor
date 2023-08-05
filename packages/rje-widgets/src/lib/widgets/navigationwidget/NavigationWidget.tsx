@@ -7,7 +7,8 @@ import {
     ArrayNode,
     ObjectNode,
     DefaultNodeOptions,
-    Node
+    Node,
+    isJsonError
 } from '@sagold/react-json-editor';
 import { ModalContentSelectItem } from '../arraywidget/ArrayWidget';
 import { Icon } from '../../components/icon/Icon';
@@ -78,7 +79,14 @@ function ArrayChildNavigation({
         }
     }, [editor, node, sortable, disabled, readOnly]);
 
-    const insertOptions = editor.getArrayAddOptions(node);
+    const _insertOptions = editor.getArrayAddOptions(node);
+    let insertOptions;
+    if (isJsonError(_insertOptions)) {
+        insertOptions = [];
+    } else {
+        insertOptions = _insertOptions;
+    }
+
     const insertItem = useCallback(() => {
         editor.appendItem(node, insertOptions[0]);
     }, [node, editor, insertOptions]);

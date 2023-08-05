@@ -21,8 +21,8 @@ export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSc
         const { pointer, cursor, location } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;
         const data = getData(view.state.doc);
-        const schema = editor.draft.getSchema(`${absolutePointer}`, data, localSchema);
-        if (schema.type === 'error' || location === 'value') {
+        const schema = editor.draft.getSchema({ pointer: `${absolutePointer}`, data, schema: localSchema });
+        if (schema == null || schema.type === 'error' || location === 'value') {
             return null;
         }
 

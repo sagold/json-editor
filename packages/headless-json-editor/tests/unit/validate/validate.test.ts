@@ -1,4 +1,4 @@
-import { Draft07, Draft, JsonValidator, JsonError } from 'json-schema-library';
+import { Draft07, Draft, JsonValidator, JsonError, isJsonError } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { create } from '../../../src/node/create';
 import { get } from '../../../src/node/get';
@@ -30,6 +30,8 @@ describe('validate', () => {
         validate(core, root);
 
         const titleNode = get(root, '/title');
+
+        assert(!isJsonError(titleNode));
         assert.equal(titleNode.errors.length, 1);
     });
 
@@ -45,6 +47,8 @@ describe('validate', () => {
         validate(core, after);
 
         const titleNode = get(after, '/title');
+
+        assert(!isJsonError(titleNode));
         assert.equal(titleNode.errors.length, 0);
     });
 
@@ -53,8 +57,13 @@ describe('validate', () => {
 
         validate(core, root, '/caption');
 
-        assert.equal(get(root, '/caption').errors.length, 1, 'should have set error on caption');
-        assert.equal(get(root, '/title').errors.length, 0, 'should not have validated title');
+        const caption = get(root, '/caption');
+        assert(!isJsonError(caption));
+        assert.equal(caption.errors.length, 1, 'should have set error on caption');
+
+        const title = get(root, '/title');
+        assert(!isJsonError(title));
+        assert.equal(title.errors.length, 0, 'should not have validated title');
     });
 
     describe('async validation', () => {
@@ -66,7 +75,7 @@ describe('validate', () => {
                 code: 'async-error',
                 message: 'an async error',
                 name: 'AsyncError',
-                data: { pointer }
+                data: { pointer, schema, value }
             };
             return Promise.resolve(error);
         };
@@ -98,7 +107,9 @@ describe('validate', () => {
 
             await validate(async, root);
 
-            assert.equal(get(root, '/title').errors?.[0]?.code, 'async-error');
+            const title = get(root, '/title');
+            assert(!isJsonError(title));
+            assert.equal(title.errors?.[0]?.code, 'async-error');
         });
 
         it('should assign validation error once only', async () => {
@@ -107,7 +118,9 @@ describe('validate', () => {
             validate(async, root);
             await validate(async, root);
 
-            assert.equal(get(root, '/title').errors.length, 1);
+            const title = get(root, '/title');
+            assert(!isJsonError(title));
+            assert.equal(title.errors.length, 1);
         });
     });
 });

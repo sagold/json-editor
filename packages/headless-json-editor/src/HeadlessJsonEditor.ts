@@ -182,7 +182,7 @@ export class HeadlessJsonEditor {
     }
 
     addValue(pointer: string) {
-        const schema = this.draft.getSchema(pointer, json(this.state));
+        const schema = this.draft.getSchema({ pointer, data: json(this.state) });
         const value = this.draft.getTemplate(undefined, schema, this.templateOptions);
         return this.setValue(pointer, value);
     }
@@ -294,7 +294,7 @@ export class HeadlessJsonEditor {
      * @returns a list of available json subschemas to insert
      */
     getArrayAddOptions(node: ArrayNode) {
-        const schema = this.draft.getSchema(node.pointer, json(this.state));
+        const schema = this.draft.getSchema({ pointer: node.pointer, data: json(this.state) });
         return this.draft.getChildSchemaSelection(node.children.length, schema);
     }
 
