@@ -30,6 +30,10 @@
                 border: 0.3em solid transparent;
             }
         }
+
+        #{$radio-state--disabled} .rje-radio__label {
+            color: $color-light-grey-1;
+        }
     }
 }
 
@@ -60,6 +64,10 @@
                 background: rgb(var(--rje-color-dark-primary));
                 border: 0.3em solid transparent;
             }
+        }
+
+        #{$radio-state--disabled} .rje-radio__label {
+            color: $color-dark-grey-1;
         }
     }
 }
