@@ -9,8 +9,20 @@
         format(woff2);
 }
 
-.prismjs .language-js {
+.prismjs .language-js,
+.prismjs .language-ts {
     font-size: 0.8rem;
+}
+
+/* add support rje theme variables */
+#storybook-docs {
+    --rje-font-family: Inter, sans-serif;
+    --rje-color-light-primary: 31, 101, 141;
+    --rje-color-light-secondary: 9, 66, 98;
+    --rje-color-light-text: 7, 23, 32;
+    --rje-color-dark-primary: 50, 133, 180;
+    --rje-color-dark-secondary: 145, 192, 218;
+    --rje-color-dark-text: 235, 240, 241;
 }
 
 /* markdown styling */
@@ -35,73 +47,74 @@
 }
 
 .sbdocs.sbdocs-preview {
-    box-shadow: none; // drop shadow of story box
-    // border: none;
+    box-shadow: none; /* drop shadow of story box */
+}
+
+/* move global left and right padding to first elements in contents */
+#storybook-docs .sbdocs-wrapper {
+    padding-left: 0;
+    padding-right: 0;
+    .sbdocs-content > * {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 }
 
 /* inline story blocks have no visual separation from content */
-.inline.sbdocs.sbdocs-preview {
-    box-shadow: none; // drop shadow of story box
+#storybook-docs .inline.sbdocs.sbdocs-preview {
+    box-shadow: none; /* drop shadow of story box */
     border: none;
     overflow-y: visible;
 
+    /* set preview box to full width */
+    margin: 0;
+    .docs-story > :first-child {
+        margin: 0;
+        padding-top: 1rem;
+        padding-bottom: 0.25em;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        background-color: hsla(203, 50%, 30%, 0.05);
+
+        .innerZoomElementWrapper > * {
+            border: none;
+        }
+    }
+    .docs-story > :last-child {
+        background-color: hsla(203, 50%, 30%, 0.05);
+    }
+    /* -- preview box full width */
+
     .docs-story {
-        overflow-y: visible; // contents expand outside of story box
+        overflow-y: visible; /* contents expand outside of story box */
     }
 
     .docs-story > :first-child {
-        padding: 0;
-        z-index: 2; // contents may be above *show code* action
+        z-index: 2; /* contents may be above *show code* action */
         overflow-y: visible;
     }
 
     .docs-story > :last-child {
-        // .docblock-code-toggle wrapper div
+        /* .docblock-code-toggle wrapper div */
         position: relative;
         display: flex;
         justify-content: flex-end;
     }
 
     .docblock-code-toggle {
-        // border: 1px solid #ccc;
         border: none;
         border-radius: 4px;
-        // color: #8bc34a;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        background: transparent;
+        color: #777;
     }
 }
 
-#storybook-docs {
-    --rje-font-family: Inter, sans-serif;
-    --rje-color-light-primary: 31, 101, 141;
-    --rje-color-light-secondary: 9, 66, 98;
-    --rje-color-light-text: 7, 23, 32;
-    --rje-color-dark-primary: 50, 133, 180;
-    --rje-color-dark-secondary: 145, 192, 218;
-    --rje-color-dark-text: 235, 240, 241;
-}
-
-// #docs-root > .sbdocs.sbdocs-wrapper {
-//     background-color: rgba(0, 0, 0, 0.01);
-// }
-
-// /** remove fixed height on mdx-canvas */
-// .sbdocs-preview .docs-story > div > div[scale] {
-//     height: auto;
-// }
-
-// .sbdocs.sbdocs-preview {
-//     border-radius: 4px;
-//     box-shadow: none;
-//     border: 1px solid rgba(0, 0, 0, 0.08);
-//     /*    box-shadow: -2px 2px 4px rgba(100, 100, 0, 0.33);*/
-//     /*    border: 1px solid rgba(0, 0, 0, 0.1);*/
-// }
-
-// .sbdocs-preview .docs-story > div:first-child {
-//     padding: 16px;
-//     padding-bottom: 32px;
-//     /*    background-color: rgba(30, 112, 191, 0.02);*/
-// }
+/* remove fixed height on mdx-canvas
+.sbdocs-preview .docs-story > div > div[scale] {
+    height: auto;
+} */
 
 .rje-theme-decorator {
     display: flex;
@@ -129,52 +142,3 @@
         padding-top: 8px;
     }
 }
-
-
-
-// #storybook-docs {
-//     --rje-font-family: Inter, sans-serif;
-//     --rje-color-light-primary: 31, 101, 141;
-//     --rje-color-light-secondary: 9, 66, 98;
-//     --rje-color-light-text: 7, 23, 32;
-//     --rje-color-dark-primary: 50, 133, 180;
-//     --rje-color-dark-secondary: 145, 192, 218;
-//     --rje-color-dark-text: 235, 240, 241;
-
-//     // .sbdocs {
-//     //     background: #fafafa;
-//     // }
-
-//     // .sbdocs-preview.rje-theme {
-//     //     border: none;
-//     //     border-radius: 0;
-//     //     background: #fff;
-//     //     // padding: 0;
-
-//     //     .docs-story {
-//     //         overflow: visible;
-
-//     //         > :first-child {
-//     //             padding: 0;
-//     //             // padding-bottom: 1em;
-//     //         }
-
-//     //         .rje-form {
-//     //             background: #fff;
-//     //             padding: 0.5em 1em;
-//     //         }
-//     //     }
-//     // }
-// }
-
-
-
-// .rje-theme .rje-theme--light {
-//     padding: 16px;
-//     background: rgba(243, 243, 241, 1);
-// }
-
-// .rje-theme .rje-theme--dark {
-//     padding: 16px;
-//     background: rgba(26, 27, 25, 1);
-// }
