@@ -3,7 +3,7 @@
 
 @mixin switch-light {
     .rje-switch-input:checked {
-        @include primary-elevated-light;
+        @include primary-elevated(light);
         border-radius: $switch-radius;
 
         &:after {
@@ -11,7 +11,7 @@
         }
 
         #{$switch-state--focus} {
-            @include primary-elevated-light;
+            @include primary-elevated(light);
             border-radius: $switch-radius;
             background-color: rgb(var(--rje-color-light-secondary));
             &:after {
@@ -20,7 +20,7 @@
         }
 
         #{$switch-state--active} {
-            @include primary-flat-light;
+            @include primary-flat(light);
             border-radius: $switch-radius;
             border-width: 0.5px 0.5px 0 0;
             background-color: rgb(var(--rje-color-light-text));
@@ -30,7 +30,7 @@
         }
 
         #{$switch-state--disabled} {
-            @include primary-flat-light;
+            @include primary-flat(light);
             border-radius: $switch-radius;
             &:after {
                 color: $color-light-grey-1;
@@ -39,7 +39,7 @@
     }
 
     .rje-switch-input:not(:checked) {
-        @include flat-light;
+        @include flat(light);
         border-radius: $switch-radius;
         background: $color-white;
         // border-width: 0.5px 0.5px 0 0;
@@ -62,7 +62,7 @@
         }
 
         #{$switch-state--disabled} {
-            @include flat-light;
+            @include flat(light);
             border-radius: $switch-radius;
             &:after {
                 background-color: $color-light-grey-1;
@@ -73,7 +73,7 @@
 
 @mixin switch-dark {
     .rje-switch-input:checked {
-        @include primary-elevated-dark;
+        @include primary-elevated(dark);
         border-radius: $switch-radius;
         &:after {
             background: $color-black;
@@ -81,7 +81,7 @@
         }
 
         #{$switch-state--focus} {
-            @include primary-elevated-dark;
+            @include primary-elevated(dark);
             border-radius: $switch-radius;
             background-color: rgb(var(--rje-color-dark-secondary));
             &:after {
@@ -90,7 +90,7 @@
         }
 
         #{$switch-state--active} {
-            @include primary-flat-dark;
+            @include primary-flat(dark);
             border-radius: $switch-radius;
             border-width: 0.5px 0.5px 0 0;
             background-color: rgb(var(--rje-color-dark-text));
@@ -100,7 +100,7 @@
         }
 
         #{$switch-state--disabled} {
-            @include primary-flat-dark;
+            @include primary-flat(dark);
             border-radius: $switch-radius;
             background-color: $color-dark-grey-1;
             &:after {
@@ -109,7 +109,7 @@
         }
     }
     .rje-switch-input:not(:checked) {
-        @include elevated-dark;
+        @include elevated(dark);
         border-radius: $switch-radius;
         &:after {
             background: rgb(var(--rje-color-dark-primary));
@@ -130,7 +130,7 @@
         }
 
         #{$switch-state--disabled} {
-            @include flat-dark;
+            @include flat(dark);
             border-radius: $switch-radius;
             &:after {
                 background-color: $color-dark-grey-1;

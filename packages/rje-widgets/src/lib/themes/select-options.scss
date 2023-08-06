@@ -2,7 +2,7 @@
 
 @mixin select-options-light {
     .rje-select__options {
-        @include elevated-light;
+        @include elevated(light);
     }
 
     .rje-select__option {
@@ -34,7 +34,7 @@
 
 @mixin select-options-dark {
     .rje-select__options {
-        @include elevated-dark;
+        @include elevated(dark);
     }
 
     .rje-select__option {

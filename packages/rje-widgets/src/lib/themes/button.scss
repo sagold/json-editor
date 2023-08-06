@@ -3,26 +3,26 @@
 
 @mixin button-light {
     .rje-button--primary {
-        @include primary-elevated-light;
+        @include primary-elevated(light);
         color: $color-white;
 
         #{$button-state--focus} {
-            @include primary-elevated-light;
+            @include primary-elevated(light);
             background: rgb(var(--rje-color-light-secondary));
         }
 
         #{$button-state--active} {
-            @include primary-elevated-light;
+            @include primary-elevated(light);
             background: rgb(var(--rje-color-light-text));
         }
 
         #{$button-state--disabled} {
-            @include primary-flat-light;
+            @include primary-flat(light);
         }
     }
 
     .rje-button--secondary {
-        @include elevated-light;
+        @include elevated(light);
         color: rgb(var(--rje-color-light-primary));
 
         #{$button-state--focus} {
@@ -30,12 +30,12 @@
         }
 
         #{$button-state--active} {
-            @include elevated-light;
+            @include elevated(light);
             color: rgb(var(--rje-color-light-text));
         }
 
         #{$button-state--disabled} {
-            @include flat-light;
+            @include flat(light);
             color: rgba($color-light-grey-1, 1) !important;
         }
     }
@@ -60,40 +60,40 @@
 
 @mixin button-dark {
     .rje-button--primary {
-        @include primary-elevated-dark;
+        @include primary-elevated(dark);
         color: $color-black;
 
         #{$button-state--focus} {
-            @include primary-elevated-dark;
+            @include primary-elevated(dark);
             background: rgb(var(--rje-color-dark-secondary));
         }
 
         #{$button-state--active} {
-            @include primary-elevated-dark;
+            @include primary-elevated(dark);
             background: rgb(var(--rje-color-dark-text));
         }
 
         #{$button-state--disabled} {
-            @include primary-flat-dark;
+            @include primary-flat(dark);
         }
     }
 
     .rje-button--secondary {
-        @include elevated-dark;
+        @include elevated(dark);
         color: rgb(var(--rje-color-dark-primary));
 
         #{$button-state--focus} {
-            @include elevated-dark;
+            @include elevated(dark);
             color: rgb(var(--rje-color-dark-secondary));
         }
 
         #{$button-state--active} {
-            @include elevated-dark;
+            @include elevated(dark);
             color: rgb(var(--rje-color-dark-text));
         }
 
         #{$button-state--disabled} {
-            @include flat-dark;
+            @include flat(dark);
             color: rgba($color-dark-grey-1, 1) !important;
         }
     }

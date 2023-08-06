@@ -4,7 +4,7 @@
 @mixin input-light {
     .rje-input {
         input {
-            @include input-elevated-light;
+            @include input-elevated(light);
             color: $color-black;
             &:focus,
             &:hover {
@@ -41,7 +41,7 @@
         }
 
         input[disabled] {
-            @include input-flat-light;
+            @include input-flat(light);
             color: $color-light-grey-1;
         }
     }
@@ -50,7 +50,7 @@
 @mixin input-dark {
     .rje-input {
         input {
-            @include input-elevated-dark;
+            @include input-elevated(dark);
             color: $color-white;
             &:focus,
             &:hover {
@@ -87,7 +87,7 @@
         }
 
         input[disabled] {
-            @include input-flat-dark;
+            @include input-flat(dark);
             color: $color-dark-grey-1;
         }
     }

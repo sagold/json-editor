@@ -2,7 +2,7 @@
 
 @mixin tooltip-light {
     .rje-tooltip {
-        @include primary-elevated-light;
+        @include primary-elevated(light);
         * {
             color: $color-white !important;
         }
@@ -11,7 +11,7 @@
 
 @mixin tooltip-dark {
     .rje-tooltip {
-        @include primary-elevated-dark;
+        @include primary-elevated(dark);
         * {
             color: $color-black !important;
         }

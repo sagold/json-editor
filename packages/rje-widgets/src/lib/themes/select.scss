@@ -2,20 +2,20 @@
 
 @mixin select-light {
     .rje-select__button {
-        @include input-elevated-light;
+        @include input-elevated(light);
         &:focus,
         &:hover {
-            @include input-elevated-light;
+            @include input-elevated(light);
             border-color: rgb(var(--rje-color-light-primary));
         }
         &:active,
         &.rje-select__button--pressed,
         &[aria-expanded='true'] {
-            @include input-flat-light;
+            @include input-flat(light);
             border-color: rgb(var(--rje-color-light-primary));
         }
         &[disabled] {
-            @include input-flat-light;
+            @include input-flat(light);
             color: $color-light-grey-1;
             background-color: $color-light-fill;
         }
@@ -41,27 +41,29 @@
 
     .rje-overlay--select {
         margin-top: em(0.5 * $unit);
-        box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1), 0 6px 12px rgb(0, 0, 0, 0.08);
+        box-shadow:
+            0 1px 3px rgb(0, 0, 0, 0.1),
+            0 6px 12px rgb(0, 0, 0, 0.08);
     }
 }
 
 @mixin select-dark {
     .rje-select__button {
         color: rgb(var(--rje-color-dark-text));
-        @include input-elevated-dark;
+        @include input-elevated(dark);
         &:focus,
         &:hover {
-            @include input-elevated-dark;
+            @include input-elevated(dark);
             border-color: rgb(var(--rje-color-dark-primary));
         }
         &:active,
         &.rje-select__button--pressed,
         &[aria-expanded='true'] {
-            @include input-flat-dark;
+            @include input-flat(dark);
             border-color: rgb(var(--rje-color-dark-primary));
         }
         &[disabled] {
-            @include input-flat-dark;
+            @include input-flat(dark);
             color: $color-dark-grey-1;
             background-color: $color-dark-fill;
         }
@@ -87,6 +89,8 @@
 
     .rje-overlay--select {
         margin-top: em(0.5 * $unit);
-        box-shadow: 0 1px 3px rgb(0, 0, 0, 0.1), 0 6px 12px rgb(0, 0, 0, 0.08);
+        box-shadow:
+            0 1px 3px rgb(0, 0, 0, 0.1),
+            0 6px 12px rgb(0, 0, 0, 0.08);
     }
 }

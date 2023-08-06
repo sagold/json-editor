@@ -2,6 +2,7 @@
 
 $unit: 8 !default;
 $border-radius: 4px !default;
+$border-width: 1px !default;
 $base-font-size: 16 !default;
 $color-black: rgb(0, 0, 0) !default;
 $color-white: rgb(255, 255, 255) !default;
@@ -39,108 +40,86 @@ $color-dark-success: rgb(58, 213, 55) !default;
     -moz-osx-font-smoothing: grayscale;
 }
 
-@mixin surface-modal-light() {
-    background: $color-white;
-    border-width: 0.5px solid $color-light-stroke;
-    border-radius: $border-radius;
-}
-
-@mixin surface-modal-dark() {
-    background: $color-black;
-    border: 0.5px solid $color-dark-stroke;
-    border-radius: $border-radius;
-}
-
-@mixin primary-elevated-light() {
-    background: rgb(var(--rje-color-light-primary));
-    border: 0.5px solid $color-light-stroke;
+@mixin border-style($color) {
+    border: $border-width solid $color;
     border-radius: $border-radius;
     box-sizing: border-box;
 }
 
-@mixin primary-flat-light() {
-    background: $color-light-grey-1;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-light-grey-1;
-    box-sizing: border-box;
+@mixin surface-modal($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-stroke);
+        background: $color-black;
+    } @else if $theme == 'light' {
+        @include border-style($color-light-stroke);
+        background: $color-white;
+    }
 }
 
-@mixin input-elevated-light() {
-    background: $color-light-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-light-grey-1;
-    box-sizing: border-box;
-    caret-color: rgb(var(--rje-color-light-primary));
+@mixin elevated($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-grey-1);
+        background: $color-dark-fill;
+    } @else if $theme == 'light' {
+        @include border-style($color-light-grey-1);
+        background: $color-light-fill;
+    }
+}
+
+@mixin flat($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-grey-2);
+        background: $color-dark-fill;
+    } @else if $theme == 'light' {
+        @include border-style($color-light-grey-1);
+        background: $color-light-fill;
+    }
+}
+
+@mixin input-elevated($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-grey-2);
+        background: $color-dark-fill;
+        caret-color: rgb(var(--rje-color-dark-primary));
+    } @else if $theme == 'light' {
+        @include border-style($color-light-grey-1);
+        background: $color-light-fill;
+        caret-color: rgb(var(--rje-color-light-primary));
+    }
     outline: 0;
 }
 
-@mixin input-flat-light() {
-    background: $color-light-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-light-grey-1;
-    box-sizing: border-box;
-    caret-color: rgb(var(--rje-color-light-primary));
+@mixin input-flat($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-light-grey-1);
+        background: $color-light-fill;
+        caret-color: rgb(var(--rje-color-light-primary));
+    } @else if $theme == 'light' {
+        @include border-style($color-dark-grey-2);
+        background: $color-dark-fill;
+        caret-color: rgb(var(--rje-color-dark-primary));
+    }
     outline: 0;
 }
 
-@mixin elevated-light() {
-    background: $color-light-fill;
-    border: 0.5px solid $color-light-grey-1;
-    border-radius: $border-radius;
-    box-sizing: border-box;
+@mixin primary-elevated($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-stroke);
+        background: rgb(var(--rje-color-dark-primary));
+    } @else if $theme == 'light' {
+        @include border-style($color-light-stroke);
+        background: rgb(var(--rje-color-light-primary));
+    }
 }
 
-@mixin flat-light() {
-    background: $color-light-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-light-grey-1;
-    box-sizing: border-box;
-}
-
-@mixin primary-elevated-dark() {
-    box-sizing: border-box;
-    background: rgb(var(--rje-color-dark-primary));
-    border: 0.5px solid $color-dark-stroke;
-    border-radius: $border-radius;
-}
-
-@mixin primary-flat-dark() {
-    box-sizing: border-box;
-    background: $color-dark-grey-2;
-    border: 0.5px solid $color-dark-stroke;
-    border-radius: $border-radius;
-}
-
-@mixin input-elevated-dark() {
-    background: $color-dark-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-dark-grey-2;
-    box-sizing: border-box;
-    caret-color: rgb(var(--rje-color-dark-primary));
-    outline: 0;
-}
-
-@mixin input-flat-dark() {
-    background: $color-dark-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-dark-grey-2;
-    box-sizing: border-box;
-    caret-color: rgb(var(--rje-color-dark-primary));
-    outline: 0;
-}
-
-@mixin elevated-dark() {
-    background: $color-dark-fill;
-    border: 0.5px solid $color-dark-grey-1;
-    border-radius: $border-radius;
-    box-sizing: border-box;
-}
-
-@mixin flat-dark() {
-    background: $color-dark-fill;
-    border-radius: $border-radius;
-    border: 0.5px solid $color-dark-grey-2;
-    box-sizing: border-box;
+@mixin primary-flat($theme: 'light') {
+    @if $theme == 'dark' {
+        @include border-style($color-dark-stroke);
+        background: $color-dark-grey-2;
+    } @else if $theme == 'light' {
+        @include border-style($color-light-grey-1);
+        background: $color-light-grey-1;
+    }
 }
 
 @mixin clickable() {

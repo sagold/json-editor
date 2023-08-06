@@ -2,12 +2,12 @@
 
 @mixin modal-light {
     .rje-modal {
-        @include surface-modal-light;
+        @include surface-modal(light);
     }
 }
 
 @mixin modal-dark {
     .rje-modal {
-        @include surface-modal-dark;
+        @include surface-modal(dark);
     }
 }

@@ -3,7 +3,7 @@
 
 @mixin textarea-light {
     .rje-textarea {
-        @include input-elevated-light;
+        @include input-elevated(light);
         color: rgb(var(--rje-color-light-text));
 
         #{$textarea-state--focus} {
@@ -15,7 +15,7 @@
         }
 
         #{$textarea-state--disabled} {
-            @include input-flat-light;
+            @include input-flat(light);
             color: $color-light-grey-1;
         }
 
@@ -31,7 +31,7 @@
 
 @mixin textarea-dark {
     .rje-textarea {
-        @include input-elevated-dark;
+        @include input-elevated(dark);
         color: rgb(var(--rje-color-dark-text));
 
         #{$textarea-state--focus} {
@@ -43,7 +43,7 @@
         }
 
         #{$textarea-state--disabled} {
-            @include input-flat-dark;
+            @include input-flat(dark);
             color: $color-dark-grey-1;
         }
 

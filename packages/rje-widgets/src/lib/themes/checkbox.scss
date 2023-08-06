@@ -3,12 +3,12 @@
 @mixin checkbox-light {
     .rje-checkbox--unset,
     .rje-checkbox--checked {
-        @include primary-elevated-light;
+        @include primary-elevated(light);
         color: $color-white;
     }
 
     .rje-checkbox--unchecked {
-        @include input-elevated-light;
+        @include input-elevated(light);
     }
 
     .rje-checkbox--focused {
@@ -17,11 +17,11 @@
 
     .rje-checkbox-field.rje-label--disabled {
         .rje-checkbox--checked {
-            @include primary-flat-light;
+            @include primary-flat(light);
         }
 
         .rje-checkbox--unchecked {
-            @include input-flat-light;
+            @include input-flat(light);
         }
     }
 }
@@ -29,12 +29,12 @@
 @mixin checkbox-dark {
     .rje-checkbox--unset,
     .rje-checkbox--checked {
-        @include primary-elevated-dark;
+        @include primary-elevated(dark);
         color: $color-black;
     }
 
     .rje-checkbox--unchecked {
-        @include input-elevated-dark;
+        @include input-elevated(dark);
     }
 
     .rje-checkbox--focused {
@@ -43,10 +43,10 @@
 
     .rje-checkbox-field.rje-label--disabled {
         .rje-checkbox--checked {
-            @include primary-flat-dark;
+            @include primary-flat(dark);
         }
         .rje-checkbox--unchecked {
-            @include input-flat-dark;
+            @include input-flat(dark);
         }
     }
 }
