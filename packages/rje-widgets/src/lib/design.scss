@@ -41,26 +41,20 @@ $color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin surface-modal-light() {
     background: $color-white;
-    border-width: 0.5px;
-    border-style: solid;
-    border-color: $color-light-stroke;
+    border-width: 0.5px solid $color-light-stroke;
     border-radius: $border-radius;
 }
 
 @mixin surface-modal-dark() {
     background: $color-black;
-    border-width: 0.5px;
-    border-style: solid;
-    border-color: $color-dark-stroke;
+    border: 0.5px solid $color-dark-stroke;
     border-radius: $border-radius;
 }
 
 @mixin primary-elevated-light() {
     background: rgb(var(--rje-color-light-primary));
-    border-color: $color-light-stroke;
+    border: 0.5px solid $color-light-stroke;
     border-radius: $border-radius;
-    border-style: solid;
-    border-width: 0.5px;
     box-sizing: border-box;
 }
 
@@ -91,10 +85,8 @@ $color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin elevated-light() {
     background: $color-light-fill;
-    border-color: $color-light-grey-1; //$color-light-stroke;
+    border: 0.5px solid $color-light-grey-1;
     border-radius: $border-radius;
-    border-style: solid;
-    border-width: 0.5px;
     box-sizing: border-box;
 }
 
@@ -108,9 +100,7 @@ $color-dark-success: rgb(58, 213, 55) !default;
 @mixin primary-elevated-dark() {
     box-sizing: border-box;
     background: rgb(var(--rje-color-dark-primary));
-    border-color: $color-dark-stroke;
-    border-width: 0.5px;
-    border-style: solid;
+    border: 0.5px solid $color-dark-stroke;
     border-radius: $border-radius;
 }
 
@@ -141,10 +131,8 @@ $color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin elevated-dark() {
     background: $color-dark-fill;
-    border-color: $color-dark-grey-1; // $color-dark-stroke;
+    border: 0.5px solid $color-dark-grey-1;
     border-radius: $border-radius;
-    border-style: solid;
-    border-width: 0.5px;
     box-sizing: border-box;
 }
 

@@ -35,8 +35,7 @@
 }
 
 .sbdocs.sbdocs-preview {
-    // drop shadow of story box
-    box-shadow: none;
+    box-shadow: none; // drop shadow of story box
     // border: none;
 }
 
@@ -104,15 +103,34 @@
 //     /*    background-color: rgba(30, 112, 191, 0.02);*/
 // }
 
-// .story-columns {
-//     display: flex;
-//     gap: 8px;
-//     align-items: center;
-// }
+.rje-theme-decorator {
+    display: flex;
+    & > * {
+        flex-grow: 1;
+    }
 
-// .story-columns ~ .story-columns {
-//     padding-top: 8px;
-// }
+    .rje-theme--light {
+        padding: 16px;
+        background: rgba(243, 243, 241, 1);
+    }
+
+    .rje-theme--dark {
+        padding: 16px;
+        background: rgba(26, 27, 25, 1);
+    }
+
+    .story-columns {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .story-columns ~ .story-columns {
+        padding-top: 8px;
+    }
+}
+
+
 
 // #storybook-docs {
 //     --rje-font-family: Inter, sans-serif;
@@ -149,13 +167,7 @@
 //     // }
 // }
 
-// .rje-theme {
-//     display: flex;
-// }
 
-// .rje-theme > * {
-//     flex-grow: 1;
-// }
 
 // .rje-theme .rje-theme--light {
 //     padding: 16px;

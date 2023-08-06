@@ -1,21 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Theme, JsonForm, Button } from '@sagold/rje-widgets';
-import { JsonEditor, JsonSchema, errors } from '@sagold/react-json-editor';
+import { JsonEditor, errors } from '@sagold/react-json-editor';
 import { useState } from 'react';
 
-const meta: Meta<typeof JsonForm> = {
+type Story = StoryObj<typeof LoginStory>;
+const meta: Meta<typeof LoginStory> = {
     title: 'Examples/Login',
-    component: JsonForm
+    component: LoginStory
+};
+export default meta;
+
+type FormData = {
+    password: string;
+    username: string;
+    remember: boolean;
 };
 
-export default meta;
-type Story = StoryObj<typeof JsonForm>;
-
-export const Login = () => {
+function LoginStory({ userData = { password: '', username: '', remember: false } }) {
     const [editor, setEditor] = useState<JsonEditor | null>(null);
     const [disabled, setDisabled] = useState<boolean>(true);
-
-    console.log('editor', editor);
 
     return (
         <Theme>
@@ -26,7 +29,7 @@ export const Login = () => {
                 <div
                     className="login__header"
                     style={{
-                        borderBottom: '1px solid #ccc',
+                        borderBottom: '1px solid #eee',
                         fontSize: '1.5em',
                         fontWeight: 600,
                         padding: '1rem ',
@@ -38,8 +41,9 @@ export const Login = () => {
 
                 <JsonForm
                     ref={setEditor}
+                    data={userData}
                     // @todo set type of onChange data via form?
-                    onChange={(data: { username: string; password: string }) => {
+                    onChange={(data: FormData) => {
                         const hasErrors = editor != null && errors(editor.getNode()).length > 1;
                         const requiredInput = data.password?.length > 0 && data.username?.length > 0;
                         setDisabled(hasErrors || !requiredInput);
@@ -68,13 +72,14 @@ export const Login = () => {
                     }}
                 />
 
-                <div
-                    className="login__footer"
-                    style={{ padding: '1rem', fontSize: '1.1em', display: 'flex', justifyContent: 'flex-end' }}
-                >
-                    <Button disabled={disabled}>Login</Button>
+                <div className="login__footer" style={{ padding: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button variant="primary" disabled={disabled} onPress={() => console.log(editor?.getValue())}>
+                        Login
+                    </Button>
                 </div>
             </div>
         </Theme>
     );
-};
+}
+
+export const Login: Story = {};

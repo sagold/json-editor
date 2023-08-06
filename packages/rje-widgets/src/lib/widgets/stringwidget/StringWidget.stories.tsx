@@ -1,12 +1,30 @@
-import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import type { Meta, StoryObj } from '@storybook/react';
+import { JsonSchema, useJsonEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
-import { StringWidget } from './StringWidget';
+import { StringWidget, StringOptions } from './StringWidget';
 import { Theme } from '../../components/theme/Theme';
 
-export default {
+type StringWidgetStoryProps = {
+    data: string;
+    schema: JsonSchema;
+    format: 'text' | 'password';
+} & StringOptions;
+
+function StringWidgetStory({ data, schema, format, ...options }: StringWidgetStoryProps) {
+    const s = { ...schema, format };
+    const [node, editor] = useJsonEditor({ schema: s, widgets, data, validate: true });
+    return (
+        <Theme>
+            <StringWidget node={node} editor={editor} options={options} />
+        </Theme>
+    );
+}
+
+type Story = StoryObj<StringWidgetStoryProps>;
+
+const meta: Meta<StringWidgetStoryProps> = {
     title: 'packages/rje-widgets/StringWidget',
-    component: StringWidget,
+    component: StringWidgetStory,
     argTypes: {
         data: {
             control: { type: 'text' }
@@ -42,40 +60,34 @@ export default {
     }
 };
 
-const Template: ComponentStory<typeof StringWidget> = ({ data, schema, format, ...options }) => {
-    const s = { ...schema, format };
-    const [node, editor] = useJsonEditor({ schema: s, widgets, data, validate: true });
-    return (
-        <Theme>
-            <StringWidget node={node} editor={editor} options={options} />
-        </Theme>
-    );
-};
+export default meta;
 
-export const Default = Template.bind({});
-Default.args = {
-    data: 'some input string',
-    liveUpdate: false,
-    icon: undefined,
-    tag: undefined,
-    swapIconPosition: false,
-    disabled: false,
-    readOnly: false,
-    required: false,
-    schema: {
-        title: 'Default string widget',
-        type: 'string',
-        maxLength: 20,
-        description: 'options could go into storybook controls'
+export const Default: Story = {
+    args: {
+        data: 'some input string',
+        liveUpdate: false,
+        icon: undefined,
+        tag: undefined,
+        swapIconPosition: false,
+        disabled: false,
+        readOnly: false,
+        required: false,
+        schema: {
+            title: 'Default string widget',
+            type: 'string',
+            maxLength: 20,
+            description: 'options could go into storybook controls'
+        }
     }
 };
 
-export const ErrorState = Template.bind({});
-ErrorState.args = {
-    data: 'some input string',
-    schema: {
-        title: 'Default string widget',
-        type: 'string',
-        maxLength: 4
+export const ErrorState: Story = {
+    args: {
+        data: 'some input string',
+        schema: {
+            title: 'Default string widget',
+            type: 'string',
+            maxLength: 4
+        }
     }
 };

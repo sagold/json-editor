@@ -1,42 +1,40 @@
-import { ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { TextArea } from './TextArea';
 import { ThemeDecorator } from '../ThemeDecorator';
 
-export default {
+type Story = StoryObj<typeof TextArea>;
+const meta: Meta<typeof TextArea> = {
+    title: 'packages/rje-widgets/components/TextArea',
     decorators: [ThemeDecorator],
-    component: TextArea,
-    title: 'packages/rje-widgets/components/TextArea'
+    component: TextArea
+};
+export default meta;
+
+export const Default: Story = {
+    args: {
+        disabled: false,
+        defaultValue: 'Suchbegriff',
+        title: 'Input as String',
+        setValue: (value) => console.log('value', value)
+    }
 };
 
-const Template: ComponentStory<typeof TextArea> = ({ ...options }) => {
-    return <TextArea {...options} />;
+export const Placeholder: Story = {
+    args: {
+        disabled: false,
+        placeholder: 'Placeholder',
+        title: 'A required input',
+        required: true,
+        setValue: (value) => console.log('value', value)
+    }
 };
 
-export const Default = Template.bind({});
-Default.args = {
-    emitOnChange: false,
-    disabled: false,
-    defaultValue: 'Suchbegriff',
-    title: 'Input as String',
-    onPress: (value) => console.log('value', value)
-};
-
-export const Placeholder = Template.bind({});
-Placeholder.args = {
-    emitOnChange: false,
-    disabled: false,
-    placeholder: 'Placeholder',
-    title: 'A required input',
-    required: true,
-    onPress: (value) => console.log('value', value)
-};
-
-export const Error = Template.bind({});
-Error.args = {
-    emitOnChange: false,
-    disabled: false,
-    error: true,
-    defaultValue: 'Suchbegriff',
-    title: 'Input with Error',
-    onPress: (value) => console.log('value', value)
+export const Error: Story = {
+    args: {
+        disabled: false,
+        error: true,
+        defaultValue: 'Suchbegriff',
+        title: 'Input with Error',
+        setValue: (value) => console.log('value', value)
+    }
 };
