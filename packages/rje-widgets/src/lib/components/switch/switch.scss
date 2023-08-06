@@ -3,7 +3,7 @@
 @import '../icon/icon';
 
 $switch-width: 56 !default;
-$switch-height: 32 !default;
+$switch-height: 30 !default;
 $switch-radius: em($switch-height) !default;
 $switch-icon-size: 24 !default;
 $switch-thumb-size: 28 !default;
@@ -52,15 +52,21 @@ $switch-state--enabled: '&:not([disabled])';
             height: em($switch-thumb-size, $switch-icon-size);
             width: em($switch-thumb-size, $switch-icon-size);
             overflow: hidden;
-            left: em(1.5);
             margin: 0;
+            /*
+            left: em(1.5);
             margin-top: 0.075em;
+            */
+            left: 0;
         }
 
         &:checked {
             &:after {
                 content: 'check';
+                /*
                 left: calc(100% - em(1.5));
+                */
+                left: 100%;
                 transform: translate(-100%, 0);
             }
         }
@@ -71,7 +77,7 @@ $switch-state--enabled: '&:not([disabled])';
                 cursor: pointer;
             }
             &:active:after {
-                width: 60%;
+                /* width: 60%; // no squishy animation */
             }
         }
     }

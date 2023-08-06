@@ -68,10 +68,10 @@ $color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin flat($theme: 'light') {
     @if $theme == 'dark' {
-        @include border-style($color-dark-grey-2);
+        @include border-style($color-dark-grey-1);
         background: $color-dark-fill;
     } @else if $theme == 'light' {
-        @include border-style($color-light-grey-2);
+        @include border-style($color-light-grey-1);
         background: $color-light-fill;
     }
 }

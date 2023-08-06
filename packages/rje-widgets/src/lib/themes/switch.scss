@@ -2,6 +2,7 @@
 @import '../components/switch/switch';
 
 @mixin switch-light {
+
     .rje-switch-input:checked {
         @include primary-elevated(light);
         border-radius: $switch-radius;
@@ -22,7 +23,6 @@
         #{$switch-state--active} {
             @include primary-flat(light);
             border-radius: $switch-radius;
-            border-width: 0.5px 0.5px 0 0;
             background-color: rgb(var(--rje-color-light-text));
             &:after {
                 color: rgb(var(--rje-color-light-text));
@@ -42,7 +42,6 @@
         @include flat(light);
         border-radius: $switch-radius;
         background: $color-white;
-        // border-width: 0.5px 0.5px 0 0;
         &:after {
             background-color: rgb(var(--rje-color-light-primary));
             border-radius: $switch-radius;
@@ -92,7 +91,6 @@
         #{$switch-state--active} {
             @include primary-flat(dark);
             border-radius: $switch-radius;
-            border-width: 0.5px 0.5px 0 0;
             background-color: rgb(var(--rje-color-dark-text));
             &:after {
                 color: rgb(var(--rje-color-dark-text));
