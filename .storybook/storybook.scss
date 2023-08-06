@@ -62,13 +62,24 @@
         margin: 0;
     }
 
+    + .inline.sbdocs.sbdocs-preview {
+        margin-top: 1em;
+    }
+
     .docblock-source {
         margin: 0;
         box-shadow: none;
         border-radius: 0;
-        .prismjs span {
-            font-size: 0.8rem !important; /* on mobile this still does not apply */
+        .prismjs {
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+    #storybook-docs .code.code--inline .docblock-source .prismjs {
+        font-size: 0.7rem !important; /* on mobile this still does not apply */
     }
 }
 

@@ -105,12 +105,14 @@ To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique
 
 In case you want a selection to always be associated with the selected schema, identified by an _id_, it his highly recommended tp use the additional flag `oneOfProperty`. This will always select the corresponding schema, regardless of additional validation errors. So for the above example we add
 
+<div className="code code--inline">
 ```ts
 {
   oneOfProperty: 'id', // identify subschema be the property 'id'
   oneOf: { ... }
 }
 ```
+</div>
 
 <Canvas className="inline" of={ObjectProperties.OneOfProperty} />
 
