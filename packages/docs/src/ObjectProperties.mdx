@@ -71,6 +71,7 @@ json-schema containing an oneOf statement will show a selection to choose the su
 
 Note that json-schema requires distinguishable json-schema. If there is an undistinguishable schema (same validation results) the user interface will not behave correctly:
 
+<div className="code code--inline">
 ```ts
 // invalid oneOf-schema
 {
@@ -80,11 +81,13 @@ Note that json-schema requires distinguishable json-schema. If there is an undis
   }]
 }
 ```
+</div>
 
 <Canvas className="inline" of={ObjectProperties.InvalidOneOfObject} />
 
 To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique property:
 
+<div className="code code--inline">
 ```ts
 // valid oneOf-schema
 {
@@ -94,6 +97,7 @@ To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique
   }]
 }
 ```
+</div>
 
 <Canvas className="inline" of={ObjectProperties.TypedOneOfObject} />
 

@@ -9,11 +9,6 @@
         format(woff2);
 }
 
-.prismjs .language-js,
-.prismjs .language-ts {
-    font-size: 0.8rem;
-}
-
 /* add support rje theme variables */
 #storybook-docs {
     --rje-font-family: Inter, sans-serif;
@@ -57,6 +52,23 @@
     .sbdocs-content > * {
         margin-left: 1rem;
         margin-right: 1rem;
+    }
+}
+
+/* custom codeblock (wrapped) */
+#storybook-docs .code.code--inline {
+    &,
+    pre {
+        margin: 0;
+    }
+
+    .docblock-source {
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+        .prismjs span {
+            font-size: 0.8rem;
+        }
     }
 }
 

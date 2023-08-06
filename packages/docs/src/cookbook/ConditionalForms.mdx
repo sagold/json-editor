@@ -1,6 +1,5 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
-import { JsonForm } from '@sagold/react-json-editor';
-import { widgets, Theme } from '@sagold/rje-widgets';
+import { ConditionalForm } from './ConditionalForms.stories';
 
 <Meta title="Cookbook/ConditionalForms" />
 
@@ -14,62 +13,11 @@ import { widgets, Theme } from '@sagold/rje-widgets';
 
 The following example will persist user input, even if the additional user form is deactivated. The data of the user form is still stored on data and thus being exported. In case you do not want to have the data set on export, you need to remove the data on your own.
 
-<Canvas>
-  <Theme>
-    <JsonForm
-      widgets={widgets}
-      options={{ title: false }}
-      addOptionalProps={false}
-      schema={{
-        type: 'object',
-        title: 'allOf with single if-then-else statements',
-        required: ['trigger'],
-        properties: {
-          trigger: {
-            title: 'with additional field',
-            type: 'boolean',
-            default: false
-          },
-          optional: {
-            options: { hidden: true, title: false },
-            type: 'object',
-            required: ['title'],
-            properties: {
-              title: {
-                title: 'Optional form',
-                type: 'string'
-              }
-            }
-          }
-        },
-        allOf: [
-          {
-            if: {
-              required: ['trigger'],
-              properties: {
-                trigger: {
-                  const: true
-                }
-              }
-            },
-            then: {
-              required: ['optional'],
-              properties: {
-                optional: {
-                  options: { hidden: false },
-                  minLength: 1
-                }
-              }
-            }
-          }
-        ]
-      }}
-    />
-  </Theme>
-</Canvas>
+<Canvas className="inline" of={ConditionalForm} />
 
 Our optional property `optional` is defined on the objet properties, so that it will never be removed automatically
 
+<div className="code code--inline">
 ```js
 properties: {
   optional: {
@@ -80,11 +28,13 @@ properties: {
   }
 }
 ```
+</div>
 
 Just make sure that the optional object has no validation methods.
 
 In order to hide this property when the condition does not match, we use the json-editor option `hidden` and set it to `true`
 
+<div className="code code--inline">
 ```js
 properties: {
   optional: {
@@ -95,9 +45,11 @@ properties: {
   }
 }
 ```
+</div>
 
 Now, to add the dynamic property we introduce an _if-then_ condition to show our optional property for a condition. We could add the _if-then_ statement directly on our object, but we will wrap it in an _allOf_-statement to support multiple conditions on this object.
 
+<div className="code code--inline">
 ```js
 allOf: [
   {
@@ -120,5 +72,6 @@ allOf: [
     }
   }
 ```
+</div>
 
 The if condition validates if a property `trigger` (required + properties) matches `true`. If the property trigger fulfills our criteria, we update our optional value to be required `required: ['optional']`, validated (`minLength: 1`) and show it in the user form by overwriting the json-editor options with `options: { hidden: true }`.
