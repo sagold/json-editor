@@ -6,20 +6,12 @@
     }
 
     .rje-field textarea,
-    .rje-field input[number],
-    .rje-field input[text] {
+    .rje-field input[type='number'],
+    .rje-field input[type='password'],
+    .rje-field input[type='text'] {
         width: 100%;
         box-sizing: border-box;
     }
-
-    /* style: form description - conflicts with theming option */
-    // .rje-field--error {
-    //     textarea,
-    //     input {
-    //         border-width: 1px;
-    //         border-style: solid;
-    //     }
-    // }
 
     .rje-field__header .rje-description {
         padding-top: 0;
