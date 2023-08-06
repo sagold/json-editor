@@ -71,14 +71,14 @@ $color-dark-success: rgb(58, 213, 55) !default;
         @include border-style($color-dark-grey-2);
         background: $color-dark-fill;
     } @else if $theme == 'light' {
-        @include border-style($color-light-grey-1);
+        @include border-style($color-light-grey-2);
         background: $color-light-fill;
     }
 }
 
 @mixin input-elevated($theme: 'light') {
     @if $theme == 'dark' {
-        @include border-style($color-dark-grey-2);
+        @include border-style($color-dark-grey-1);
         background: $color-dark-fill;
         caret-color: rgb(var(--rje-color-dark-primary));
     } @else if $theme == 'light' {
@@ -91,11 +91,11 @@ $color-dark-success: rgb(58, 213, 55) !default;
 
 @mixin input-flat($theme: 'light') {
     @if $theme == 'dark' {
-        @include border-style($color-light-grey-1);
+        @include border-style($color-dark-grey-1);
         background: $color-light-fill;
         caret-color: rgb(var(--rje-color-light-primary));
     } @else if $theme == 'light' {
-        @include border-style($color-dark-grey-2);
+        @include border-style($color-light-grey-1);
         background: $color-dark-fill;
         caret-color: rgb(var(--rje-color-dark-primary));
     }
@@ -117,8 +117,8 @@ $color-dark-success: rgb(58, 213, 55) !default;
         @include border-style($color-dark-stroke);
         background: $color-dark-grey-2;
     } @else if $theme == 'light' {
-        @include border-style($color-light-grey-1);
-        background: $color-light-grey-1;
+        @include border-style($color-light-stroke);
+        background: $color-light-grey-2;
     }
 }
 
