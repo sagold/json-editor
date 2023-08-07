@@ -12,8 +12,13 @@
         display: inline-block;
         width: 1em;
         height: 1em;
-        font-size: em(19);
+        font-size: em(22);
         text-align: center;
         box-sizing: border-box;
+
+        .rje-icon {
+            margin-left: -0.04em;
+            line-height: 0.96;
+        }
     }
 }

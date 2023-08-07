@@ -30,15 +30,20 @@ $color-border: rgba(7, 23, 32, 0.08);
 .rje-array-item {
     display: flex;
     justify-content: stretch;
-    padding: em(16) 0 em(16) em(16);
+    padding: 0 0 0 em(16);
 
     & > .rje-field {
         flex-grow: 1;
+        padding-top: em(12);
+        padding-bottom: em(16);
     }
 
     &:not(:hover) > .rje-array-item__menu .rje-button {
         color: $color-light-grey-1;
     }
+}
+.rje-array-item + .rje-array-item {
+    margin-top: 2px;
 }
 
 .rje-array-item:nth-child(odd) {
@@ -67,7 +72,7 @@ $color-border: rgba(7, 23, 32, 0.08);
 
     .rje-field {
         padding-left: em(4);
-        padding-bottom: em(4);
+        // padding-bottom: em(4);
     }
 
     .rje-drag__container {

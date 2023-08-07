@@ -115,10 +115,10 @@ $color-dark-success: rgb(58, 213, 55) !default;
 @mixin primary-flat($theme: 'light') {
     @if $theme == 'dark' {
         @include border-style($color-dark-stroke);
-        background: $color-dark-grey-2;
+        background: $color-dark-grey-1;
     } @else if $theme == 'light' {
         @include border-style($color-light-stroke);
-        background: $color-light-grey-2;
+        background: $color-light-grey-1;
     }
 }
 

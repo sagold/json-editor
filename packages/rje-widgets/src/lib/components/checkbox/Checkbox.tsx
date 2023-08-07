@@ -53,13 +53,13 @@ export function Checkbox({ disabled, children, required, error, ...props }: Chec
             <VisuallyHidden>
                 <input {...inputProps} {...focusProps} ref={ref} />
             </VisuallyHidden>
-            <Icon
+            <span
                 className={classnames('rje-checkbox', `rje-checkbox--${state.isSelected ? 'checked' : 'unchecked'}`, {
                     'rje-checkbox--focused': isFocusVisible
                 })}
             >
-                {state.isSelected ? 'check' : Whitespace}
-            </Icon>
+                <Icon>{state.isSelected ? 'check' : Whitespace}</Icon>
+            </span>
             {children}
         </Label>
     );

@@ -11,6 +11,9 @@
 }
 
 .rje-object__property > .rje-object__actions {
+    button {
+        padding: 0;
+    }
     button:not(:hover) {
         opacity: 0.3;
     }
