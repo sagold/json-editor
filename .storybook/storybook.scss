@@ -39,6 +39,18 @@
     h2 + p {
         margin-top: 0;
     }
+
+    h3 {
+        font-size: 1em;
+        padding-top: 1.25em;
+
+        code {
+            border: none;
+            margin: 0;
+            background: transparent;
+            padding: 0;
+        }
+    }
 }
 
 .sbdocs.sbdocs-preview {

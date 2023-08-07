@@ -5,7 +5,6 @@ import { JsonSchema } from 'headless-json-editor';
 const meta: Meta<typeof JsonForm> = {
     component: JsonForm
 };
-
 export default meta;
 type Story = StoryObj<typeof JsonForm>;
 
@@ -52,7 +51,7 @@ export const RequiredProperties: Story = {
     args: {
         className: 'rje-theme rje-theme--light',
         schema: {
-            title: "required: ['requiredProperty']",
+            title: 'required: [ property ]',
             type: 'object',
             required: ['requiredProperty'],
             properties: {
