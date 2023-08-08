@@ -1,1 +1,6 @@
 @import './lib/rje-code-widgets';
+
+.rje-field--json {
+    // prevent codemirror from growing in width
+    width: 100%;
+}

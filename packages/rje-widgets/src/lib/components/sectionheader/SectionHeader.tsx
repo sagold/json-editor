@@ -31,7 +31,6 @@ export function SectionHeaderLabel({
     const portalContainer = useRef<HTMLDivElement>(null);
     const { popoverProps, popoverTriggerProps } = usePopover({
         placement: 'bottom end'
-        //     placement: 'top'
     });
 
     return (

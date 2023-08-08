@@ -1,10 +1,70 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
-import widgets, { Button, Icon } from '@sagold/rje-widgets';
+import widgets, { Button, Icon, Theme } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { useState, useRef, useEffect } from 'react';
 import theme from '../../../rje-widgets/src/lib/theme';
 import './rje-code-widgets.scss';
+
+type Story = StoryObj<typeof JsonWidget>;
+const meta: Meta<typeof JsonWidget> = {
+    title: 'packages/rje-code-widgets/JsonWidget',
+    component: JsonWidget,
+    argTypes: {
+        // data: {
+        //     control: { type: 'text' }
+        // },
+        // liveUpdate: {
+        //     control: { type: 'boolean' }
+        // },
+        // disabled: {
+        //     control: { type: 'boolean' }
+        // },
+        // readOnly: {
+        //     control: { type: 'boolean' }
+        // },
+        // required: {
+        //     control: { type: 'boolean' }
+        // }
+    },
+    render(args) {
+        const editorRef = useRef<JsonEditor>(null);
+        const [data, setData] = useState<unknown>(null);
+        const [history, setHistory] = useState<HistoryPluginInstance>();
+        useEffect(() => {
+            editorRef.current && setHistory(editorRef.current.plugin('history') as HistoryPluginInstance);
+        });
+        return (
+            <Theme>
+                <div className="rje-form rje-theme rje-theme--light" style={theme}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <Button
+                            icon="undo"
+                            onPress={() => history?.undo()}
+                            disabled={history?.getUndoCount() === 0}
+                        ></Button>
+                        <Button
+                            icon="redo"
+                            onPress={() => history?.redo()}
+                            disabled={history?.getRedoCount() === 0}
+                        ></Button>
+                    </div>
+                    <JsonForm
+                        style={{ maxWidth: 680 }}
+                        addOptionalProps={false}
+                        schema={args.schema}
+                        onChange={setData}
+                        data={args.data}
+                        ref={editorRef}
+                        plugins={[HistoryPlugin]}
+                        widgets={[JsonWidgetPlugin, ...widgets]}
+                    />
+                </div>
+            </Theme>
+        );
+    }
+};
+export default meta;
 
 const propertySchema = {
     type: 'object',
@@ -120,216 +180,188 @@ const dataObject = {
     yadda: 123
 };
 
-export default {
-    component: JsonWidget,
-    title: 'packages/rje-code-widgets/JsonWidget'
-} as ComponentMeta<typeof JsonWidget>;
-
-const Template: ComponentStory<typeof JsonWidget> = (args) => {
-    const editorRef = useRef<JsonEditor>(null);
-    const [data, setData] = useState<unknown>(null);
-    const [history, setHistory] = useState<HistoryPluginInstance>();
-    useEffect(() => {
-        editorRef.current && setHistory(editorRef.current.plugin('history') as HistoryPluginInstance);
-    });
-    return (
-        <div className="rje-form rje-theme--light" style={theme}>
-            <div style={{ display: 'flex', gap: 8 }}>
-                <Button icon="undo" onPress={() => history?.undo()} disabled={history?.getUndoCount() === 0}></Button>
-                <Button icon="redo" onPress={() => history?.redo()} disabled={history?.getRedoCount() === 0}></Button>
-            </div>
-            <JsonForm
-                style={{ maxWidth: 680 }}
-                addOptionalProps={false}
-                schema={args.schema}
-                onChange={setData}
-                data={args.data}
-                ref={editorRef}
-                plugins={[HistoryPlugin]}
-                widgets={[JsonWidgetPlugin, ...widgets]}
-            />
-        </div>
-    );
-};
-
-export const Primary = Template.bind({});
-Primary.args = {
-    schema: defaultSchema,
-    data: {
-        jsonString: JSON.stringify(dataObject, null, 2),
-        jsonStringRef: JSON.stringify(dataObject, null, 2),
-        jsonData: dataObject
+export const Primary: Story = {
+    args: {
+        schema: defaultSchema,
+        data: {
+            jsonString: JSON.stringify(dataObject, null, 2),
+            jsonStringRef: JSON.stringify(dataObject, null, 2),
+            jsonData: dataObject
+        }
     }
 };
 
-export const AllOfIfThenElse = Template.bind({});
-AllOfIfThenElse.args = {
-    schema: {
-        format: 'json',
-        title: 'allOf with multiple if-then-else statements',
-        description:
-            '**allOf** statement can combined multiple **if-then-else** statements. In this case, we want to add additional properties to the schema based on the presence of a specfic value. In case the schema is toggled, we do not want to lose its data in case the initial value is restored',
-        type: 'object',
-        required: ['addSchema'],
-        properties: {
-            addSchema: {
-                title: 'add schema?',
-                type: 'boolean',
-                default: false
+export const AllOfIfThenElse: Story = {
+    args: {
+        schema: {
+            format: 'json',
+            title: 'allOf with multiple if-then-else statements',
+            description:
+                '**allOf** statement can combined multiple **if-then-else** statements. In this case, we want to add additional properties to the schema based on the presence of a specfic value. In case the schema is toggled, we do not want to lose its data in case the initial value is restored',
+            type: 'object',
+            required: ['addSchema'],
+            properties: {
+                addSchema: {
+                    title: 'add schema?',
+                    type: 'boolean',
+                    default: false
+                },
+                additionalSchema: {
+                    title: 'initial schema',
+                    type: 'string'
+                },
+                secondSchema: {
+                    title: 'second schema, based on additionalSchema having at least 1 character',
+                    type: 'string'
+                }
             },
-            additionalSchema: {
-                title: 'initial schema',
-                type: 'string'
-            },
-            secondSchema: {
-                title: 'second schema, based on additionalSchema having at least 1 character',
-                type: 'string'
-            }
+            allOf: [
+                {
+                    if: {
+                        properties: {
+                            addSchema: {
+                                type: 'boolean',
+                                const: true
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['additionalSchema']
+                    }
+                },
+                {
+                    if: {
+                        required: ['additionalSchema'],
+                        properties: {
+                            additionalSchema: {
+                                type: 'string',
+                                minLength: 1
+                            }
+                        }
+                    },
+                    then: {
+                        required: ['secondSchema']
+                    }
+                }
+            ]
         },
-        allOf: [
-            {
-                if: {
-                    properties: {
-                        addSchema: {
-                            type: 'boolean',
-                            const: true
-                        }
-                    }
-                },
-                then: {
-                    required: ['additionalSchema']
-                }
-            },
-            {
-                if: {
-                    required: ['additionalSchema'],
-                    properties: {
-                        additionalSchema: {
-                            type: 'string',
-                            minLength: 1
-                        }
-                    }
-                },
-                then: {
-                    required: ['secondSchema']
-                }
-            }
-        ]
-    },
-    data: {}
+        data: {}
+    }
 };
 
-export const OneOfSupport = Template.bind({});
-OneOfSupport.args = {
-    data: {
-        filters: {
-            typeA: [
-                {
-                    op: 'nin',
-                    property: 'energy_class',
-                    values: []
-                }
-            ],
-            typeB: []
-        }
-    },
-    schema: {
-        title: 'Filter example',
-        type: 'object',
-        required: ['filters'],
-        format: 'json',
-        properties: {
+export const OneOfSupport: Story = {
+    args: {
+        data: {
             filters: {
-                title: 'Filters',
-                type: 'object',
-                required: ['typeA', 'typeB'],
-                properties: {
-                    typeA: {
-                        title: 'Filter for TypeA',
-                        $ref: '#/$defs/filter'
-                    },
-                    typeB: {
-                        title: 'Filter for TypeB',
-                        $ref: '#/$defs/filter'
+                typeA: [
+                    {
+                        op: 'nin',
+                        property: 'energy_class',
+                        values: []
                     }
-                }
+                ],
+                typeB: []
             }
         },
-        $defs: {
-            filter: {
-                type: 'array',
-                items: {
-                    oneOfProperty: 'op',
-                    oneOf: [
-                        { $ref: '#/$defs/in:filter' },
-                        { $ref: '#/$defs/nin:filter' },
-                        { $ref: '#/$defs/eq:filter' }
-                    ]
+        schema: {
+            title: 'Filter example',
+            type: 'object',
+            required: ['filters'],
+            format: 'json',
+            properties: {
+                filters: {
+                    title: 'Filters',
+                    type: 'object',
+                    required: ['typeA', 'typeB'],
+                    properties: {
+                        typeA: {
+                            title: 'Filter for TypeA',
+                            $ref: '#/$defs/filter'
+                        },
+                        typeB: {
+                            title: 'Filter for TypeB',
+                            $ref: '#/$defs/filter'
+                        }
+                    }
+                }
+            },
+            $defs: {
+                filter: {
+                    type: 'array',
+                    items: {
+                        oneOfProperty: 'op',
+                        oneOf: [
+                            { $ref: '#/$defs/in:filter' },
+                            { $ref: '#/$defs/nin:filter' },
+                            { $ref: '#/$defs/eq:filter' }
+                        ]
+                    },
+                    additionalItems: false
                 },
-                additionalItems: false
-            },
-            'in:filter': {
-                title: 'in-filter',
-                description:
-                    'in-filter accepts only entries that have one of the following values assigned for the given property.',
-                type: 'object',
-                properties: {
-                    op: {
-                        const: 'in'
-                    },
-                    property: {
-                        title: 'Column Key',
-                        type: 'string',
-                        minLength: 1
-                    },
-                    values: {
-                        title: 'List of allowed values',
-                        type: 'array',
-                        items: {
-                            type: 'string'
+                'in:filter': {
+                    title: 'in-filter',
+                    description:
+                        'in-filter accepts only entries that have one of the following values assigned for the given property.',
+                    type: 'object',
+                    properties: {
+                        op: {
+                            const: 'in'
+                        },
+                        property: {
+                            title: 'Column Key',
+                            type: 'string',
+                            minLength: 1
+                        },
+                        values: {
+                            title: 'List of allowed values',
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
                         }
                     }
-                }
-            },
-            'nin:filter': {
-                title: 'nin-filter',
-                description:
-                    'nin-filter accepts only entries that have **not one of the following** values assigned for the given property.',
-                type: 'object',
-                properties: {
-                    op: {
-                        const: 'nin'
-                    },
-                    property: {
-                        title: 'Column Key',
-                        type: 'string',
-                        minLength: 1
-                    },
-                    values: {
-                        title: 'List of forbidden values',
-                        type: 'array',
-                        items: {
-                            type: 'string'
+                },
+                'nin:filter': {
+                    title: 'nin-filter',
+                    description:
+                        'nin-filter accepts only entries that have **not one of the following** values assigned for the given property.',
+                    type: 'object',
+                    properties: {
+                        op: {
+                            const: 'nin'
+                        },
+                        property: {
+                            title: 'Column Key',
+                            type: 'string',
+                            minLength: 1
+                        },
+                        values: {
+                            title: 'List of forbidden values',
+                            type: 'array',
+                            items: {
+                                type: 'string'
+                            }
                         }
                     }
-                }
-            },
-            'eq:filter': {
-                title: 'eq-filter',
-                description: 'eq-filter accepts only entries that exactly have this value on the specified property.',
-                type: 'object',
-                properties: {
-                    op: {
-                        const: 'eq'
-                    },
-                    property: {
-                        title: 'Column Key',
-                        type: 'string',
-                        minLength: 1
-                    },
-                    values: {
-                        title: 'Value that has to match',
-                        type: 'string'
+                },
+                'eq:filter': {
+                    title: 'eq-filter',
+                    description:
+                        'eq-filter accepts only entries that exactly have this value on the specified property.',
+                    type: 'object',
+                    properties: {
+                        op: {
+                            const: 'eq'
+                        },
+                        property: {
+                            title: 'Column Key',
+                            type: 'string',
+                            minLength: 1
+                        },
+                        values: {
+                            title: 'Value that has to match',
+                            type: 'string'
+                        }
                     }
                 }
             }

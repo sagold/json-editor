@@ -37,7 +37,7 @@ export const jsonSchemaTooltip = (editor: JsonEditor, nodePointer = '#', localSc
             above: true,
             create(view) {
                 root.render(
-                    <div className="rje-tooltip rje-tooltip--jsonschema">
+                    <div className="rje-code-tooltip rje-code-tooltip--jsonschema">
                         {schema.title && <h1>{schema.title}</h1>}
                         {schema.description && <Markdown>{schema.description}</Markdown>}
                         {/*<span className="rje-tooltip--pointer">{absolutePointer}</span>*/}
