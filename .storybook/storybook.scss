@@ -153,8 +153,12 @@
 
 .rje-theme-decorator {
     display: flex;
+    flex-wrap: wrap;
+
     & > * {
         flex-grow: 1;
+        box-sizing: border-box;
+        min-width: 50%;
     }
 
     .rje-theme--light {
