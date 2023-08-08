@@ -23,6 +23,10 @@ $color-dark-error: rgb(241, 31, 44) !default;
 $color-dark-warning: rgb(248, 193, 49) !default;
 $color-dark-success: rgb(58, 213, 55) !default;
 
+$shadow-elevated:
+    0 1px 3px rgb(0, 0, 0, 0.1),
+    0 6px 12px rgb(0, 0, 0, 0.08);
+
 @mixin icon-font() {
     user-select: none;
     max-width: 2em;
