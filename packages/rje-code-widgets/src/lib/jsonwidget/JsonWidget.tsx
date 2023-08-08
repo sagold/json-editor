@@ -41,7 +41,7 @@ export const JsonWidget = (props) => {
 export type JsonWidgetOptions = {
     schema?: JsonSchema;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
-    liveUpdate?: boolean;
+    // liveUpdate?: boolean;
     setup?: ReactCodeMirrorProps['basicSetup'];
 } & Pick<ReactCodeMirrorProps, 'theme' | 'height' | 'minHeight' | 'maxHeight' | 'indentWithTab'> &
     DefaultNodeOptions;
@@ -62,11 +62,14 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
     );
     const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
     const onChangeListener = {};
-    if (options.liveUpdate) {
-        onChangeListener['onChange'] = onChange;
-    } else {
-        onChangeListener['ref'] = ref;
-    }
+    // @todo disabled live update - live update changes data (template values &
+    // errors) causing the cursor to jump to position 0 while typing
+    // if (options.liveUpdate) {
+    //     onChangeListener['onChange'] = onChange;
+    // } else {
+    //     onChangeListener['ref'] = ref;
+    // }
+    onChangeListener['ref'] = ref;
 
     const extensions = [
         jsonSyntax(),
