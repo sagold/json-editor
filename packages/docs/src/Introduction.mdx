@@ -3,15 +3,26 @@ import { JsonForm } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-widgets';
 import { schema } from './examples/data/featureToggleForm';
 import { NpmPackageName } from './NpmPackageName';
-import logo from '../../../images/he-full-trans-2000x564.png';
+import logo from '../../../images/he-square-700x540.png';
 
 <Meta title="Introduction" />
 
-<a href="https://GitHub.com/sagold/json-editor/">
+<a href="https://GitHub.com/sagold/json-editor/" style={{ position: 'absolute' }}>
   <img src="https://badgen.net/badge/icon/github?icon=github&label" />
 </a>
 
-<img src={logo} style={{ margin: 0 }} />
+<div
+  style={{
+    margin: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    borderBottom: '1px solid #333',
+    overflow: 'hidden',
+    padding: '0 1em'
+  }}
+>
+  <img src={logo} style={{ marginBottom: -1, width: '100%', maxWidth: 400 }} />
+</div>
 
 <h1 style={{ textAlign: 'center' }}>json-editor documentation</h1>
 
