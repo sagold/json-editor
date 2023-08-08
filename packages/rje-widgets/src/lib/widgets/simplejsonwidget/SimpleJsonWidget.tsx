@@ -6,7 +6,8 @@ import {
     ParentNode,
     json,
     JsonError,
-    DefaultNodeOptions
+    DefaultNodeOptions,
+    errors
 } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { TextArea } from '../../components/textarea/TextArea';
@@ -33,7 +34,7 @@ export const SimpleJsonWidget = (props) => {
 };
 
 export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, string>(({ node, options, setValue }) => {
-    const [error, setError] = useState<JsonError | undefined>();
+    const [error, setError] = useState<JsonError | undefined>(undefined);
     let value = node.value;
     if (value) {
         try {
@@ -84,14 +85,18 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
     const valueString = JSON.stringify(value, null, 2);
     const [error, setError] = useState<JsonError | undefined>();
     const isValidConst = node.schema.const != null && node.errors.length === 0;
+
+    const jsonErrors = errors(node);
+
     return (
-        <WidgetField widgetType="simple-json" node={node} options={options} additionalError={error}>
+        <WidgetField widgetType="simple-json" node={node} options={options} errors={jsonErrors} additionalError={error}>
             <TextArea
                 defaultValue={valueString}
                 disabled={options.disabled || isValidConst}
                 maxLength={node.schema.maxLength}
                 minLength={node.schema.minLength}
                 placeholder={options.placeholder}
+                error={jsonErrors.length > 0 || error !== undefined}
                 liveUpdate={false}
                 readOnly={options.readOnly === true}
                 required={options.required === true}
@@ -100,6 +105,7 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
                         setValue(JSON.parse(value));
                         setError(undefined);
                     } catch (e) {
+                        console.log('failed parsing value');
                         setError(invalidJsonError);
                     }
                 }}

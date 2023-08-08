@@ -2,6 +2,7 @@ import { CSSProperties, ReactNode, forwardRef, ForwardRefExoticComponent, PropsW
 import { Node, DefaultNodeOptions, isParentNode, JsonError, isJsonError } from 'headless-json-editor';
 import { WidgetError } from './WidgetError';
 import { WidgetDescription } from './WidgetDescription';
+import classNames from 'classnames';
 
 export type WidgetFieldProps = {
     widgetType: string;
@@ -13,6 +14,9 @@ export type WidgetFieldProps = {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
+    /* if set, errors will be taken from this list instead of node.errors.
+        Example: Display all errors of children in this widget */
+    errors?: JsonError[];
 };
 
 type WidgetFieldComponent = ForwardRefExoticComponent<
@@ -27,27 +31,34 @@ type WidgetFieldComponent = ForwardRefExoticComponent<
  * container for root of a widget
  */
 export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function WidgetField(
-    { widgetType, node, options, children, additionalError, showDescription, showError, className, style },
+    { widgetType, node, options, children, errors, additionalError, showDescription, showError, className, style },
     ref
 ) {
+    const listOfErrors = Array.isArray(errors) ? errors : node.errors;
+
     const parentNode = isParentNode(node);
     const schemaType = node.schema.type;
-    const hasError = node.errors.length > 0 || isJsonError(additionalError);
+    const hasError = listOfErrors.length > 0 || isJsonError(additionalError);
     const { disabled = false } = options;
-    const classNames = [
-        'rje-field',
-        `rje-field--${parentNode ? 'parent' : 'value'}`,
-        `rje-field--${schemaType}`,
-        `rje-field--${widgetType}`,
-        disabled ? 'rje-field--disabled' : 'rje-field--enabled',
-        hasError ? ' rje-field--error' : 'rje-field--valid',
-        className ?? '',
-        ...(options.classNames ?? [])
-    ];
     return (
-        <div className={classNames.join(' ')} data-type={schemaType} data-id={node.pointer} style={style} ref={ref}>
+        <div
+            className={classNames(
+                'rje-field',
+                `rje-field--${parentNode ? 'parent' : 'value'}`,
+                `rje-field--${schemaType}`,
+                `rje-field--${widgetType}`,
+                disabled ? 'rje-field--disabled' : 'rje-field--enabled',
+                hasError ? ' rje-field--error' : 'rje-field--valid',
+                className,
+                options.classNames
+            )}
+            data-type={schemaType}
+            data-id={node.pointer}
+            style={style}
+            ref={ref}
+        >
             {children}
-            {showError !== false && <WidgetError errors={additionalError ? [additionalError] : node.errors} />}
+            {showError !== false && <WidgetError errors={additionalError ? [additionalError] : listOfErrors} />}
             {showDescription !== false && <WidgetDescription>{options.description}</WidgetDescription>}
         </div>
     );

@@ -46,7 +46,8 @@ Default.args = {
         title: 'Default string widget',
         type: 'object',
         format: 'json',
-        description: 'options could go into storybook controls'
+        description: 'options could go into storybook controls',
+        properties: {}
     }
 };
 
@@ -56,6 +57,14 @@ ErrorState.args = {
     schema: {
         title: 'Default string widget',
         type: 'object',
-        format: 'json'
+        format: 'json',
+        required: ['title'],
+        properties: {
+            title: {
+                type: 'string',
+                minLength: 4,
+                default: '123'
+            }
+        }
     }
 };
