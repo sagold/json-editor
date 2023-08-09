@@ -83,11 +83,27 @@
 
     border-radius: 100%;
     border-color: $color-light-stroke;
-    background-color: $color-light-error;
+    // background-color: $color-light-error;
     box-sizing: border-box;
 
     &.cm-lint-marker-error {
+        position: relative;
         content: '' !important;
+        &:after {
+            font-family: 'Icon';
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 48;
+            content: 'report';
+            color: $color-light-error;
+            position: absolute;
+            top: 0;
+            line-height: 0.75;
+            font-size: 1.3em;
+            left: -0.15em;
+        }
     }
 }
 
