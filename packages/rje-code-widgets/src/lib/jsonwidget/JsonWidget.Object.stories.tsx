@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { JsonForm } from '@sagold/react-json-editor';
 import widgets, { Theme } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './JsonWidget';
+import { ThemeDecorator } from '../../../../rje-widgets/src/lib/components/ThemeDecorator';
 import '../rje-code-widgets.scss';
 
 type Story = StoryObj<typeof JsonWidget>;
@@ -9,16 +10,16 @@ const meta: Meta<typeof JsonWidget> = {
     title: 'packages/rje-code-widgets/JsonWidget/Object',
     component: JsonWidget,
     argTypes: {},
+    decorators: [ThemeDecorator],
     render({ schema, data }) {
         return (
-            <Theme>
-                <JsonForm
-                    addOptionalProps={false}
-                    schema={schema}
-                    data={data}
-                    widgets={[JsonWidgetPlugin, ...widgets]}
-                />
-            </Theme>
+            <JsonForm
+                addOptionalProps={false}
+                schema={schema}
+                data={data}
+                widgets={[JsonWidgetPlugin, ...widgets]}
+                style={{ width: '100%', minWidth: 460 }}
+            />
         );
     }
 };
@@ -29,6 +30,9 @@ export const Default: Story = {
         schema: {
             type: 'object',
             format: 'json',
+            options: {
+                theme: 'dark'
+            },
             required: ['string', 'number', 'object'],
             properties: {
                 string: {

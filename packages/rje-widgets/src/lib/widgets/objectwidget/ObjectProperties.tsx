@@ -16,29 +16,35 @@ export function ObjectProperties({ node, editor, options, withInlineDelete }: Ob
     options.readOnly && (childOptions.readOnly = true);
     return (
         <div className="rje-object__properties" style={{ boxShadow: 'none', border: 0 }}>
-            {node.children.map((child) => (
-                <div key={child.id} className="rje-object__property">
-                    <Widget
-                        node={child}
-                        editor={editor}
-                        options={{ ...childOptions, isOptional: node.optionalProperties.includes(child.property) }}
-                    />
-                    {withInlineDelete &&
-                        editor.optionalProperties &&
-                        node.optionalProperties.includes(child.property) && (
-                            <div className="rje-object__actions">
-                                <Button
-                                    variant="text"
-                                    onPress={() => {
-                                        editor.removeValue(child.pointer);
-                                    }}
-                                >
-                                    <Icon>close</Icon>
-                                </Button>
-                            </div>
-                        )}
-                </div>
-            ))}
+            {node.children.map(
+                (child) =>
+                    child.options.hidden === false && (
+                        <div key={child.id} className="rje-object__property">
+                            <Widget
+                                node={child}
+                                editor={editor}
+                                options={{
+                                    ...childOptions,
+                                    isOptional: node.optionalProperties.includes(child.property)
+                                }}
+                            />
+                            {withInlineDelete &&
+                                editor.optionalProperties &&
+                                node.optionalProperties.includes(child.property) && (
+                                    <div className="rje-object__actions">
+                                        <Button
+                                            variant="text"
+                                            onPress={() => {
+                                                editor.removeValue(child.pointer);
+                                            }}
+                                        >
+                                            <Icon>close</Icon>
+                                        </Button>
+                                    </div>
+                                )}
+                        </div>
+                    )
+            )}
         </div>
     );
 }
