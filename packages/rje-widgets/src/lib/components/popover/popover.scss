@@ -6,17 +6,22 @@
 
         .rje-popover__arrow {
             position: absolute;
-        }
 
-        &[data-placement='bottom'] {
-            transform: translateX(-50%) rotate(180deg);
-            transform-origin: top;
-        }
+            &[data-placement='bottom'] {
+                bottom: 100%;
+                transform: translate(-50%) rotate(180deg);
+            }
 
-        &[data-placement='top'] {
-            bottom: 0;
-            transform: translateY(100%);
+            &[data-placement='top'] {
+                top: 100%;
+                transform: translate(-50%);
+            }
         }
+    }
+
+    .rje-popover__arrow {
+        stroke: black;
+        fill: white;
     }
 
     .rje-popover__panel {

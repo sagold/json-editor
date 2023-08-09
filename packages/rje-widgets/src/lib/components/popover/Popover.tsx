@@ -92,6 +92,7 @@ type PopoverPortalProps = {
     /** overlay trigger state exposing close action */
     overlayTriggerState: OverlayTriggerState;
     portalContainer?: React.RefObject<Element>;
+    withArrow?: boolean;
 } & Omit<AriaPopoverProps, 'popoverRef' | 'triggerRef'>;
 
 /**
@@ -105,6 +106,7 @@ function PopoverPortal({
     overlayTriggerState,
     overlayTriggerRef,
     offset = 8,
+    withArrow = false,
     ...props
 }: PopoverPortalProps) {
     const popoverRef = useRef<HTMLDivElement>(null);
@@ -126,9 +128,17 @@ function PopoverPortal({
                 className={classnames('rje-popover', className)}
                 style={{ zIndex: 100 }}
             >
-                {/*<svg {...arrowProps} className="rje-popover__arrow" data-placement={placement} width="12" height="6">
-                    <path d="M0 0,L6 6,L12 0" />
-                </svg>*/}
+                {withArrow && (
+                    <svg
+                        {...arrowProps}
+                        className="rje-popover__arrow"
+                        data-placement={placement}
+                        width="16"
+                        height="8"
+                    >
+                        <path d="M0 0,L8 8,L16 0" />
+                    </svg>
+                )}
                 <DismissButton onDismiss={overlayTriggerState.close} />
                 {children}
                 <DismissButton onDismiss={overlayTriggerState.close} />
