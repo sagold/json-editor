@@ -8,6 +8,10 @@
 @import './lib/widgets/navigationwidget/navigation-widget';
 
 .rje-form {
+    .rje-section-header .rje-widget-action--menu {
+        padding: 0;
+    }
+
     .rje-form--parent {
         width: 100%;
     }

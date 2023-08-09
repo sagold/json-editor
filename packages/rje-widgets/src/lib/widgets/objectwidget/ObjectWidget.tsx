@@ -96,7 +96,11 @@ function WidgetActions({ editor, node, options }: WidgetActionsProps) {
 
     return (
         <div ref={portalContainer}>
-            <ButtonControlled {...popoverTriggerProps} variant="text" className="rje-widget-action">
+            <ButtonControlled
+                {...popoverTriggerProps}
+                variant="text"
+                className="rje-widget-action rje-widget-action--menu"
+            >
                 <Icon>menu</Icon>
             </ButtonControlled>
             <Popover {...popoverProps} portalContainer={portalContainer} title="my modal">
