@@ -24,7 +24,7 @@ function Popover({ children, state, triggerRef, placement, portalContainer }) {
     const popoverRef = useRef<HTMLDivElement>(null);
     const { popoverProps } = usePopover(
         {
-            placement,
+            containerPadding: 0, // containerPadding has a default of 12...
             triggerRef,
             popoverRef
         },
