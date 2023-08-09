@@ -6,7 +6,7 @@ export default {
     decorators: [ThemeDecorator],
     component: StringInput,
     title: 'packages/rje-widgets/components/StringInput',
-    args: {
+    argTypes: {
         type: {
             control: { type: 'select' },
             options: ['text', 'password']
