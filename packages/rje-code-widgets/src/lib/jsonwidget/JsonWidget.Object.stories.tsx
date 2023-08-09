@@ -9,13 +9,26 @@ type Story = StoryObj<typeof JsonWidget>;
 const meta: Meta<typeof JsonWidget> = {
     title: 'packages/rje-code-widgets/JsonWidget/Object',
     component: JsonWidget,
-    argTypes: {},
+    argTypes: {
+        theme: {
+            control: { type: 'select' },
+            options: ['light', 'dark']
+        }
+    },
     decorators: [ThemeDecorator],
-    render({ schema, data }) {
+    render({ schema, data, theme }) {
+        const s = {
+            ...schema,
+            options: {
+                ...schema.options,
+                theme
+            }
+        };
+
         return (
             <JsonForm
                 addOptionalProps={false}
-                schema={schema}
+                schema={s}
                 data={data}
                 widgets={[JsonWidgetPlugin, ...widgets]}
                 style={{ width: '100%', minWidth: 460 }}

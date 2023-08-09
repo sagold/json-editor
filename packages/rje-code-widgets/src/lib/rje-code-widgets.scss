@@ -1,36 +1,67 @@
 @import '../../../rje-widgets/src/lib/design';
 
+.rje-theme--light {
+    .cm-editor {
+        @include border-style($color-light-grey-1);
+    }
+}
+
+.rje-theme--dark {
+    .cm-editor {
+        @include border-style($color-dark-grey-1);
+    }
+}
+
 .cm-theme-light,
 .cm-theme-dark {
     border: 0px solid transparent !important;
     color: rgba(0, 0, 0, 0.87);
 }
 
-.rje-theme--light {
+.cm-theme-light {
     .cm-gutters {
         background-color: $color-light-fill;
     }
 
     .cm-editor {
-        @include border-style($color-light-grey-1);
-
         &.cm-focused {
             border-color: rgb(var(--rje-color-light-primary));
         }
     }
+
+    .cm-editor .cm-gutters {
+        backdrop-filter: blur(25px);
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+        overflow: hidden;
+    }
+
+    .cm-activeLine {
+        background-color: rgb(var(--rje-color-light-primary), 0.2);
+    }
+
+    .cm-gutterElement.cm-activeLineGutter {
+        background-color: rgb(var(--rje-color-light-secondary), 0.3);
+    }
 }
 
-.rje-theme--dark {
+.cm-theme-dark {
     .cm-gutters {
         background-color: $color-dark-fill;
     }
 
     .cm-editor {
-        @include border-style($color-dark-grey-1);
-
         &.cm-focused {
             border-color: rgb(var(--rje-color-dark-primary));
         }
+    }
+
+    .cm-activeLine {
+        background-color: rgb(var(--rje-color-dark-primary), 0.2);
+    }
+
+    .cm-gutterElement.cm-activeLineGutter {
+        background-color: rgb(var(--rje-color-dark-secondary), 0.3);
     }
 }
 
@@ -42,13 +73,6 @@
 .field.error > .cm-theme-dark > .cm-editor {
     border-color: #9f3a38;
     background: rgba(224, 180, 180, 0.25);
-}
-
-.cm-theme-light .cm-editor .cm-gutters {
-    backdrop-filter: blur(25px);
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-    overflow: hidden;
 }
 
 .cm-lint-marker {
