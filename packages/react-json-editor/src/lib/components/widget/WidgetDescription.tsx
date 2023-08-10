@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Markdown from 'markdown-to-jsx';
 
 export type WidgetDescriptionProps = {
     enabled?: boolean;
@@ -10,5 +11,9 @@ export function WidgetDescription({ children, className, enabled }: WidgetDescri
     if (enabled === false || children == null || children === '') {
         return null;
     }
-    return <div className={`rje-description ${className ?? ''}`.trim()}>{children}</div>;
+    return (
+        <div className={`rje-description ${className ?? ''}`.trim()}>
+            <Markdown>{`${children}`}</Markdown>
+        </div>
+    );
 }

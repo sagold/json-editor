@@ -4281,6 +4281,7 @@ __metadata:
   resolution: "@sagold/react-json-editor@workspace:packages/react-json-editor"
   dependencies:
     headless-json-editor: ^0.27.2
+    markdown-to-jsx: ^7.2.1
   languageName: unknown
   linkType: soft
 

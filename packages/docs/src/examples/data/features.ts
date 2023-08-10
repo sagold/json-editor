@@ -64,7 +64,8 @@ export const schema = {
                 label: 'username',
                 placeholder: 'your username'
             },
-            description: 'Text inputs can have a placeholder, icon and label'
+            description:
+                'Text inputs can have a placeholder, icon and label. Description texts support basic markdown syntax like **bold**, _italic_, ~~strikethrough~~, [links](#) and `code`.'
         },
         stringValidation: {
             title: 'Text input with valiation rules',
@@ -113,7 +114,10 @@ export const schema = {
         nullField: {
             type: 'null',
             title: '',
-            description: 'Null type with empty title and without separator'
+            description: 'Null type with empty title and without separator',
+            options: {
+                descriptionInline: true
+            }
         },
         numberHeadline: {
             type: 'null',
