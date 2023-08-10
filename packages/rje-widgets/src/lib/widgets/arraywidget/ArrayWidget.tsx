@@ -173,12 +173,18 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
                     {insertOptions.length > 1 ? (
                         <ButtonControlled
+                            variant="text"
                             disabled={!isAddEnabled || options.disabled}
                             icon="add"
                             {...insertModalTriggerProps}
                         />
                     ) : (
-                        <Button disabled={!isAddEnabled || options.disabled} icon="add" onPress={insertItem} />
+                        <Button
+                            variant="text"
+                            disabled={!isAddEnabled || options.disabled}
+                            icon="add"
+                            onPress={insertItem}
+                        />
                     )}
                 </div>
             )}

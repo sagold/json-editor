@@ -2,11 +2,10 @@
 
 @mixin widget-description-component {
     .rje-description {
+        padding-top: $unit * 0.5px;
+        font-weight: 400;
         font-size: em(0.85 * $base-font-size);
         line-height: 1.3em;
-        font-weight: 400;
-
-        padding-top: $unit * 0.5px;
     }
 
     .rje-field.disabled .rje-description {
