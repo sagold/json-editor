@@ -1,3 +1,12 @@
+import { CSSProperties } from 'react';
+
+const tagStyles: CSSProperties = {
+    color: '#fff',
+    padding: '0.03em 0.4em 0.05em 0.4em',
+    fontSize: 'inherit',
+    fontFamily: 'inherit'
+};
+
 export function NpmPackageName({ name }) {
     return (
         <div
@@ -12,26 +21,20 @@ export function NpmPackageName({ name }) {
         >
             <span
                 style={{
+                    ...tagStyles,
                     background: 'rgb(90, 90 ,90)',
-                    color: '#fff',
                     borderTopLeftRadius: 4,
-                    borderBottomLeftRadius: 4,
-                    padding: '0.05em 0.4em',
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit'
+                    borderBottomLeftRadius: 4
                 }}
             >
                 npm
             </span>
             <span
                 style={{
+                    ...tagStyles,
                     background: 'rgba(236, 98, 167)',
-                    color: '#fff',
                     borderTopRightRadius: 4,
-                    borderBottomRightRadius: 4,
-                    padding: '0.05em 0.4em',
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit'
+                    borderBottomRightRadius: 4
                 }}
             >
                 {name}
