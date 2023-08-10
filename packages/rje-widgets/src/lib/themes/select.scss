@@ -2,6 +2,8 @@
 
 @mixin select-light {
     .rje-select__button {
+        color: rgb(var(--rje-color-light-text));
+
         @include input-elevated(light);
         &:focus,
         &:hover {

@@ -12,6 +12,7 @@
     .rje-select__button {
         font-size: 1em;
         font-family: inherit;
+        font-weight: normal;
         padding: em(0.75 * $unit) em($unit);
         padding-right: em(0.5 * $unit);
 
@@ -50,6 +51,10 @@
     .rje-overlay--select {
         z-index: 1;
         overflow: hidden;
+    }
+
+    .rje-select__option {
+        font-weight: normal;
     }
 
     ul.rje-select__options {
