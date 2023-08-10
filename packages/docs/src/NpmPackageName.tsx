@@ -5,8 +5,8 @@ export function NpmPackageName({ name }) {
                 fontFamily: 'Inter',
                 display: 'inline-flex',
                 fontWeight: 500,
-                fontSize: '0.7em',
-                lineHeight: 1.7,
+                fontSize: '0.75em',
+                lineHeight: 1.6,
                 textShadow: '1px 1px 0 rgb(0,0,0,0.3)'
             }}
         >
@@ -16,7 +16,7 @@ export function NpmPackageName({ name }) {
                     color: '#fff',
                     borderTopLeftRadius: 4,
                     borderBottomLeftRadius: 4,
-                    padding: '0em 0.4em',
+                    padding: '0.05em 0.4em',
                     fontSize: 'inherit',
                     fontFamily: 'inherit'
                 }}
@@ -29,7 +29,7 @@ export function NpmPackageName({ name }) {
                     color: '#fff',
                     borderTopRightRadius: 4,
                     borderBottomRightRadius: 4,
-                    padding: '0em 0.4em',
+                    padding: '0.05em 0.4em',
                     fontSize: 'inherit',
                     fontFamily: 'inherit'
                 }}
