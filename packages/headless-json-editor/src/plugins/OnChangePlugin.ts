@@ -2,7 +2,7 @@ import { Plugin, PluginInstance } from '../HeadlessJsonEditor';
 import { json } from '../node/json';
 import { Node } from '../types';
 
-export type OnChangeListener<T = any> = (data: T, root: Node) => void;
+export type OnChangeListener<Data = unknown> = (data: Data, root: Node) => void;
 
 /**
  * onChange((data) => do something)

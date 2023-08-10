@@ -1,8 +1,7 @@
-import { JsonEditor, JsonForm as Form, JsonFormProps } from '@sagold/react-json-editor';
+import { JsonForm as Form, JsonFormProps } from '@sagold/react-json-editor';
 import { widgets as defaultWidgets } from '../../index';
-import { forwardRef } from 'react';
 
-export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(props, ref) {
+export function JsonForm<Data = unknown>(props: JsonFormProps<Data>) {
     const widgets = Array.isArray(props.widgets) ? props.widgets : defaultWidgets;
-    return <Form ref={ref} {...props} />;
-});
+    return <Form<Data> widgets={widgets} {...props} />;
+}

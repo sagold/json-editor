@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Theme, JsonForm, Button } from '@sagold/rje-widgets';
 import { JsonEditor, errors } from '@sagold/react-json-editor';
@@ -17,7 +18,7 @@ type FormData = {
 };
 
 function LoginStory({ userData = { password: '', username: '', remember: false } }) {
-    const [editor, setEditor] = useState<JsonEditor | null>(null);
+    const [editor, setEditor] = useState<JsonEditor>();
     const [disabled, setDisabled] = useState<boolean>(true);
 
     return (
@@ -40,7 +41,7 @@ function LoginStory({ userData = { password: '', username: '', remember: false }
                 </div>
 
                 <JsonForm
-                    ref={setEditor}
+                    editor={setEditor}
                     data={userData}
                     // @todo set type of onChange data via form?
                     onChange={(data: FormData) => {

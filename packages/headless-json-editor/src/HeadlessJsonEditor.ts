@@ -53,9 +53,9 @@ function validateState(draft: Draft, root: Node, pointer = '#') {
     updateErrors(draft, root, validationTarget);
 }
 
-export type HeadlessJsonEditorOptions = {
+export type HeadlessJsonEditorOptions<Data = unknown> = {
     schema: JsonSchema;
-    data?: unknown;
+    data?: Data;
     draftConfig?: Partial<DraftConfig>;
     plugins?: Plugin[];
     /** if daTa should be initially validated */
@@ -67,17 +67,17 @@ export type HeadlessJsonEditorOptions = {
 
 // @todo test setSchema
 // @todo difference between setValue and setData (root?)?
-export class HeadlessJsonEditor {
+export class HeadlessJsonEditor<Data = unknown> {
     state: Node;
     draft: Draft;
     changes: Change[] = [];
     plugins: PluginInstance[] = [];
-    options: HeadlessJsonEditorOptions;
+    options: HeadlessJsonEditorOptions<Data>;
     templateOptions = {
         addOptionalProps: false
     };
 
-    constructor(options: HeadlessJsonEditorOptions) {
+    constructor(options: HeadlessJsonEditorOptions<Data>) {
         const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false } = options;
         this.options = options;
         this.templateOptions.addOptionalProps = addOptionalProps;
@@ -95,7 +95,7 @@ export class HeadlessJsonEditor {
     }
 
     // import diff from 'microdiff';
-    setData(data?: unknown): Node {
+    setData(data?: Data): Node {
         const { draft } = this;
         const previousState = this.state;
         this.state = create<ParentNode>(
@@ -110,9 +110,14 @@ export class HeadlessJsonEditor {
         return this.state;
     }
 
+    /* get current json-data */
+    getData() {
+        return json(this.state) as Data;
+    }
+
     setSchema(schema: JsonSchema) {
         this.draft.setSchema(schema);
-        return this.setData(json(this.state));
+        return this.setData(json(this.state) as Data);
     }
 
     validate() {

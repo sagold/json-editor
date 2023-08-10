@@ -11,13 +11,13 @@ import {
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
 
-export type UseJsonEditorOptions = {
+export type UseJsonEditorOptions<Data = unknown> = {
     widgets?: WidgetPlugin[];
     schema: JsonSchema;
-    data?: unknown;
+    data?: Data;
     validate?: boolean;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
-    onChange?: OnChangeListener;
+    onChange?: OnChangeListener<Data>;
     plugins?: Plugin[];
     cacheKey?: string | number;
     /** if all optional properties should be added when missing */
@@ -31,12 +31,14 @@ document.addEventListener('invalid', (e) => e.preventDefault(), true);
 /**
  * add json editor widget capabilities to your functional component
  */
-export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOptions): [T, JsonEditor] {
+export function useJsonEditor<Data = unknown, T extends Node = Node>(
+    settings: UseJsonEditorOptions<Data>
+): [T, JsonEditor<Data>] {
     const { schema, data, cacheKey } = settings;
-    const [currentData, setCurrentData] = useState(data);
+    const [currentData, setCurrentData] = useState<Data | undefined>(data);
 
     // track previous inputs - set data to editor if input values have changed
-    const [previousData, setPreviousData] = useState(data);
+    const [previousData, setPreviousData] = useState<Data | undefined>(data);
     const [previousSchema, setPreviousSchema] = useState(schema);
 
     // @ts-ignore
@@ -50,7 +52,7 @@ export function useJsonEditor<T extends Node = Node>(settings: UseJsonEditorOpti
         // data has changed
         setPreviousData(data);
         setPreviousSchema(schema);
-        const editor = new JsonEditor({
+        const editor = new JsonEditor<Data>({
             schema,
             data,
             widgets,

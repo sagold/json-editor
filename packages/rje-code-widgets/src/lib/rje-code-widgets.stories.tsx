@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
 import widgets, { Button, Icon, Theme } from '@sagold/rje-widgets';
@@ -28,11 +29,11 @@ const meta: Meta<typeof JsonWidget> = {
         // }
     },
     render(args) {
-        const editorRef = useRef<JsonEditor>(null);
+        const [editorRef, setEditorRef] = useState<JsonEditor>();
         const [data, setData] = useState<unknown>(null);
         const [history, setHistory] = useState<HistoryPluginInstance>();
         useEffect(() => {
-            editorRef.current && setHistory(editorRef.current.plugin('history') as HistoryPluginInstance);
+            editorRef && setHistory(editorRef.plugin('history') as HistoryPluginInstance);
         });
         return (
             <Theme>
@@ -55,7 +56,7 @@ const meta: Meta<typeof JsonWidget> = {
                         schema={args.schema}
                         onChange={setData}
                         data={args.data}
-                        ref={editorRef}
+                        editor={setEditorRef}
                         plugins={[HistoryPlugin]}
                         widgets={[JsonWidgetPlugin, ...widgets]}
                     />

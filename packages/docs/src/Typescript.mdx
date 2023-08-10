@@ -1,0 +1,50 @@
+import { Meta, Canvas } from '@storybook/addon-docs';
+
+<Meta title="Typescript" />
+
+## Typed `UseJsonEditor` Hook
+
+<div className="code code--inline">
+
+```ts
+import { useJsonEditor, JsonEditor, Node } from '@sagold/react-json-editor';
+
+function MyForm() {
+  // [Node, JsonEditor<MyData>]
+  const [node, editor] = useJsonEditor<MyData>({
+    schema: jsonSchema,
+    // (data: MyData) => void
+    onChange(data) {}
+  });
+  // data: MyData
+  const data = editor.getData();
+  return <div />;
+}
+```
+
+</div>
+
+## Typed `JsonForm` component
+
+<div className="code code--inline">
+
+```ts
+import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
+
+function MyForm() {
+  const [editor, setEditor] = useState<JsonEditor<MyData>>();
+  // data: MyData
+  const data = editor?.getData();
+  return (
+    <JsonForm<MyData>
+      // (editor: JsonEditor<MyData>) => void)
+      editor={setEditor}
+      // (data: MyData) => void
+      onChange={(data) => {}}
+      schema={jsonSchema}
+    />
+  );
+}
+```
+
+</div>

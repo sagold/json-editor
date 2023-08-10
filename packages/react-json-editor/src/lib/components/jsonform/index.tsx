@@ -12,11 +12,12 @@ import { useJsonEditor } from '../../useJsonEditor';
 import { WidgetPlugin } from '../../decorators';
 import { Widget } from '../widget/Widget';
 import { JsonEditor } from '../../JsonEditor';
-import { forwardRef, useImperativeHandle } from 'react';
+import { useImperativeHandle } from 'react';
 
-export type JsonFormProps = {
+export type JsonFormProps<Data = unknown> = {
     schema: JsonSchema;
-    data?: unknown;
+    data?: Data;
+    editor?: (editor: JsonEditor<Data>) => void;
     pointer?: string;
     widgets?: WidgetPlugin[];
     plugins?: Plugin[];
@@ -26,7 +27,7 @@ export type JsonFormProps = {
     addOptionalProps?: boolean;
     /** optional root node options */
     options?: Partial<DefaultNodeOptions> & Record<string, unknown>;
-    onChange?: (data: unknown, root: Node) => void;
+    onChange?: (data: Data, root: Node) => void;
     /** set to true to initially validate complete data */
     validate?: boolean;
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
@@ -39,25 +40,23 @@ export type JsonFormProps = {
     className?: string;
 };
 
-export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
-    {
-        schema,
-        data,
-        className,
-        pointer,
-        widgets,
-        plugins = [RemoteEnumOptionsPlugin],
-        onChange,
-        options,
-        draft,
-        cacheKey,
-        validate,
-        liveUpdate,
-        addOptionalProps,
-        style
-    },
-    ref
-) {
+export function JsonForm<Data = unknown>({
+    schema,
+    data,
+    editor,
+    className,
+    pointer,
+    widgets,
+    plugins = [RemoteEnumOptionsPlugin],
+    onChange,
+    options,
+    draft,
+    cacheKey,
+    validate,
+    liveUpdate,
+    addOptionalProps,
+    style
+}: JsonFormProps<Data>) {
     const [rootNode, instance] = useJsonEditor({
         schema,
         widgets,
@@ -71,14 +70,14 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
         liveUpdate
     });
 
-    useImperativeHandle(ref, () => instance);
+    useImperativeHandle(editor, () => instance);
 
     let node = rootNode;
     if (pointer) {
         const specificRootNode = get(rootNode, pointer);
         if (isJsonError(specificRootNode)) {
             console.error(`There is no node at '${pointer}', returning empty form`);
-            return <div className={`ui error form${style ? ` ${style}` : ''}`} />;
+            return <div className={`rje-form ${className ?? ''}`.trim()} style={style} />;
         }
         node = specificRootNode;
     }
@@ -88,4 +87,4 @@ export const JsonForm = forwardRef<JsonEditor, JsonFormProps>(function JsonForm(
             <Widget node={node} editor={instance} options={options} />
         </div>
     );
-});
+}

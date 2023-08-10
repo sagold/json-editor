@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 import { data, schema } from './data/features';
-import { errors, json } from 'headless-json-editor';
+import { JsonSchema, errors, json } from 'headless-json-editor';
 import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
 import { useEffect, useRef, useState } from 'react';
 import { widgets } from '@sagold/rje-widgets';
@@ -12,26 +12,26 @@ export default {
 };
 
 const Template: ComponentStory<any> = () => {
-    const editor = useRef<JsonEditor>(null);
+    const [editor, setEditor] = useState<JsonEditor>();
     const [editorData, setEditorData] = useState(data);
     useEffect(() => {
         // @ts-ignore
         window.changeData = () => setEditorData({ text: 'mimimi' });
         // @ts-ignore
-        window.getErrors = () => errors(editor.current?.getState());
+        window.getErrors = () => errors(editor?.getState());
         // @ts-ignore
-        window.getData = () => json(editor.current?.getState());
+        window.getData = () => json(editor?.getState());
         // @ts-ignore
-        window.getState = () => editor.current?.getState();
+        window.getState = () => editor?.getState();
     }, [data]);
 
     return (
         <Theme>
             <JsonForm
                 widgets={[JsonWidgetPlugin, ...widgets]}
-                ref={editor}
+                editor={setEditor}
                 data={editorData}
-                schema={schema}
+                schema={schema as JsonSchema}
                 validate={true}
                 liveUpdate={true}
                 onChange={(data) => {

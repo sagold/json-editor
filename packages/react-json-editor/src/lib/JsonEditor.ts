@@ -7,7 +7,7 @@ export function setDefaultWidgets(widgets: WidgetPlugin[]) {
     defaultWidgets = widgets;
 }
 
-export type JsonEditorOptions = HeadlessJsonEditorOptions & {
+export type JsonEditorOptions<Data = unknown> = HeadlessJsonEditorOptions<Data> & {
     widgets?: WidgetPlugin[];
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
@@ -15,7 +15,7 @@ export type JsonEditorOptions = HeadlessJsonEditorOptions & {
     disabled?: boolean;
 };
 
-export class JsonEditor extends HeadlessJsonEditor {
+export class JsonEditor<Data = unknown> extends HeadlessJsonEditor<Data> {
     widgets: WidgetPlugin[];
     widgetOptions: {
         /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
@@ -24,7 +24,7 @@ export class JsonEditor extends HeadlessJsonEditor {
         disabled?: boolean;
     } = {};
 
-    constructor(options: JsonEditorOptions) {
+    constructor(options: JsonEditorOptions<Data>) {
         super(options);
         if (typeof options?.liveUpdate === 'boolean') {
             this.widgetOptions.liveUpdate = options.liveUpdate;
