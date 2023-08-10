@@ -34,6 +34,10 @@
         text-transform: uppercase;
         border-bottom: 0;
         margin-top: 1.5em;
+
+        code {
+            text-transform: none;
+        }
     }
 
     h2 + p {
@@ -99,7 +103,7 @@
 #storybook-docs .inline.sbdocs.sbdocs-preview {
     box-shadow: none; /* drop shadow of story box */
     border: none;
-    overflow-y: visible;
+    overflow: visible;
 
     /* set preview box to full width */
     margin: 0;
@@ -121,12 +125,12 @@
     /* -- preview box full width */
 
     .docs-story {
-        overflow-y: visible; /* contents expand outside of story box */
+        overflow: visible; /* contents expand outside of story box */
     }
 
     .docs-story > :first-child {
         z-index: 2; /* contents may be above *show code* action */
-        overflow-y: visible;
+        overflow: visible;
     }
 
     .docs-story > :last-child {
