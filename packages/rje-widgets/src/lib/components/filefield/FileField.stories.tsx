@@ -1,16 +1,22 @@
-import { ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { FileField } from './FileField';
 import { ThemeDecorator } from '../ThemeDecorator';
 
-export default {
-    decorators: [ThemeDecorator],
+type Story = StoryObj<typeof FileField>;
+const meta: Meta<typeof FileField> = {
+    title: 'packages/rje-widgets/components/FileField',
     component: FileField,
-    title: 'packages/rje-widgets/components/FileField'
+    decorators: [ThemeDecorator],
+    argTypes: {
+        data: { control: { type: 'object' } },
+        schema: { control: { type: 'object' } }
+    }
 };
+export default meta;
 
-const Template: ComponentStory<typeof FileField> = ({ ...options }) => {
-    return <FileField {...options} />;
+export const Default = {
+    args: {
+        title: 'Default file selection',
+        buttonText: 'Select a file'
+    }
 };
-
-export const Default = Template.bind({});
-Default.args = {};

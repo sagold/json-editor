@@ -1,0 +1,41 @@
+@import '../../design';
+
+@mixin file-field-component {
+    .rje-input--file {
+        $width-clear-button: 1.5em;
+
+        .rje-file {
+            position: relative;
+            max-width: 100%;
+            display: flex;
+            gap: 0.5em;
+
+            .rje-file__placeholder {
+            }
+
+            .rje-file__name {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                font-weight: normal;
+            }
+
+            .rje-file__clear {
+                width: $width-clear-button;
+            }
+
+            &.with-clear-action {
+                .rje-file__input {
+                    max-width: calc(100% - $width-clear-button);
+                }
+            }
+        }
+
+        .has-filename .rje-button__text {
+            // font-weight: normal;
+            // color: #333;
+            // width: 100%;
+            // display: inline-block;
+        }
+    }
+}

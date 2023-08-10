@@ -1,5 +1,6 @@
 @import './button';
 @import './checkbox';
+@import './file-field';
 @import './icon';
 @import './input';
 @import './label';
@@ -19,6 +20,7 @@
 @mixin light-theme() {
     @include button-light();
     @include checkbox-light();
+    @include file-field-light();
     @include icon-light();
     @include input-light();
     @include label-light();
@@ -44,6 +46,7 @@
 @mixin dark-theme() {
     @include button-dark();
     @include checkbox-dark();
+    @include file-field-dark();
     @include icon-dark();
     @include input-dark();
     @include label-dark();

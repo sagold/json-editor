@@ -1,6 +1,7 @@
 @import './lib/design';
 @import './lib/components/button/button';
 @import './lib/components/checkbox/checkbox';
+@import './lib/components/filefield/file-field';
 @import './lib/components/icon/icon';
 @import './lib/components/input/input';
 @import './lib/components/label/label';
@@ -20,6 +21,7 @@
 .rje-theme {
     @include button-component;
     @include checkbox-field-component;
+    @include file-field-component;
     @include icon-component;
     @include input-component;
     @include label-component;

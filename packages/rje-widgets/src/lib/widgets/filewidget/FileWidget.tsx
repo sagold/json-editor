@@ -85,25 +85,32 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
     const { disabled, imageUrlTemplate, downloadUrlTemplate } = options;
     const [imageData, setImageData] = useState<string | undefined>();
 
+    let icon = 'folder_open';
     let status: 'empty' | 'file' | 'filename' | 'imageUrl' | 'imageData' = 'empty';
     if (isFile(value) && imageData) {
         status = 'imageData';
+        icon = getFileIcon(value);
     } else if (isFile(value)) {
         status = 'file';
+        icon = getFileIcon(value);
     } else if (typeof value === 'string' && value?.length > 0) {
         status = 'filename';
+        icon = getFileIcon({ type: options.accept || '' } as File);
     }
 
-    async function setFile(file: File) {
+    console.log(status, downloadUrlTemplate);
+
+    async function setFile(file?: File) {
+        if (file == null) {
+            reset();
+            return;
+        }
+
         setValue(file);
         if (isImageFile(file)) {
             const dataUrl = await getDataUrl(file);
             dataUrl && setImageData(dataUrl);
         }
-    }
-
-    function change(file: File) {
-        setFile(file);
     }
 
     function drop(event) {
@@ -119,94 +126,57 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         imageData && setImageData(undefined);
     }
 
-    const resetButton = (
-        <Button
-            variant="text"
-            icon="delete"
-            style={{
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                right: 16,
-                zIndex: 19
-            }}
-            disabled={options.readOnly || disabled}
-            onPress={reset}
-        />
-    );
+    const withPreview = (status === 'filename' && imageUrlTemplate) || (isFile(value) && status === 'imageData');
+
+    // @todo File date and added flag
+    // {new Date(value.lastModified).toString().replace(/ GMT.*/, '')}
+    // <Label color="yellow">added</Label>
 
     const hasError = node.errors.length > 0;
     return (
         <WidgetField widgetType="file" node={node} options={options} style={{ position: 'relative' }}>
-            {status === 'empty' && (
-                <FileField
-                    label={options.title}
-                    buttonText={'choose a file'}
-                    accept={options.accept}
-                    error={hasError}
-                    id={node.id}
-                    disabled={disabled || options.readOnly}
-                    onPress={change}
-                />
-            )}
-
-            {status === 'filename' && (
-                <div className="rje-preview" style={{ display: 'flex', gap: 8 }}>
-                    <div>
-                        {!imageUrlTemplate && <Icon>{getFileIcon({ type: options.accept || '' } as File)}</Icon>}
-                        {imageUrlTemplate && (
-                            <img
-                                style={{ maxHeight: 76, overflow: 'hidden' }}
-                                src={render(imageUrlTemplate, { value })}
-                            />
-                        )}
-                    </div>
-                    <div>
-                        <Label required={options.required}>{options.title}</Label>
-                        <StringInput readOnly={true} value={value} />
-                        {downloadUrlTemplate && (
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    right: 16,
-                                    zIndex: 19
-                                }}
-                            >
-                                <a
-                                    // icon="download"
-                                    target="_blank"
-                                    download
-                                    href={render(downloadUrlTemplate, { value })}
-                                />
-                                <Button
-                                    variant="text"
-                                    icon="delete"
-                                    onPress={reset}
-                                    disabled={options.readOnly || disabled}
+            <FileField
+                accept={options.accept}
+                buttonText={'choose a file'}
+                disabled={disabled || options.readOnly}
+                icon={icon}
+                error={hasError}
+                id={node.id}
+                label={options.title}
+                onPress={setFile}
+                title={options.title}
+                value={value}
+            >
+                {withPreview && (
+                    <div className="rje-file__preview">
+                        {status === 'filename' && imageUrlTemplate && (
+                            <div>
+                                <img
+                                    style={{ maxHeight: 76, overflow: 'hidden' }}
+                                    src={render(imageUrlTemplate, { value })}
                                 />
                             </div>
                         )}
+                        {isFile(value) && status === 'imageData' && (
+                            <>
+                                <img style={{ maxHeight: 76, overflow: 'hidden' }} src={imageData} />
+                            </>
+                        )}
                     </div>
-                    {resetButton}
-                </div>
-            )}
-
-            {isFile(value) && (
-                <>
-                    <Label required={options.required}>{options.title}</Label>
-                    {status === 'file' && isFile(value) && <Icon>{getFileIcon(value)}</Icon>}
-                    {status === 'imageData' && (
-                        <>
-                            <img style={{ maxHeight: 76, overflow: 'hidden' }} src={imageData} />
-                            <StringInput readOnly={true} value={value.name} />
-                            {new Date(value.lastModified).toString().replace(/ GMT.*/, '')}
-                            <Label color="yellow">added</Label>
-                        </>
-                    )}
-                    {resetButton}
-                </>
+                )}
+            </FileField>
+            {status === 'filename' && downloadUrlTemplate && (
+                <a
+                    style={{ textDecoration: 'none' }}
+                    // icon="download"
+                    target="_blank"
+                    download
+                    href={render(downloadUrlTemplate, { value })}
+                >
+                    <Button icon="download" variant="text">
+                        download
+                    </Button>
+                </a>
             )}
         </WidgetField>
     );

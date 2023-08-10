@@ -1,2 +1,21 @@
-.rje-field--file {
+@import '../../design';
+
+.rje-input--file {
+    &.rje-input--invalid {
+        .rje-file__input {
+            border-color: $color-light-error;
+        }
+    }
+}
+
+.rje-theme--light {
+    .rje-input--file.rje-input--invalid .rje-file__input {
+        border-color: $color-light-error;
+    }
+}
+
+.rje-theme--dark {
+    .rje-input--file.rje-input--invalid .rje-file__input {
+        border-color: $color-dark-error;
+    }
 }

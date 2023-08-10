@@ -1,0 +1,13 @@
+@import '../components/icon/icon';
+
+@mixin file-field-light {
+    .rje-file__name {
+        color: rgba(var(--rje-color-light-text));
+    }
+}
+
+@mixin file-field-dark {
+    .rje-file__name {
+        color: rgba(var(--rje-color-dark-text));
+    }
+}
