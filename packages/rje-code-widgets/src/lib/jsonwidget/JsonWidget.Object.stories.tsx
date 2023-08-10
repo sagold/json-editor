@@ -31,7 +31,7 @@ const meta: Meta<typeof JsonWidget> = {
                 schema={s}
                 data={data}
                 widgets={[JsonWidgetPlugin, ...widgets]}
-                style={{ width: '100%', minWidth: 460 }}
+                style={{ width: '100%' }}
             />
         );
     }
