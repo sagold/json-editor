@@ -1,14 +1,19 @@
 @import '../../design';
 
 @mixin file-field-component {
+    .rje-field--file {
+        overflow: hidden;
+    }
+
     .rje-input--file {
         $width-clear-button: 1.5em;
+        $gap-clear-button: 0.5em;
 
         .rje-file {
             position: relative;
             max-width: 100%;
             display: flex;
-            gap: 0.5em;
+            gap: $gap-clear-button;
 
             .rje-file__placeholder {
             }
@@ -26,7 +31,7 @@
 
             &.with-clear-action {
                 .rje-file__input {
-                    max-width: calc(100% - $width-clear-button);
+                    max-width: calc(100% - $width-clear-button - $gap-clear-button);
                 }
             }
         }
