@@ -32,6 +32,8 @@ export type ObjectOptions = {
     inlineAddPropertyOption?: boolean;
     /** set to true to show a delete button after each optional property */
     inlineDeletePropertyOption?: boolean;
+    /* optional list of action components to add to object actions menu */
+    menuActions?: React.ReactNode[];
 } & DefaultNodeOptions;
 
 type WidgetDialogProps = {
@@ -63,18 +65,7 @@ type WidgetActionsProps = {
 };
 
 function WidgetActions({ editor, node, options }: WidgetActionsProps) {
-    const { editJson = {}, /* layout, header,*/ isOptional, disabled } = options;
-
-    const hasActions =
-        // this object is optional and can be removed
-        isOptional === true ||
-        // this object allows editing itself as json
-        editJson.enabled === true ||
-        // all optional properties are added per default and no property is missing (ignores pattern props)
-        (editor.options.addOptionalProps && node.missingProperties.length > 0) ||
-        // optional properties can be removed or added, but none are defined (ignores pattern props)
-        (!editor.options.addOptionalProps && node.optionalProperties.length > 0);
-
+    const { editJson = {}, /* layout, header, isOptional*/ menuActions, disabled } = options;
     const { modalTriggerProps, modalProps } = useModal<HTMLButtonElement>({
         onOpenChange(isOpen) {
             if (isOpen) {
@@ -82,15 +73,62 @@ function WidgetActions({ editor, node, options }: WidgetActionsProps) {
             }
         }
     });
-
     const { popoverTriggerProps, popoverProps } = usePopover<HTMLButtonElement>({
         placement: 'bottom end',
         disabled
     });
     const portalContainer = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const actions: React.ReactNode[] = [];
+    if (editJson.enabled) {
+        actions.push(
+            <ButtonControlled variant="text" key="editJson" icon="edit_note" {...modalTriggerProps}>
+                Edit Json
+            </ButtonControlled>
+        );
+    }
+    if (Array.isArray(menuActions)) {
+        actions.push(...menuActions);
+    }
+    // if (editor.options.addOptionalProps !== true && isOptional) {
+    //     actions.push(
+    //         <Button variant="text" key="editJson" icon="clear" onPress={() => editor.removeValue(node.pointer)}>
+    //             Remove
+    //         </Button>
+    //     );
+    // }
+    if (editor.optionalProperties && node.optionalProperties.length > 0) {
+        actions.push(
+            <div>
+                <WidgetDescription>Optional Properties</WidgetDescription>
+                {node.optionalProperties.map((property) =>
+                    node.missingProperties.includes(property) ? (
+                        <Button
+                            className="clickable"
+                            key={property}
+                            icon="add"
+                            variant="text"
+                            onPress={() => editor.addValue(`${node.pointer}/${property}`)}
+                        >
+                            {property}
+                        </Button>
+                    ) : (
+                        <Button
+                            className="clickable"
+                            key={property}
+                            icon="delete"
+                            variant="text"
+                            onPress={() => editor.removeValue(`${node.pointer}/${property}`)}
+                        >
+                            {property}
+                        </Button>
+                    )
+                )}
+            </div>
+        );
+    }
 
-    if (!hasActions) {
+    if (actions.length === 0) {
         return null;
     }
 
@@ -104,41 +142,7 @@ function WidgetActions({ editor, node, options }: WidgetActionsProps) {
                 <Icon>menu</Icon>
             </ButtonControlled>
             <Popover {...popoverProps} portalContainer={portalContainer} title="my modal">
-                <div className="rje-widget-actions">
-                    {editJson.enabled && (
-                        <ButtonControlled variant="text" key="editJson" icon="edit_note" {...modalTriggerProps}>
-                            Edit Json
-                        </ButtonControlled>
-                    )}
-                    {editor.optionalProperties && node.optionalProperties.length > 0 && (
-                        <div>
-                            <WidgetDescription>Optional Properties</WidgetDescription>
-                            {node.optionalProperties.map((property) =>
-                                node.missingProperties.includes(property) ? (
-                                    <Button
-                                        className="clickable"
-                                        key={property}
-                                        icon="add"
-                                        variant="text"
-                                        onPress={() => editor.addValue(`${node.pointer}/${property}`)}
-                                    >
-                                        {property}
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        className="clickable"
-                                        key={property}
-                                        icon="delete"
-                                        variant="text"
-                                        onPress={() => editor.removeValue(`${node.pointer}/${property}`)}
-                                    >
-                                        {property}
-                                    </Button>
-                                )
-                            )}
-                        </div>
-                    )}
-                </div>
+                <div className="rje-widget-actions">{actions}</div>
             </Popover>
             <Modal isDismissable={false} {...modalProps} portalContainer={portalContainer}>
                 {(close) => (
