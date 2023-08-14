@@ -37,4 +37,8 @@
     @include widget-description-component;
     @include widget-error-component;
     @include widget-field-component;
+
+    .rje-widget-action--collapsed {
+        transform: rotate(90deg);
+    }
 }

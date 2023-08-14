@@ -8,6 +8,7 @@ import { SectionHeader } from '../../components/sectionheader/SectionHeader';
 import { useModal, Modal } from '../../components/modal/Modal';
 import { WidgetDescription } from '../../components/widgetdescription/WidgetDescription';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
+import classNames from 'classnames';
 
 export type ObjectOptions = {
     /** additional classnames for object editor */
@@ -99,7 +100,7 @@ function WidgetActions({ editor, node, options }: WidgetActionsProps) {
     // }
     if (editor.optionalProperties && node.optionalProperties.length > 0) {
         actions.push(
-            <div>
+            <div key="optional-properties">
                 <WidgetDescription>Optional Properties</WidgetDescription>
                 {node.optionalProperties.map((property) =>
                     node.missingProperties.includes(property) ? (
@@ -173,7 +174,10 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         {options.collapsed != null && (
                             <Button
                                 variant="text"
-                                className="rje-widget-action"
+                                className={classNames(
+                                    'rje-widget-action',
+                                    showContent ? 'rje-widget-action--uncollapsed' : 'rje-widget-action--collapsed'
+                                )}
                                 onPress={() => setShowContent(!showContent)}
                                 icon={showContent ? 'expand_more' : 'expand_less'}
                             />

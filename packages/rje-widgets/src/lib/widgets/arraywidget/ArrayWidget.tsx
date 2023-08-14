@@ -127,7 +127,10 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         {options.collapsed != null && (
                             <Button
                                 variant="text"
-                                className="rje-widget-action"
+                                className={classnames(
+                                    'rje-widget-action',
+                                    showContent ? 'rje-widget-action--uncollapsed' : 'rje-widget-action--collapsed'
+                                )}
                                 onPress={() => setShowContent(!showContent)}
                                 icon={showContent ? 'expand_more' : 'expand_less'}
                             />
