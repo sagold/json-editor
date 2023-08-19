@@ -53,7 +53,7 @@ export function TagListInput({
     onCreate,
     onRemove,
     onChange,
-    options,
+    options = [],
     ...props
 }: TagListInputProps) {
     const currentValue = useRef('');
@@ -94,9 +94,7 @@ export function TagListInput({
 
     const comboBoxProps = {
         ...props,
-        items: items ?? list.items,
         allowsCustomValue: true,
-        // items: options,
         defaultItems: options,
         children: (item) => <Item>{displayValue(item)}</Item>,
         onInputChange(inputString) {
