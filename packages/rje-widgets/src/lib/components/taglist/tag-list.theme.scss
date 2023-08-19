@@ -1,0 +1,47 @@
+@import '../../design';
+
+@mixin tag-list-light {
+    .rje-tag {
+        @include elevated(light);
+
+        &[data-focus-visible='true'] {
+            color: rgb(var(--rje-color-light-secondary));
+            border-color: rgb(var(--rje-color-light-primary));
+        }
+
+        &[aria-selected='true'] {
+            color: rgb(var(--rje-color-dark-text));
+            @include primary-elevated(light);
+
+            .rje-button {
+                color: rgb(var(--rje-color-dark-text));
+                &:hover {
+                    color: rgb(var(--rje-color-dark-secondary));
+                }
+            }
+        }
+    }
+}
+
+@mixin tag-list-dark {
+    .rje-tag {
+        @include elevated(dark);
+
+        &[data-focus-visible='true'] {
+            color: rgb(var(--rje-color-dark-secondary));
+            border-color: rgb(var(--rje-color-dark-primary));
+        }
+
+        &[aria-selected='true'] {
+            color: rgb(var(--rje-color-dark-text));
+            @include primary-elevated(dark);
+
+            .rje-button {
+                color: rgb(var(--rje-color-dark-text));
+                &:hover {
+                    color: rgb(var(--rje-color-dark-secondary));
+                }
+            }
+        }
+    }
+}

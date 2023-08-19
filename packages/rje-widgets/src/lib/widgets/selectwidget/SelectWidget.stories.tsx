@@ -1,3 +1,4 @@
+import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import { useJsonEditor } from '@sagold/react-json-editor';
 import { SelectWidget } from './SelectWidget';
@@ -21,7 +22,7 @@ export default {
         },
         format: {
             control: { type: 'select' },
-            options: ['select', 'radiogroup']
+            options: ['select', 'radiogroup', 'taglist']
         }
     }
 };

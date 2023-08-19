@@ -16,7 +16,8 @@ export const AllPropertiesRequired: Story = {
             title: 'All properties are required',
             type: 'object',
             properties: {
-                optionalProperty: { title: 'Optional property', type: 'string' }
+                optionalProperty1: { title: '1. Optional property', type: 'object' },
+                optionalProperty2: { title: '2. Optional property', type: 'object' }
             }
         }
     }
@@ -33,7 +34,8 @@ export const OptionalProperties: Story = {
             title: 'Properties may be removed',
             type: 'object',
             properties: {
-                optionalProperty: { title: 'Optional property', type: 'string' }
+                optionalProperty1: { title: '1. Optional property', type: 'object' },
+                optionalProperty2: { title: '2. Optional property', type: 'object' }
             }
         }
     }

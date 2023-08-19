@@ -1,5 +1,5 @@
 import { CollectionChildren } from '@react-types/shared';
-import { useRef, ReactNode } from 'react';
+import { useRef, ReactNode, type RefObject } from 'react';
 import { useListBox, useOption, useFocusRing, mergeProps, AriaListBoxProps } from 'react-aria';
 import { Item, useListState, ListProps, ListState, SelectState } from 'react-stately';
 import { Checkbox } from '../checkbox/Checkbox';
@@ -10,20 +10,22 @@ export { Item };
 
 export type SelectOptionsControlledProps = {
     label?: ReactNode;
+    listBoxRef?: RefObject<HTMLUListElement>;
     state: ListState<object> | SelectState<object>;
     children?: CollectionChildren<object>;
 } & Omit<AriaListBoxProps<object>, 'children'>;
 
-export function SelectOptionsControlled({ state, ...props }: SelectOptionsControlledProps) {
+export function SelectOptionsControlled(props: SelectOptionsControlledProps) {
     const ref = useRef<HTMLUListElement>(null);
-    const { listBoxProps, labelProps } = useListBox(props, state, ref);
+    const { state, listBoxRef = ref } = props;
+    const { listBoxProps, labelProps } = useListBox(props, state, listBoxRef);
     return (
         <>
             <div {...labelProps}>{props.label}</div>
             <ul
                 {...listBoxProps}
                 className={`rje-select__options rje-select__options--${props.selectionMode ?? 'single'}`}
-                ref={ref}
+                ref={listBoxRef}
             >
                 {[...state.collection].map((item) => {
                     return <SelectOption key={item.key} item={item} state={state} />;
@@ -88,6 +90,7 @@ function SelectOption({ item, state }: SelectOptionProps) {
             className={classnames(
                 'rje-select__option',
                 isSelected ? 'rje-select__option--selected' : 'rje-select__option--unselected',
+                isFocused ? 'rje-select__option--focused' : 'rje-select__option--unfocused',
                 isDisabled ? 'rje-select__option--disabled' : 'rje-select__option--enabled',
                 isFocusVisible ? 'rje-select__option--focused' : 'rje-select__option--unfocused'
             )}

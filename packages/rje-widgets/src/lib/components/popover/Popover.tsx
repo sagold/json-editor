@@ -12,7 +12,7 @@
  *  </Popover>
  * ```
  */
-import { DOMAttributes, useRef } from 'react';
+import { useRef } from 'react';
 import {
     AriaPopoverProps,
     Overlay,
@@ -25,7 +25,7 @@ import {
     AriaPositionProps
 } from 'react-aria';
 import { useOverlayTriggerState, OverlayTriggerState } from 'react-stately';
-import { FocusableElement, DOMProps } from '@react-types/shared';
+import { DOMProps } from '@react-types/shared';
 import classnames from 'classnames';
 
 export type UsePopoverProps = {
@@ -89,6 +89,7 @@ type PopoverPortalProps = {
     className?: string;
     /** The ref for the element which the popover positions itself with respect to. */
     overlayTriggerRef: React.RefObject<Element>;
+    popoverRef?: React.RefObject<HTMLDivElement>;
     /** overlay trigger state exposing close action */
     overlayTriggerState: OverlayTriggerState;
     portalContainer?: React.RefObject<Element>;
@@ -99,7 +100,7 @@ type PopoverPortalProps = {
  * Render popover to body and places its child rje-popover near the trigger element.
  * [react-aria popover portal]
  */
-function PopoverPortal({
+export function PopoverPortal({
     children,
     className,
     portalContainer,
@@ -109,7 +110,8 @@ function PopoverPortal({
     withArrow = false,
     ...props
 }: PopoverPortalProps) {
-    const popoverRef = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement>(null);
+    const popoverRef = props.popoverRef ?? ref;
     const { popoverProps, underlayProps, arrowProps, placement } = useAriaPopover(
         {
             ...props,

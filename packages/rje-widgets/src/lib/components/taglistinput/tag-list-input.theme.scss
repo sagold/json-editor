@@ -1,0 +1,28 @@
+@import '../../design';
+
+@mixin tag-list-input-light {
+    .rje-tag-list-input {
+        .rje-tag-list__children {
+            @include input-elevated(light);
+            padding: em(4);
+        }
+        input.rje-tag-list-input__element {
+            border: none;
+            color: rgb(var(--rje-color-light-text));
+        }
+    }
+}
+
+@mixin tag-list-input-dark {
+    .rje-tag-list-input {
+        .rje-tag-list__children {
+            @include input-elevated(dark);
+            padding: em(4);
+        }
+
+        input.rje-tag-list-input__element {
+            border: none;
+            color: rgb(var(--rje-color-dark-text));
+        }
+    }
+}

@@ -1,4 +1,3 @@
-@import './lib/design';
 @import './lib/components/button/button';
 @import './lib/components/checkbox/checkbox';
 @import './lib/components/filefield/file-field';
@@ -12,6 +11,8 @@
 @import './lib/components/select/select';
 @import './lib/components/selectoptions/select-options';
 @import './lib/components/switch/switch';
+@import './lib/components/taglist/tag-list';
+@import './lib/components/taglistinput/tag-list-input';
 @import './lib/components/textarea/textarea';
 @import './lib/components/tooltip/tooltip';
 @import './lib/components/widgetdescription/widget-description';
@@ -32,6 +33,8 @@
     @include select-options-component;
     @include select-component;
     @include switch-component;
+    @include tag-list-component;
+    @include tag-list-input-component;
     @include textarea-component;
     @include tooltip-component;
     @include widget-description-component;
