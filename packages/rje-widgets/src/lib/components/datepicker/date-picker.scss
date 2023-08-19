@@ -1,0 +1,39 @@
+@import '../../design';
+
+@mixin date-picker-component {
+    .rje-date-picker {
+        display: inline-flex;
+        flex-direction: column;
+    }
+
+    .rje-date-input__fields {
+        .rje-button {
+            padding-top: 0;
+            padding-bottom: 0;
+            font-size: 0.85em;
+        }
+    }
+
+    .rje-label + .rje-date-picker__input {
+        margin-top: em(4);
+    }
+
+    .rje-calendar__header {
+        display: flex;
+        // gap: em(2);
+        align-items: center;
+        width: 100%;
+
+        h2 {
+            margin: 0;
+            font-size: 0.8em;
+            flex-grow: 1;
+            // font-weight: normal;
+            // text-transform: uppercase;
+        }
+    }
+
+    .rje-calendar__cell:hover {
+        cursor: pointer;
+    }
+}

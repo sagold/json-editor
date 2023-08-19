@@ -1,0 +1,30 @@
+@import '../../design';
+
+@mixin date-input-light {
+    .rje-date-input__fields {
+        @include input-elevated(light);
+        color: $color-light-grey-2;
+    }
+
+    .rje-date-input__segment {
+        color: $color-light-grey-2;
+
+        &.rje-date-input__segment--value {
+            color: rgb(var(--rje-color-light-text));
+        }
+    }
+}
+
+@mixin date-input-dark {
+    .rje-date-input__fields {
+        @include input-elevated(dark);
+    }
+
+    .rje-date-input__segment {
+        color: $color-dark-grey-2;
+
+        &.rje-date-input__segment--value {
+            color: rgb(var(--rje-color-dark-text));
+        }
+    }
+}

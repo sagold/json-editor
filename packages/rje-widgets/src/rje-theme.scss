@@ -1,6 +1,8 @@
 @import './lib/components/button/button';
 @import './lib/components/checkbox/checkbox';
 @import './lib/components/filefield/file-field';
+@import './lib/components/datepicker/date-picker';
+@import './lib/components/dateinput/date-input';
 @import './lib/components/icon/icon';
 @import './lib/components/input/input';
 @import './lib/components/label/label';
@@ -23,6 +25,8 @@
     @include button-component;
     @include checkbox-field-component;
     @include file-field-component;
+    @include date-input-component;
+    @include date-picker-component;
     @include icon-component;
     @include input-component;
     @include label-component;

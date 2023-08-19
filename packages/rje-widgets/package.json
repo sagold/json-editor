@@ -6,10 +6,11 @@
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/rjeWidgets.min.js",
     "dependencies": {
+        "@internationalized/date": "^3.4.0",
         "@sagold/react-json-editor": "^0.28.0",
         "classnames": "^2.3.2",
-        "react-aria": "^3.26.0",
-        "react-stately": "^3.24.0",
+        "react-aria": "^3.27.0",
+        "react-stately": "^3.25.0",
         "react-textarea-autosize": "^8.5.2",
         "sortablejs": "^1.15.0"
     },

@@ -18,10 +18,14 @@
 @import './widget-field';
 @import '../components/taglist/tag-list.theme';
 @import '../components/taglistinput/tag-list-input.theme';
+@import '../components/datepicker/date-picker.theme';
+@import '../components/dateinput/date-input.theme';
 
 @mixin light-theme() {
     @include button-light();
     @include checkbox-light();
+    @include date-input-light();
+    @include date-picker-light();
     @include file-field-light();
     @include icon-light();
     @include input-light();
@@ -50,6 +54,8 @@
 @mixin dark-theme() {
     @include button-dark();
     @include checkbox-dark();
+    @include date-input-dark();
+    @include date-picker-dark();
     @include file-field-dark();
     @include icon-dark();
     @include input-dark();
