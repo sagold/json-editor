@@ -7,10 +7,16 @@
     }
 
     .rje-date-input__fields {
+        position: relative;
+        padding-right: 1.8em;
+
         .rje-button {
-            padding-top: 0;
-            padding-bottom: 0;
             font-size: 0.85em;
+            width: 2em;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            top: 0;
         }
     }
 
@@ -18,22 +24,30 @@
         margin-top: em(4);
     }
 
+    .rje-calendar {
+        padding: 1em 2em;
+    }
+
     .rje-calendar__header {
         display: flex;
-        // gap: em(2);
         align-items: center;
         width: 100%;
 
-        h2 {
+        h1 {
             margin: 0;
             font-size: 0.8em;
             flex-grow: 1;
-            // font-weight: normal;
-            // text-transform: uppercase;
+            text-align: center;
         }
     }
 
-    .rje-calendar__cell:hover {
-        cursor: pointer;
+    .rje-calendar__cell {
+        text-align: center;
+        padding: 0.1em;
+
+        &[tabindex='0'],
+        &:hover {
+            cursor: pointer;
+        }
     }
 }

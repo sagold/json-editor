@@ -1,9 +1,19 @@
 @import '../../design';
 
 @mixin date-picker-light {
-    // @include icon-component;
+    .rje-calendar__cell {
+        &[tabindex='0'],
+        &:hover {
+            color: rgb(var(--rje-color-light-primary));
+        }
+    }
 }
 
 @mixin date-picker-dark {
-    // @include icon-component;
+    .rje-calendar__cell {
+        &[tabindex='0'],
+        &:hover {
+            color: rgb(var(--rje-color-dark-primary));
+        }
+    }
 }

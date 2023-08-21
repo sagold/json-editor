@@ -19,8 +19,8 @@ export function Calendar(props) {
     return (
         <div className="rje-calendar" {...calendarProps}>
             <div className="rje-calendar__header">
-                <h2>{title}</h2>
                 <Button variant="text" icon="chevron_left" {...prevButtonProps} />
+                <h1>{title}</h1>
                 <Button variant="text" icon="chevron_right" {...nextButtonProps} />
             </div>
             <CalendarGrid state={state} />
