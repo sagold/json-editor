@@ -145,6 +145,14 @@ Collapsible.args = {
     }
 };
 
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    ...DefaultWidget.args,
+    options: {
+        readOnly: true
+    }
+};
+
 // export const LayoutOptions = Template.bind({});
 // LayoutOptions.args = {
 //     ...DefaultWidget.args,
