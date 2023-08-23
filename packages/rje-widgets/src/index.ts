@@ -5,20 +5,30 @@ import { widgets } from './lib/widgets/index';
 // widgets
 import { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
 import { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
+import { DateWidget, DateWidgetPlugin } from './lib/widgets/datewidget/DateWidget';
 import { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
 import { NavigationWidget } from './lib/widgets/navigationwidget/NavigationWidget';
 import { NullWidget, NullWidgetPlugin } from './lib/widgets/nullwidget/NullWidget';
 import { NumberWidget, NumberWidgetPlugin } from './lib/widgets/numberwidget/NumberWidget';
 import { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
 import { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
+import {
+    SelectMultipleWidget,
+    SelectMultipleWidgetPlugin
+} from './lib/widgets/selectmultiplewidget/SelectMultipleWidget';
 import { StringWidget, StringWidgetPlugin } from './lib/widgets/stringwidget/StringWidget';
 import { SelectWidget, SelectWidgetPlugin } from './lib/widgets/selectwidget/SelectWidget';
 import { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
 import { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
 import { TextWidget, TextWidgetPlugin } from './lib/widgets/textwidget/TextWidget';
+import { TagListWidget, TagListWidgetPlugin } from './lib/widgets/taglistwidget/TagListWidget';
 // components
 import { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
 import { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
+import { DateInput, type DateInputProps } from './lib/components/dateinput/DateInput';
+import { DatePicker, type DatePickerProps } from './lib/components/datepicker/DatePicker';
+import { TagList, type TagListProps } from './lib/components/taglist/TagList';
+import { TagListInput, type TagListInputProps } from './lib/components/taglistinput/TagListInput';
 import { FileField, FileFieldProps } from './lib/components/filefield/FileField';
 import { Icon, IconProps } from './lib/components/icon/Icon';
 import { StringInput, StringInputProps } from './lib/components/input/StringInput';
@@ -57,6 +67,8 @@ export {
     booleanDefaultOptions,
     BooleanWidget,
     BooleanWidgetPlugin,
+    DateWidget,
+    DateWidgetPlugin,
     FileWidget,
     FileWidgetPlugin,
     NavigationWidget,
@@ -66,6 +78,8 @@ export {
     NumberWidgetPlugin,
     ObjectWidget,
     ObjectWidgetPlugin,
+    SelectMultipleWidget,
+    SelectMultipleWidgetPlugin,
     SelectOneOfWidget,
     SelectOneOfWidgetPlugin,
     SelectWidget,
@@ -74,6 +88,8 @@ export {
     SimpleJsonWidgetPlugin,
     StringWidget,
     StringWidgetPlugin,
+    TagListWidget,
+    TagListWidgetPlugin,
     TextWidget,
     TextWidgetPlugin,
     UnknownWidget,
@@ -82,6 +98,8 @@ export {
     Button,
     ButtonControlled,
     Checkbox,
+    DateInput,
+    DatePicker,
     FileField,
     Icon,
     JsonForm,
@@ -97,6 +115,8 @@ export {
     SingleSelectOptions,
     StringInput,
     Switch,
+    TagList,
+    TagListInput,
     TextArea,
     Theme,
     Tooltip,
@@ -112,6 +132,8 @@ export type {
     ButtonControlledProps,
     ButtonProps,
     CheckboxProps,
+    DateInputProps,
+    DatePickerProps,
     FileFieldProps,
     IconProps,
     LabelProps,
@@ -124,6 +146,8 @@ export type {
     SelectProps,
     StringInputProps,
     SwitchProps,
+    TagListProps,
+    TagListInputProps,
     TextAreaProps,
     ThemeProps,
     TooltipProps,
