@@ -172,6 +172,7 @@ export function TagListInput({
 
             {state.isOpen && (
                 <PopoverPortal
+                    className="rje-popover__taglist"
                     portalContainer={TagListInputRef}
                     overlayTriggerState={state}
                     overlayTriggerRef={inputRef}
