@@ -74,7 +74,10 @@ export function NumberInput({
                 'rje-input',
                 'rje-input--number',
                 error ? 'rje-input--invalid' : 'rje-input--valid',
-                props.disabled ? 'rje-input--disabled' : 'rje-input--enabled'
+                props.disabled ? 'rje-input--disabled' : 'rje-input--enabled',
+                {
+                    'rje-input--readonly': props.readOnly
+                }
             )}
         >
             <Label {...labelProps} required={props.required} disabled={props.disabled} error={error} text={title} />

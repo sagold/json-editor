@@ -45,6 +45,13 @@
             color: $color-light-grey-1;
         }
     }
+
+    .rje-input--readonly {
+        input {
+            border: none;
+            background: rgba($color-black, 0.03);
+        }
+    }
 }
 
 @mixin input-dark {
@@ -89,6 +96,13 @@
         input[disabled] {
             @include input-flat(dark);
             color: $color-dark-grey-1;
+        }
+    }
+
+    .rje-input--readonly {
+        input {
+            border: none;
+            background: rgba($color-black, 0.03);
         }
     }
 }

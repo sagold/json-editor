@@ -51,7 +51,10 @@ export function StringInput({ icon, tag, iconPosition, title, error, onPress, va
                 'rje-input',
                 'rje-input--string',
                 error ? 'rje-input--invalid' : 'rje-input--valid',
-                props.disabled ? 'rje-input--disabled' : 'rje-input--enabled'
+                props.disabled ? 'rje-input--disabled' : 'rje-input--enabled',
+                {
+                    'rje-input--readonly': props.readOnly
+                }
             )}
         >
             <Label

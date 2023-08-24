@@ -1,5 +1,5 @@
-@import '../design';
-@import '../components/textarea/textarea';
+@import '../../design';
+@import './textarea';
 
 @mixin textarea-light {
     .rje-textarea {
