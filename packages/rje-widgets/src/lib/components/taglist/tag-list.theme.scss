@@ -3,6 +3,8 @@
 @mixin tag-list-light {
     .rje-tag {
         @include elevated(light);
+        border-radius: 1em;
+        font-size: 0.9em;
 
         &[data-focus-visible='true'] {
             color: rgb(var(--rje-color-light-secondary));
@@ -26,6 +28,8 @@
 @mixin tag-list-dark {
     .rje-tag {
         @include elevated(dark);
+        border-radius: 1em;
+        font-size: 0.9em;
 
         &[data-focus-visible='true'] {
             color: rgb(var(--rje-color-dark-secondary));
