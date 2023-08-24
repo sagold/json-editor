@@ -17,7 +17,19 @@ Thus, working with dates and default date-based features your data needs to rely
 
 The _date-time_-format is a [ISO 8601 date-time string format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) in UTC timezone and can be retrieved in javascript by `(new Date()).toISOString()`.
 
-json-schema _format_ options are specified like
+An empty string will be accepted. To set a date-format as mandatory add an additional validation `minLength: 1`
+
+```json
+{
+  "type": "string",
+  "format": "date-time",
+  "minLength": 0
+}
+```
+
+<Canvas className="inline" of={DateWidgetStories.FormatDateTimeRequired} />
+
+## format `date-time`
 
 ```json
 {
@@ -27,5 +39,14 @@ json-schema _format_ options are specified like
 ```
 
 <Canvas className="inline" of={DateWidgetStories.FormatDateTime} />
+
+## format `date`
+
+```json
+{
+  "type": "string",
+  "format": "date"
+}
+```
 
 <Canvas className="inline" of={DateWidgetStories.FormatDate} />

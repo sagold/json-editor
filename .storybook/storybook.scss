@@ -129,7 +129,7 @@
     }
 
     .docs-story > :first-child {
-        // z-index: 2; /* contents may be above *show code* action */
+        z-index: 2; /* contents may be above *show code* action */
         overflow: visible;
     }
 
@@ -138,6 +138,7 @@
         position: relative;
         display: flex;
         justify-content: flex-end;
+        z-index: auto;
     }
 
     .docblock-code-toggle {

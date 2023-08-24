@@ -77,18 +77,23 @@ export const Default: Story = {
 export const FormatDateTime: Story = {
     args: {
         data: '2023-08-20T14:56:17.657Z',
-        // data: 'some input string',
-        // liveUpdate: false,
-        // icon: undefined,
-        // tag: undefined,
-        // swapIconPosition: false,
-        // disabled: false,
-        // readOnly: false,
-        // required: false,
         schema: {
             title: 'Format date-time',
             type: 'string',
             format: 'date-time'
+        }
+    }
+};
+
+export const FormatDateTimeRequired: Story = {
+    args: {
+        validate: true,
+        data: '',
+        schema: {
+            title: 'Format date-time',
+            type: 'string',
+            format: 'date-time',
+            minLength: 1
         }
     }
 };
