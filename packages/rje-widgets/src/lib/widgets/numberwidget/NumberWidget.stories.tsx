@@ -64,6 +64,18 @@ Default.args = {
     }
 };
 
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    schema: {
+        title: 'Default number widget',
+        type: 'number',
+        default: 2000,
+        options: {
+            readOnly: true
+        }
+    }
+};
+
 export const ErrorState = Template.bind({});
 ErrorState.args = {
     data: 2023,

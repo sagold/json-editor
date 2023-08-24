@@ -2,7 +2,6 @@
 @import './checkbox';
 @import './file-field';
 @import './icon';
-@import './input';
 @import './label';
 @import './modal';
 @import './popover';
@@ -16,6 +15,7 @@
 @import './widget-description';
 @import './widget-error';
 @import './widget-field';
+@import '../components/input/input.theme';
 @import '../components/taglist/tag-list.theme';
 @import '../components/taglistinput/tag-list-input.theme';
 @import '../components/datepicker/date-picker.theme';

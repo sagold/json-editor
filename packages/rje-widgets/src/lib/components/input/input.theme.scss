@@ -1,5 +1,5 @@
 @use 'sass:math';
-@import '../design';
+@import '../../design';
 
 @mixin input-light {
     .rje-input {
@@ -17,7 +17,7 @@
         }
 
         input::placeholder,
-        .rje-tag {
+        .rje-input__tag {
             color: $color-light-grey-2;
         }
     }
@@ -36,7 +36,7 @@
 
     .rje-input--disabled {
         .rje-icon,
-        .rje-tag {
+        .rje-input__tag {
             color: $color-light-grey-1;
         }
 
@@ -63,7 +63,7 @@
         }
 
         input::placeholder,
-        .rje-tag {
+        .rje-input__tag {
             color: $color-dark-grey-2;
         }
     }
@@ -82,7 +82,7 @@
 
     .rje-input--disabled {
         .rje-icon,
-        .rje-tag {
+        .rje-input__tag {
             color: $color-dark-grey-1;
         }
 

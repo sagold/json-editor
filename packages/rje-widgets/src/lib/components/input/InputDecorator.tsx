@@ -33,7 +33,10 @@ export function InputDecorator(props) {
     let tag: ReactNode | null = null;
     if (props.tag) {
         tag = (
-            <div ref={(div) => div && setTagWidth(div.clientWidth)} className="rje-input-decorator__decor rje-tag">
+            <div
+                ref={(div) => div && setTagWidth(div.clientWidth)}
+                className="rje-input-decorator__decor rje-input__tag"
+            >
                 {props.tag}
             </div>
         );

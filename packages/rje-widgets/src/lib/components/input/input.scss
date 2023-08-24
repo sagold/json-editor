@@ -18,7 +18,7 @@
             font-size: em(3 * $unit);
         }
 
-        .rje-tag {
+        .rje-input__tag {
             font-size: em(1.75 * $unit);
             font-weight: 400;
         }
@@ -57,7 +57,7 @@
             opacity: 0.8;
         }
 
-        .rje-tag {
+        .rje-input__tag {
             padding: 0 0.5em;
         }
 
@@ -83,7 +83,7 @@
             input {
                 padding-left: calc(var(--rje-tag-width) * 1px);
             }
-            .rje-tag {
+            .rje-input__tag {
                 left: 0;
             }
         }
@@ -92,7 +92,7 @@
             input {
                 padding-right: calc(var(--rje-tag-width) * 1px);
             }
-            .rje-tag {
+            .rje-input__tag {
                 right: 0;
             }
         }
