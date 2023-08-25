@@ -1,0 +1,11 @@
+@import '../../design';
+
+@mixin time-input-component {
+    .rje-time-input {
+        display: inline-flex;
+        flex-direction: column;
+
+        .rje-date-input__fields {
+        }
+    }
+}

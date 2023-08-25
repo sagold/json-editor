@@ -127,3 +127,25 @@ export const FormatDate: Story = {
 //         }
 //     }
 // };
+
+export const FormatTime: Story = {
+    args: {
+        data: '13:04:52',
+        schema: {
+            title: 'Format time',
+            type: 'string',
+            format: 'time'
+        }
+    }
+};
+
+export const FormatTimeInvalid: Story = {
+    args: {
+        data: '13:04:52+12:00',
+        schema: {
+            title: 'Invalid format time',
+            type: 'string',
+            format: 'time'
+        }
+    }
+};

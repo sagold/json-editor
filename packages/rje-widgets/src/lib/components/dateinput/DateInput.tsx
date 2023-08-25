@@ -13,6 +13,7 @@ export type DateInputProps = {
     title?: string;
     children?: ReactNode | ReactNode[];
     disabled?: boolean;
+    error?: boolean;
     readOnly?: boolean;
     required?: boolean;
     /* defaults to date-time */
@@ -93,7 +94,7 @@ type DateSegmentProps = {
     state: DateFieldState;
 };
 
-function Segment({ segment, state }: DateSegmentProps) {
+export function Segment({ segment, state }: DateSegmentProps) {
     const ref = useRef(null);
     const { segmentProps } = useDateSegment(segment, state, ref);
     return (

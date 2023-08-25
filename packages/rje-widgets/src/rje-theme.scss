@@ -16,6 +16,7 @@
 @import './lib/components/taglist/tag-list';
 @import './lib/components/taglistinput/tag-list-input';
 @import './lib/components/textarea/textarea';
+@import './lib/components/timeinput/time-input';
 @import './lib/components/tooltip/tooltip';
 @import './lib/components/widgetdescription/widget-description';
 @import './lib/components/widgeterror/widget-error';
@@ -40,6 +41,7 @@
     @include tag-list-component;
     @include tag-list-input-component;
     @include textarea-component;
+    @include time-input-component;
     @include tooltip-component;
     @include widget-description-component;
     @include widget-error-component;

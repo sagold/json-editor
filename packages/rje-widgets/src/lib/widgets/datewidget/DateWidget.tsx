@@ -22,21 +22,15 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
             <WidgetField widgetType="number" node={node} options={options}>
                 <TimeInput
                     disabled={options.disabled || isValidConst}
-                    // error={hasError}
-                    onChange={(date) => {
-                        console.log('on change', date);
-                        // if (format === 'date') {
-                        //     setValue(date.toString());
-                        // } else {
-                        //     // @ts-expect-error
-                        //     setValue(date.toDate().toISOString());
-                        // }
+                    error={hasError}
+                    onChange={(time) => {
+                        console.log(time);
+                        setValue(time?.toString ? time.toString() : '');
                     }}
-                    readOnly={options.readOnly}
+                    // readOnly={options.readOnly}
                     required={options.required}
                     title={options.title}
                     value={node.value}
-                    format={format as DatePickerProps['format']}
                     // icon={options.icon}
                     // iconPosition={options.swapIconPosition ? 'right' : 'left'}
                     // id={node.id}
@@ -81,9 +75,22 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
     );
 });
 
+const isHHmmsss = /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)$/;
+
 export const DateWidgetPlugin: WidgetPlugin = {
     id: 'date-widget',
-    use: (node) =>
-        (node.schema.type === 'string' && node.schema.format === 'date') || node.schema.format === 'date-time',
+    use: (node) => {
+        if (node.schema.type !== 'string') {
+            return false;
+        }
+        // @ts-ignore
+        const value = node.value;
+        if (node.schema.format === 'time' && (value === '' || isHHmmsss.test(value))) {
+            return true;
+        }
+
+        return node.schema.format === 'date' || node.schema.format === 'date-time';
+    },
+
     Widget: DateWidget
 };
