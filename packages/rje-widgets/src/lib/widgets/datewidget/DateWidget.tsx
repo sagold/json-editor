@@ -1,5 +1,6 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { DatePicker, DatePickerProps } from '../../components/datepicker/DatePicker';
+import { TimeInput } from '../../components/timeinput/TimeInput';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 
 export type DateOptions = {
@@ -16,7 +17,38 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
     const isValidConst = node.schema.const != null && !hasError;
     const format = node.schema.format;
 
-    console.log('date widget data', node.value);
+    if (format === 'time') {
+        return (
+            <WidgetField widgetType="number" node={node} options={options}>
+                <TimeInput
+                    disabled={options.disabled || isValidConst}
+                    // error={hasError}
+                    onChange={(date) => {
+                        console.log('on change', date);
+                        // if (format === 'date') {
+                        //     setValue(date.toString());
+                        // } else {
+                        //     // @ts-expect-error
+                        //     setValue(date.toDate().toISOString());
+                        // }
+                    }}
+                    readOnly={options.readOnly}
+                    required={options.required}
+                    title={options.title}
+                    value={node.value}
+                    format={format as DatePickerProps['format']}
+                    // icon={options.icon}
+                    // iconPosition={options.swapIconPosition ? 'right' : 'left'}
+                    // id={node.id}
+                    // onPress={setValue}
+                    // placeholder={options.placeholder}
+                    // tag={options.tag}
+                    // defaultValue={node.value}
+                    // withButtons={options.withButtons}
+                />
+            </WidgetField>
+        );
+    }
 
     return (
         <WidgetField widgetType="number" node={node} options={options}>
