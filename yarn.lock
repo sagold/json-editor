@@ -10394,7 +10394,7 @@ __metadata:
     "@sagold/json-pointer": ^5.1.1
     "@types/uuid": ^9.0.2
     fast-equals: ^5.0.1
-    json-schema-library: ^9.0.2
+    json-schema-library: ^9.0.3
     uuid: ^9.0.0
   languageName: unknown
   linkType: soft
@@ -11926,9 +11926,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^9.0.2":
-  version: 9.0.2
-  resolution: "json-schema-library@npm:9.0.2"
+"json-schema-library@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "json-schema-library@npm:9.0.3"
   dependencies:
     "@sagold/json-pointer": ^5.1.1
     "@sagold/json-query": ^6.1.1
@@ -11936,7 +11936,7 @@ __metadata:
     fast-copy: ^3.0.1
     fast-deep-equal: ^3.1.3
     valid-url: ^1.0.9
-  checksum: 7eef6f1f44318721b891d65e32d45405bf1dd1e696af6cbcb09b6ae18d50008bedd75d0ee6a393644eaff4157bbcaf1d1d25dd7d87eb771d695698b7c8c8da3f
+  checksum: db5214bc5d470159fa8d63572846bcbd600364e7dfd6626e0f05bd7b6942052c02a2f4fc2deacfc787f8f568b8e2ecff445d24ee5161a1f1b4bc37de08901bb0
   languageName: node
   linkType: hard
 
