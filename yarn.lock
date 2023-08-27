@@ -3281,6 +3281,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-aria/color@npm:3.0.0-beta.23":
+  version: 3.0.0-beta.23
+  resolution: "@react-aria/color@npm:3.0.0-beta.23"
+  dependencies:
+    "@react-aria/i18n": ^3.8.1
+    "@react-aria/interactions": ^3.17.0
+    "@react-aria/slider": ^3.6.0
+    "@react-aria/spinbutton": ^3.5.1
+    "@react-aria/textfield": ^3.11.0
+    "@react-aria/utils": ^3.19.0
+    "@react-aria/visually-hidden": ^3.8.3
+    "@react-stately/color": ^3.4.1
+    "@react-types/color": 3.0.0-beta.18
+    "@react-types/shared": ^3.19.0
+    "@react-types/slider": ^3.6.0
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: f791af6c2a476a00b6fae77689e56d84bd9e002b76f37205cbe62aecd9c623de34d456621ecada7142124161ae5cd46b7b49a124af2846fbeddc7a53acfddf25
+  languageName: node
+  linkType: hard
+
 "@react-aria/combobox@npm:^3.6.3":
   version: 3.6.3
   resolution: "@react-aria/combobox@npm:3.6.3"
@@ -3972,6 +3995,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-stately/color@npm:^3.4.1":
+  version: 3.4.1
+  resolution: "@react-stately/color@npm:3.4.1"
+  dependencies:
+    "@internationalized/number": ^3.2.1
+    "@internationalized/string": ^3.1.1
+    "@react-stately/slider": ^3.4.1
+    "@react-stately/utils": ^3.7.0
+    "@react-types/color": 3.0.0-beta.18
+    "@react-types/numberfield": ^3.5.0
+    "@react-types/shared": ^3.19.0
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: f19f12587b95867854acbbf92c4dbc19b103619ecac7e1f12b7efdbd3e8094d915e52ff1afbb042d54de59960a3e9af2096149313a56543482090bd4b6f81e2a
+  languageName: node
+  linkType: hard
+
 "@react-stately/combobox@npm:^3.6.0":
   version: 3.6.0
   resolution: "@react-stately/combobox@npm:3.6.0"
@@ -4354,6 +4395,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-types/color@npm:3.0.0-beta.18":
+  version: 3.0.0-beta.18
+  resolution: "@react-types/color@npm:3.0.0-beta.18"
+  dependencies:
+    "@react-types/shared": ^3.19.0
+    "@react-types/slider": ^3.6.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: 938eb781f04b59f7f0673bc732aed8cb3c45b86440666f967c02deaaed56d85db3696758d91bb35d4f75ccd70fc24c4a17677dec78edcbb63762039e2a3db4a4
+  languageName: node
+  linkType: hard
+
 "@react-types/combobox@npm:^3.7.0":
   version: 3.7.0
   resolution: "@react-types/combobox@npm:3.7.0"
@@ -4649,6 +4702,8 @@ __metadata:
   resolution: "@sagold/rje-widgets@workspace:packages/rje-widgets"
   dependencies:
     "@internationalized/date": ^3.4.0
+    "@react-aria/color": 3.0.0-beta.23
+    "@react-stately/color": ^3.4.1
     "@sagold/react-json-editor": ^0.29.2
     "@types/sortablejs": "*"
     classnames: ^2.3.2

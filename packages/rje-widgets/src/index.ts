@@ -5,6 +5,7 @@ import { widgets } from './lib/widgets/index';
 // widgets
 import { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
 import { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
+import { ColorWidget, ColorWidgetPlugin } from './lib/widgets/colorwidget/ColorWidget';
 import { DateWidget, DateWidgetPlugin } from './lib/widgets/datewidget/DateWidget';
 import { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
 import { NavigationWidget } from './lib/widgets/navigationwidget/NavigationWidget';
@@ -25,6 +26,7 @@ import { TagListWidget, TagListWidgetPlugin } from './lib/widgets/taglistwidget/
 // components
 import { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
 import { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
+import { ColorInput, ColorInputProps } from './lib/components/colorinput/ColorInput';
 import { DateInput, type DateInputProps } from './lib/components/dateinput/DateInput';
 import { DatePicker, type DatePickerProps } from './lib/components/datepicker/DatePicker';
 import { TagList, type TagListProps } from './lib/components/taglist/TagList';
@@ -32,6 +34,7 @@ import { TagListInput, type TagListInputProps } from './lib/components/taglistin
 import { FileField, FileFieldProps } from './lib/components/filefield/FileField';
 import { Icon, IconProps } from './lib/components/icon/Icon';
 import { StringInput, StringInputProps } from './lib/components/input/StringInput';
+import { TimeInput, TimeInputProps } from './lib/components/timeinput/TimeInput';
 import { NumberInput, NumberInputProps } from './lib/components/input/NumberInput';
 import { Label, LabelProps } from './lib/components/label/Label';
 import { useModal, UseModalProps, Modal, ModalProps } from './lib/components/modal/Modal';
@@ -67,6 +70,8 @@ export {
     booleanDefaultOptions,
     BooleanWidget,
     BooleanWidgetPlugin,
+    ColorWidget,
+    ColorWidgetPlugin,
     DateWidget,
     DateWidgetPlugin,
     FileWidget,
@@ -98,6 +103,7 @@ export {
     Button,
     ButtonControlled,
     Checkbox,
+    ColorInput,
     DateInput,
     DatePicker,
     FileField,
@@ -118,6 +124,7 @@ export {
     TagList,
     TagListInput,
     TextArea,
+    TimeInput,
     Theme,
     Tooltip,
     useModal,
@@ -132,6 +139,7 @@ export type {
     ButtonControlledProps,
     ButtonProps,
     CheckboxProps,
+    ColorInputProps,
     DateInputProps,
     DatePickerProps,
     FileFieldProps,
@@ -150,6 +158,7 @@ export type {
     TagListInputProps,
     TextAreaProps,
     ThemeProps,
+    TimeInputProps,
     TooltipProps,
     UseModalProps,
     UsePopoverProps,

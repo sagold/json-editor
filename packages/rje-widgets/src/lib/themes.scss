@@ -1,5 +1,6 @@
 @import './components/button/button.theme';
 @import './components/checkbox/checkbox.theme';
+@import './components/colorinput/color-input.theme';
 @import './components/filefield/file-field.theme';
 @import './components/icon/icon.theme.scss';
 @import './components/label/label.theme';
@@ -24,6 +25,7 @@
 @mixin light-theme() {
     @include button-light();
     @include checkbox-light();
+    @include color-input-light();
     @include date-input-light();
     @include date-picker-light();
     @include file-field-light();
@@ -54,6 +56,7 @@
 @mixin dark-theme() {
     @include button-dark();
     @include checkbox-dark();
+    @include color-input-dark();
     @include date-input-dark();
     @include date-picker-dark();
     @include file-field-dark();

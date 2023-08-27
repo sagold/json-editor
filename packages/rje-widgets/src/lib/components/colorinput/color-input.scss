@@ -1,0 +1,26 @@
+@import '../../design';
+
+@mixin color-input-component {
+    .rje-input--color {
+    }
+
+    .rje-input__wrapper {
+        position: relative;
+
+        .rje-input__color {
+            position: absolute;
+            width: 1em;
+            height: 1em;
+            top: 0.53em;
+            left: 0.53em;
+            display: inline-block;
+            background-color: var(--rje-color-value);
+        }
+
+        .rje-input__element {
+            box-sizing: border-box;
+            padding: em(0.75 * $unit) em($unit);
+            padding-left: 2em;
+        }
+    }
+}

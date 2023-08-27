@@ -1,5 +1,6 @@
 @import './lib/components/button/button';
 @import './lib/components/checkbox/checkbox';
+@import './lib/components/colorinput/color-input';
 @import './lib/components/filefield/file-field';
 @import './lib/components/datepicker/date-picker';
 @import './lib/components/dateinput/date-input';
@@ -25,6 +26,7 @@
 .rje-theme {
     @include button-component;
     @include checkbox-field-component;
+    @include color-input-component;
     @include file-field-component;
     @include date-input-component;
     @include date-picker-component;

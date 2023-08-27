@@ -19,7 +19,7 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
 
     if (format === 'time') {
         return (
-            <WidgetField widgetType="number" node={node} options={options}>
+            <WidgetField widgetType="date" node={node} options={options}>
                 <TimeInput
                     disabled={options.disabled || isValidConst}
                     error={hasError}
@@ -45,7 +45,7 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
     }
 
     return (
-        <WidgetField widgetType="number" node={node} options={options}>
+        <WidgetField widgetType="date" node={node} options={options}>
             <DatePicker
                 disabled={options.disabled || isValidConst}
                 error={hasError}

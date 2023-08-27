@@ -1,0 +1,13 @@
+@import '../../design';
+
+@mixin color-input-light {
+    .rje-input--color .rje-input__color {
+        border: 1px solid $color-light-grey-1;
+    }
+}
+
+@mixin color-input-dark {
+    .rje-input--color .rje-input__color {
+        border: 1px solid $color-dark-grey-1;
+    }
+}

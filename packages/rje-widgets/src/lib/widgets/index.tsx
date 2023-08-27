@@ -1,6 +1,7 @@
 import { WidgetPlugin } from '@sagold/react-json-editor';
 import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
 import { BooleanWidgetPlugin } from './booleanwidget/BooleanWidget';
+import { ColorWidgetPlugin } from './colorwidget/ColorWidget';
 import { DateWidgetPlugin } from './datewidget/DateWidget';
 import { FileWidgetPlugin } from './filewidget/FileWidget';
 import { MasterDetailWidgetPlugin } from './masterdetailwidget/MasterDetailWidget';
@@ -24,6 +25,7 @@ export const widgets: WidgetPlugin[] = [
     },
     SelectOneOfWidgetPlugin,
     SimpleJsonWidgetPlugin,
+    ColorWidgetPlugin,
     DateWidgetPlugin,
     MasterDetailWidgetPlugin,
     TagListWidgetPlugin,
