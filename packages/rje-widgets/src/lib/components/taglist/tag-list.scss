@@ -1,49 +1,56 @@
 @import '../../design';
 
 @mixin tag-list-component {
-    .rje-field--multi-select {
-        // @todo move to widget
-        width: 100%;
-    }
-
-    .rje-tag-list {
-    }
-
+    // layout children
     .rje-tag-list__children {
         display: flex;
         flex-wrap: wrap;
         gap: em(4);
-
         .rje-label + & {
             margin-top: em(4);
         }
     }
 
+    // layout tag
     .rje-tag {
-        padding: em(6) em(12);
-        outline: 0;
-
-        &:hover {
-            cursor: default;
-        }
-
-        &[aria-selected]:hover {
-            cursor: pointer;
-        }
-
-        &.with-action {
-            padding-right: em(4);
-        }
-    }
-
-    .rje-tag__grid {
+        height: em(30);
+        padding-left: em(12);
+        padding-right: em(12);
         display: flex;
         align-items: center;
         line-height: 1;
 
+        .rje-tag__grid {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+        }
+
+        // remove
         .rje-button {
             padding: 0;
-            font-size: 0.8em;
+            .rje-icon {
+                font-size: 1.2em;
+            }
+        }
+
+        &.removable {
+            padding-right: em(8);
+        }
+
+        &.selectable.with-icon {
+            padding-left: 0;
+        }
+    }
+
+    // behaviour tag
+    .rje-tag {
+        outline: 0;
+        &:hover {
+            cursor: default;
+        }
+        &[aria-selected]:hover {
+            cursor: pointer;
         }
     }
 }

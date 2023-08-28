@@ -47,7 +47,7 @@ export const TagListWidget = widget<ArrayNode<TagListWidgetOptions>, string[]>((
     console.log('available options', availableSelections);
 
     return (
-        <WidgetField widgetType="multi-select" node={node} options={options}>
+        <WidgetField widgetType="tag-list" node={node} options={options}>
             <TagListInput
                 items={currentSelection}
                 options={availableSelections.filter((a) => !currentSelection.find((b) => a.value === b.value))}

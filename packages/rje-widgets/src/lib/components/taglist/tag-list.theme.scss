@@ -4,23 +4,34 @@
     .rje-tag {
         @include elevated(light);
         border-radius: 1em;
-        font-size: 0.9em;
+    }
 
-        &[data-focus-visible='true'] {
-            color: rgb(var(--rje-color-light-secondary));
-            border-color: rgb(var(--rje-color-light-primary));
+    .rje-tag.selectable.with-icon {
+        @include elevated(light);
+        border-radius: 1em;
+
+        .rje-tag__selection {
+            border-radius: 99%;
+            border: 1px solid $color-light-grey-1;
+            margin: 0.1em;
+            font-size: em(22);
         }
 
-        &[aria-selected='true'] {
-            color: rgb(var(--rje-color-dark-text));
-            @include primary-elevated(light);
+        &.rje-tag--selected .rje-tag__selection {
+            background: rgb(var(--rje-color-light-primary));
+            color: $color-white;
+        }
 
-            .rje-button {
-                color: rgb(var(--rje-color-dark-text));
-                &:hover {
-                    color: rgb(var(--rje-color-dark-secondary));
-                }
-            }
+        &.rje-tag--unselected .rje-tag__selection {
+            background: transparent;
+            color: transparent;
+        }
+    }
+
+    .rje-tag.selectable:not(.with-icon) {
+        &.rje-tag--selected {
+            background: rgb(var(--rje-color-light-primary));
+            color: $color-white;
         }
     }
 }
@@ -29,23 +40,34 @@
     .rje-tag {
         @include elevated(dark);
         border-radius: 1em;
-        font-size: 0.9em;
+    }
 
-        &[data-focus-visible='true'] {
-            color: rgb(var(--rje-color-dark-secondary));
-            border-color: rgb(var(--rje-color-dark-primary));
+    .rje-tag.selectable.with-icon {
+        @include elevated(dark);
+        border-radius: 1em;
+
+        .rje-tag__selection {
+            border-radius: 99%;
+            border: 1px solid $color-dark-grey-1;
+            margin: 0.1em;
+            font-size: em(22);
         }
 
-        &[aria-selected='true'] {
-            color: rgb(var(--rje-color-dark-text));
-            @include primary-elevated(dark);
+        &.rje-tag--selected .rje-tag__selection {
+            background: rgb(var(--rje-color-dark-primary));
+            color: $color-black;
+        }
 
-            .rje-button {
-                color: rgb(var(--rje-color-dark-text));
-                &:hover {
-                    color: rgb(var(--rje-color-dark-secondary));
-                }
-            }
+        &.rje-tag--unselected .rje-tag__selection {
+            background: transparent;
+            color: transparent;
+        }
+    }
+
+    .rje-tag.selectable:not(.with-icon) {
+        &.rje-tag--selected {
+            background: rgb(var(--rje-color-dark-primary));
+            color: $color-black;
         }
     }
 }

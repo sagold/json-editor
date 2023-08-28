@@ -6,6 +6,7 @@ import { useFocusRing, useTag, useTagGroup } from 'react-aria';
 import { Button } from '../button/Button';
 import { Label } from '../label/Label';
 import classnames from 'classnames';
+import { Icon } from '../icon/Icon';
 
 export { Item };
 
@@ -32,6 +33,8 @@ export type TagListProps = {
     displayValue?: (item: TagItem) => string;
     /** Initial items in the list. */
     items?: TagItem[];
+    /** show checkbox icon if selectable */
+    checkbox?: boolean;
     /** The type of selection that is allowed in the collection. */
     selectionMode?: SelectionMode;
     /** Whether the collection allows empty selection. */
@@ -63,6 +66,7 @@ export function TagList({
     error,
     title,
     children,
+    checkbox,
     displayValue = renderItemId,
     ...props
 }: TagListProps) {
@@ -85,7 +89,7 @@ export function TagList({
             {title && <Label {...labelProps} disabled={disabled} required={required} error={error} text={title} />}
             <div {...gridProps} ref={ref} className="rje-tag-list__children">
                 {[...state.collection].map((item) => (
-                    <Tag key={item.key} item={item} state={state} />
+                    <Tag key={item.key} item={item} state={state} checkbox={checkbox} />
                 ))}
                 {children}
             </div>
@@ -94,14 +98,21 @@ export function TagList({
 }
 
 type TagProps = {
+    checkbox?: boolean;
     state: ListState<TagItem>;
 } & AriaTagProps<TagItem>;
 
 function Tag(props: TagProps) {
-    let { item, state } = props;
-    let ref = useRef(null);
-    let { focusProps, isFocusVisible } = useFocusRing({ within: true });
-    let { rowProps, gridCellProps, removeButtonProps, allowsRemoving } = useTag(props, state, ref);
+    const { item, state, checkbox = true } = props;
+    const ref = useRef(null);
+    const { focusProps, isFocusVisible } = useFocusRing({ within: true });
+    const { rowProps, gridCellProps, removeButtonProps, allowsRemoving, allowsSelection, isSelected } = useTag(
+        props,
+        state,
+        ref
+    );
+
+    const showSelectIcon = allowsSelection && checkbox;
 
     return (
         <div
@@ -109,11 +120,14 @@ function Tag(props: TagProps) {
             {...rowProps}
             {...focusProps}
             data-focus-visible={isFocusVisible}
-            className={classnames('rje-tag', {
-                'with-action': allowsRemoving
+            className={classnames('rje-tag', isSelected ? 'rje-tag--selected' : 'rje-tag--unselected', {
+                removable: allowsRemoving,
+                selectable: allowsSelection,
+                'with-icon': showSelectIcon
             })}
         >
             <div {...gridCellProps} className="rje-tag__grid">
+                {showSelectIcon && <Icon className="rje-tag__selection">{isSelected ? 'check' : 'close'}</Icon>}
                 {item.rendered}
                 {allowsRemoving && <Button {...removeButtonProps} variant="text" icon="clear" />}
             </div>

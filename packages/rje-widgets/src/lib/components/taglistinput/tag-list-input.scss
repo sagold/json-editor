@@ -2,6 +2,10 @@
 
 @mixin tag-list-input-component {
     .rje-tag-list-input {
+        .rje-tag {
+            font-size: 0.9em;
+        }
+
         // specificity!
         input[type='text'].rje-tag-list-input__element {
             width: auto;
