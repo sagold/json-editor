@@ -106,7 +106,7 @@ export function PopoverPortal({
     portalContainer,
     overlayTriggerState,
     overlayTriggerRef,
-    offset = 8,
+    offset = 0,
     withArrow = false,
     ...props
 }: PopoverPortalProps) {
