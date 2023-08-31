@@ -15,7 +15,17 @@ export type ButtonProps = {
 
 export function Button({ children, className, disabled, icon, iconPosition, style, variant, ...props }: ButtonProps) {
     const ref = useRef<HTMLButtonElement>(null);
-    const { buttonProps, isPressed } = useButton({ ...props, isDisabled: disabled }, ref);
+    const { buttonProps, isPressed } = useButton(
+        {
+            ...props,
+            isDisabled: disabled,
+            // https://github.com/adobe/react-spectrum/issues/4355
+            // https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/button/src/useButton.ts#L58
+            // @ts-expect-error - undocumented
+            preventFocusOnPress: true
+        },
+        ref
+    );
     return (
         <ButtonControlled
             {...buttonProps}
