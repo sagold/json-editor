@@ -87,6 +87,6 @@ export const TagListWidgetPlugin: WidgetPlugin = {
     id: 'multi-select-widget',
     use: (node) =>
         // @ts-expect-error
-        node.schema.type === 'array' && node.schema.items?.type === 'string' && node.schema.format === 'search',
+        node.schema.type === 'array' && node.schema.items?.type === 'string' && node.schema.format === 'taglist',
     Widget: TagListWidget
 };

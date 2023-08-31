@@ -480,6 +480,7 @@ export const schema = {
             title: 'Array of strings',
             description: 'Multiselect widget has been configured to register for a simple list of strings',
             type: 'array',
+            format: 'taglist',
             items: {
                 type: 'string'
             },

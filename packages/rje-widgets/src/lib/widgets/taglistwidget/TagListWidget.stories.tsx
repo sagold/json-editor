@@ -52,7 +52,7 @@ export const Default: Story = {
         schema: {
             title: 'Multi-selection demo',
             type: 'array',
-            format: 'search',
+            format: 'taglist',
             options: {
                 values: [
                     { value: 'Gray alder', label: '[label] Gray alder' },

@@ -2,6 +2,10 @@
 
 @mixin tag-list-input-component {
     .rje-tag-list-input {
+        .rje-label + .rje-tag-list {
+            margin-top: 4px;
+        }
+
         .rje-tag {
             font-size: 0.9em;
         }
