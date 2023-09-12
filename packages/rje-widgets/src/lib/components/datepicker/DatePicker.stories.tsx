@@ -27,3 +27,11 @@ export const FormatDate = {
         format: 'date'
     }
 };
+
+export const ReadOnly = {
+    args: {
+        format: 'date',
+        readOnly: true,
+        defaultValue: '2023-11-11'
+    }
+};

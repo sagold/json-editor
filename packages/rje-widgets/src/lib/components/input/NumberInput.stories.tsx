@@ -73,3 +73,19 @@ FormatCurrency.args = {
     tag: 'Unit',
     onPress: (value) => console.log('value', value)
 };
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    disabled: false,
+    readOnly: true,
+    iconPosition: 'left',
+    title: 'read only',
+    format: {
+        style: 'currency',
+        currency: 'EUR'
+    },
+    defaultValue: 14082.02,
+    icon: 'search',
+    tag: 'Unit',
+    onPress: (value) => console.log('value', value)
+};

@@ -9,19 +9,22 @@ import { useDateValue } from '../dateinput/useDateValue';
 import { useDialog } from 'react-aria';
 import { useRef } from 'react';
 import { Calendar } from './Calendar';
+import classNames from 'classnames';
 import { type Calendar as TypeOfCalendar } from '@internationalized/date';
 
 export type DatePickerProps = {
     error?: boolean;
+    readOnly?: boolean;
     locale?: string;
     createCalendar?: (name: string) => TypeOfCalendar;
 } & Omit<DateInputProps, 'locale' | 'createCalendar'>;
 
-export function DatePicker({ title, error, format, defaultValue, value, ...props }: DatePickerProps) {
+export function DatePicker({ title, error, format, defaultValue, value, readOnly, ...props }: DatePickerProps) {
     const [defaultDate, date] = useDateValue(defaultValue, value, format);
     const mainRef = useRef<HTMLDivElement>(null);
     const state = useDatePickerState({
         ...props,
+        isReadOnly: readOnly,
         defaultValue: defaultDate,
         value: date
     });
@@ -29,6 +32,7 @@ export function DatePicker({ title, error, format, defaultValue, value, ...props
     const { groupProps, labelProps, fieldProps, buttonProps, dialogProps, calendarProps } = useDatePicker(
         {
             ...props,
+            isReadOnly: readOnly,
             defaultValue: defaultDate,
             value: date
         },
@@ -40,11 +44,17 @@ export function DatePicker({ title, error, format, defaultValue, value, ...props
     // console.log(fieldProps?.value?.toDate().toISOString());
 
     return (
-        <div className="rje-date-picker" ref={mainRef}>
+        <div
+            className={classNames('rje-date-picker', {
+                'rje-date-picker--readonly': readOnly,
+                'rje-date-picker--disabled': props.disabled
+            })}
+            ref={mainRef}
+        >
             {title && <Label {...labelProps} text={title} />}
             <div className="rje-date-picker__input" {...groupProps} ref={inputWrapperRef}>
                 <DateInputControlled {...fieldProps}>
-                    <Button variant="text" {...buttonProps} icon="event" />
+                    <Button variant="text" disabled={readOnly} {...buttonProps} icon="event" />
                 </DateInputControlled>
             </div>
             {state.isOpen && (

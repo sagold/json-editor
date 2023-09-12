@@ -6,6 +6,7 @@ import { Label } from '../label/Label';
 import classnames from 'classnames';
 import type { AriaDateFieldProps } from 'react-aria';
 import { useDateValue, DateValue } from './useDateValue';
+import classNames from 'classnames';
 
 export type Granularity = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
@@ -75,7 +76,12 @@ export function DateInputControlled({ children, ...props }: DateInputControlledP
     const ref = useRef(null);
     const { labelProps, fieldProps } = useDateField(props, state, ref);
     return (
-        <div className="rje-date-input">
+        <div
+            className={classNames('rje-date-input', {
+                'rje-date-input--readonly': props.isReadOnly,
+                'rje-date-input--disabled': props.isDisabled
+            })}
+        >
             {props.label && (
                 <Label {...labelProps} text={props.label} required={props.isRequired} disabled={props.isDisabled} />
             )}

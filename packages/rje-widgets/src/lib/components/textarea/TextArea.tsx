@@ -74,7 +74,10 @@ export function TextArea({
             className={classnames(
                 'rje-textarea-field',
                 error ? 'rje-textarea-field--invalid' : 'rje-textarea-field--valid',
-                disabled ? 'rje-textarea-field--disabled' : 'rje-textarea-field--enabled'
+                disabled ? 'rje-textarea-field--disabled' : 'rje-textarea-field--enabled',
+                {
+                    'rje-textarea-field--readonly': readOnly
+                }
             )}
         >
             <Label

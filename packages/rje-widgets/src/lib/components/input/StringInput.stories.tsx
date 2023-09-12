@@ -43,6 +43,19 @@ Placeholder.args = {
     onPress: (value) => console.log('value', value)
 };
 
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    emitOnChange: false,
+    disabled: false,
+    readOnly: true,
+    iconPosition: 'left',
+    defaultValue: 'Firefox',
+    icon: 'search',
+    tag: 'Unit',
+    title: 'Input as String',
+    onPress: (value) => console.log('value', value)
+};
+
 export const Error = Template.bind({});
 Error.args = {
     emitOnChange: false,

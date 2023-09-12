@@ -29,6 +29,16 @@ export const Placeholder: Story = {
     }
 };
 
+export const ReadOnly: Story = {
+    args: {
+        disabled: false,
+        readOnly: true,
+        defaultValue: 'Suchbegriff',
+        title: 'Input as String',
+        setValue: (value) => console.log('value', value)
+    }
+};
+
 export const Error: Story = {
     args: {
         disabled: false,

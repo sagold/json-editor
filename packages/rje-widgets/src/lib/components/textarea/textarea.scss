@@ -19,4 +19,9 @@ $textarea-placeholder--disabled: '&[disabled]::placeholder';
         font-family: inherit;
         padding: em($unit);
     }
+
+    .rje-textarea-field--readonly .rje-textarea {
+        @include input-readonly;
+        resize: none;
+    }
 }

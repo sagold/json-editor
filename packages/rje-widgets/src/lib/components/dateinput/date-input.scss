@@ -1,14 +1,15 @@
 @import '../../design';
 
 @mixin date-input-component {
-    .rje-date-input {
-    }
-
     .rje-date-input__fields {
         align-items: center;
         display: flex;
         padding: em(0.75 * $unit) em($unit);
         gap: em(2);
+    }
+
+    .rje-date-input--readonly .rje-date-input__fields {
+        @include input-readonly;
     }
 
     .rje-label + .rje-date-input__fields {

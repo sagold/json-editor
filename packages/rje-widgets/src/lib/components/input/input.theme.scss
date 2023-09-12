@@ -48,8 +48,7 @@
 
     .rje-input--readonly {
         input {
-            border: none;
-            background: rgba($color-black, 0.03);
+            @include input-readonly;
         }
     }
 }
@@ -101,8 +100,7 @@
 
     .rje-input--readonly {
         input {
-            border: none;
-            background: rgba($color-black, 0.03);
+            @include input-readonly;
         }
     }
 }
