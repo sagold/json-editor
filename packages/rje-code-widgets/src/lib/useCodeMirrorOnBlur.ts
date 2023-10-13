@@ -14,7 +14,7 @@ import { useState, useEffect, useCallback } from 'react';
 export function useCodeMirrorOnBlur(onBlur?: (value: string) => void, pointer?: string) {
     const [codeMirror, setCodeMirror] = useState<ReactCodeMirrorRef>();
     // required to reexecute this function as soon as the reference is passed
-    const ref = useCallback((editor) => {
+    const ref = useCallback((editor: ReactCodeMirrorRef) => {
         if (editor != null) {
             setCodeMirror(editor);
         }
@@ -25,11 +25,12 @@ export function useCodeMirrorOnBlur(onBlur?: (value: string) => void, pointer?: 
         if (contentDOM == null || onBlur == null) {
             return;
         }
-        // console.log('register on blur handler', pointer);
         const valueFromEvent = (event: FocusEvent) => {
-            const dom = event.target as HTMLDivElement;
-            // console.log('call blur setValue', dom.innerText);
-            dom.innerText && onBlur && onBlur(dom.innerText);
+            if (onBlur == null) {
+                return;
+            }
+            const contents = codeMirror?.view?.state.doc.toString();
+            contents && onBlur(contents);
         };
         contentDOM.addEventListener('blur', valueFromEvent);
         return function () {

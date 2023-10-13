@@ -2230,7 +2230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codemirror/lint@npm:^6.0.0, @codemirror/lint@npm:^6.4.0":
+"@codemirror/lint@npm:^6.0.0":
   version: 6.4.0
   resolution: "@codemirror/lint@npm:6.4.0"
   dependencies:
@@ -2238,6 +2238,17 @@ __metadata:
     "@codemirror/view": ^6.0.0
     crelt: ^1.0.5
   checksum: ba15f7dd87afbceafaa0b68f94b0d53727e4aacca7a81a4ed3278706df5787fdf18cd3f0d807a136f902b2fc2296bf3490462fd543d1d4ced17a0d8c171820fd
+  languageName: node
+  linkType: hard
+
+"@codemirror/lint@npm:^6.4.2":
+  version: 6.4.2
+  resolution: "@codemirror/lint@npm:6.4.2"
+  dependencies:
+    "@codemirror/state": ^6.0.0
+    "@codemirror/view": ^6.0.0
+    crelt: ^1.0.5
+  checksum: 5e699960c1b28dbaa584fe091a3201978907bf4b9e52810fb15d3ceaf310e38053435e0b594da0985266ae812039a5cd6c36023284a6f8568664bdca04db137f
   languageName: node
   linkType: hard
 
@@ -4689,8 +4700,8 @@ __metadata:
   resolution: "@sagold/rje-code-widgets@workspace:packages/rje-code-widgets"
   dependencies:
     "@codemirror/lang-json": "*"
-    "@codemirror/lint": ^6.4.0
-    "@uiw/react-codemirror": ^4.21.7
+    "@codemirror/lint": ^6.4.2
+    "@uiw/react-codemirror": ^4.21.20
     markdown-to-jsx: ^7.2.1
   peerDependencies:
     "@sagold/react-json-editor": ^0.30.0
@@ -6603,9 +6614,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uiw/codemirror-extensions-basic-setup@npm:4.21.9":
-  version: 4.21.9
-  resolution: "@uiw/codemirror-extensions-basic-setup@npm:4.21.9"
+"@uiw/codemirror-extensions-basic-setup@npm:4.21.20":
+  version: 4.21.20
+  resolution: "@uiw/codemirror-extensions-basic-setup@npm:4.21.20"
   dependencies:
     "@codemirror/autocomplete": ^6.0.0
     "@codemirror/commands": ^6.0.0
@@ -6622,19 +6633,19 @@ __metadata:
     "@codemirror/search": ">=6.0.0"
     "@codemirror/state": ">=6.0.0"
     "@codemirror/view": ">=6.0.0"
-  checksum: e7f2a78dd26a919b00247ad85211a09b8242d57585c7689cc44ea9de99e02e8fd8dd281ebf48e61c4126704b031babb5a596307299015bb0aa8e561a0ad2d9b1
+  checksum: 76a6caf05bbcf06c515c680ab952e79b8470ca10c9d8c3166fdb05310232239782b170da276b1dbf33900ca894332fc2aba3bd6955665b2c2580548c7e17cbc0
   languageName: node
   linkType: hard
 
-"@uiw/react-codemirror@npm:^4.21.7":
-  version: 4.21.9
-  resolution: "@uiw/react-codemirror@npm:4.21.9"
+"@uiw/react-codemirror@npm:^4.21.20":
+  version: 4.21.20
+  resolution: "@uiw/react-codemirror@npm:4.21.20"
   dependencies:
     "@babel/runtime": ^7.18.6
     "@codemirror/commands": ^6.1.0
     "@codemirror/state": ^6.1.1
     "@codemirror/theme-one-dark": ^6.0.0
-    "@uiw/codemirror-extensions-basic-setup": 4.21.9
+    "@uiw/codemirror-extensions-basic-setup": 4.21.20
     codemirror: ^6.0.0
   peerDependencies:
     "@babel/runtime": ">=7.11.0"
@@ -6644,7 +6655,7 @@ __metadata:
     codemirror: ">=6.0.0"
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: c09a121e0c37f0dfb720e05f080b5f420eaec9bf1502cad38a100f2cefc731f50e854d682898163ad23aaefefcb505b57f4621b9724eca39d334258e0f25fddb
+  checksum: 63ea348a922c535ff91c8bff1c1dac40ced0227d1c17139142dbc28017bb254cc32428a15686660ec4f4cd6935c574d627b6a4872910357af51da8e90faaf4da
   languageName: node
   linkType: hard
 
@@ -8654,6 +8665,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"discontinuous-range@npm:1.0.0":
+  version: 1.0.0
+  resolution: "discontinuous-range@npm:1.0.0"
+  checksum: 8ee88d7082445b6eadc7c03bebe6dc978f96760c45e9f65d16ca66174d9e086a9e3855ee16acf65625e1a07a846a17de674f02a5964a6aebe5963662baf8b5c8
+  languageName: node
+  linkType: hard
+
 "doctrine@npm:^2.1.0":
   version: 2.1.0
   resolution: "doctrine@npm:2.1.0"
@@ -10449,7 +10467,7 @@ __metadata:
     "@sagold/json-pointer": ^5.1.1
     "@types/uuid": ^9.0.2
     fast-equals: ^5.0.1
-    json-schema-library: ^9.0.3
+    json-schema-library: ^9.1.2
     uuid: ^9.0.0
   languageName: unknown
   linkType: soft
@@ -11981,17 +11999,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^9.0.3":
-  version: 9.0.3
-  resolution: "json-schema-library@npm:9.0.3"
+"json-schema-library@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "json-schema-library@npm:9.1.2"
   dependencies:
     "@sagold/json-pointer": ^5.1.1
     "@sagold/json-query": ^6.1.1
     deepmerge: ^4.3.1
     fast-copy: ^3.0.1
     fast-deep-equal: ^3.1.3
+    smtp-address-parser: 1.0.10
     valid-url: ^1.0.9
-  checksum: db5214bc5d470159fa8d63572846bcbd600364e7dfd6626e0f05bd7b6942052c02a2f4fc2deacfc787f8f568b8e2ecff445d24ee5161a1f1b4bc37de08901bb0
+  checksum: 926f2f7ee445a3a018f2d3ffda511168d1bc0c5744a4cfd6850c98b9b7e54bab9f785fdb8e3ea694c44f0a146b8bae570c65aa6c4ab8b60159533584d7ceb954
   languageName: node
   linkType: hard
 
@@ -13140,6 +13159,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moo@npm:^0.5.0":
+  version: 0.5.2
+  resolution: "moo@npm:0.5.2"
+  checksum: 5a41ddf1059fd0feb674d917c4774e41c877f1ca980253be4d3aae1a37f4bc513f88815041243f36f5cf67a62fb39324f3f997cf7fb17b6cb00767c165e7c499
+  languageName: node
+  linkType: hard
+
 "mri@npm:^1.1.0, mri@npm:^1.2.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -13195,6 +13221,23 @@ __metadata:
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
   checksum: 23ad088b08f898fc9b53011d7bb78ec48e79de7627e01ab5518e806033861bef68d5b0cd0e2205c2f36690ac9571ff6bcb05eb777ced2eeda8d4ac5b44592c3d
+  languageName: node
+  linkType: hard
+
+"nearley@npm:^2.20.1":
+  version: 2.20.1
+  resolution: "nearley@npm:2.20.1"
+  dependencies:
+    commander: ^2.19.0
+    moo: ^0.5.0
+    railroad-diagrams: ^1.0.0
+    randexp: 0.4.6
+  bin:
+    nearley-railroad: bin/nearley-railroad.js
+    nearley-test: bin/nearley-test.js
+    nearley-unparse: bin/nearley-unparse.js
+    nearleyc: bin/nearleyc.js
+  checksum: 42c2c330c13c7991b48221c5df00f4352c2f8851636ae4d1f8ca3c8e193fc1b7668c78011d1cad88cca4c1c4dc087425420629c19cc286d7598ec15533aaef26
   languageName: node
   linkType: hard
 
@@ -14175,10 +14218,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"railroad-diagrams@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "railroad-diagrams@npm:1.0.0"
+  checksum: 9e312af352b5ed89c2118edc0c06cef2cc039681817f65266719606e4e91ff6ae5374c707cc9033fe29a82c2703edf3c63471664f97f0167c85daf6f93496319
+  languageName: node
+  linkType: hard
+
 "ramda@npm:0.29.0":
   version: 0.29.0
   resolution: "ramda@npm:0.29.0"
   checksum: 9ab26c06eb7545cbb7eebcf75526d6ee2fcaae19e338f165b2bf32772121e7b28192d6664d1ba222ff76188ba26ab307342d66e805dbb02c860560adc4d5dd57
+  languageName: node
+  linkType: hard
+
+"randexp@npm:0.4.6":
+  version: 0.4.6
+  resolution: "randexp@npm:0.4.6"
+  dependencies:
+    discontinuous-range: 1.0.0
+    ret: ~0.1.10
+  checksum: 3c0d440a3f89d6d36844aa4dd57b5cdb0cab938a41956a16da743d3a3578ab32538fc41c16cc0984b6938f2ae4cbc0216967e9829e52191f70e32690d8e3445d
   languageName: node
   linkType: hard
 
@@ -14820,6 +14880,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ret@npm:~0.1.10":
+  version: 0.1.15
+  resolution: "ret@npm:0.1.15"
+  checksum: d76a9159eb8c946586567bd934358dfc08a36367b3257f7a3d7255fdd7b56597235af23c6afa0d7f0254159e8051f93c918809962ebd6df24ca2a83dbe4d4151
+  languageName: node
+  linkType: hard
+
 "retry@npm:^0.12.0":
   version: 0.12.0
   resolution: "retry@npm:0.12.0"
@@ -15253,6 +15320,15 @@ __metadata:
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
   checksum: b5167a7142c1da704c0e3af85c402002b597081dd9575031a90b4f229ca5678e9a36e8a374f1814c8156a725d17008ae3bde63b92f9cfd132526379e580bec8b
+  languageName: node
+  linkType: hard
+
+"smtp-address-parser@npm:1.0.10":
+  version: 1.0.10
+  resolution: "smtp-address-parser@npm:1.0.10"
+  dependencies:
+    nearley: ^2.20.1
+  checksum: 5cf2e960a6836ebec68bb5185c62bc3d343e6fdb1434f8d0d6c273e8d5359b11f2560dea5ecbbd98a77f01f8ef94b56c31d3f6ff24a5c44ba6530b9af7b63626
   languageName: node
   linkType: hard
 

@@ -54,7 +54,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                 setValue(JSON.parse(value));
                 setJsonValid(true);
             } catch (e) {
-                console.log('failed parsing value');
+                console.log('failed parsing (jsondata) value', value);
                 setJsonValid(false);
             }
         },
@@ -126,7 +126,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                 setValue(value);
                 setJsonValid(true);
             } catch (e) {
-                console.log('failed parsing value');
+                console.log('failed parsing (jsonstring) value', value);
                 setJsonValid(false);
             }
         },
