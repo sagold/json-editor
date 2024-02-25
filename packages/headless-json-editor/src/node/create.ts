@@ -1,35 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import {
-    getTypeOf,
-    Draft,
-    JsonPointer,
-    isJsonError,
-    isDynamicSchema,
-    reduceSchema,
-    JsonError
-} from 'json-schema-library';
-import {
-    Node,
-    NodeType,
-    ArrayNode,
-    ObjectNode,
-    StringNode,
-    NumberNode,
-    BooleanNode,
-    NullNode,
-    JsonSchema
-} from '../types';
-// @ts-ignore
-import deepmerge from 'deepmerge';
-/**
- * returns a new json-schema, where properties are combined and arrays are replaced
- */
-// const mergeUniqueItems = (destinationArray: unknown[], sourceArray: unknown[]) => {
-//     const all = destinationArray.concat(sourceArray);
-//     return all.filter((item, pos) => all.indexOf(item) === pos);
-// };
-// export const mergeArraysUnique = <T>(a: Partial<T>, b: Partial<T>): T =>
-//     deepmerge(a, b, { arrayMerge: mergeUniqueItems });
+import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema } from 'json-schema-library';
+import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
+
 
 const TEMPLATE_OPTIONS = {
     addOptionalProps: false
@@ -94,9 +66,6 @@ function getPropertyName(pointer: string) {
     return pointer.split('/').pop() as string;
 }
 
-function isObject(v: unknown): v is Record<string, unknown> {
-    return getTypeOf(v) === 'object';
-}
 
 function isHidden(properties: Record<string, any>, property: string) {
     return properties[property]?.options?.hidden === true;
