@@ -1,0 +1,7 @@
+@import '../../design';
+@import "../../components/datepicker/date-picker";
+
+
+.rje-field--date {
+    @include date-picker-component();
+}

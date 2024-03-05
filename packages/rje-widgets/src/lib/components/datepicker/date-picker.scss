@@ -29,7 +29,17 @@
     }
 
     .rje-calendar {
-        padding: 1em 2em;
+        padding: 1em 1em;
+        font-size: 1em;
+
+        table {
+            border-collapse: separate;
+            border-spacing: .4em;
+            text-indent: initial;
+            th {
+                text-align: center;;
+            }
+        }
     }
 
     .rje-calendar__header {
