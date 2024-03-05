@@ -15,6 +15,7 @@ import { set } from './transform/set';
 import { remove } from './transform/remove';
 import { move } from './transform/move';
 import { unlinkAll } from './transform/unlinkAll';
+import { unlinkPath } from './transform/unlinkPath';
 import { updateSchema, updateOptions } from './transform/update';
 // hje
 import {
@@ -78,6 +79,7 @@ export {
     splitErrors,
     trace,
     unlinkAll,
+    unlinkPath,
     updateErrors,
     updateOptions,
     updateSchema
