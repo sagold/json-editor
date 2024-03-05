@@ -5,7 +5,8 @@ const sh = require('./sh');
 const getPackages = require('./getPackages');
 const IS_SEMVER = /\d+\.\d+\.\d+/;
 
-const version = process.argv[process.argv.length - 1];
+let version = process.argv[process.argv.length - 1];
+version = version ? version.replace(/^v+/, "") : version;
 if (version == null || !IS_SEMVER.test(version)) {
     console.log(`input error: expected an argument matching a semver version '\\d+.\\d+.\\d+'`);
     process.exit();
