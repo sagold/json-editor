@@ -65,6 +65,7 @@ import {
     splitErrors,
     trace,
     unlinkAll,
+    unlinkPath,
     updateErrors,
     updateOptions,
     updateSchema,
@@ -118,6 +119,7 @@ export {
     splitErrors,
     trace,
     unlinkAll,
+    unlinkPath,
     updateErrors,
     updateOptions,
     updateSchema
