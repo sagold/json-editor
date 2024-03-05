@@ -2,7 +2,7 @@
 
 @mixin widget-field-light {
     .rje-field--value.rje-field--error {
-        label {
+        & > label {
             color: $color-light-error;
         }
         textarea,
@@ -19,7 +19,7 @@
 
 @mixin widget-field-dark {
     .rje-field--value.rje-field--error {
-        label {
+        & > label {
             color: $color-dark-error;
         }
         textarea,

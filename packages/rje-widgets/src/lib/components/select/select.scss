@@ -3,7 +3,7 @@
 @mixin select-component {
     .rje-select-field {
         position: relative;
-        .rje-label {
+        & > .rje-label {
             display: inline-block;
             padding-bottom: em(0.5 * $unit);
         }
