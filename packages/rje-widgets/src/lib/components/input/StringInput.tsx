@@ -26,7 +26,8 @@ export function StringInput({ icon, tag, iconPosition, title, error, onPress, va
         if (inputRef) {
             inputRef.value = value ?? '';
         }
-    }, [value]);
+    }, [value, inputRef]);
+
     const textFieldProps: AriaTextFieldOptions<'input'> = {
         ...props,
         inputElementType: 'input',
@@ -71,7 +72,7 @@ export function StringInput({ icon, tag, iconPosition, title, error, onPress, va
                 error={error}
                 disabled={textFieldProps.isDisabled}
             >
-                <input {...inputProps} ref={setInputRef} />
+                <input {...inputProps} ref={setInputRef} value={inputRef?.value ?? value ?? ""} />
             </InputDecorator>
         </div>
     );
