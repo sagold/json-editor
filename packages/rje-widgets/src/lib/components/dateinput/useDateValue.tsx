@@ -42,9 +42,8 @@ export function convertDateString(
             type: 'error',
             code: `unsupported-datetime-format`,
             name: 'UnsuportedDateFormat',
-            message: `${
-                defaultValue || value
-            } is not a supported datetime-format. Valid format is YYYY:MM:DDTHH:mm:ssZ`,
+            message: `${defaultValue || value
+                } is not a supported datetime-format. Valid format is YYYY:MM:DDTHH:mm:ssZ`,
             data: { defaultValue, value, pointer: '', schema: {} }
         };
         return [undefined, undefined, err];
@@ -56,7 +55,7 @@ export function useDateValue(
     value: string | undefined,
     format?: DateInputProps['format']
 ): [DateValue | undefined, DateValue | undefined, JsonError?] {
-    const values = useMemo((...args) => convertDateString(defaultValue, value, format), [defaultValue, value]);
+    const values = useMemo((...args) => convertDateString(defaultValue, value, format), [defaultValue, format, value]);
     return values;
 }
 

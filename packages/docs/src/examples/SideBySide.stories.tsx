@@ -1,7 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 import { JsonFormProps, useJsonEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/features';
-import { Form } from 'semantic-ui-react';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import { widgets } from '../../../rje-widgets/src';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
@@ -29,12 +28,12 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
                     justifyContent: 'space-evenly'
                 }}
             >
-                <Form error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
+                <div error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
                     <ChildWidget node={node} editor={editor} />
-                </Form>
-                <Form error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
+                </div>
+                <div error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
                     <ChildWidget node={node} editor={editor} />
-                </Form>
+                </div>
             </section>
         </Theme>
     );

@@ -53,6 +53,7 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
         setPreviousData(data);
         setPreviousSchema(schema);
         const editor = new JsonEditor<Data>({
+            ...settings,
             schema,
             data,
             widgets,

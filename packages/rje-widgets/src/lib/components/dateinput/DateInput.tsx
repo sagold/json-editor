@@ -3,10 +3,9 @@ import { DateFieldState, DateFieldStateOptions, DateSegment, useDateFieldState }
 import { useDateField, useDateSegment, useLocale } from 'react-aria';
 import { Calendar, createCalendar } from '@internationalized/date';
 import { Label } from '../label/Label';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import type { AriaDateFieldProps } from 'react-aria';
 import { useDateValue, DateValue } from './useDateValue';
-import classNames from 'classnames';
 
 export type Granularity = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
@@ -107,7 +106,7 @@ export function Segment({ segment, state }: DateSegmentProps) {
         <div
             {...segmentProps}
             ref={ref}
-            className={classnames('rje-date-input__segment', {
+            className={classNames('rje-date-input__segment', {
                 'rje-date-input__segment--placeholder': segment.isPlaceholder,
                 'rje-date-input__segment--value': !segment.isPlaceholder && segment.isEditable
             })}

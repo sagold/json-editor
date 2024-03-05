@@ -2,7 +2,6 @@ import { createContext, useRef, useContext, ReactNode } from 'react';
 import { RadioGroupState, useRadioGroupState } from 'react-stately';
 import { AriaRadioGroupProps, AriaRadioProps, VisuallyHidden, useFocusRing, useRadio, useRadioGroup } from 'react-aria';
 import { Label } from '../label/Label';
-import classnames from 'classnames';
 import classNames from 'classnames';
 
 const InternalRadioContext = createContext<RadioGroupState | null>(null);
@@ -40,7 +39,7 @@ export function RadioGroup({ error, title, disabled, required, horizontal, setVa
 
     return (
         <div
-            className={classnames(
+            className={classNames(
                 'rje-radiogroup',
                 error ? 'rje-radiogroup--invalid' : 'rje-radiogroup--valid',
                 disabled ? 'rje-radiogroup--disabled' : 'rje-radiogroup--enabled',
@@ -55,7 +54,7 @@ export function RadioGroup({ error, title, disabled, required, horizontal, setVa
                     {description}
                 </div>
             )}
-            {errorMessage && (
+            {errorMessage && typeof errorMessage == "object" && (
                 <div {...errorMessageProps} style={{ color: 'red', fontSize: 12 }}>
                     {errorMessage}
                 </div>
