@@ -3,10 +3,9 @@ import { Button } from '../button/Button';
 import { DateInputControlled, type DateInputProps } from '../dateinput/DateInput';
 import { Label } from '../label/Label';
 import { PopoverPortal } from '../popover/Popover';
-import { useDatePicker } from 'react-aria';
+import { useDatePicker, useDialog } from 'react-aria';
 import { useDatePickerState } from 'react-stately';
 import { useDateValue } from '../dateinput/useDateValue';
-import { useDialog } from 'react-aria';
 import { useRef } from 'react';
 import { Calendar } from './Calendar';
 import classNames from 'classnames';
@@ -32,6 +31,7 @@ export function DatePicker({ title, error, format, defaultValue, value, readOnly
     const { groupProps, labelProps, fieldProps, buttonProps, dialogProps, calendarProps } = useDatePicker(
         {
             ...props,
+            label: title,
             isReadOnly: readOnly,
             defaultValue: defaultDate,
             value: date

@@ -24,21 +24,20 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
                     disabled={options.disabled || isValidConst}
                     error={hasError}
                     onChange={(time) => {
-                        console.log(time);
                         setValue(time?.toString ? time.toString() : '');
                     }}
                     // readOnly={options.readOnly}
                     required={options.required}
-                    title={options.title}
+                    title={options.title ?? node.id}
                     value={node.value}
-                    // icon={options.icon}
-                    // iconPosition={options.swapIconPosition ? 'right' : 'left'}
-                    // id={node.id}
-                    // onPress={setValue}
-                    // placeholder={options.placeholder}
-                    // tag={options.tag}
-                    // defaultValue={node.value}
-                    // withButtons={options.withButtons}
+                // icon={options.icon}
+                // iconPosition={options.swapIconPosition ? 'right' : 'left'}
+                // id={node.id}
+                // onPress={setValue}
+                // placeholder={options.placeholder}
+                // tag={options.tag}
+                // defaultValue={node.value}
+                // withButtons={options.withButtons}
                 />
             </WidgetField>
         );
@@ -62,14 +61,14 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
                 title={options.title}
                 value={node.value}
                 format={format as DatePickerProps['format']}
-                // icon={options.icon}
-                // iconPosition={options.swapIconPosition ? 'right' : 'left'}
-                // id={node.id}
-                // onPress={setValue}
-                // placeholder={options.placeholder}
-                // tag={options.tag}
-                // defaultValue={node.value}
-                // withButtons={options.withButtons}
+            // icon={options.icon}
+            // iconPosition={options.swapIconPosition ? 'right' : 'left'}
+            // id={node.id}
+            // onPress={setValue}
+            // placeholder={options.placeholder}
+            // tag={options.tag}
+            // defaultValue={node.value}
+            // withButtons={options.withButtons}
             />
         </WidgetField>
     );

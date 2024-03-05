@@ -27,12 +27,13 @@ export function TimeInput({ title, required, disabled, defaultValue, value, erro
     const [defaultTime, time, parseError] = useTimeValue(defaultValue, value);
     const state = useTimeFieldState({
         ...props,
+
         defaultValue: defaultTime,
         value: time,
         locale
     });
     const ref = useRef<HTMLInputElement>(null);
-    const { labelProps, fieldProps } = useTimeField({ ...props, defaultValue: defaultTime, value: time }, state, ref);
+    const { labelProps, fieldProps } = useTimeField({ ...props, label: title, defaultValue: defaultTime, value: time }, state, ref);
 
     if (parseError) {
         return (
