@@ -78,8 +78,7 @@ export function TagList({
 
     const { gridProps, labelProps } = useTagGroup(
         {
-            ...props,
-            label: title
+            ...props
         },
         state,
         ref

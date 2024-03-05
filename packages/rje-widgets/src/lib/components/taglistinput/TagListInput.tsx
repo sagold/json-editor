@@ -121,6 +121,7 @@ export function TagListInput({
     const { contains } = useFilter({ sensitivity: 'base' });
     // Setup refs and get props for child elements.
     const state = useComboBoxState({
+
         ...comboBoxProps,
         // searches selection text property for match
         defaultFilter: contains
@@ -133,6 +134,7 @@ export function TagListInput({
     const { inputProps, labelProps, listBoxProps } = useComboBox(
         {
             ...comboBoxProps,
+            label: title,
             defaultItems: options,
             inputRef,
             // buttonRef,
@@ -146,16 +148,17 @@ export function TagListInput({
         <div className="rje-tag-list-input" onClick={() => inputRef.current?.focus()} ref={TagListInputRef}>
             <Label
                 {...labelProps}
-                // onClick={(e) => {
-                //     e.stopPropagation();
-                //     e.preventDefault();
-                //     console.log('focus label', inputRef.current);
-                //     inputRef.current?.focus();
-                // }}
+            // onClick={(e) => {
+            //     e.stopPropagation();
+            //     e.preventDefault();
+            //     console.log('focus label', inputRef.current);
+            //     inputRef.current?.focus();
+            // }}
             >
                 {title}
             </Label>
             <TagList
+                label={title}
                 displayValue={displayValue}
                 items={items ?? list.items}
                 onRemove={(keys) => {

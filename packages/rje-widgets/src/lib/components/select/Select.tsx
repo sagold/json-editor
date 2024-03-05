@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import { useRef } from 'react';
+import { RefObject, useRef } from 'react';
 import { Item, useSelectState, SelectProps as UseSelectProps } from 'react-stately';
 import { HiddenSelect, useSelect, DismissButton, Overlay, usePopover, useButton } from 'react-aria';
 import { Label } from '../label/Label';
 import { SelectOptionsControlled } from '../selectoptions/SelectOptions';
+import { ButtonProps } from '../button/Button';
 
-function SelectButton(props) {
+function SelectButton(props: ButtonProps & { buttonRef: RefObject<HTMLButtonElement> }) {
     /** this is a duplicate to our default button */
-    let ref = props.buttonRef;
-    let { buttonProps, isPressed } = useButton(props, ref);
+    const ref = props.buttonRef;
+    const { buttonProps, isPressed } = useButton(props, ref);
     return (
         <button
             {...buttonProps}
@@ -76,6 +77,7 @@ export function Select({
     const selectButtonRef = useRef<HTMLButtonElement>(null);
     const selectProps: UseSelectProps<object> = {
         children,
+        label: title ?? id,
         selectedKey,
         defaultSelectedKey: defaultSelectedKey,
         onSelectionChange: setValue,
