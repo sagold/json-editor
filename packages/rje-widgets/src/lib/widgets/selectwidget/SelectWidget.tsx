@@ -15,6 +15,7 @@ export type SelectOptions = {
     type?: 'select' | 'radiogroup' | 'taglist';
     /** set to true to render radiogroup in a single line */
     horizontal?: boolean;
+    loading?: boolean;
 } & DefaultNodeOptions;
 
 export const selectDefaultOptions = {
@@ -48,6 +49,7 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
                 disabled={options.disabled}
                 selectedKey={node.value}
                 setValue={setValue}
+                loading={options.loading}
             >
                 {enumValues.map((value, index) => (
                     <Select.Option key={value}>{titles[index] ?? value}</Select.Option>

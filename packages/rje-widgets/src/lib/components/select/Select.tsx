@@ -5,6 +5,9 @@ import { HiddenSelect, useSelect, DismissButton, Overlay, usePopover, useButton 
 import { Label } from '../label/Label';
 import { SelectOptionsControlled } from '../selectoptions/SelectOptions';
 import { ButtonProps } from '../button/Button';
+import { Icon } from '../icon/Icon';
+
+
 
 function SelectButton(props: ButtonProps & { buttonRef: RefObject<HTMLButtonElement> }) {
     /** this is a duplicate to our default button */
@@ -50,6 +53,7 @@ export type SelectProps = {
     title?: string;
     required?: boolean;
     disabled?: boolean;
+    loading?: boolean;
     error?: boolean;
     /** use selectedKey for controlled selection, where this value will always be set */
     selectedKey?: number | string;
@@ -67,6 +71,7 @@ export function Select({
     children,
     placeholder,
     required,
+    loading,
     error,
     disabled,
     selectedKey,
@@ -82,7 +87,7 @@ export function Select({
         defaultSelectedKey: defaultSelectedKey,
         onSelectionChange: setValue,
         isRequired: required,
-        isDisabled: disabled
+        isDisabled: disabled || loading
     };
     const state = useSelectState(selectProps);
     const { labelProps, triggerProps, valueProps, menuProps } = useSelect(selectProps, state, selectButtonRef);
@@ -107,9 +112,7 @@ export function Select({
                     >
                         {state.selectedItem ? state.selectedItem.rendered : placeholder}
                     </span>
-                    <span aria-hidden="true" className="rje-icon">
-                        arrow_drop_down
-                    </span>
+                    <Icon>{loading ? "loading" : "arrow_drop_down"}</Icon>
                 </SelectButton>
                 {state.isOpen && (
                     <Popover

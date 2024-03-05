@@ -20,6 +20,9 @@
             @include input-flat(light);
             color: $color-light-grey-1;
             background-color: $color-light-fill;
+            .rje-icon {
+                fill: $color-light-grey-1;
+            }
         }
     }
 
@@ -68,6 +71,9 @@
             @include input-flat(dark);
             color: $color-dark-grey-1;
             background-color: $color-dark-fill;
+            .rje-icon {
+                fill: $color-dark-grey-1;
+            }
         }
     }
 

@@ -1,9 +1,16 @@
+@import "../../design";
 @import './icon';
 
 @mixin icon-light {
     // @include icon-component;
+    .rje-icon {
+        fill: $color-black;
+    }
 }
 
 @mixin icon-dark {
     // @include icon-component;
+    .rje-icon {
+        fill: $color-white;
+    }
 }

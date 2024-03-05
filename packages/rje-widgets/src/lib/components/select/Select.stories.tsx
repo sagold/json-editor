@@ -38,6 +38,7 @@ Placeholder.args = {
     disabled: false,
     placeholder: 'Placeholder',
     required: true,
+    loading: false,
     title: 'A required select',
     options: [
         { key: 'app', label: 'Apple' },

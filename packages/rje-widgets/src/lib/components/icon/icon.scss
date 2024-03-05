@@ -8,8 +8,29 @@
 }
 
 @mixin icon-component {
+    $load-animation-time: 2s;
+
+    @-moz-keyframes spin {
+        100% { -moz-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+        100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes spin {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform:rotate(360deg);
+        }
+    }
+
     .rje-icon {
         @include icon-font;
+    }
+
+    .rje-icon--loading {
+        -webkit-animation:spin $load-animation-time linear infinite;
+        -moz-animation:spin $load-animation-time linear infinite;
+        animation:spin $load-animation-time linear infinite
     }
 
     .rje-icon--solid {
