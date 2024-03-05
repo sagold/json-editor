@@ -17,7 +17,10 @@ import { move } from './transform/move';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateSchema, updateOptions } from './transform/update';
 // hje
-import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin } from './HeadlessJsonEditor';
+import {
+    HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin, PluginInstance,
+    PluginEvent,
+} from './HeadlessJsonEditor';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
@@ -90,6 +93,8 @@ export type {
     JsonSchema,
     JsonError,
     Plugin,
+    PluginInstance,
+    PluginEvent,
     Node,
     NodeType,
     NullNode,

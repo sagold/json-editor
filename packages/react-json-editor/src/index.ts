@@ -78,6 +78,8 @@ import {
     JsonError,
     JsonSchema,
     Plugin,
+    PluginInstance,
+    PluginEvent,
     Node,
     NodeType,
     NullNode,
@@ -138,6 +140,8 @@ export type {
     OnChangeListener,
     ParentNode,
     Plugin,
+    PluginInstance,
+    PluginEvent,
     StringNode,
     ValueNode
 };
