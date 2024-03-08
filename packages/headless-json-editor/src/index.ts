@@ -24,7 +24,8 @@ import {
 import {
     Plugin, PluginInstance,
     PluginEvent, PluginConfig,
-    HeadlessJsonEditorOptions
+    HeadlessJsonEditorOptions,
+    HeadlessJsonEditorInterface
 } from './plugins/Plugin';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
@@ -95,6 +96,7 @@ export type {
     BooleanNode,
     Change,
     DefaultNodeOptions,
+    HeadlessJsonEditorInterface,
     HeadlessJsonEditorOptions,
     HistoryPluginInstance,
     JsonSchema,
