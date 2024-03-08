@@ -30,7 +30,12 @@
     .rje-icon--loading {
         -webkit-animation:spin $load-animation-time linear infinite;
         -moz-animation:spin $load-animation-time linear infinite;
-        animation:spin $load-animation-time linear infinite
+        animation:spin $load-animation-time linear infinite;
+        padding: 0 0.125em;
+        svg {
+            height: 1em;
+            width: .75em;
+        }
     }
 
     .rje-icon--solid {
