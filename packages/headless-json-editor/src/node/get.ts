@@ -7,9 +7,9 @@ import { json } from './json';
 /**
  * returns the node with the corresponding pointer
  */
-export function get(node: Node, pointer: string): Node | JsonError {
+export function get<T extends Node = Node>(node: Node, pointer: string): T | JsonError {
     const frags = gp.split(pointer);
-    return step(node, frags, []);
+    return step(node, frags, []) as T | JsonError;
 }
 
 function step(node: Node, frags: string[], pointer: string[]): Node | JsonError {

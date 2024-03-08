@@ -35,7 +35,7 @@ const Template: ComponentStory<any> = () => {
                 validate={true}
                 liveUpdate={true}
                 onChange={(data) => {
-                    // console.log('change data in editor', editor);
+                    // console.log('change data in editor', data);
                     // setEditorData({ text: 'mimimi' });
                 }}
             />

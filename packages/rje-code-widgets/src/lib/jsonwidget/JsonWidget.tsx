@@ -2,14 +2,7 @@ import Markdown from 'markdown-to-jsx';
 import { useState, useCallback, useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
-import { Widget, Label, JsonError } from '@sagold/react-json-editor';
-import { jsonSchemaCompletion } from './jsonSchemaCompletion';
-import { jsonSchemaLinter } from './jsonSchemaLinter';
-import { jsonSchemaTooltip } from './jsonSchemaTooltip';
-import { linter, lintGutter } from '@codemirror/lint';
-import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
-
-import {
+import { Widget, Label, JsonError ,
     widget,
     WidgetPlugin,
     StringNode,
@@ -18,6 +11,12 @@ import {
     DefaultNodeOptions,
     JsonSchema
 } from '@sagold/react-json-editor';
+import { jsonSchemaCompletion } from './jsonSchemaCompletion';
+import { jsonSchemaLinter } from './jsonSchemaLinter';
+import { jsonSchemaTooltip } from './jsonSchemaTooltip';
+import { linter, lintGutter } from '@codemirror/lint';
+import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
+
 
 const InvalidJsonError: JsonError = {
     type: 'error',

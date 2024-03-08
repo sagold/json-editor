@@ -15,9 +15,8 @@
  * ```
  */
 import { useRef, cloneElement } from 'react';
-import { Overlay, useModalOverlay } from 'react-aria';
+import { Overlay, useModalOverlay , useOverlayTrigger, useButton } from 'react-aria';
 
-import { useOverlayTrigger, useButton } from 'react-aria';
 import { useOverlayTriggerState, OverlayTriggerState } from 'react-stately';
 import { DOMProps } from '@react-types/shared';
 

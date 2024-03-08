@@ -16,12 +16,16 @@ import { remove } from './transform/remove';
 import { move } from './transform/move';
 import { unlinkAll } from './transform/unlinkAll';
 import { unlinkPath } from './transform/unlinkPath';
-import { updateSchema, updateOptions } from './transform/update';
+import { update, updateSchema, updateOptions } from './transform/update';
 // hje
 import {
-    HeadlessJsonEditor, HeadlessJsonEditorOptions, Plugin, PluginInstance,
-    PluginEvent,
+    HeadlessJsonEditor
 } from './HeadlessJsonEditor';
+import {
+    Plugin, PluginInstance,
+    PluginEvent, PluginConfig,
+    HeadlessJsonEditorOptions
+} from './plugins/Plugin';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
@@ -80,6 +84,7 @@ export {
     trace,
     unlinkAll,
     unlinkPath,
+    update,
     updateErrors,
     updateOptions,
     updateSchema
@@ -95,6 +100,7 @@ export type {
     JsonSchema,
     JsonError,
     Plugin,
+    PluginConfig,
     PluginInstance,
     PluginEvent,
     Node,

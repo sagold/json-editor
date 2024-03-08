@@ -1,8 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useJsonEditor , JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { ObjectWidget, ObjectOptions } from './ObjectWidget';
-import { JsonSchema, ArrayNode } from '@sagold/react-json-editor';
 import { Theme } from '../../components/theme/Theme';
 
 export default {

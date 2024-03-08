@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { JsonForm } from '../../react-json-editor/src/lib/components/jsonform';
 import { JsonEditor } from '../../react-json-editor/src/lib/JsonEditor';
 import { Theme } from '../../rje-widgets/src/lib/components/theme/Theme';

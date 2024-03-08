@@ -8,9 +8,7 @@ import {
     ArrayNode,
     DefaultNodeOptions,
     JsonEditor,
-    JsonError,
     JsonSchema,
-    isJsonError
 } from '@sagold/react-json-editor';
 import { Modal, useModal } from '../../components/modal/Modal';
 import { SectionHeader } from '../../components/sectionheader/SectionHeader';
@@ -43,6 +41,8 @@ export type ArrayOptions = {
     headerSeparator?: boolean;
     /** header font size relative to 1 (em). Defaults to 1 */
     headerFontSize?: number;
+    /** set to false to deactivate any array-controls */
+    controls?: boolean;
 } & DefaultNodeOptions;
 
 function getActionStates(node: ArrayNode) {
@@ -61,6 +61,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const portalContainer = useRef<HTMLDivElement>(null);
     const [showContent, setShowContent] = useState<boolean>(options.collapsed != null ? !options.collapsed : true);
     const { modalTriggerProps: insertModalTriggerProps, modalProps: insertModalProps } = useModal<HTMLButtonElement>();
+    const showControls = options.controls !== false;
 
     const childOptions: Record<string, any> = {};
     options.disabled && (childOptions.disabled = true);
@@ -141,13 +142,13 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             separator={options.headerSeparator || true}
                             description={options.descrptionInline ? undefined : description}
                         />
-                        <ArrayWidgetActions
+                        {showControls && <ArrayWidgetActions
                             editor={editor}
                             node={node}
                             options={options}
-                            actions={[addItemButton]}
+                            actions={options.readOnly ? [] : [addItemButton]}
                             portalContainer={portalContainer}
-                        />
+                        />}
                     </SectionHeader>
                     <WidgetField.Description enabled={options.descriptionInline === true}>
                         {description}
@@ -164,6 +165,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             editor={editor}
                             key={child.id}
                             node={child}
+                            controls={showControls && options.readOnly !== true}
                             portalContainer={portalContainer}
                             size={node.children.length}
                             withDragHandle={sortableEnabled}
@@ -172,7 +174,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         />
                     ))}
             </div>
-            {showContent && options.inlineAddItemOption !== false && (
+            {showContent && options.inlineAddItemOption !== false && options.readOnly !== true && (
                 <div className={`rje-array__actions ${node.children.length % 2 ? 'even' : 'odd'}`}>
                     {insertOptions.length > 1 ? (
                         <ButtonControlled

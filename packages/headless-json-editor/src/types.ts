@@ -7,26 +7,26 @@ type JsonSchemaDefinition = JSONSchema7Definition & JsonSchemaOptions;
 
 export type JsonSchema =
     | JSONSchema7 & {
-          isActive?: boolean;
-          isDynamic?: boolean;
-          getOneOfOrigin?: () => {
-              index: number;
-              schema: JsonSchema;
-              isItem?: boolean;
-          };
-          options?: JsonSchemaOptions;
-          properties?: { [key: string]: JsonSchemaDefinition };
-          patternProperties?: { [key: string]: JsonSchemaDefinition } | undefined;
-          additionalProperties?: JsonSchemaDefinition | undefined;
-          dependencies?: { [key: string]: JsonSchemaDefinition | string[] } | undefined;
-          definitions?: { [key: string]: JsonSchemaDefinition } | undefined;
-          allOf?: JsonSchemaDefinition[] | undefined;
-          anyOf?: JsonSchemaDefinition[] | undefined;
-          oneOf?: JsonSchemaDefinition[] | undefined;
-          not?: JsonSchemaDefinition | undefined;
-          items?: JsonSchemaDefinition | JsonSchemaDefinition[] | undefined;
-          additionalItems?: JsonSchemaDefinition | undefined;
-      };
+        isActive?: boolean;
+        isDynamic?: boolean;
+        getOneOfOrigin?: () => {
+            index: number;
+            schema: JsonSchema;
+            isItem?: boolean;
+        };
+        options?: JsonSchemaOptions;
+        properties?: { [key: string]: JsonSchemaDefinition };
+        patternProperties?: { [key: string]: JsonSchemaDefinition } | undefined;
+        additionalProperties?: JsonSchemaDefinition | undefined;
+        dependencies?: { [key: string]: JsonSchemaDefinition | string[] } | undefined;
+        definitions?: { [key: string]: JsonSchemaDefinition } | undefined;
+        allOf?: JsonSchemaDefinition[] | undefined;
+        anyOf?: JsonSchemaDefinition[] | undefined;
+        oneOf?: JsonSchemaDefinition[] | undefined;
+        not?: JsonSchemaDefinition | undefined;
+        items?: JsonSchemaDefinition | JsonSchemaDefinition[] | undefined;
+        additionalItems?: JsonSchemaDefinition | undefined;
+    };
 
 export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;
 

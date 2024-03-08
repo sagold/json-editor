@@ -1,4 +1,4 @@
-import { Draft, DraftConfig, JsonEditor, JsonError } from 'json-schema-library';
+import { Draft, JsonEditor } from 'json-schema-library';
 import { create } from './node/create';
 import { json } from './node/json';
 import { get } from './node/get';
@@ -12,21 +12,8 @@ import { updateErrors } from './validate/updateErrors';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError } from './types';
 import { deepEqual } from 'fast-equals';
 import gp from '@sagold/json-pointer';
+import { Plugin, PluginConfig, PluginInstance, isPluginConfig, PluginEvent, DoneEvent, HeadlessJsonEditorInterface, HeadlessJsonEditorOptions, O } from "./plugins/Plugin";
 
-export interface PluginInstance {
-    id: string;
-    onEvent: PluginObserver;
-    [p: string]: unknown;
-}
-
-export type Plugin = (he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions) => PluginInstance | undefined;
-
-export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
-export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
-export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
-export type ValidationEvent = { type: 'validation'; previous: Node; next: Node; errors: JsonError[] };
-export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | ValidationEvent;
-export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
 
 function getRootChange(changes: Change[]) {
     if (changes.length === 0) {
@@ -53,21 +40,10 @@ function validateState(draft: Draft, root: Node, pointer = '#') {
     updateErrors(draft, root, validationTarget);
 }
 
-export type HeadlessJsonEditorOptions<Data = unknown> = {
-    schema: JsonSchema;
-    data?: Data;
-    draftConfig?: Partial<DraftConfig>;
-    plugins?: Plugin[];
-    /** if daTa should be initially validated */
-    validate?: boolean;
-    /** if all optional properties should be added when missing */
-    addOptionalProps?: boolean;
-    [p: string]: unknown;
-};
 
 // @todo test setSchema
 // @todo difference between setValue and setData (root?)?
-export class HeadlessJsonEditor<Data = unknown> {
+export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInterface<Data> {
     state: Node;
     draft: Draft;
     changes: Change[] = [];
@@ -86,7 +62,7 @@ export class HeadlessJsonEditor<Data = unknown> {
             this.draft,
             this.draft.getTemplate(data, this.draft.getSchema(), this.templateOptions)
         );
-        plugins.map((p) => this.addPlugin(p));
+        plugins.forEach((p) => this.addPlugin(p));
         options.validate && this.validate();
     }
 
@@ -110,11 +86,14 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.state;
     }
 
-    /* get current json-data */
+    /** get current json-data */
     getData() {
         return json(this.state) as Data;
     }
 
+    /**
+     * sets a new or modified json-schema and updates data and nodes
+     */
     setSchema(schema: JsonSchema) {
         this.draft.setSchema(schema);
         return this.setData(json(this.state) as Data);
@@ -137,13 +116,19 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.state;
     }
 
+    /**
+     * return root node (duplicate to getNode)
+     */
     getState() {
         return this.state;
     }
 
-    getNode<T extends Node = Node>(pointer?: string): T {
+    /**
+     * get current node at json-pointer location
+     */
+    getNode<T extends Node = Node>(pointer?: string) {
         if (pointer && typeof pointer === 'string' && pointer.replace(/^[/#]+/, '') !== '') {
-            return get(this.state, pointer) as T;
+            return get<T>(this.state, pointer);
         }
         return this.state as T;
     }
@@ -152,11 +137,23 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.plugins.find((p) => p.id === pluginId);
     }
 
-    addPlugin(plugin: Plugin) {
-        const p = plugin(this, this.options);
+    addPlugin(plugin: Plugin | PluginConfig, options: Record<string, unknown> = {}) {
+        let pluginConstructor: Plugin;
+        let pluginOptions: O;
+        if (isPluginConfig(plugin)) {
+            pluginConstructor = plugin.plugin;
+            pluginOptions = { ...this.options, ...plugin.options, ...options };
+        } else {
+            pluginConstructor = plugin;
+            pluginOptions = { ...this.options, ...options };
+        }
+
+        const p = pluginConstructor(this, pluginOptions);
         if (p && p.id) {
             this.plugins.push(p);
+            return p;
         }
+        return undefined;
     }
 
     runPlugins(oldState: Node, newState: Node, changes: PluginEvent[]) {
@@ -192,7 +189,7 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.setValue(pointer, value);
     }
 
-    setValue(pointer: string, value: unknown): Node {
+    setValue(pointer: string, value: unknown) {
         const previousNode = get(this.state, pointer);
         if (!isJsonError(previousNode)) {
             const previousValue = json(previousNode);
@@ -221,7 +218,7 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.state;
     }
 
-    removeValue(pointer: string): Node {
+    removeValue(pointer: string) {
         const [state, changes] = removeTarget(this.draft, this.state, pointer);
         if (isJsonError(state)) {
             console.error(`error removing '${pointer}'`);
@@ -243,7 +240,7 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.state;
     }
 
-    moveItem(pointer: string, to: number): Node {
+    moveItem(pointer: string, to: number) {
         const [parent, from] = gp.splitLast(pointer);
         // console.log('move', parent, from, to);
         const [state, changes] = moveItem(this.draft, this.state, parent, parseInt(`${from}`), to);
@@ -265,7 +262,7 @@ export class HeadlessJsonEditor<Data = unknown> {
         return this.state;
     }
 
-    appendItem(node: ArrayNode, itemSchema: JsonSchema): Node {
+    appendItem(node: ArrayNode, itemSchema: JsonSchema) {
         const value = this.draft.getTemplate(null, itemSchema, this.templateOptions);
         const pointer = `${node.pointer}/${node.children.length}`;
         const [state, changes] = set(this.draft, this.state, pointer, value);

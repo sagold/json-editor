@@ -35,6 +35,10 @@ export function ArrayWidgetActions({ editor, node, options, actions, portalConta
 
     listOfActions.push(...actions);
 
+    if (listOfActions.length === 0) {
+        return;
+    }
+
     return (
         <div ref={portalContainer}>
             <ButtonControlled

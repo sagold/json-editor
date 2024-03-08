@@ -1,5 +1,5 @@
 import { JsonPointer } from 'json-schema-library';
-import { Plugin, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
+import { Plugin, PluginInstance, PluginEvent } from './Plugin';
 import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
 
 /**

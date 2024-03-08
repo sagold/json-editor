@@ -1,6 +1,7 @@
-import { useRef } from 'react';
-import { useJsonEditor } from '@sagold/react-json-editor';
-import { HistoryPlugin, HistoryPluginInstance, JsonSchema } from 'headless-json-editor';
+import React from "react";
+import { useJsonEditor, usePlugin } from '@sagold/react-json-editor';
+import { JsonSchema } from "../../../headless-json-editor/src/types";
+import { HistoryPlugin } from '../../../headless-json-editor/src/plugins/HistoryPlugin';
 import { Meta, StoryObj } from '@storybook/react';
 import { widgets } from '@sagold/rje-widgets';
 import { Button } from '../../../rje-widgets/src/lib/components/button/Button';
@@ -33,18 +34,19 @@ const schema = {
 } as JsonSchema;
 
 function UndoRedoExample() {
-    const [node, editor] = useJsonEditor({ data: {}, schema, widgets, plugins: [HistoryPlugin] });
-    const historyPlugin = useRef<HistoryPluginInstance>(editor.plugin('history') as HistoryPluginInstance);
-    const Widget = editor.getWidget(node);
-    const history = historyPlugin.current;
+    const [node, editor] = useJsonEditor({ data: {}, schema, widgets });
+
+    const history = usePlugin(editor, HistoryPlugin);
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
+
+    const Widget = editor.getWidget(node);
 
     return (
         <Theme style={{ flexDirection: 'column' }}>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
-                <Button icon="undo" onPress={() => historyPlugin.current?.undo()} disabled={!isUndoEnabled}></Button>
-                <Button icon="redo" onPress={() => historyPlugin.current?.redo()} disabled={!isRedoEnabled}></Button>
+                <Button icon="undo" onPress={() => history?.undo()} disabled={!isUndoEnabled}></Button>
+                <Button icon="redo" onPress={() => history?.redo()} disabled={!isRedoEnabled}></Button>
             </div>
             <div className="rje-form">
                 <Widget node={node} editor={editor} />

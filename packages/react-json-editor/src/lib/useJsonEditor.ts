@@ -6,7 +6,9 @@ import {
     OnChangePlugin,
     OnChangeListener,
     JsonSchema,
-    deepEqual
+    deepEqual,
+    PluginConfig,
+    HeadlessJsonEditor
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
@@ -18,10 +20,13 @@ export type UseJsonEditorOptions<Data = unknown> = {
     validate?: boolean;
     draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
     onChange?: OnChangeListener<Data>;
-    plugins?: Plugin[];
+    /** list of plugins to use. Prefer usePlugin-hook */
+    plugins?: (Plugin | PluginConfig)[];
+    /** optional cacheKey. Change cacheKey to recreate json-editor */
     cacheKey?: string | number;
     /** if all optional properties should be added when missing */
     addOptionalProps?: boolean;
+    /** set tpo true to validate while typing. Defaults to onBlur */
     liveUpdate?: boolean;
 };
 
@@ -44,9 +49,10 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
     // @ts-ignore
     // console.log('<previous value>', previousInput.string, '<current value>', data.string);
 
-    const now = Date.now();
+    let editorWasCreatedNow = false;
     const editor = useMemo(() => {
         const { onChange, plugins = [], widgets } = settings;
+
         // store last used input data - prevents an additional rerender where
         // last change is lost. this is required in update loops where input
         // data has changed
@@ -61,29 +67,27 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
             liveUpdate: settings.liveUpdate,
             addOptionalProps: settings.addOptionalProps,
             draftConfig: settings.draftConfig,
-            plugins: [...plugins, OnChangePlugin],
-            onChange(data, root) {
-                setCurrentData(data);
-                if (onChange) {
-                    onChange(data, root);
+            plugins: [...plugins, {
+                plugin: OnChangePlugin,
+                options: {
+                    pluginId: "InternalOnChange",
+                    onChange(data: Data, root: T, editor: HeadlessJsonEditor) {
+                        setCurrentData(data);
+                        if (onChange) {
+                            onChange(data, root, editor);
+                        }
+                    }
                 }
-            }
+            }],
         });
-        // local flag to track if memo was exceuted
-        // (and data already up to date)
-        // @ts-ignore
-        editor.createdAt = now;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        editorWasCreatedNow = true;
         return editor;
+    },
+        // a change of cacheKey completely recreates editor - resetting any changes made
+        [cacheKey]
+    );
 
-        // a change of cacheKey completely recreates editor - resetting any
-        // changes made
-    }, [cacheKey]);
-
-    // @ts-ignore
-    window.rje = editor;
-
-    // @ts-ignore
-    const editorWasCreatedNow = editor.createdAt === now;
     if (editorWasCreatedNow) {
         return [editor.getState() as T, editor];
     }

@@ -15,8 +15,7 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": false
     },
-    "include": ["src/**/*"],
-    "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.mdx", "src/lib/stories/**/*"],
+    "include": ["src", "tests"],
     "references": [
         {
             "path": "../headless-json-editor"

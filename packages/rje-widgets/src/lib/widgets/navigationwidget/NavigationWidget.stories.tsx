@@ -1,8 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useJsonEditor , RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { NavigationWidget } from './NavigationWidget';
-import { RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
 import { Theme } from '../../components/theme/Theme';
 
 const schema = {

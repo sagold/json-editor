@@ -98,7 +98,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         icon = getFileIcon({ type: options.accept || '' } as File);
     }
 
-    console.log(status, downloadUrlTemplate);
+    // console.log(status, downloadUrlTemplate);
 
     async function setFile(file?: File) {
         if (file == null) {
@@ -171,7 +171,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                     // icon="download"
                     target="_blank"
                     download
-                    href={render(downloadUrlTemplate, { value })}
+                    href={render(downloadUrlTemplate, { value })} rel="noreferrer"
                 >
                     <Button icon="download" variant="text">
                         download

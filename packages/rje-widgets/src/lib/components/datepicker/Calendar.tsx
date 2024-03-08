@@ -1,20 +1,19 @@
 import { Button } from '../button/Button';
 import { createCalendar, getWeeksInMonth } from '@internationalized/date';
-import { useCalendar, useCalendarCell, useCalendarGrid } from 'react-aria';
+import { useCalendar, useCalendarCell, useCalendarGrid , useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';
-import { useLocale } from 'react-aria';
 import { useRef } from 'react';
 import classNames from 'classnames';
 
 export function Calendar(props) {
-    let { locale } = useLocale();
-    let state = useCalendarState({
+    const { locale } = useLocale();
+    const state = useCalendarState({
         ...props,
         locale,
         createCalendar
     });
 
-    let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(props, state);
+    const { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(props, state);
 
     return (
         <div className="rje-calendar" {...calendarProps}>
@@ -29,11 +28,11 @@ export function Calendar(props) {
 }
 
 function CalendarGrid({ state, ...props }) {
-    let { locale } = useLocale();
-    let { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
+    const { locale } = useLocale();
+    const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
 
     // Get the number of weeks in the month so we can render the proper number of rows.
-    let weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
+    const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
     return (
         <table {...gridProps}>
@@ -60,8 +59,8 @@ function CalendarGrid({ state, ...props }) {
 }
 
 function CalendarCell({ state, date }) {
-    let ref = useRef(null);
-    let { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, isUnavailable, formattedDate } =
+    const ref = useRef(null);
+    const { cellProps, buttonProps, isSelected, isOutsideVisibleRange, isDisabled, isUnavailable, formattedDate } =
         useCalendarCell({ date }, state, ref);
 
     return (

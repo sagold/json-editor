@@ -27,6 +27,7 @@
         "code:analyze": "mkdir tmp; PACKAGE_NAME=rje-code-widgets webpack --profile --json > tmp/rje-code-stats.json; webpack-bundle-analyzer tmp/rje-code-stats.json",
         "docs": "storybook dev -p 6006",
         "docs:dist": "storybook build --output-dir ./docs",
+        "lint": "eslint .",
         "test": "jest --maxWorkers=2",
         "test:coverage": "yarn test --collect-coverage",
         "test:ci": "jest --maxWorkers=2 --ci --reporters=default --reporters=jest-junit"
@@ -47,6 +48,7 @@
         "@storybook/react": "7.0.25",
         "@storybook/react-webpack5": "7.0.25",
         "@storybook/testing-library": "^0.2.0",
+        "@testing-library/react": "^14.2.1",
         "@types/jest": "^29.5.4",
         "@types/node": "20.5.4",
         "@types/react": "18.2.21",
@@ -63,6 +65,7 @@
         "eslint-plugin-react-hooks": "^4.3.0",
         "eslint-plugin-storybook": "^0.6.13",
         "jest": "^29.6.3",
+        "jest-environment-jsdom": "^29.7.0",
         "jest-junit": "^16.0.0",
         "mini-css-extract-plugin": "^2.7.6",
         "prettier": "^3.0.2",

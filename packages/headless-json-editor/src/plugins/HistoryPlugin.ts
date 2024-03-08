@@ -1,4 +1,4 @@
-import { HeadlessJsonEditor, PluginInstance, PluginEvent } from '../HeadlessJsonEditor';
+import { PluginEvent, PluginInstance, HeadlessJsonEditorInterface } from './Plugin';
 import { Node } from '../types';
 
 const UPDATES_TO_COLLECT: number = 12 as const;
@@ -35,7 +35,7 @@ function isSameNodeUpdated(commit: Commit, changes: PluginEvent[]) {
 /**
  *
  */
-export function HistoryPlugin(he: HeadlessJsonEditor): HistoryPluginInstance {
+export function HistoryPlugin(he: HeadlessJsonEditorInterface): HistoryPluginInstance {
     const past: Commit[] = [{ root: he.getState(), changes: [], updateCount: 0 }];
     const future: Commit[] = [];
 

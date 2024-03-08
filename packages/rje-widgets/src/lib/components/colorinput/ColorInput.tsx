@@ -1,8 +1,7 @@
 import { CSSProperties, useRef, useMemo } from 'react';
-import { JsonError, Label } from '@sagold/react-json-editor';
+import { JsonError, Label , WidgetError } from '@sagold/react-json-editor';
 import { useColorField, type AriaColorFieldProps } from '@react-aria/color';
 import { useColorFieldState, type ColorFieldProps, parseColor, type Color } from '@react-stately/color';
-import { WidgetError } from '@sagold/react-json-editor';
 
 export type ColorInputProps = {
     title?: string;

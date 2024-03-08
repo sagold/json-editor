@@ -1,8 +1,7 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useJsonEditor , RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { FileWidget } from './FileWidget';
-import { RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
 import { Theme } from '../../components/theme/Theme';
 
 export default {

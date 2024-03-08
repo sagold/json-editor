@@ -13,6 +13,7 @@
         "plugin:react/jsx-runtime",
         "plugin:react-hooks/recommended"
     ],
+    "ignorePatterns": ["/node_modules", "/images", "/docs", "/dist", "/tools", "webpack.config.js"],
     "globals": {
         "__DEVELOPMENT__": true
     },

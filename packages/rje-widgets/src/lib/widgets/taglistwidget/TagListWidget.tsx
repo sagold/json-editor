@@ -1,4 +1,4 @@
-import { useRef, type Key } from 'react';
+import { type Key } from 'react';
 import { TagListInput } from '../../components/taglistinput/TagListInput';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, json } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
@@ -20,8 +20,6 @@ export type TagListWidgetOptions = {
 
 export const TagListWidget = widget<ArrayNode<TagListWidgetOptions>, string[]>(({ node, options, setValue }) => {
     const allowDuplicates = node.schema.uniqueItems === true;
-    const hasError = node.errors.length > 0;
-    const isValidConst = node.schema.const != null && !hasError;
 
     // actual list data
     const data = json(node) as string[];
@@ -41,10 +39,6 @@ export const TagListWidget = widget<ArrayNode<TagListWidgetOptions>, string[]>((
 
     // build available select / autosuggest options
     const availableSelections = options.values?.map((o) => ({ ...o, id: o.value + Math.random() })) ?? [];
-
-    console.log('allow allowDuplicates', allowDuplicates);
-    console.log('selected items', currentSelection);
-    console.log('available options', availableSelections);
 
     return (
         <WidgetField widgetType="tag-list" node={node} options={options}>

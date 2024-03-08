@@ -1,4 +1,4 @@
-import { Plugin, PluginInstance } from '../HeadlessJsonEditor';
+import { Plugin, PluginInstance } from './Plugin';
 
 export const EventLoggerPlugin: Plugin = (): PluginInstance => {
     return {

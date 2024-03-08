@@ -12,6 +12,8 @@ export type ArrayItemProps = {
     portalContainer: RefObject<Element>;
     withDragHandle?: boolean;
     disabled?: boolean;
+    /** set to false to deactivate any array-item-controls */
+    controls?: boolean;
     options?: Record<string, any>;
     /** set to true, if item can be deleted */
     optional?: boolean;
@@ -23,6 +25,7 @@ export function ArrayItemDefault({
     withDragHandle,
     disabled,
     size,
+    controls = true,
     portalContainer,
     optional,
     options = {}
@@ -32,12 +35,13 @@ export function ArrayItemDefault({
         <div data-type="array-item" className={classnames('rje-array-item', { 'with-drag-handle': withDragHandle })}>
             {withDragHandle && <div className="rje-drag__handle rje-drag__container"></div>}
             <Widget editor={editor} node={node} options={options} />
-            <div className={`rje-array-item__menu`}>
+            {controls &&<div className={`rje-array-item__menu`}>
                 <ButtonControlled {...popoverTriggerProps} variant="text" icon="more_vert" disabled={disabled} />
                 <Popover {...popoverProps} portalContainer={portalContainer}>
                     <ArrayItemActions editor={editor} node={node} size={size} optional={optional} />
                 </Popover>
             </div>
+            }
         </div>
     );
 }

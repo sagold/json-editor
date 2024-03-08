@@ -8,6 +8,9 @@ describe('HistoryPlugin', () => {
         let history: HistoryPluginInstance;
         beforeEach(() => {
             he = new HeadlessJsonEditor({
+                data: {
+                    a: "initial input"
+                },
                 schema: {
                     type: 'object',
                     required: ['a', 'b', 'c'],

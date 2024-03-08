@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
 import widgets, { Button, Icon, Theme } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import { useState, useRef, useEffect } from 'react';
 import theme from '../../../rje-widgets/src/lib/theme';
 import './rje-code-widgets.scss';
 

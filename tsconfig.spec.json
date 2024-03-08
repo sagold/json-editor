@@ -3,6 +3,7 @@
     "compilerOptions": {
         "esModuleInterop": true,
         "rootDir": ".",
+        "jsx": "react-jsx",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "noImplicitOverride": true,

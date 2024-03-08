@@ -1,4 +1,5 @@
 import { JsonEditor, JsonEditorOptions, setDefaultWidgets } from './lib/JsonEditor';
+import { usePlugin } from './lib/usePlugin';
 import { JsonForm, JsonFormProps } from './lib/components/jsonform';
 import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
 import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/decorators';
@@ -20,7 +21,8 @@ export {
     // core
     JsonEditor,
     setDefaultWidgets,
-    useJsonEditor
+    useJsonEditor,
+    usePlugin
 };
 // types
 export type {
@@ -66,6 +68,7 @@ import {
     trace,
     unlinkAll,
     unlinkPath,
+    update,
     updateErrors,
     updateOptions,
     updateSchema,
@@ -120,6 +123,7 @@ export {
     trace,
     unlinkAll,
     unlinkPath,
+    update,
     updateErrors,
     updateOptions,
     updateSchema
