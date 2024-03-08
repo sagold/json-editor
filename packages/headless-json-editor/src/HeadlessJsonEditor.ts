@@ -70,7 +70,10 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.templateOptions.addOptionalProps === false;
     }
 
-    // import diff from 'microdiff';
+    /**
+     * Set data
+     * @return new root node
+     */
     setData(data?: Data): Node {
         const { draft } = this;
         const previousState = this.state;
@@ -99,9 +102,13 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.setData(json(this.state) as Data);
     }
 
+    /**
+     * Perform data validation and update nodes
+     * @return validation errors
+     */
     validate() {
         if (this.state == null) {
-            return;
+            return [];
         }
         const state = unlinkAll(this.state);
         validateState(this.draft, state);
@@ -109,15 +116,29 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         this.state = this.runPlugins(this.state, state, [
             { type: 'validation', previous: this.state, next: state, errors: validationErrors }
         ]);
+        return validationErrors;
     }
 
+    /**
+     * Get current validation errors of node-tree
+     * @return validation errors of state
+     */
+    getErrors() {
+        return this.state ? errors(this.state) : [];
+    }
+
+    /**
+     * Set new editor state (new tree of nodes)
+     * @return new root node
+     */
     setState(state: Node, changes: PluginEvent[]) {
         this.state = this.runPlugins(this.state, state, changes);
         return this.state;
     }
 
     /**
-     * return root node (duplicate to getNode)
+     * Return root node (duplicate to getNode)
+     * @return current root node
      */
     getState() {
         return this.state;
@@ -133,6 +154,9 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.state as T;
     }
 
+    /**
+     * Get a plugin by pluginId
+     */
     plugin(pluginId: string) {
         return this.plugins.find((p) => p.id === pluginId);
     }
@@ -183,12 +207,22 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return gp.get(json(this.state), pointer);
     }
 
+    /**
+     * Shortcut to add a value at a given location. This usually is used to add array-items
+     * @return new root node
+     */
     addValue(pointer: string) {
         const schema = this.draft.getSchema({ pointer, data: json(this.state) });
         const value = this.draft.getTemplate(undefined, schema, this.templateOptions);
         return this.setValue(pointer, value);
     }
 
+    /**
+     * Set value for given data-location
+     * @param pointer - json-pointer in data of target value
+     * @param value - value to set at location
+     * @return new root node or current one if nothing changed
+     */
     setValue(pointer: string, value: unknown) {
         const previousNode = get(this.state, pointer);
         if (!isJsonError(previousNode)) {
@@ -218,6 +252,10 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.state;
     }
 
+    /**
+     * Delete the value at the given json-pointer location
+     * @return new root node
+     */
     removeValue(pointer: string) {
         const [state, changes] = removeTarget(this.draft, this.state, pointer);
         if (isJsonError(state)) {
@@ -240,6 +278,9 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.state;
     }
 
+    /**
+     * Move the referenced array-item to another array position
+     */
     moveItem(pointer: string, to: number) {
         const [parent, from] = gp.splitLast(pointer);
         // console.log('move', parent, from, to);
@@ -262,6 +303,9 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return this.state;
     }
 
+    /**
+     * Append an item defined by a json-schema to the target array
+     */
     appendItem(node: ArrayNode, itemSchema: JsonSchema) {
         const value = this.draft.getTemplate(null, itemSchema, this.templateOptions);
         const pointer = `${node.pointer}/${node.children.length}`;
@@ -293,7 +337,7 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
     }
 
     /**
-     * @returns a list of available json subschemas to insert
+     * @return a list of available json subschemas to insert
      */
     getArrayAddOptions(node: ArrayNode) {
         const schema = this.draft.getSchema({ pointer: node.pointer, data: json(this.state) });
@@ -304,6 +348,10 @@ export class HeadlessJsonEditor<Data = unknown> implements HeadlessJsonEditorInt
         return selections;
     }
 
+    /**
+     * Shortcut to return default data based on json-schema only
+     * @return default data confirming to json-schema
+     */
     getTemplateData(schema: JsonSchema) {
         return this.draft.getTemplate(null, schema, this.templateOptions);
     }

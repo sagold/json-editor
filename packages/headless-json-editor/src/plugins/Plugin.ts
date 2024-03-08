@@ -20,7 +20,7 @@ export interface HeadlessJsonEditorInterface<Data = unknown> {
     draft: Draft;
     options: HeadlessJsonEditorOptions<Data>;
     /**
-     *
+     * Set data
      * @return new root node
      */
     setData(data?: Data): Node;
@@ -38,19 +38,71 @@ export interface HeadlessJsonEditorInterface<Data = unknown> {
      * @return new root node
      */
     setSchema(schema: JsonSchema): Node;
+    /**
+     * Set new editor state (new tree of nodes)
+     * @return new root node
+     */
     setState(state: Node, changes: PluginEvent[]): Node;
+    /**
+     * Return root node (duplicate to getNode)
+     * @return current root node
+     */
     getState(): Node;
+    /**
+     * Returns the current json data
+     * @param [pointer] - optional json-pointer of data to return. Returns whole json-data per default
+     */
     getValue(pointer?: string): unknown;
+    /**
+     * Set value for given data-location
+     * @param pointer - json-pointer in data of target value
+     * @param value - value to set at location
+     * @return new root node or current one if nothing changed
+     */
     setValue(pointer: string, value: unknown): Node;
+    /**
+     * Shortcut to add a value at a given location. This usually is used to add array-items
+     * @return new root node
+     */
+    addValue(pointer: string): Node;
+    /**
+     * Append an item defined by a json-schema to the target array
+     */
     appendItem(node: ArrayNode, itemSchema: JsonSchema): Node;
+    /**
+     * Delete the value at the given json-pointer location
+     * @return new root node
+     */
     removeValue(pointer: string): Node;
+    /**
+     * Move the referenced array-item to another array position
+     */
     moveItem(pointer: string, to: number): Node;
+    /**
+     * @return a list of available json subschemas to insert
+     */
     getArrayAddOptions(node: ArrayNode): JsonSchema[];
-    getTemplateData(schema: JsonSchema): Data;
+    /**
+     * Get a plugin by pluginId
+     */
     plugin(pluginId: string): PluginInstance | undefined;
     addPlugin(plugin: Plugin | PluginConfig, options?: O): PluginInstance | undefined;
     runPlugins(oldState: Node, newState: Node, changes: PluginEvent[]): Node;
-    validate(): void;
+    /**
+     * Perform data validation and update nodes
+     * @return validation errors
+     */
+    validate(): JsonError[];
+    /**
+     * Get current validation errors of node-tree
+     * @return validation errors of state
+     */
+    getErrors(): JsonError[];
+    /**
+     * Shortcut to return default data based on json-schema only
+     * @return default data confirming to json-schema
+     */
+    getTemplateData(schema: JsonSchema): Data;
 }
 
 export type PluginInstance<Signature extends O = O> = {
