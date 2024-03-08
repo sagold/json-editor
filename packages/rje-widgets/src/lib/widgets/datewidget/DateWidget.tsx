@@ -49,12 +49,14 @@ export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, optio
                 disabled={options.disabled || isValidConst}
                 error={hasError}
                 onChange={(date) => {
-                    if (format === 'date') {
-                        setValue(date.toString());
-                    } else {
-                        // @ts-expect-error
-                        setValue(date.toDate().toISOString());
+                    if (!date) {
+                        return setValue("");
                     }
+                    if (format === 'date') {
+                        return setValue(date.toString());
+                    }
+                    // @ts-expect-error
+                    setValue(date.toDate().toISOString());
                 }}
                 readOnly={options.readOnly}
                 required={options.required}
