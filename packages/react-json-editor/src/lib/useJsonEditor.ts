@@ -1,27 +1,19 @@
 import { useState, useMemo } from 'react';
 import {
     HeadlessJsonEditorOptions,
-    Plugin,
     Node,
     OnChangePlugin,
-    OnChangeListener,
-    JsonSchema,
     deepEqual,
-    PluginConfig,
-    HeadlessJsonEditor
+    HeadlessJsonEditor,
+    OnChangeListener
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
+import { usePlugin } from './usePlugin';
 
-export type UseJsonEditorOptions<Data = unknown> = {
-    widgets?: WidgetPlugin[];
-    schema: JsonSchema;
-    data?: Data;
-    validate?: boolean;
-    draftConfig?: HeadlessJsonEditorOptions['draftConfig'];
+export type UseJsonEditorOptions<Data = unknown> = HeadlessJsonEditorOptions<Data> & {
     onChange?: OnChangeListener<Data>;
-    /** list of plugins to use. Prefer usePlugin-hook */
-    plugins?: (Plugin | PluginConfig)[];
+    widgets?: WidgetPlugin[];
     /** optional cacheKey. Change cacheKey to recreate json-editor */
     cacheKey?: string | number;
     /** if all optional properties should be added when missing */
@@ -40,19 +32,14 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
     settings: UseJsonEditorOptions<Data>
 ): [T, JsonEditor<Data>] {
     const { schema, data, cacheKey } = settings;
-    const [currentData, setCurrentData] = useState<Data | undefined>(data);
+    const setCurrentData = useState<Data | undefined>(data)[1];
 
     // track previous inputs - set data to editor if input values have changed
     const [previousData, setPreviousData] = useState<Data | undefined>(data);
     const [previousSchema, setPreviousSchema] = useState(schema);
 
-    // @ts-ignore
-    // console.log('<previous value>', previousInput.string, '<current value>', data.string);
-
     let editorWasCreatedNow = false;
     const editor = useMemo(() => {
-        const { onChange, plugins = [], widgets } = settings;
-
         // store last used input data - prevents an additional rerender where
         // last change is lost. this is required in update loops where input
         // data has changed
@@ -62,23 +49,12 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
             ...settings,
             schema,
             data,
-            widgets,
+            plugins: settings.plugins,
+            widgets: settings.widgets,
             validate: settings.validate,
             liveUpdate: settings.liveUpdate,
             addOptionalProps: settings.addOptionalProps,
-            draftConfig: settings.draftConfig,
-            plugins: [...plugins, {
-                plugin: OnChangePlugin,
-                options: {
-                    pluginId: "InternalOnChange",
-                    onChange(data: Data, root: T, editor: HeadlessJsonEditor) {
-                        setCurrentData(data);
-                        if (onChange) {
-                            onChange(data, root, editor);
-                        }
-                    }
-                }
-            }],
+            draftConfig: settings.draftConfig
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
         editorWasCreatedNow = true;
@@ -87,6 +63,16 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
         // a change of cacheKey completely recreates editor - resetting any changes made
         [cacheKey]
     );
+
+    usePlugin(editor, OnChangePlugin, {
+        pluginId: "InternalOnChange",
+        onChange(data: Data, root: T, editor: HeadlessJsonEditor) {
+            setCurrentData(data);
+            if (settings.onChange) {
+                settings.onChange(data, root, editor);
+            }
+        }
+    })
 
     if (editorWasCreatedNow) {
         return [editor.getState() as T, editor];

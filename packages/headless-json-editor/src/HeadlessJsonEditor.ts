@@ -19,7 +19,6 @@ function getRootChange(changes: Change[]) {
     if (changes.length === 0) {
         return '#';
     }
-
     let lowestPointer: string = changes[0]?.node.pointer || '#';
     changes.forEach(({ node }) => {
         if (lowestPointer.includes(node.pointer)) {
