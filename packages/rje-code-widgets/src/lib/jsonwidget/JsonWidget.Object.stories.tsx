@@ -1,6 +1,6 @@
+import React from "react";
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonForm } from '@sagold/react-json-editor';
-import widgets, { Theme } from '@sagold/rje-widgets';
+import defaultWidgets, { JsonForm } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './JsonWidget';
 import { ThemeDecorator } from '../../../../rje-widgets/src/lib/components/ThemeDecorator';
 import '../rje-code-widgets.scss';
@@ -30,7 +30,7 @@ const meta: Meta<typeof JsonWidget> = {
                 addOptionalProps={false}
                 schema={s}
                 data={data}
-                widgets={[JsonWidgetPlugin, ...widgets]}
+                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
                 style={{ width: '100%' }}
             />
         );

@@ -1,9 +1,8 @@
 import { ComponentStory } from '@storybook/react';
-import { Widget, JsonSchema, useJsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
+import { Widget, JsonSchema, useEditor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 import theme from '../../../rje-widgets/src/lib/theme';
-import widgets, { Button } from '@sagold/rje-widgets';
+import defaultWidgets, { Button } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetOptions, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import { useRef } from 'react';
 
 export default {
     title: 'packages/rje-code-widgets/UndoRedo',
@@ -16,31 +15,30 @@ type ComponentStoryProps = {
     options?: Partial<JsonWidgetOptions>;
 };
 
-const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
-    const [node, editor] = useJsonEditor({
+const Template: ComponentStory<any> = ({ data, schema }: ComponentStoryProps) => {
+    const [node, editor] = useEditor({
         schema,
         data,
-        widgets: [JsonWidgetPlugin, ...widgets],
+        widgets: [JsonWidgetPlugin, ...defaultWidgets],
         onChange: (data) => console.log('changed', data),
         plugins: [HistoryPlugin],
         validate: true
     });
 
-    const historyPlugin = useRef<HistoryPluginInstance>(editor.plugin('history') as HistoryPluginInstance);
-    console.log('history', historyPlugin.current);
+    const historyPlugin = useEditorPlugin(editor, HistoryPlugin);
 
     return (
         <div className="rje-form rje-theme--light" style={theme}>
             <div style={{ display: 'flex', gap: 8 }}>
                 <Button
                     icon="undo"
-                    onPress={() => historyPlugin.current.undo()}
-                    disabled={historyPlugin.current?.getUndoCount() === 0}
+                    onPress={() => historyPlugin?.undo()}
+                    disabled={historyPlugin?.getUndoCount() === 0}
                 />
                 <Button
                     icon="redo"
-                    onPress={() => historyPlugin.current.redo()}
-                    disabled={historyPlugin.current?.getRedoCount() === 0}
+                    onPress={() => historyPlugin?.redo()}
+                    disabled={historyPlugin?.getRedoCount() === 0}
                 />
             </div>
             <Widget editor={editor} node={node} />

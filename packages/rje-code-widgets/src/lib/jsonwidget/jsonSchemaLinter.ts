@@ -3,7 +3,7 @@ import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { Diagnostic } from '@codemirror/lint';
 import { Draft, JsonSchema } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
-import { JsonEditor } from '@sagold/react-json-editor';
+import { Editor } from '@sagold/react-json-editor';
 import { jsonParseLinter } from '@codemirror/lang-json';
 import { SyntaxNode } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
@@ -27,7 +27,7 @@ function getPropertyValueCursor(node: SyntaxNode) {
     return undefined;
 }
 
-export function jsonSchemaLinter(editor: JsonEditor, schema: JsonSchema) {
+export function jsonSchemaLinter(editor: Editor, schema: JsonSchema) {
     const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
     const draft = new Draft(editor.draft.config, rootSchema);
     const localSchema = draft.compileSchema(schema);

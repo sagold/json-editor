@@ -1,10 +1,44 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonSchema, JsonForm, JsonEditor, HistoryPlugin, HistoryPluginInstance } from '@sagold/react-json-editor';
-import widgets, { Button, Icon, Theme } from '@sagold/rje-widgets';
+import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
+import defaultWidgets, { Button, Theme, JsonForm } from '@sagold/rje-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import theme from '../../../rje-widgets/src/lib/theme';
 import './rje-code-widgets.scss';
+
+function CodeWidgetComponent(args) {
+    const [editor, setEditor] = useState<Editor>();
+    const [data, setData] = useState<unknown>(null);
+    const history = useEditorPlugin(editor, HistoryPlugin);
+    return (
+        <Theme>
+            <div className="rje-form rje-theme rje-theme--light" style={theme}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <Button
+                        icon="undo"
+                        onPress={() => history?.undo()}
+                        disabled={history?.getUndoCount() === 0}
+                    ></Button>
+                    <Button
+                        icon="redo"
+                        onPress={() => history?.redo()}
+                        disabled={history?.getRedoCount() === 0}
+                    ></Button>
+                </div>
+                <JsonForm
+                    style={{ maxWidth: 680 }}
+                    addOptionalProps={false}
+                    schema={args.schema}
+                    onChange={setData}
+                    data={args.data}
+                    editor={setEditor}
+                    plugins={[HistoryPlugin]}
+                    widgets={[JsonWidgetPlugin, ...defaultWidgets]}
+                />
+            </div>
+        </Theme>
+    );
+}
 
 type Story = StoryObj<typeof JsonWidget>;
 const meta: Meta<typeof JsonWidget> = {
@@ -27,42 +61,7 @@ const meta: Meta<typeof JsonWidget> = {
         //     control: { type: 'boolean' }
         // }
     },
-    render(args) {
-        const [editorRef, setEditorRef] = useState<JsonEditor>();
-        const [data, setData] = useState<unknown>(null);
-        const [history, setHistory] = useState<HistoryPluginInstance>();
-        useEffect(() => {
-            editorRef && setHistory(editorRef.plugin('history') as HistoryPluginInstance);
-        });
-        return (
-            <Theme>
-                <div className="rje-form rje-theme rje-theme--light" style={theme}>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                        <Button
-                            icon="undo"
-                            onPress={() => history?.undo()}
-                            disabled={history?.getUndoCount() === 0}
-                        ></Button>
-                        <Button
-                            icon="redo"
-                            onPress={() => history?.redo()}
-                            disabled={history?.getRedoCount() === 0}
-                        ></Button>
-                    </div>
-                    <JsonForm
-                        style={{ maxWidth: 680 }}
-                        addOptionalProps={false}
-                        schema={args.schema}
-                        onChange={setData}
-                        data={args.data}
-                        editor={setEditorRef}
-                        plugins={[HistoryPlugin]}
-                        widgets={[JsonWidgetPlugin, ...widgets]}
-                    />
-                </div>
-            </Theme>
-        );
-    }
+    render: CodeWidgetComponent
 };
 export default meta;
 

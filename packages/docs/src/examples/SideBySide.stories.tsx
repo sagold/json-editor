@@ -1,12 +1,12 @@
 import { ComponentStory } from '@storybook/react';
-import { JsonFormProps, useJsonEditor } from '@sagold/react-json-editor';
+import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/features';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
 import { widgets } from '../../../rje-widgets/src';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
-function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
-    const [node, editor] = useJsonEditor({
+function SideBySideComponent({ schema, data, onChange }: UseEditorOptions) {
+    const [node, editor] = useEditor({
         schema,
         widgets,
         onChange,
@@ -28,10 +28,10 @@ function SideBySideComponent({ schema, data, onChange }: JsonFormProps) {
                     justifyContent: 'space-evenly'
                 }}
             >
-                <div error style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
+                <div style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
                     <ChildWidget node={node} editor={editor} />
                 </div>
-                <div error style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
+                <div style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
                     <ChildWidget node={node} editor={editor} />
                 </div>
             </section>

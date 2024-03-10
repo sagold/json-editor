@@ -1,10 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { JsonForm } from '../../react-json-editor/src/lib/components/jsonform';
-import { JsonEditor } from '../../react-json-editor/src/lib/JsonEditor';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Theme } from '../../rje-widgets/src/lib/components/theme/Theme';
-import { useJsonEditor } from '../../react-json-editor/src/lib/useJsonEditor';
 import { JsonSchema } from 'headless-json-editor';
+import { JsonForm } from '@sagold/rje-widgets';
+import { useEditor, Editor } from '@sagold/react-json-editor';
 
 type Story = StoryObj<typeof TypedJsonForm>;
 const meta: Meta<typeof TypedJsonForm> = {
@@ -27,7 +26,7 @@ type MyData = {
 
 function TypedUseJsonEditor() {
     // [Node, JsonEditor<MyData>]
-    const [node, editor] = useJsonEditor<MyData>({
+    const [node, editor] = useEditor<MyData>({
         schema: jsonSchema,
         // (data: MyData) => void
         onChange(data) {}
@@ -40,7 +39,7 @@ function TypedUseJsonEditor() {
 }
 
 function TypedJsonForm() {
-    const [editor, setEditor] = useState<JsonEditor<MyData>>();
+    const [editor, setEditor] = useState<Editor<MyData>>();
 
     // data: MyData
     const data = editor?.getData();
@@ -48,9 +47,7 @@ function TypedJsonForm() {
     return (
         <Theme>
             <JsonForm<MyData>
-                // (editor: JsonEditor<MyData>) => void)
                 editor={setEditor}
-                // (data: MyData) => void
                 onChange={(data) => {}}
                 schema={jsonSchema}
             />

@@ -1,4 +1,4 @@
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/longform';
 import { NavigationWidget, widgets } from '@sagold/rje-widgets';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
@@ -12,7 +12,7 @@ export default {
 };
 
 export const LargeForm = () => {
-    const [node, editor] = useJsonEditor({ data, schema, widgets, plugins: [] });
+    const [node, editor] = useEditor({ data, schema, widgets, plugins: [] });
     const WidgetComponent = editor.getWidget(node);
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Theme, JsonForm, Button } from '@sagold/rje-widgets';
-import { JsonEditor, errors } from '@sagold/react-json-editor';
+import { Editor, errors } from '@sagold/react-json-editor';
 
 type Story = StoryObj<typeof LoginStory>;
 const meta: Meta<typeof LoginStory> = {
@@ -17,7 +17,7 @@ type FormData = {
 };
 
 function LoginStory({ userData = { password: '', username: '', remember: false } }) {
-    const [editor, setEditor] = useState<JsonEditor>();
+    const [editor, setEditor] = useState<Editor>();
     const [disabled, setDisabled] = useState<boolean>(true);
 
     return (

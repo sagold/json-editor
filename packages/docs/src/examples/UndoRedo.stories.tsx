@@ -1,5 +1,5 @@
 import React from "react";
-import { useJsonEditor, usePlugin } from '@sagold/react-json-editor';
+import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
 import { JsonSchema } from "../../../headless-json-editor/src/types";
 import { HistoryPlugin } from '../../../headless-json-editor/src/plugins/HistoryPlugin';
 import { Meta, StoryObj } from '@storybook/react';
@@ -34,9 +34,9 @@ const schema = {
 } as JsonSchema;
 
 function UndoRedoExample() {
-    const [node, editor] = useJsonEditor({ data: {}, schema, widgets });
+    const [node, editor] = useEditor({ data: {}, schema, widgets });
 
-    const history = usePlugin(editor, HistoryPlugin);
+    const history = useEditorPlugin(editor, HistoryPlugin);
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
 

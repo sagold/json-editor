@@ -1,8 +1,8 @@
 import { ComponentStory } from '@storybook/react';
 import { data, schema } from './data/features';
 import { JsonSchema, errors, json } from 'headless-json-editor';
-import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
-import { useEffect, useRef, useState } from 'react';
+import { Editor, JsonForm } from '@sagold/react-json-editor';
+import { useEffect, useState } from 'react';
 import { widgets } from '@sagold/rje-widgets';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 import { JsonWidgetPlugin } from '@sagold/rje-code-widgets';
@@ -12,7 +12,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = () => {
-    const [editor, setEditor] = useState<JsonEditor>();
+    const [editor, setEditor] = useState<Editor>();
     const [editorData, setEditorData] = useState(data);
     useEffect(() => {
         // @ts-ignore

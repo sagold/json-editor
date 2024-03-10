@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonForm, JsonSchema } from '@sagold/react-json-editor';
-import { widgets, Theme } from '@sagold/rje-widgets';
+import { JsonSchema } from '@sagold/react-json-editor';
+import { JsonForm, widgets, Theme } from '@sagold/rje-widgets';
 
 const meta: Meta<typeof ConditionalFormStory> = {
     component: ConditionalFormStory

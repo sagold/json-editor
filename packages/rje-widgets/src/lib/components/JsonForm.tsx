@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { Editor, useEditor, UseEditorOptions } from '@sagold/react-json-editor';
 import { widgets as defaultWidgets } from '../../index';
+import { useImperativeHandle } from 'react';
 
 export function JsonForm<Data = unknown>({ style, editor, theme, ...options }: UseEditorOptions<Data> & {
     editor?: (editor: Editor<Data>) => void;
@@ -13,6 +14,7 @@ export function JsonForm<Data = unknown>({ style, editor, theme, ...options }: U
         ...options,
         widgets
     });
+    useImperativeHandle(editor, () => instance);
     const Widget = instance.getWidget(root);
     return <div className={classNames("rje-form", theme && `rje-theme rje-theme--${theme}`)} style={style}>
         <Widget node={root} editor={instance} />
