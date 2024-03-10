@@ -1,6 +1,7 @@
 import { JsonPointer } from 'json-schema-library';
-import { Plugin, PluginInstance, PluginEvent } from './Plugin';
+import { Plugin, PluginInstance } from '../HeadlessEditor';
 import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
+import { PluginEvent } from "../types";
 
 /**
  * prototypical plugin to support a dynamic enum for a schema like
@@ -20,7 +21,7 @@ import { get, json, updateSchema, isJsonError, Change, Node } from '../index';
  * }
  * ```
  */
-export const RemoteEnumOptionsPlugin: Plugin = (he, options) => {
+export const RemoteEnumOptionsPlugin: Plugin = () => {
     const sources: Record<string, JsonPointer> = {};
     const targets: Record<string, JsonPointer> = {};
 

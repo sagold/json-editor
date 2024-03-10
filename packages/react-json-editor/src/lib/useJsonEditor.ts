@@ -1,17 +1,16 @@
 import { useState, useMemo } from 'react';
 import {
-    HeadlessJsonEditorOptions,
+    HeadlessEditorOptions,
     Node,
     OnChangePlugin,
     deepEqual,
-    HeadlessJsonEditor,
     OnChangeListener
 } from 'headless-json-editor';
 import { JsonEditor } from './JsonEditor';
 import { WidgetPlugin } from './decorators';
 import { usePlugin } from './usePlugin';
 
-export type UseJsonEditorOptions<Data = unknown> = HeadlessJsonEditorOptions<Data> & {
+export type UseJsonEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
     onChange?: OnChangeListener<Data>;
     widgets?: WidgetPlugin[];
     /** optional cacheKey. Change cacheKey to recreate json-editor */
@@ -66,7 +65,7 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
 
     usePlugin(editor, OnChangePlugin, {
         pluginId: "InternalOnChange",
-        onChange(data: Data, root: T, editor: HeadlessJsonEditor) {
+        onChange(data, root, editor) {
             setCurrentData(data);
             if (settings.onChange) {
                 settings.onChange(data, root, editor);
@@ -75,7 +74,7 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
     })
 
     if (editorWasCreatedNow) {
-        return [editor.getState() as T, editor];
+        return [editor.getNode() as T, editor];
     }
 
     if (data !== previousData && !deepEqual(data, previousData)) {
@@ -88,5 +87,5 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
         setPreviousSchema(schema);
     }
 
-    return [editor.getState() as T, editor];
+    return [editor.getNode() as T, editor];
 }

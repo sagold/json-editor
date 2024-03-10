@@ -1,32 +1,14 @@
 import { JsonError } from 'json-schema-library';
-import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
+import { JsonSchema } from './jsonSchema';
 import { DefaultNodeOptions } from './node/create';
 
-export type JsonSchemaOptions = Record<string, unknown>;
-type JsonSchemaDefinition = JSONSchema7Definition & JsonSchemaOptions;
+export { JsonSchema };
 
-export type JsonSchema =
-    | JSONSchema7 & {
-        isActive?: boolean;
-        isDynamic?: boolean;
-        getOneOfOrigin?: () => {
-            index: number;
-            schema: JsonSchema;
-            isItem?: boolean;
-        };
-        options?: JsonSchemaOptions;
-        properties?: { [key: string]: JsonSchemaDefinition };
-        patternProperties?: { [key: string]: JsonSchemaDefinition } | undefined;
-        additionalProperties?: JsonSchemaDefinition | undefined;
-        dependencies?: { [key: string]: JsonSchemaDefinition | string[] } | undefined;
-        definitions?: { [key: string]: JsonSchemaDefinition } | undefined;
-        allOf?: JsonSchemaDefinition[] | undefined;
-        anyOf?: JsonSchemaDefinition[] | undefined;
-        oneOf?: JsonSchemaDefinition[] | undefined;
-        not?: JsonSchemaDefinition | undefined;
-        items?: JsonSchemaDefinition | JsonSchemaDefinition[] | undefined;
-        additionalItems?: JsonSchemaDefinition | undefined;
-    };
+export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
+export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
+export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
+export type ValidationEvent = { type: 'validation'; previous: Node; next: Node; errors: JsonError[] };
+export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | ValidationEvent;
 
 export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;
 

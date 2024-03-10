@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { strict as assert } from 'assert';
-import { Plugin, PluginInstance } from '../../../headless-json-editor/src/plugins/Plugin';
-import { JsonSchema } from '../../../headless-json-editor/src/types';
+import { Plugin, PluginEvent, JsonSchema } from 'headless-json-editor';
 import { useJsonEditor, UseJsonEditorOptions } from "../../src/lib/useJsonEditor";
 import { usePlugin } from '../../src/lib/usePlugin';
 
@@ -10,23 +9,20 @@ type Options = Record<string, unknown>;
 describe('usePlugin', () => {
     let schema: JsonSchema;
     let data: object;
-    let MyPlugin: Plugin;
+    let MyPlugin: Plugin<{ callback?: (event: PluginEvent) => void }, { test: () => void }>;
     beforeEach(() => {
         schema = { type: "object", properties: { title: { type: "string" } } };
         data = { title: "test-title" };
-        MyPlugin = (he, options) => {
-            const pluginInstance: PluginInstance = {
-                id: "test-plugin",
-                test() {},
-                onEvent(root, event) {
-                    if (event.type === "done" && options.callback) {
-                        // @ts-ignore
-                        options.callback(event);
-                    }
+        MyPlugin = (he, options) => ({
+            id: "test-plugin",
+            test() {},
+            onEvent(root, event) {
+                if (event.type === "done" && options.callback) {
+                    // @ts-ignore
+                    options.callback(event);
                 }
-            };
-            return pluginInstance;
-        }
+            }
+        });
     });
 
     it("should register plugin to editor", () => {
@@ -34,6 +30,11 @@ describe('usePlugin', () => {
             ({ pluginOptions, ...settings }: UseJsonEditorOptions & { pluginOptions: Options }) => {
                 const editor = useJsonEditor(settings)[1];
                 const plugin = usePlugin(editor, MyPlugin, pluginOptions);
+
+                if (plugin) {
+                    plugin.test();
+                }
+
                 return { editor, plugin };
             },
             {

@@ -1,9 +1,9 @@
 import { JsonError } from 'json-schema-library';
+import { JsonEditor } from '../JsonEditor';
 import { WidgetPlugin } from '../decorators';
-import { json, Node, isJsonError, HeadlessJsonEditor } from 'headless-json-editor';
+import { Node, isJsonError } from 'headless-json-editor';
 
-export const ErrorWidget = ({ node, editor }: { node: Node; editor: HeadlessJsonEditor }) => {
-    console.log('error widget:', node);
+export const ErrorWidget = ({ node, editor }: { node: Node; editor: JsonEditor }) => {
     const error = node.schema as unknown as JsonError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
     return (
@@ -15,8 +15,8 @@ export const ErrorWidget = ({ node, editor }: { node: Node; editor: HeadlessJson
                 <label>{`${node.property} (${error.name})`}</label>
             </div>
             <div className="rje-form__errors">
-                {node.errors.map((e) => (
-                    <div className="rje_form__error">{e.message}</div>
+                {node.errors.map((e, index) => (
+                    <div key={index} className="rje_form__error">{e.message}</div>
                 ))}
             </div>
 

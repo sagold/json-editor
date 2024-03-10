@@ -19,19 +19,15 @@ import { unlinkPath } from './transform/unlinkPath';
 import { update, updateSchema, updateOptions } from './transform/update';
 // hje
 import {
-    HeadlessJsonEditor
-} from './HeadlessJsonEditor';
-import {
+    HeadlessEditor,
+    HeadlessEditorOptions,
     Plugin, PluginInstance,
-    PluginEvent, PluginConfig,
-    HeadlessJsonEditorOptions,
-    HeadlessJsonEditorInterface
-} from './plugins/Plugin';
+} from './HeadlessEditor';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
 import { OnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
-import { HistoryPlugin, HistoryPluginInstance } from './plugins/HistoryPlugin';
+import { HistoryPlugin } from './plugins/HistoryPlugin';
 // validation
 import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
@@ -51,6 +47,7 @@ import {
     NumberNode,
     ObjectNode,
     ParentNode,
+    PluginEvent,
     StringNode,
     ValueNode,
     isNode,
@@ -68,7 +65,7 @@ export {
     getChildNode,
     getErrors,
     getOptions,
-    HeadlessJsonEditor,
+    HeadlessEditor,
     HistoryPlugin,
     isJsonError,
     isNode,
@@ -96,13 +93,10 @@ export type {
     BooleanNode,
     Change,
     DefaultNodeOptions,
-    HeadlessJsonEditorInterface,
-    HeadlessJsonEditorOptions,
-    HistoryPluginInstance,
+    HeadlessEditorOptions,
     JsonSchema,
     JsonError,
     Plugin,
-    PluginConfig,
     PluginInstance,
     PluginEvent,
     Node,

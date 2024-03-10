@@ -1,9 +1,7 @@
 /**
  * JSON Schema v7 taken from "json-schema" library
  */
-import { O } from "./utils";
-
-
+export type O = Record<string, unknown>;
 export type JsonSchemaOptions = O;
 
 /**

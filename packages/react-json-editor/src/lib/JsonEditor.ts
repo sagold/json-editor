@@ -1,5 +1,5 @@
 import { ErrorWidget } from './components/ErrorWidget';
-import { HeadlessJsonEditor, HeadlessJsonEditorOptions, Node, isNode } from 'headless-json-editor';
+import { HeadlessEditor, HeadlessEditorOptions, Node, isNode } from 'headless-json-editor';
 import { Widget, WidgetPlugin } from './decorators';
 
 let defaultWidgets: WidgetPlugin[] = [];
@@ -7,7 +7,7 @@ export function setDefaultWidgets(widgets: WidgetPlugin[]) {
     defaultWidgets = widgets;
 }
 
-export type JsonEditorOptions<Data = unknown> = HeadlessJsonEditorOptions<Data> & {
+export type JsonEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
     widgets?: WidgetPlugin[];
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
@@ -15,7 +15,7 @@ export type JsonEditorOptions<Data = unknown> = HeadlessJsonEditorOptions<Data> 
     disabled?: boolean;
 };
 
-export class JsonEditor<Data = unknown> extends HeadlessJsonEditor<Data> {
+export class JsonEditor<Data = unknown> extends HeadlessEditor<Data> {
     widgets: WidgetPlugin[];
     widgetOptions: {
         /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
