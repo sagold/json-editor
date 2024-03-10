@@ -20,7 +20,7 @@ function propertySortResult(aIndex: number, bIndex: number) {
     return aIndex - bIndex;
 }
 
-export type DefaultNodeOptions = {
+export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<string, unknown>> = {
     /** additional classnames the ui should add to the root of this data point */
     classNames?: string[];
     /** description of this data point */
@@ -36,8 +36,7 @@ export type DefaultNodeOptions = {
     /** disable edit of form, but allow selection and copy of value */
     readOnly?: boolean;
     required?: boolean;
-    [o: string]: unknown;
-};
+} & Options;
 
 type CreateNode = (draft: Draft, data: any, schema: JsonSchema, pointer: JsonPointer, isArrayItem: boolean) => Node;
 

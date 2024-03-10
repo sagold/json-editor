@@ -20,9 +20,7 @@ import { useDraggableItems, SortableOptions } from './useDraggableItems';
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
 
-export type ArrayOptions = {
-    /** additional classnames for array editor */
-    classNames?: string[];
+export type ArrayOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
     sortable?: SortableOptions;
@@ -43,7 +41,9 @@ export type ArrayOptions = {
     headerFontSize?: number;
     /** set to false to deactivate any array-controls */
     controls?: boolean;
-} & DefaultNodeOptions;
+    /** set to true to inline description */
+    descriptionInline?: boolean;
+}>;
 
 function getActionStates(node: ArrayNode) {
     const minItems = node.schema.minItems || 0;
@@ -140,7 +140,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             title={options.title}
                             size={options.headerFontSize}
                             separator={options.headerSeparator || true}
-                            description={options.descrptionInline ? undefined : description}
+                            description={options.descriptionInline ? undefined : description}
                         />
                         {showControls && <ArrayWidgetActions
                             editor={editor}

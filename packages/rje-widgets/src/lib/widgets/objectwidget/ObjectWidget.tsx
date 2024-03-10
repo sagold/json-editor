@@ -10,7 +10,7 @@ import { WidgetDescription } from '../../components/widgetdescription/WidgetDesc
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import classNames from 'classnames';
 
-export type ObjectOptions = {
+export type ObjectOptions = DefaultNodeOptions<{
     /** additional classnames for object editor */
     classNames?: string[];
     /** if set, will add an accordion in the given toggle state */
@@ -35,7 +35,7 @@ export type ObjectOptions = {
     inlineDeletePropertyOption?: boolean;
     /* optional list of action components to add to object actions menu */
     menuActions?: React.ReactNode[];
-} & DefaultNodeOptions;
+}>;
 
 type WidgetDialogProps = {
     editor: Editor;

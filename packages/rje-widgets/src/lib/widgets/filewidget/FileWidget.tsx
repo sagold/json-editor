@@ -2,11 +2,8 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, deepEqual } from 
 import { render } from '../../render';
 import { useState } from 'react';
 import { Button } from '../../components/button/Button';
-import { Label } from '../../components/label/Label';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { FileField } from '../../components/filefield/FileField';
-import { Icon } from '../../components/icon/Icon';
-import { StringInput } from '../../components/input/StringInput';
 
 const isFile = (v): v is File => Object.prototype.toString.call(v) === '[object File]';
 

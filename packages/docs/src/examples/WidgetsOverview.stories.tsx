@@ -1,9 +1,10 @@
+import React from "react";
 import { ComponentStory } from '@storybook/react';
 import { data, schema } from './data/features';
 import { JsonSchema, errors, json } from 'headless-json-editor';
-import { Editor, JsonForm } from '@sagold/react-json-editor';
+import { Editor } from '@sagold/react-json-editor';
 import { useEffect, useState } from 'react';
-import { widgets } from '@sagold/rje-widgets';
+import { widgets, JsonForm } from '@sagold/rje-widgets';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 import { JsonWidgetPlugin } from '@sagold/rje-code-widgets';
 
@@ -34,10 +35,6 @@ const Template: ComponentStory<any> = () => {
                 schema={schema as JsonSchema}
                 validate={true}
                 liveUpdate={true}
-                onChange={(data) => {
-                    // console.log('change data in editor', data);
-                    // setEditorData({ text: 'mimimi' });
-                }}
             />
         </Theme>
     );

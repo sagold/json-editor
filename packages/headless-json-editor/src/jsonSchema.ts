@@ -1,8 +1,9 @@
+import { DefaultNodeOptions } from "./node/create";
+
 /**
  * JSON Schema v7 taken from "json-schema" library
  */
 export type O = Record<string, unknown>;
-export type JsonSchemaOptions = O;
 
 /**
  * Primitive type
@@ -72,7 +73,7 @@ export interface JsonSchema {
     /**
      * custom json-editor additions
      */
-    options?: O;
+    options?: Partial<DefaultNodeOptions>;
 
     /**
     * custom json-schema-library additions
@@ -84,6 +85,11 @@ export interface JsonSchema {
         schema: JsonSchema;
         isItem?: boolean;
     };
+    /**
+     * use besides oneOf-statements to sepcifically identify oneOf-object by object-property
+     * @see https://github.com/sagold/json-schema-library?tab=readme-ov-file#oneofproperty
+     */
+    oneOfProperty?: string;
 
     /**
      * @see https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-6.1
@@ -178,4 +184,9 @@ export interface JsonSchema {
     readOnly?: boolean | undefined;
     writeOnly?: boolean | undefined;
     examples?: JsonSchemaType | undefined;
+
+    /**
+     * json-schema ignores unknown properties
+     */
+    [p: string]: any;
 }

@@ -1,3 +1,5 @@
+import { JsonSchema } from "@sagold/react-json-editor";
+
 export const data = {
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita multo sanguine profuso in laetitia et in victoria est mortuus. Graccho, eius fere, aequalí? Illum mallem levares, quo optimum atque humanissimum virum, Cn. Quod dicit Epicurus etiam de voluptate, quae minime sint voluptates, eas obscurari saepe et obrui. Duo Reges: constructio interrete. Sed mehercule pergrata mihi oratio tua. Omnis enim est natura diligens sui. Illa argumenta propria videamus, cur omnia sint paria peccata. Atque his de rebus et splendida est eorum et illustris oratio.',
     anUnknownItem: {
@@ -10,14 +12,14 @@ export const data = {
     // unknownList: [{ title: 'super unknown' }],
 };
 
-export const schema = {
+export const schema: JsonSchema = {
     type: 'object',
     title: 'Widgets Overview',
     description: 'This form consists of all basic widgets exposed by rje-widgets and some of their variations',
     options: {
         descriptionInline: true,
         headerFontSize: 1.75,
-        editJson: { enabled: true, liveUpdate: true }
+        editJson: { enabled: true, liveUpdate: true },
     },
     required: [
         'string',
@@ -133,7 +135,7 @@ export const schema = {
                 placeholder: 'your last name',
                 label: 'year'
             },
-            defaultValue: null
+            default: null
         },
         number: {
             title: 'Number input with validation rules',
@@ -171,7 +173,7 @@ export const schema = {
             description: 'Enum selection with custom title values',
             type: 'string',
             enum: ['dark', 'light'],
-            defaultValue: 'dark theme',
+            default: 'dark theme',
             options: {
                 enum: ['Select option "dark"', 'Select option "light"']
             }
@@ -182,7 +184,7 @@ export const schema = {
             type: 'string',
             format: 'radiogroup',
             enum: ['dark', 'light'],
-            defaultValue: 'dark theme',
+            default: 'dark theme',
             options: {
                 enum: ['Select option "dark"', 'Select option "light"']
             }
@@ -541,8 +543,10 @@ export const schema = {
                                     hidden: true
                                 }
                             },
-                            format: 'textarea',
-                            text: { type: 'string' }
+                            text: {
+                                type: 'string',
+                                format: 'textarea',
+                            }
                         }
                     }
                 ]
