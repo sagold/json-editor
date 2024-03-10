@@ -1,7 +1,6 @@
-import { JsonEditor, JsonEditorOptions, setDefaultWidgets } from './lib/JsonEditor';
-import { usePlugin } from './lib/usePlugin';
-import { JsonForm, JsonFormProps } from './lib/components/jsonform';
-import { useJsonEditor, UseJsonEditorOptions } from './lib/useJsonEditor';
+import { Editor, EditorOptions, setDefaultWidgets } from './lib/Editor';
+import { useEditorPlugin } from './lib/useEditorPlugin';
+import { useEditor, UseEditorOptions } from './lib/useEditor';
 import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/decorators';
 import { Widget, WidgetProps } from './lib/components/widget/Widget';
 import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widget/WidgetDescription';
@@ -10,7 +9,6 @@ import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from './lib/com
 import { Label } from './lib/components/label/Label';
 export {
     // components
-    JsonForm,
     Label,
     Widget,
     WidgetDescription,
@@ -19,18 +17,17 @@ export {
     // integration
     widget,
     // core
-    JsonEditor,
+    Editor,
     setDefaultWidgets,
-    useJsonEditor,
-    usePlugin
+    useEditor,
+    useEditorPlugin
 };
 // types
 export type {
-    JsonFormProps,
     DecoratedWidget,
     DecoratedWidgetProps,
-    JsonEditorOptions,
-    UseJsonEditorOptions,
+    EditorOptions,
+    UseEditorOptions,
     WidgetDescriptionProps,
     WidgetErrorProps,
     WidgetFieldHeaderProps,
@@ -76,7 +73,6 @@ import {
     BooleanNode,
     Change,
     DefaultNodeOptions,
-    HistoryPluginInstance,
     JsonError,
     JsonSchema,
     Plugin,
@@ -131,7 +127,6 @@ export type {
     BooleanNode,
     Change,
     DefaultNodeOptions,
-    HistoryPluginInstance,
     JsonError,
     JsonSchema,
     Node,

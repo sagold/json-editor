@@ -1,15 +1,16 @@
 import { renderHook } from '@testing-library/react';
 import { strict as assert } from 'assert';
 import { Plugin, PluginEvent, JsonSchema } from 'headless-json-editor';
-import { useJsonEditor, UseJsonEditorOptions } from "../../src/lib/useJsonEditor";
-import { usePlugin } from '../../src/lib/usePlugin';
+import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
+import { useEditorPlugin } from '../../src/lib/useEditorPlugin';
 
-type Options = Record<string, unknown>;
+type PluginOptions = { id?: string; callback?: (event: PluginEvent) => void };
+type PluginSignature = { test: () => void };
 
-describe('usePlugin', () => {
+describe('useEditorPlugin', () => {
     let schema: JsonSchema;
     let data: object;
-    let MyPlugin: Plugin<{ callback?: (event: PluginEvent) => void }, { test: () => void }>;
+    let MyPlugin: Plugin<PluginOptions, PluginSignature>;
     beforeEach(() => {
         schema = { type: "object", properties: { title: { type: "string" } } };
         data = { title: "test-title" };
@@ -27,9 +28,9 @@ describe('usePlugin', () => {
 
     it("should register plugin to editor", () => {
         const { result } = renderHook(
-            ({ pluginOptions, ...settings }: UseJsonEditorOptions & { pluginOptions: Options }) => {
-                const editor = useJsonEditor(settings)[1];
-                const plugin = usePlugin(editor, MyPlugin, pluginOptions);
+            ({ pluginOptions, ...settings }: UseEditorOptions & { pluginOptions: PluginOptions }) => {
+                const editor = useEditor(settings)[1];
+                const plugin = useEditorPlugin(editor, MyPlugin, pluginOptions);
 
                 if (plugin) {
                     plugin.test();
@@ -48,9 +49,9 @@ describe('usePlugin', () => {
 
     it("should not recreate plugin on rerender", () => {
         const { result, rerender } = renderHook(
-            ({ pluginOptions, ...settings }: UseJsonEditorOptions & { pluginOptions: Options }) => {
-                const editor = useJsonEditor(settings)[1];
-                const plugin = usePlugin(editor, MyPlugin, pluginOptions);
+            ({ pluginOptions, ...settings }: UseEditorOptions & { pluginOptions: PluginOptions }) => {
+                const editor = useEditor(settings)[1];
+                const plugin = useEditorPlugin(editor, MyPlugin, pluginOptions);
                 return { editor, plugin };
             },
             {
@@ -66,9 +67,9 @@ describe('usePlugin', () => {
 
     it("should recreate plugin when options change", () => {
         const { result, rerender } = renderHook(
-            ({ pluginOptions, ...settings }: UseJsonEditorOptions & { pluginOptions: Options }) => {
-                const editor = useJsonEditor(settings)[1];
-                const plugin = usePlugin(editor, MyPlugin, pluginOptions);
+            ({ pluginOptions, ...settings }: UseEditorOptions & { pluginOptions: PluginOptions }) => {
+                const editor = useEditor(settings)[1];
+                const plugin = useEditorPlugin(editor, MyPlugin, pluginOptions);
                 return { editor, plugin };
             },
             {

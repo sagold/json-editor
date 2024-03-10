@@ -6,11 +6,11 @@ import {
     deepEqual,
     OnChangeListener
 } from 'headless-json-editor';
-import { JsonEditor } from './JsonEditor';
+import { Editor } from './Editor';
 import { WidgetPlugin } from './decorators';
-import { usePlugin } from './usePlugin';
+import { useEditorPlugin } from './useEditorPlugin';
 
-export type UseJsonEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
+export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
     onChange?: OnChangeListener<Data>;
     widgets?: WidgetPlugin[];
     /** optional cacheKey. Change cacheKey to recreate json-editor */
@@ -27,9 +27,9 @@ document.addEventListener('invalid', (e) => e.preventDefault(), true);
 /**
  * add json editor widget capabilities to your functional component
  */
-export function useJsonEditor<Data = unknown, T extends Node = Node>(
-    settings: UseJsonEditorOptions<Data>
-): [T, JsonEditor<Data>] {
+export function useEditor<Data = unknown, T extends Node = Node>(
+    settings: UseEditorOptions<Data>
+): [T, Editor<Data>] {
     const { schema, data, cacheKey } = settings;
     const setCurrentData = useState<Data | undefined>(data)[1];
 
@@ -44,7 +44,7 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
         // data has changed
         setPreviousData(data);
         setPreviousSchema(schema);
-        const editor = new JsonEditor<Data>({
+        const editor = new Editor<Data>({
             ...settings,
             schema,
             data,
@@ -63,7 +63,7 @@ export function useJsonEditor<Data = unknown, T extends Node = Node>(
         [cacheKey]
     );
 
-    usePlugin(editor, OnChangePlugin, {
+    useEditorPlugin(editor, OnChangePlugin, {
         pluginId: "InternalOnChange",
         onChange(data, root, editor) {
             setCurrentData(data);

@@ -1,12 +1,12 @@
 import { Node } from 'headless-json-editor';
 import { memo, useCallback, ReactNode } from 'react';
-import { JsonEditor } from './JsonEditor';
+import { Editor } from './Editor';
 
 type AnyOption = Record<string, unknown>;
 
 export type WidgetProps<T extends Node = Node> = {
     node: T;
-    editor: JsonEditor;
+    editor: Editor;
     options?: Partial<T['options']>;
 };
 
@@ -29,7 +29,7 @@ const isEqual = (prev: WidgetProps, next: WidgetProps) => {
  */
 export type DecoratedWidgetProps<T extends Node, V = unknown> = {
     node: T;
-    editor: JsonEditor;
+    editor: Editor;
     options: T['options'];
     setValue: (value: V) => void;
 };
@@ -53,6 +53,7 @@ export function widget<T extends Node = Node, V = unknown>(WidgetComponent: Deco
         );
         return WidgetComponent({
             ...props,
+            // eslint-disable-next-line react/prop-types
             options: { ...props.node.options, ...props.editor.widgetOptions, ...props.options },
             setValue
         });

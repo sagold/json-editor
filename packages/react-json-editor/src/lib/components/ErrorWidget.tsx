@@ -1,9 +1,9 @@
 import { JsonError } from 'json-schema-library';
-import { JsonEditor } from '../JsonEditor';
+import { Editor } from '../Editor';
 import { WidgetPlugin } from '../decorators';
 import { Node, isJsonError } from 'headless-json-editor';
 
-export const ErrorWidget = ({ node, editor }: { node: Node; editor: JsonEditor }) => {
+export const ErrorWidget = ({ node, editor }: { node: Node; editor: Editor }) => {
     const error = node.schema as unknown as JsonError;
     const description = `${error.name} '${node.pointer}': ${error.message}`;
     return (

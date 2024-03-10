@@ -1,14 +1,14 @@
 import { Plugin, deepEqual } from "headless-json-editor";
 import { useMemo, useRef } from "react";
-import { JsonEditor } from "./JsonEditor";
+import { Editor } from "./Editor";
 
 
 /**
  * register a plugin-instance to json-editor
  * Note: plugins having a state will be reset
  */
-export function usePlugin<T extends Plugin>
-    (editor?: JsonEditor, plugin?: T, options?: Parameters<T>[1]): ReturnType<T> | undefined {
+export function useEditorPlugin<T extends Plugin>
+    (editor?: Editor, plugin?: T, options?: Parameters<T>[1]): ReturnType<T> | undefined {
     const ref = useRef<Record<string, unknown>>();
     const optionsChanged = options !== ref.current && !deepEqual(options, ref.current);
     return useMemo(() => {

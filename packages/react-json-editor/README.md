@@ -22,54 +22,29 @@ install
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
 
 ```tsx
-import { JsonForm } from '@sagold/react-json-editor';
+import { useEditor } from '@sagold/react-json-editor';
 import defaultWidgets from '@sagold/rje-widgets';
-import '@sagold/rje-widgets/styles.css';
+import '@sagold/rje-widgets/dist/styles.css';
 
 function MyForm({ schema, data }) {
+  const [root, editor] = useEditor({
+    schema,
+    data,
+    widgets: defaultWidgets,
+    onChange: (data, state) => {
+      console.log('data', data, 'root', state);
+    }
+  });
+  const Widget = editor.getWidget(root);
   return (
-    <JsonForm
-      widgets={defaultWidgets}
-      schema={schema}
-      data={data}
-      onChange={(data) => {
-        console.log('data', data);
-      }}
-    />
+    <div className="rje rje-form rje-theme rje-theme--light">
+      <Widget node={root} editor={editor} />
+    </div>
   );
 }
 ```
 
-<details><summary>Alternative: Setup with **useJsonEditor**-hook</summary>
-
-  ```tsx
-  import { useJsonEditor } from '@sagold/react-json-editor';
-  import defaultWidgets, { Theme } from '@sagold/rje-widgets';
-  import '@sagold/rje-widgets/styles.css';
-
-  function MyForm({ schema, data }) {
-    const [ast, editor] = useJsonEditor({
-      widgets: defaultWidgets,
-      schema,
-      data,
-      onChange(data) {
-        console.log('data', data);
-      }
-    });
-
-    const Widget = editor.getWidget(ast);
-
-    return (
-      <Theme style={{ flexDirection: 'column' }}>
-          <Widget node={ast} editor={editor} />
-      </Theme>
-    );
-  }
-  ```
-
-</details>
-
-**JsonForm Props**
+**useEditor Props**
 
 Only required property is a valid json-schema passed to `schema`.
 
@@ -196,13 +171,13 @@ Assembling the list of widgets on your own, you can select the widgets available
 
 `react-json-editor` comes with a list of default widgets that cover inputs for all possible json-data as well as catching possible data errors and rendering to them into the form. Note that in some cases a specialized widget is required for a better user experience. For this you can add a any editor into the list of default widgets or replace them completely with your own widgets.
 
-The `Jsonform` component add the defaultWidgets per default. If you are using `useJsonEditor` hook you have to pass the defaultWidgets on your own, e.g.
+The `Jsonform` component add the defaultWidgets per default. If you are using `useEditor` hook you have to pass the defaultWidgets on your own, e.g.
 
 ```tsx
-import { defaultWidgets, useJsonEditor, Widget } from '@sagold/react-json-editor';
+import { defaultWidgets, useEditor, Widget } from '@sagold/react-json-editor';
 
 function MyForm({ schema }) {
-  const [rootNode, editor] = useJsonEditor({ schema, widgets: defaultWidgets });
+  const [rootNode, editor] = useEditor({ schema, widgets: defaultWidgets });
   return <Widget node={rootNode} editor={editor} />;
 }
 ```
@@ -254,22 +229,28 @@ For more details check [any default widget](https://github.com/sagold/json-edito
 ### adding plugins
 
 ```tsx
-import { JsonForm, EventLoggerPlugin } from '@sagold/react-json-editor';
+import { useEditor, HistoryPlugin } from '@sagold/react-json-editor';
 
-function Myform() {
-  return <JsonForm plugins={[EventLoggerPlugin]} />;
+export function Myform({ schema }) {
+  const [root, editor] = useEditor({
+    schema,
+    plugins: [HistoryPlugin]
+  });
+  const Widget = editor.getWidget(root);
+  return <Widget node={root} editor={editor} />;
 }
 ```
 
-or with `usePlugin` hook
+or with `useEditorPlugin` hook
 
 ```tsx
-import { JsonForm, JsonEditor, EventLoggerPlugin } from '@sagold/react-json-editor';
+import { useEditor, useEditorPlugin, HistoryPlugin } from '@sagold/react-json-editor';
 
-function Myform() {
-  const [editor, setEditor] = useState<JsonEditor>();
-  const logger = usePlugin(editor, EventLoggerPlugin);
-  return <JsonForm editor={setEditor} />;
+export function Myform({ schema }) {
+  const [root, editor] = useEditor({ schema });
+  const history = useEditorPlugin(editor, HistoryPlugin);
+  const Widget = editor.getWidget(root);
+  return <Widget node={root} editor={editor} />;
 }
 ```
 
@@ -284,17 +265,17 @@ function Myform() {
 > undo, redo support
 
 ```tsx
-import { JsonForm, JsonEditor, usePlugin, HistoryPlugin } from '@sagold/react-json-editor';
-import { useState } from 'react';
+import { useEditor, useEditorPlugin, HistoryPlugin } from '@sagold/react-json-editor';
 
-function MyForm({ schema }) {
-  const [editor, setEditor] = useState<JsonEditor>();
-  const history = usePlugin(editor, HistoryPlugin);
+export function Myform({ schema }) {
+  const [root, editor] = useEditor({ schema });
+  const history = useEditorPlugin(editor, HistoryPlugin);
   // history?.undo();
   // history?.redo();
   // history?.history.getUndoCount();
   // history?.history.getRedoCount();
-  <JsonForm editor={setEditor} schema={schema} />
+  const Widget = editor.getWidget(root);
+  return <Widget node={root} editor={editor} />;
 }
 ```
 
@@ -303,17 +284,17 @@ function MyForm({ schema }) {
 > callback for data changes
 
 ```tsx
-import { JsonForm, JsonEditor, usePlugin, OnChangePlugin } from '@sagold/react-json-editor';
-import { useState } from 'react';
+import { useEditorPlugin, OnChangePlugin } from '@sagold/react-json-editor';
 
 function MyForm({ schema }) {
-  const [editor, setEditor] = useState<JsonEditor>();
-  usePlugin(editor, OnChangePlugin, {
-    onChange(ast, event) {
+  const [root, editor] = useEditor({ schema });
+  useEditorPlugin(editor, OnChangePlugin, {
+    onChange(ast, event, editor) {
       // do something
     }
   });
-  <JsonForm editor={setEditor} schema={schema} />
+  const Widget = editor.getWidget(root);
+  return <Widget node={root} editor={editor} />;
 }
 ```
 
@@ -321,39 +302,3 @@ Note that an onChangePlugin is added per default.
 
 ### create custom plugin
 
-```ts
-export type Plugin = (he: HeadlessJsonEditor, options: HeadlessJsonEditorOptions) => PluginInstance | undefined;
-export type PluginObserver = (root: Node, event: PluginEvent) => void | [Node, Change[]];
-export interface PluginInstance {
-  id: string;
-  onEvent: PluginObserver;
-  [p: string]: unknown;
-}
-```
-
-## advanced
-
-### `useJsonEditor` hook
-
-For more control you can create a json-editor using the `useJsonEditor` hook:
-
-```tsx
-import { Form } from 'semantic-ui-react';
-import { useJsonEditor } from '@sagold/react-json-editor';
-
-function MyForm({ schema, data }) {
-  const [node, jsonEditor] = useJsonEditor({
-    schema,
-    data,
-    onChange: (data, state) => {
-      console.log('data', data, 'root', state);
-    }
-  });
-  const Widget = jsonEditor.getWidget(node);
-  return (
-    <Form error>
-      <Widget node={node} editor={jsonEditor} />
-    </Form>
-  );
-}
-```

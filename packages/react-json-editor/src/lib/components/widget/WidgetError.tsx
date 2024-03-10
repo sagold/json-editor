@@ -1,4 +1,4 @@
-import { JsonError } from 'json-schema-library';
+import { JsonError } from 'headless-json-editor';
 
 export type WidgetErrorProps = {
     errors: JsonError[];

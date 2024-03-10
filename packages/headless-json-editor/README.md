@@ -19,10 +19,10 @@ install
 quick overview
 
 ```ts
-import { HeadlessJsonEditor } from 'headless-json-editor';
+import { HeadlessEditor } from 'headless-json-editor';
 
 const jsonSchema = { type: 'array', items: { type: 'string' } };
-const he = new HeadlessJsonEditor({ schema: jsonSchema, data: ['first item'] });
+const he = new HeadlessEditor({ schema: jsonSchema, data: ['first item'] });
 let rootNode = he.getState();
 rootNode = he.setValue('#/1', 124);
 
@@ -240,17 +240,5 @@ set value at location
 
 ```ts
 const [newRootNode, changes] = set(draft, currentRootNode, "#/page/header", { text: "hey" });
-```
-
-update options at location
-
-```ts
-const [newRootNode, changes] = updateOptions(currentRootNode, "#/page/header", options);
-```
-
-update schema of location
-
-```ts
-const [newRootNode, changes] = updateSchema(currentRootNode, "#/page/header", schema);
 ```
 

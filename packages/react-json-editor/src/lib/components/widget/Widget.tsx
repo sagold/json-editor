@@ -1,5 +1,5 @@
 import { Node } from 'headless-json-editor';
-import { JsonEditor } from '../../JsonEditor';
+import { Editor } from '../../Editor';
 import { WidgetField, WidgetFieldProps } from './WidgetField';
 import { WidgetDescription, WidgetDescriptionProps } from './WidgetDescription';
 import { WidgetError, WidgetErrorProps } from './WidgetError';
@@ -9,7 +9,7 @@ Widget.Description = WidgetDescription;
 Widget.Error = WidgetError;
 
 export type WidgetProps<T extends Node = Node> = {
-    editor: JsonEditor;
+    editor: Editor;
     node: Node;
     options?: Partial<T['options']>;
 };
