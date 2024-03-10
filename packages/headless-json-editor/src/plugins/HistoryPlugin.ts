@@ -32,7 +32,7 @@ function isSameNodeUpdated(commit: Commit, changes: PluginEvent[]) {
     return a.node.pointer === b.node.pointer && (a.node.type === 'string' || a.node.type === 'number');
 }
 
-export const HistoryPlugin: Plugin<NonNullable<unknown>, Signature> = (editor) => {
+export const HistoryPlugin: Plugin<null, Signature> = (editor) => {
     const past: Commit[] = [{ root: editor.getNode(), changes: [], updateCount: 0 }];
     const future: Commit[] = [];
 

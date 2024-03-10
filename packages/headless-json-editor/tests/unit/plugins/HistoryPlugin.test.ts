@@ -1,6 +1,6 @@
 import { HeadlessEditor } from '../../../src/HeadlessEditor';
 import { strict as assert } from 'assert';
-import { HistoryPlugin, historyPluginId } from '../../../src/plugins/HistoryPlugin';
+import { HistoryPlugin } from '../../../src/plugins/HistoryPlugin';
 
 describe('HistoryPlugin', () => {
     describe('integration', () => {
@@ -22,7 +22,7 @@ describe('HistoryPlugin', () => {
                 },
                 plugins: [HistoryPlugin]
             });
-            history = he.findPlugin(historyPluginId) as ReturnType<typeof HistoryPlugin>;
+            history = he.addPlugin(HistoryPlugin);
         });
 
         it('should initialize with undoCount 0', () => {

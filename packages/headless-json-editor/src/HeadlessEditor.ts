@@ -25,9 +25,10 @@ export type PluginInstance<Signature extends O = O> = {
     onEvent: (root: Node, event: PluginEvent) => void | [Node, Change[]];
 } & Signature;
 
+
 export type Plugin<
-    Options extends O = O,
-    Signature extends O = O,
+    Options extends Parameters<Plugin>[1] = any,
+    Signature extends Record<string, unknown> = Record<string, unknown>,
     Editor extends HeadlessEditor = HeadlessEditor
 > = (he: Editor, options: Options) => PluginInstance<Signature> | undefined;
 
@@ -180,11 +181,11 @@ export class HeadlessEditor<Data = unknown> {
         return this.plugins.find((p) => p.id === pluginId);
     }
 
-    addPlugin(plugin: Plugin, pluginOptions: Record<string, unknown> = {}) {
+    addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]) {
         const p = plugin(this, pluginOptions);
         if (p && p.id) {
             this.plugins.push(p);
-            return p;
+            return p as ReturnType<T>;
         }
         return undefined;
     }
