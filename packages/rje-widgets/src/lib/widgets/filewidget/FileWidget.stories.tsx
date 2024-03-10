@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor , RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
+import { useEditor , RemoteEnumOptionsPlugin, get, StringNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { FileWidget } from './FileWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -14,7 +14,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }) => {
-    const [node, editor] = useJsonEditor({
+    const [node, editor] = useEditor({
         schema,
         widgets,
         plugins: [RemoteEnumOptionsPlugin],

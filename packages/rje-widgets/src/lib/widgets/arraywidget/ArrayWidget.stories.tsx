@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ArrayWidget, ArrayOptions } from './ArrayWidget';
-import { JsonSchema, ArrayNode, useJsonEditor } from '@sagold/react-json-editor';
+import { JsonSchema, ArrayNode, useEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { Theme } from '../../components/theme/Theme';
 
@@ -15,7 +15,7 @@ type StoryProps = {
 type Story = StoryObj<StoryProps>;
 
 function StoryComponent({ data, schema, controls, inlineAddItemOption, options = {} }: StoryProps) {
-    const [node, editor] = useJsonEditor<unknown[], ArrayNode<ArrayOptions>>({
+    const [node, editor] = useEditor<unknown[], ArrayNode<ArrayOptions>>({
         schema,
         widgets,
         data,

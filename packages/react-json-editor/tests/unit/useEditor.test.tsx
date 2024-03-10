@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react';
-import { useJsonEditor, UseJsonEditorOptions } from "../../src/lib/useJsonEditor";
+import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { strict as assert } from 'assert';
-import { isJsonError, JsonSchema, ObjectNode, StringNode } from 'headless-json-editor';
-import { get } from "@sagold/react-json-editor";
+import { isJsonError, JsonSchema, ObjectNode, StringNode, get } from 'headless-json-editor';
 
-describe('useJsonEditor', () => {
+describe('useEditor', () => {
     it("should return state and editor instance", () => {
-        const { result } = renderHook((settings: UseJsonEditorOptions) => useJsonEditor(settings), {
+        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
             initialProps: {
                 schema: { type: "object", properties: { title: { type: "string" } } },
                 data: { title: "test-title" }
@@ -22,7 +21,7 @@ describe('useJsonEditor', () => {
     it("should update state when input data changes", () => {
         const data = { title: "test-title" };
         const schema: JsonSchema = { type: "object", properties: { title: { type: "string" } } };
-        const { result, rerender } = renderHook((settings: UseJsonEditorOptions) => useJsonEditor(settings), {
+        const { result, rerender } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
             initialProps: { schema, data }
         });
 
@@ -43,7 +42,7 @@ describe('useJsonEditor', () => {
     it("should update state when input schema changes", () => {
         const data = { title: "test-title" };
         const schema: JsonSchema = { type: "object", properties: { title: { type: "string" } } };
-        const { result, rerender } = renderHook((settings: UseJsonEditorOptions<object>) => useJsonEditor<object, ObjectNode>(settings), {
+        const { result, rerender } = renderHook((settings: UseEditorOptions<object>) => useEditor<object, ObjectNode>(settings), {
             initialProps: { schema, data }
         });
         const [state, editor] = result.current;
@@ -72,11 +71,11 @@ describe('useJsonEditor', () => {
     });
 
     it("should recreated editor when cacheKey changes", async () => {
-        const props: UseJsonEditorOptions = {
+        const props: UseEditorOptions = {
             data: { title: "test-title" },
             schema: { type: "object", properties: { title: { type: "string" } } }
         }
-        const { result, rerender } = renderHook((settings: UseJsonEditorOptions) => useJsonEditor(settings), {
+        const { result, rerender } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
             initialProps: props
         });
 
@@ -87,11 +86,11 @@ describe('useJsonEditor', () => {
     });
 
     it("should add internal onChangePlugin", () => {
-        const props: UseJsonEditorOptions = {
+        const props: UseEditorOptions = {
             data: { title: "test-title" },
             schema: { type: "object", properties: { title: { type: "string" } } }
         }
-        const { result } = renderHook((settings: UseJsonEditorOptions) => useJsonEditor(settings), {
+        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
             initialProps: props
         });
         const editor = result.current[1];

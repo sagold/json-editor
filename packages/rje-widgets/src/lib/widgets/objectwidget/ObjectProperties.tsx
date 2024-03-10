@@ -1,4 +1,4 @@
-import { ObjectNode, Widget, JsonEditor } from '@sagold/react-json-editor';
+import { ObjectNode, Widget, Editor } from '@sagold/react-json-editor';
 import { ObjectOptions } from './ObjectWidget';
 import { Button } from '../../components/button/Button';
 import { Icon } from '../../components/icon/Icon';
@@ -6,7 +6,7 @@ import { Icon } from '../../components/icon/Icon';
 type ObjectPropertiesProps = {
     node: ObjectNode<ObjectOptions>;
     options: ObjectOptions;
-    editor: JsonEditor;
+    editor: Editor;
     withInlineDelete: boolean;
 };
 

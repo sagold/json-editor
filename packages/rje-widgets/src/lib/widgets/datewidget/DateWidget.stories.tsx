@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonSchema, useJsonEditor, StringNode } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor, StringNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { DateWidget, type DateOptions } from './DateWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -12,7 +12,7 @@ type DateWidgetStoryProps = {
 
 function DateWidgetStory({ data = '', schema, ...options }: DateWidgetStoryProps) {
     const s = { ...schema };
-    const [node, editor] = useJsonEditor<string, StringNode>({ schema: s, widgets, data, validate: true });
+    const [node, editor] = useEditor<string, StringNode>({ schema: s, widgets, data, validate: true });
     return (
         <Theme>
             <DateWidget node={node} editor={editor} options={options} />

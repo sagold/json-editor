@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonSchema, useJsonEditor, StringNode } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor, StringNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { ColorWidget, ColorOptions } from './ColorWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -11,7 +11,7 @@ type ColorWidgetStoryProps = {
 } & ColorOptions;
 
 function ColorWidgetStory({ data, schema, format, ...options }: ColorWidgetStoryProps) {
-    const [node, editor] = useJsonEditor<string, StringNode>({ schema, widgets, data, validate: true });
+    const [node, editor] = useEditor<string, StringNode>({ schema, widgets, data, validate: true });
     return (
         <Theme>
             <ColorWidget node={node} editor={editor} options={options} />

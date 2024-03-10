@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ThemeDecorator } from '../../components/ThemeDecorator';
-import { ArrayNode, JsonSchema, useJsonEditor } from '@sagold/react-json-editor';
+import { ArrayNode, JsonSchema, useEditor } from '@sagold/react-json-editor';
 import { TagListWidget, TagListWidgetOptions } from './TagListWidget';
 import { widgets } from '../index';
 
@@ -10,7 +10,7 @@ type TagListWidgetProps = {
     schema: JsonSchema;
 } & TagListWidgetOptions;
 function TagListWidgetStory({ data, schema, ...options }: TagListWidgetProps) {
-    const [node, editor] = useJsonEditor<string[], ArrayNode>({
+    const [node, editor] = useEditor<string[], ArrayNode>({
         schema,
         widgets,
         data,

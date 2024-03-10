@@ -2,7 +2,7 @@ import Sortable from 'sortablejs';
 import { useState, useRef, useEffect, useCallback, RefObject } from 'react';
 import {
     widget,
-    JsonEditor,
+    Editor,
     ParentNode,
     ArrayNode,
     ObjectNode,
@@ -35,7 +35,7 @@ type ArrayOptions = {
     sortable?: { enabled?: boolean };
 } & DefaultNodeOptions;
 
-function onSortEnd(editor: JsonEditor, node: ArrayNode, event: Sortable.SortableEvent) {
+function onSortEnd(editor: Editor, node: ArrayNode, event: Sortable.SortableEvent) {
     const targetIndex = parseInt(`${event.newIndex}`);
     if (isNaN(targetIndex)) {
         return;
@@ -60,7 +60,7 @@ function ArrayChildNavigation({
     portalContainer
 }: {
     node: ArrayNode<ArrayOptions>;
-    editor: JsonEditor;
+    editor: Editor;
     portalContainer: RefObject<Element>;
 }) {
     const ref = useRef<HTMLUListElement>(null);
@@ -136,7 +136,7 @@ function ObjectPropertyNavigation({
     portalContainer
 }: {
     node: ObjectNode;
-    editor: JsonEditor;
+    editor: Editor;
     portalContainer: RefObject<Element>;
 }) {
     const [toggleState, setToggleState] = useState<boolean>(false);
@@ -175,7 +175,7 @@ function ChildNavigation({
     portalContainer
 }: {
     node: Node;
-    editor: JsonEditor;
+    editor: Editor;
     options: NavigationWidgetOptions;
     portalContainer: RefObject<Element>;
 }) {

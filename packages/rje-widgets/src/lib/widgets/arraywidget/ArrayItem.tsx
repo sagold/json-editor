@@ -1,11 +1,11 @@
 import { RefObject } from 'react';
-import { JsonEditor, Widget, Node } from '@sagold/react-json-editor';
+import { Editor, Widget, Node } from '@sagold/react-json-editor';
 import { Button, ButtonControlled } from '../../components/button/Button';
 import { Popover, usePopover } from '../../components/popover/Popover';
 import classnames from 'classnames';
 
 export type ArrayItemProps = {
-    editor: JsonEditor;
+    editor: Editor;
     /** child node */
     node: Node;
     size: number;
@@ -46,7 +46,7 @@ export function ArrayItemDefault({
     );
 }
 
-export type ArrayItemActionProps = { node: Node; editor: JsonEditor; size: number; optional?: boolean };
+export type ArrayItemActionProps = { node: Node; editor: Editor; size: number; optional?: boolean };
 
 export function ArrayItemActions({ node, editor, size, optional }: ArrayItemActionProps) {
     return (

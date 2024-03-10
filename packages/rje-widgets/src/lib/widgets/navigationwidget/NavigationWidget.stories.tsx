@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor , RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
+import { useEditor , RemoteEnumOptionsPlugin, ParentNode } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { NavigationWidget } from './NavigationWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -58,7 +58,7 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = ({ data, schema, options }) => {
     console.log('COMP', options);
-    const [node, editor] = useJsonEditor<ParentNode>({
+    const [node, editor] = useEditor<ParentNode>({
         schema,
         widgets,
         plugins: [RemoteEnumOptionsPlugin],

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonSchema, useJsonEditor } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { TextWidget, TextWidgetOptions } from './TextWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -9,7 +9,7 @@ type TextWidgetStoryProps = {
     schema: JsonSchema;
 } & TextWidgetOptions;
 function TextWidgetStory({ data, schema, ...options }: TextWidgetStoryProps) {
-    const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
+    const [node, editor] = useEditor({ schema, widgets, data, validate: true });
     return (
         <Theme>
             <TextWidget node={node} editor={editor} options={options} />

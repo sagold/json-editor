@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { widget, WidgetPlugin, ObjectNode, DefaultNodeOptions, JsonEditor } from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, ObjectNode, DefaultNodeOptions, Editor } from '@sagold/react-json-editor';
 import { Button, ButtonControlled } from '../../components/button/Button';
 import { Icon } from '../../components/icon/Icon';
 import { ObjectProperties } from './ObjectProperties';
@@ -38,7 +38,7 @@ export type ObjectOptions = {
 } & DefaultNodeOptions;
 
 type WidgetDialogProps = {
-    editor: JsonEditor;
+    editor: Editor;
     node: ObjectNode;
     options: ObjectOptions;
     closeModal: () => void;
@@ -60,7 +60,7 @@ function WidgetDialog({ editor, node, options, closeModal }: WidgetDialogProps) 
 }
 
 type WidgetActionsProps = {
-    editor: JsonEditor;
+    editor: Editor;
     node: ObjectNode;
     options: ObjectOptions;
 };

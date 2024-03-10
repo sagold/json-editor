@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor , JsonSchema, ParentNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
+import { useEditor , JsonSchema, ParentNode, Node, DefaultNodeOptions } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { SelectOneOfWidget } from './SelectOneOfWidget';
 import { Theme } from '../../components/theme/Theme';
@@ -23,7 +23,7 @@ type ComponentStoryProps = {
 };
 
 const Template: ComponentStory<any> = ({ data, schema, options = {} }: ComponentStoryProps) => {
-    const [node, editor] = useJsonEditor<ParentNode>({
+    const [node, editor] = useEditor<ParentNode>({
         schema,
         widgets,
         data,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useEditor } from '@sagold/react-json-editor';
 import { SelectWidget } from './SelectWidget';
 import { widgets } from '../../../index';
 import { Theme } from '../../components/theme/Theme';
@@ -30,7 +30,7 @@ export default {
 const Template: ComponentStory<any> = ({ data, schema, format, ...options }) => {
     const s = { ...schema, format };
 
-    const [node, editor] = useJsonEditor({ schema: s, widgets, data, validate: true });
+    const [node, editor] = useEditor({ schema: s, widgets, data, validate: true });
     return (
         <Theme>
             <SelectWidget node={node} editor={editor} options={options} />

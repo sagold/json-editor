@@ -7,7 +7,7 @@ import {
     WidgetPlugin,
     ArrayNode,
     DefaultNodeOptions,
-    JsonEditor,
+    Editor,
     JsonSchema,
 } from '@sagold/react-json-editor';
 import { Modal, useModal } from '../../components/modal/Modal';
@@ -210,7 +210,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
 export type ModalContentSelectItemProps = {
     close: () => void;
-    editor: JsonEditor;
+    editor: Editor;
     node: ArrayNode;
     items: JsonSchema[];
     onInsertItem?: () => void;

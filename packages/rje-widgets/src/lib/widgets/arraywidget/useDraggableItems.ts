@@ -1,5 +1,5 @@
 import Sortable from 'sortablejs';
-import { JsonEditor } from '@sagold/react-json-editor';
+import { Editor } from '@sagold/react-json-editor';
 import { useEffect, RefObject } from 'react';
 
 /** sortable options: https://github.com/SortableJS/Sortable */
@@ -16,7 +16,7 @@ export type DraggableItemsProps = {
     sortable?: SortableOptions;
 };
 
-export function useDraggableItems(editor: JsonEditor, options: DraggableItemsProps, ref: RefObject<HTMLElement>) {
+export function useDraggableItems(editor: Editor, options: DraggableItemsProps, ref: RefObject<HTMLElement>) {
     const sortable: SortableOptions = {
         enabled: options.sortable?.enabled ?? false,
         group: options.sortable?.group ?? options.pointer
@@ -38,7 +38,7 @@ export function useDraggableItems(editor: JsonEditor, options: DraggableItemsPro
     };
 }
 
-function createOnSortEnd(editor: JsonEditor, pointer: string) {
+function createOnSortEnd(editor: Editor, pointer: string) {
     return function onSortEnd(event: Sortable.SortableEvent) {
         const targetIndex = parseInt(`${event.newIndex}`);
         if (isNaN(targetIndex)) {

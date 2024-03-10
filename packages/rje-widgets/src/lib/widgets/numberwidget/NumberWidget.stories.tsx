@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useJsonEditor } from '@sagold/react-json-editor';
+import { useEditor } from '@sagold/react-json-editor';
 import { widgets, NumberWidget } from '@sagold/rje-widgets';
 import { Theme } from '../../components/theme/Theme';
 
@@ -37,7 +37,7 @@ export default {
 };
 
 const Template: ComponentStory<any> = ({ data, schema, ...options }) => {
-    const [node, editor] = useJsonEditor({ schema, widgets, data, validate: true });
+    const [node, editor] = useEditor({ schema, widgets, data, validate: true });
     return (
         <Theme>
             <NumberWidget node={node} editor={editor} options={options} />
