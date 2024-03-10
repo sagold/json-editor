@@ -10,7 +10,7 @@ type Story = StoryObj<typeof JsonForm>;
 
 export const OptionalProperties: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         schema: {
             type: 'object',
             properties: {
@@ -22,7 +22,7 @@ export const OptionalProperties: Story = {
 
 export const InitialOptionalProperty: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { optionalProperty: 'input data' },
         schema: {
             type: 'object',
@@ -35,7 +35,7 @@ export const InitialOptionalProperty: Story = {
 
 export const AddOptionalProps: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: true,
         schema: {
             title: 'addOptionalProps: true',
@@ -49,7 +49,7 @@ export const AddOptionalProps: Story = {
 
 export const RequiredProperties: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         schema: {
             title: 'required: [ property ]',
             type: 'object',
@@ -64,7 +64,7 @@ export const RequiredProperties: Story = {
 
 export const AdditionalProperties: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             type: 'object'
@@ -74,7 +74,7 @@ export const AdditionalProperties: Story = {
 
 export const AdditionalPropertiesFalse: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             title: 'additionalProperties: false',
@@ -86,7 +86,7 @@ export const AdditionalPropertiesFalse: Story = {
 
 export const AdditionalPropertiesSchema: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         validate: true,
         schema: {
@@ -102,7 +102,7 @@ export const AdditionalPropertiesSchema: Story = {
 
 export const EditJson: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             type: 'object',
@@ -123,7 +123,7 @@ export const EditJson: Story = {
 
 export const OneOfObject: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         schema: {
             oneOf: [
                 {
@@ -155,7 +155,7 @@ export const OneOfObject: Story = {
 
 export const InvalidOneOfObject: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { one: 'input data' },
         schema: {
             oneOf: [
@@ -188,7 +188,7 @@ export const InvalidOneOfObject: Story = {
 
 export const TypedOneOfObject: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         schema: {
             oneOf: [
                 {
@@ -222,7 +222,7 @@ export const TypedOneOfObject: Story = {
 
 export const OneOfProperty: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { id: 'B', one: 'B' },
         schema: {
             oneOfProperty: 'id',
@@ -259,7 +259,7 @@ export const OneOfProperty: Story = {
 
 export const AllOf: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: { title: 'five!' },
         schema: {
@@ -290,7 +290,7 @@ export const AllOf: Story = {
 
 export const AllOfIfThen: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         liveUpdate: true,
         schema: {
@@ -326,7 +326,7 @@ export const AllOfIfThen: Story = {
 
 export const DependenciesList: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         schema: {
             title: 'dependencies: { prop: ["prop"] }',
             type: 'object',
@@ -344,7 +344,7 @@ export const DependenciesList: Story = {
 
 export const DependenciesListActive: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         data: { one: 'input value' },
         addOptionalProps: false,
         schema: {
@@ -365,7 +365,7 @@ export const DependenciesListActive: Story = {
 
 export const Dependencies: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         schema: {
             title: 'dependencies: { prop: { schema } }',
@@ -388,7 +388,7 @@ export const Dependencies: Story = {
 
 export const DependenciesActive: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         schema: {
             title: 'dependencies: { prop: { schema } }',
@@ -412,7 +412,7 @@ export const DependenciesActive: Story = {
 
 export const IfThenElse: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         schema: {
             type: 'object',
@@ -438,7 +438,7 @@ export const IfThenElse: Story = {
 
 export const IfThenElseActive: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         schema: {
             type: 'object',
@@ -465,7 +465,7 @@ export const IfThenElseActive: Story = {
 
 export const IfThenElseSwitch: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         validate: true,
         schema: {

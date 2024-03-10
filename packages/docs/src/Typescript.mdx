@@ -2,23 +2,28 @@ import { Meta, Canvas } from '@storybook/addon-docs';
 
 <Meta title="Typescript" />
 
-## Typed `UseJsonEditor` Hook
+## Typed `UseEditor` Hook
 
 <div className="code code--inline">
 
 ```ts
-import { useJsonEditor, JsonEditor, Node } from '@sagold/react-json-editor';
+import { useEditor, JsonSchema } from '@sagold/react-json-editor';
 
-function MyForm() {
+type MyData = {
+  title: string
+};
+
+function MyForm({ schema }: { schema: JsonSchema }) {
   // [Node, JsonEditor<MyData>]
-  const [node, editor] = useJsonEditor<MyData>({
-    schema: jsonSchema,
+  const [root, editor] = useEditor<MyData>({
+    schema,
     // (data: MyData) => void
     onChange(data) {}
   });
   // data: MyData
   const data = editor.getData();
-  return <div />;
+  const Widget = editor.getWidget(root);
+  return <Widget node={node} editor={editor} />;
 }
 ```
 
@@ -29,10 +34,15 @@ function MyForm() {
 <div className="code code--inline">
 
 ```ts
-import { JsonForm, JsonEditor } from '@sagold/react-json-editor';
+import { Editor } from '@sagold/react-json-editor';
+import { JsonForm } from '@sagold/rje-widgets';
 
-function MyForm() {
-  const [editor, setEditor] = useState<JsonEditor<MyData>>();
+type MyData = {
+  title: string
+};
+
+function MyForm({ schema }: { schema: JsonSchema }) {
+  const [editor, setEditor] = useState<Editor<MyData>>();
   // data: MyData
   const data = editor?.getData();
   return (
@@ -41,7 +51,7 @@ function MyForm() {
       editor={setEditor}
       // (data: MyData) => void
       onChange={(data) => {}}
-      schema={jsonSchema}
+      schema={schema}
     />
   );
 }

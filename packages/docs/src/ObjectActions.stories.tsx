@@ -10,7 +10,7 @@ type Story = StoryObj<typeof JsonForm>;
 
 export const AllPropertiesRequired: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: true,
         schema: {
             title: 'All properties are required',
@@ -25,7 +25,7 @@ export const AllPropertiesRequired: Story = {
 
 export const OptionalProperties: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         addOptionalProps: false,
         data: {
             optionalProperty: 'initial value'

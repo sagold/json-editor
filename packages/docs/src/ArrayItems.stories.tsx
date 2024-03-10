@@ -11,7 +11,7 @@ type Story = StoryObj<typeof JsonForm>;
 
 export const ItemsArray: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
@@ -33,7 +33,7 @@ export const ItemsArray: Story = {
 
 export const AdditionalItemsUndefined: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
@@ -55,7 +55,7 @@ export const AdditionalItemsUndefined: Story = {
 
 export const AdditionalItemsTrue: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -78,7 +78,7 @@ export const AdditionalItemsTrue: Story = {
 
 export const AdditionalItemsFalse: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -101,7 +101,7 @@ export const AdditionalItemsFalse: Story = {
 
 export const AdditionalItemsSchema: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -127,7 +127,7 @@ export const AdditionalItemsSchema: Story = {
 
 export const ItemsObject: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2023],
@@ -161,7 +161,7 @@ export const ItemsObject: Story = {
 
 export const OneOf: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [{ type: 'header' }],
@@ -222,7 +222,7 @@ export const OneOf: Story = {
 
 export const Length: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2023],
@@ -242,7 +242,7 @@ export const Length: Story = {
 
 export const IfThenElse: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -272,7 +272,7 @@ export const IfThenElse: Story = {
 
 export const Enum: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -295,7 +295,7 @@ export const Enum: Story = {
 
 export const Not: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [123],
@@ -320,7 +320,7 @@ export const Not: Story = {
 
 export const UniqueItems: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [1, 2, 2],
@@ -339,7 +339,7 @@ export const UniqueItems: Story = {
 
 export const Contains: Story = {
     args: {
-        className: 'rje-theme rje-theme--light',
+        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2, 3],
