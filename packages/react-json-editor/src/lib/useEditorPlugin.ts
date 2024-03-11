@@ -17,7 +17,7 @@ export function useEditorPlugin<T extends Plugin>
             const instance = editor.addPlugin(plugin, options);
             if (instance) {
                 editor.plugins = editor.plugins.filter(p => p === instance || p.id !== instance.id);
-                return instance as ReturnType<T>;
+                return instance;
             }
         }
         return undefined;

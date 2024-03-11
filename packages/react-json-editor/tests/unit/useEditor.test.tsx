@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { strict as assert } from 'assert';
 import { isJsonError, JsonSchema, ObjectNode, StringNode, get } from 'headless-json-editor';
@@ -86,15 +86,72 @@ describe('useEditor', () => {
     });
 
     it("should add internal onChangePlugin", () => {
-        const props: UseEditorOptions = {
-            data: { title: "test-title" },
-            schema: { type: "object", properties: { title: { type: "string" } } }
-        }
         const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
-            initialProps: props
+            initialProps: {
+                data: { title: "test-title" },
+                schema: { type: "object", properties: { title: { type: "string" } } }
+            }
         });
+
         const editor = result.current[1];
         assert(editor.plugins.find(p => p.id === "InternalOnChange"));
-    })
+    });
+
+    it("should return latest list of errors", () => {
+        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+            initialProps: {
+                data: { title: "test-title" },
+                schema: { type: "object", properties: { title: { type: "string", minLength: 2 } } }
+            }
+        });
+        assert.equal(result.current[1].getErrors().length, 0);
+
+        act(() => {
+            const editor = result.current[1]
+            editor.setValue("#/title", "X");
+        });
+
+        const [root, editor] = result.current;
+        const titleNode = get(root, "#/title");
+        assert.equal(titleNode.type, "string");
+        assert.equal(titleNode.value, "X");
+        assert.equal(editor.getErrors().length, 1);
+    });
+
+    it("should not recreate editor using setValue", () => {
+        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+            initialProps: {
+                data: { title: "test-title" },
+                schema: { type: "object", properties: { title: { type: "string", minLength: 2 } } }
+            }
+        });
+        const editorBefore = result.current[1];
+
+        act(() => {
+            editorBefore.setValue("#/title", "X");
+        });
+
+        const editorAfter = result.current[1];
+        assert.equal(editorAfter.getData().title, "X");
+        assert.equal(editorBefore.getErrors().length, 1);
+        assert(editorBefore === editorAfter);
+    });
+
+    it("should update after validation", () => {
+        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+            initialProps: {
+                data: { title: "" },
+                schema: { type: "object", properties: { title: { type: "string", minLength: 2 } } },
+                validate: false
+            }
+        });
+        assert.equal(result.current[1].getErrors().length, 0);
+
+        act(() => {
+            result.current[1].validate();
+        });
+
+        assert.equal(result.current[1].getErrors().length, 1);
+    });
 });
 

@@ -5,7 +5,10 @@ import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { useEditorPlugin } from '../../src/lib/useEditorPlugin';
 
 type PluginOptions = { id?: string; callback?: (event: PluginEvent) => void };
-type PluginSignature = { test: () => void };
+type PluginSignature = {
+    /** comment for additional test-function */
+    test: () => string;
+};
 
 describe('useEditorPlugin', () => {
     let schema: JsonSchema;
@@ -16,7 +19,7 @@ describe('useEditorPlugin', () => {
         data = { title: "test-title" };
         MyPlugin = (he, options) => ({
             id: "test-plugin",
-            test() {},
+            test() { return "hello" },
             onEvent(root, event) {
                 if (event.type === "done" && options.callback) {
                     // @ts-ignore
