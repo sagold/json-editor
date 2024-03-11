@@ -28,6 +28,7 @@ import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
 import { OnChangePlugin, OnChangeListener } from './plugins/OnChangePlugin';
 import { HistoryPlugin } from './plugins/HistoryPlugin';
+import { SetOptionTitleToPlugin } from './plugins/SetOptionTitleToPlugin';
 // validation
 import { updateErrors } from './validate/updateErrors';
 import { getErrors, splitErrors } from './validate/getErrors';
@@ -50,6 +51,7 @@ import {
     PluginEvent,
     StringNode,
     ValueNode,
+    isChange,
     isNode,
     isParentNode,
     isValueNode
@@ -67,6 +69,7 @@ export {
     getOptions,
     HeadlessEditor,
     HistoryPlugin,
+    isChange,
     isJsonError,
     isNode,
     isParentNode,
@@ -78,6 +81,7 @@ export {
     remove,
     set,
     setErrorMessages,
+    SetOptionTitleToPlugin,
     splitErrors,
     trace,
     unlinkAll,

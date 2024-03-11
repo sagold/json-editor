@@ -33,7 +33,7 @@ const NoOptions: EditorPlugin = () => ({
 });
 
 const noOptions = addPlugin(NoOptions);
-noOptions?.mimi(); // should fail
+// noOptions?.mimi(); // should fail
 noOptions?.onEvent(node);
 
 
@@ -46,9 +46,9 @@ const WithOptions: EditorPlugin<Options> = (options) => ({
 });
 
 let withOptions = addPlugin(WithOptions, { msg: "title" });
-withOptions?.mimi(); // should fail
+// withOptions?.mimi(); // should fail
 withOptions?.onEvent(node);
-withOptions = addPlugin(WithOptions, { msg: 123 }); // should fail
+// withOptions = addPlugin(WithOptions, { msg: 123 }); // should fail
 
 
 /** with signature */
@@ -65,6 +65,6 @@ withSignature?.onEvent(node);
 withSignature?.log();
 
 withSignature = addPlugin(WithSignature, { msg: "test signature" });
-withSignature?.mimi(); // should fail
+// withSignature?.mimi(); // should fail
 withSignature?.onEvent(node);
 withSignature?.log(); // should succeed

@@ -13,7 +13,7 @@ describe('HeadlessEditor', () => {
         beforeEach(() => {
             plugin = (_, options) => {
                 return {
-                    id: options.id || "test-plugin",
+                    id: options?.id || "test-plugin",
                     onEvent() {}
                 };
             };

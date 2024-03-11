@@ -40,7 +40,7 @@ export type ObjectOptions = DefaultNodeOptions<{
 type WidgetDialogProps = {
     editor: Editor;
     node: ObjectNode;
-    options: ObjectOptions;
+    options: ObjectOptions & { widget?: string; modalSize?: string };
     closeModal: () => void;
 };
 

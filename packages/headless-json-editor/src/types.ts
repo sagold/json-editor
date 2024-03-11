@@ -13,6 +13,13 @@ export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | Validatio
 export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;
 
 export type Change = { type: 'update' | 'create' | 'delete'; node: Node };
+export function isChange(event: Record<string, unknown>): event is Change {
+    if (event && typeof event === "object" && typeof event.type === "string") {
+        const type = event.type;
+        return event.node != null && (type === "update" || type === "create" || type === "delete");
+    }
+    return false;
+}
 
 /** node type refers to the actual data value - it is not the expected schema type */
 export type NodeType = ArrayType | ObjectType | StringType | NumberType | BooleanType | NullType;
