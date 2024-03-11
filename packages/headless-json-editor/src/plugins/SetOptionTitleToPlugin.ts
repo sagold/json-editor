@@ -22,6 +22,30 @@ function isStringEnumNode(node: Node): node is StringEnumNode {
 
 const SCHEMA_KEY = "setOptionTitleTo";
 
+/**
+ * Add support to save selected option-title as value to another string-property.
+ * On a string-selection with custom titles (string-enum) add an json-schema
+ * keyword `setOptionTitleTo` with a json-pointer from root to target-value.
+ *
+ * e.g. { setOptionTitleTo: "#/main/menu/title" }
+ *
+ * Json-schema usage when adding this plugin:
+ *
+ * ```
+ *  selection: {
+ *    type: "string",
+ *    enum: [1, 2, 3],
+ *    options: {
+ *      enum: ["One Title", "Two Title", "Three title"]
+ *    },
+ *    setOptionTitleTo: "#/title"
+ *  },
+ *  title: {
+ *    type: "string",
+ *    options: { disabled: true }
+ *  }
+ * ```
+ */
 export const SetOptionTitleToPlugin: Plugin = () => ({
     id: "set-option-title-to",
     onEvent(root, event) {
