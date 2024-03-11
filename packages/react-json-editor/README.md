@@ -55,11 +55,10 @@ Only required property is a valid json-schema passed to `schema`.
 | data       | any                        | initial data matching json schema                  |
 | draft      | DraftConfig                | json schema draft config (json-schema-library)     |
 | liveUpdate | boolean                    | omit changes for each keystroke instead of on blur |
-| onChange   | (data, node) => void       | change listener for data updates                   |
+| disabled   | boolean                    | true to disabled whole form                        |
+| onChange   | (data, node, editor): void | change listener for data updates                   |
 | options    | extends DefaultNodeOptions | options to override for root widget                |
 | plugins    | Plugin[]                   | list of plugins for json editor                    |
-| pointer    | string                     | json-pointer to root node. Defaults to root ('#')  |
-| ref        | React.Ref<JsonEditor>      | get instance of json editor after first render     |
 | validate   | boolean                    | set to true to validate and show errors on create  |
 | widgets    | WidgetPlugin[]             | list of widgets used to create user form           |
 
@@ -120,6 +119,12 @@ type DefaultNodeOptions = {
    * Defaults to `false`.
    */
   disabled?: boolean;
+
+  /**
+   * If the form at this data point is required. Will display a required icon.
+   * Defaults to `false`.
+   */
+  required?: boolean;
 
   /**
    * Set to `true` if this form should be hidden from rendering. Usually
