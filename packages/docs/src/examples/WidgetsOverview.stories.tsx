@@ -26,6 +26,8 @@ const Template: ComponentStory<any> = () => {
         window.getState = () => editor?.getNode();
     }, [editor, data]);
 
+    console.log("errors", editor?.getErrors());
+
     return (
         <Theme>
             <JsonForm
