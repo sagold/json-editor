@@ -192,20 +192,24 @@ export class HeadlessEditor<Data = unknown> {
     runPlugins(oldState: Node, newState: Node, changes: PluginEvent[]) {
         const plugins = this.plugins;
         // @notify change
+        let currentRoot = newState;
         changes.forEach((change) => {
             plugins.forEach((p) => {
-                const returnValue = p.onEvent(newState, change);
-                if (returnValue) {
-                    newState = returnValue[0];
-                    changes.push(...returnValue[1]);
+                const [modifiedState, newChanges] = p.onEvent(newState, change) ?? [];
+                if (modifiedState) {
+                    currentRoot = modifiedState
+                    if (newChanges && newChanges.length > 0) {
+                        changes.push(...newChanges);
+                        validateState(this.draft, currentRoot, getRootChange(newChanges));
+                    }
                 }
             });
         });
-        this.root = newState;
+        this.root = currentRoot;
         // @notify done
-        const done: DoneEvent = { type: 'done', previous: oldState, next: newState, changes };
-        plugins.forEach((p) => p.onEvent(newState, done));
-        return newState;
+        const done: DoneEvent = { type: 'done', previous: oldState, next: currentRoot, changes };
+        plugins.forEach((p) => p.onEvent(currentRoot, done));
+        return currentRoot;
     }
 
     /**
@@ -231,7 +235,7 @@ export class HeadlessEditor<Data = unknown> {
         }
 
         if (changes === undefined) {
-            throw new Error('invalid state');
+            throw new Error('HeadlessEditor: set should have provided changes');
         }
 
         // validate assigns errors directly no node, which is okay here,
