@@ -52,8 +52,6 @@ export class HeadlessEditor<Data = unknown> {
     root: Node;
     /** Json-Schema API */
     draft: Draft;
-    /** @deprecated list of all changes - probably unused */
-    changes: Change[] = [];
     /** list of active plugins */
     plugins: PluginInstance[] = [];
     /** input options for this editor instance */
@@ -159,6 +157,7 @@ export class HeadlessEditor<Data = unknown> {
      */
     setState(state: Node, changes: PluginEvent[]) {
         this.root = this.runPlugins(this.root, state, changes);
+        // @todo validate again? in general, when to validate?
         return this.root;
     }
 
@@ -239,7 +238,6 @@ export class HeadlessEditor<Data = unknown> {
         // since we already cloned this location using set
         validateState(this.draft, state, getRootChange(changes));
 
-        this.changes.push(...changes);
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
     }
@@ -275,7 +273,6 @@ export class HeadlessEditor<Data = unknown> {
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using remove
         validateState(this.draft, state, parent);
-        this.changes.push(...changes);
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
     }
@@ -300,7 +297,6 @@ export class HeadlessEditor<Data = unknown> {
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
         validateState(this.draft, state, pointer);
-        this.changes.push(...changes);
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
     }
