@@ -16,8 +16,6 @@ jobs:
               with:
                   node-version: '16'
                   cache: 'yarn'
-            - name: install yarn
-              run: npm install -g yarn@3.6.1
             - name: install dependencies
               run: yarn --frozen-lockfile
             - name: run unit tests
