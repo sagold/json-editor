@@ -173,7 +173,7 @@ export const schema: JsonSchema = {
             description: 'Enum selection with custom title values',
             type: 'string',
             enum: ['dark', 'light'],
-            default: 'dark theme',
+            default: null,
             options: {
                 enum: ['Select option "dark"', 'Select option "light"']
             }

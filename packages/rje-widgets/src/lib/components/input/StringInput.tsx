@@ -39,7 +39,6 @@ export function StringInput({ icon, tag, iconPosition, title, error, onPress, va
         defaultValue: value ?? props.defaultValue,
         placeholder: props.placeholder,
         [props.emitOnChange ? 'onChange' : 'onBlur']: (event: ChangeEvent<HTMLInputElement> | string) => {
-            console.log('event', event);
             onPress && onPress(typeof event === 'string' ? event : event.target.value);
         }
     };

@@ -19,12 +19,12 @@ const Template: ComponentStory<any> = () => {
         // @ts-ignore
         window.changeData = () => setEditorData({ text: 'mimimi' });
         // @ts-ignore
-        window.getErrors = () => errors(editor?.getState());
+        window.getErrors = () => errors(editor?.getNode());
         // @ts-ignore
-        window.getData = () => json(editor?.getState());
+        window.getData = () => json(editor?.getNode());
         // @ts-ignore
-        window.getState = () => editor?.getState();
-    }, [data]);
+        window.getState = () => editor?.getNode();
+    }, [editor, data]);
 
     return (
         <Theme>
