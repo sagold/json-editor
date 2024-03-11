@@ -8,6 +8,7 @@ export function JsonForm<Data = unknown>({ style, editor, theme, className, ...o
     theme?: "dark" | "light"
     /** custom styles applied for form element */
     style?: React.CSSProperties;
+    /** custom css classNames to apply on root element */
     className?: string;
 }) {
     const widgets = Array.isArray(options.widgets) ? options.widgets : defaultWidgets;
