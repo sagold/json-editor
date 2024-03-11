@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { strict as assert } from 'assert';
-import { Plugin, PluginEvent, JsonSchema } from '../../../headless-json-editor/src';
+import { Plugin, PluginEvent, JsonSchema } from 'headless-json-editor';
 import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { useEditorPlugin } from '../../src/lib/useEditorPlugin';
 

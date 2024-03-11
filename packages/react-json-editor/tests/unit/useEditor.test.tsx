@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { strict as assert } from 'assert';
-import { isJsonError, JsonSchema, ObjectNode, StringNode, get } from '../../../headless-json-editor/src';
+import { isJsonError, JsonSchema, ObjectNode, StringNode, get } from 'headless-json-editor';
 
 describe('useEditor', () => {
     it("should return state and editor instance", () => {
