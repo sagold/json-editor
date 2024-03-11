@@ -1,4 +1,7 @@
 - _allOf_ + _liveUpdate=true_ statement loses focus when error is added or removed (@see ObjectProperties page)
+- errors are unexpectedly missing after udpates (from plugin?) -> in general: when to do validation
+- update of errors should redraw component using useEditor hook
+- json-code widget loses data for mixed content-types
 
 todo
 
