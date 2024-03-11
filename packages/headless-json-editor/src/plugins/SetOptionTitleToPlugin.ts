@@ -1,7 +1,6 @@
-import { get } from "../node/get";
-import { unlinkPath } from "../transform/unlinkPath";
-import { Change, Node, StringNode, isChange, isJsonError } from "../types";
+import { Node, StringNode, isChange, isJsonError } from "../types";
 import { Plugin } from '../HeadlessEditor';
+import { set } from "../transform/set";
 
 type StringEnumNode = StringNode & {
     schema: {
@@ -46,7 +45,7 @@ const SCHEMA_KEY = "setOptionTitleTo";
  *  }
  * ```
  */
-export const SetOptionTitleToPlugin: Plugin = () => ({
+export const SetOptionTitleToPlugin: Plugin = ({ draft }) => ({
     id: "set-option-title-to",
     onEvent(root, event) {
         if (!isChange(event) || event.node.schema[SCHEMA_KEY] == null || !isStringEnumNode(event.node)) {
@@ -59,16 +58,11 @@ export const SetOptionTitleToPlugin: Plugin = () => ({
             return undefined;
         }
         const value = node.schema.options?.enum?.[index];
-        const result = unlinkPath(root, target); // @todo should return error in array
-        if (isJsonError(result)) {
+        const [newAST, changes] = set(draft, root, target, value);
+        if (isJsonError(newAST)) {
+            console.log("SetOptionTitleToPlugin error:", newAST);
             return undefined;
         }
-        const targetNode = get(result[0], target);
-        if (targetNode) {
-            // @ts-expect-error requires check for type of node
-            targetNode.value = value;
-            return [result[0], [{ type: "update", node: targetNode } as Change]];
-        }
-        return undefined;
+        return [newAST, changes ?? []];
     }
 });
