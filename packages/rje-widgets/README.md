@@ -12,10 +12,11 @@ install
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-widgets)
 ![Types](https://badgen.net/npm/types/@sagold/rje-widgets)
 
+This library of components and widgets comes unstyled, but different css files can be combined to add basic styling or a full dark and light theme.
+
 ```tsx
-import { JsonForm } from '@sagold/react-json-editor';
-import { widgets } from '@sagold/rje-widgets';
-import '@sagold/rje-widgets/rje-widgets.css';
+import { JsonForm, widgets } from '@sagold/rje-widgets';
+import '@sagold/rje-widgets/dist/styles.css';
 
 function MyForm({ schema, data }) {
   return (
