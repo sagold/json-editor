@@ -18,7 +18,7 @@ export type DatePickerProps = {
     createCalendar?: (name: string) => TypeOfCalendar;
 } & Omit<DateInputProps, 'locale' | 'createCalendar'>;
 
-export function DatePicker({ title, error, format, defaultValue, value, readOnly, ...props }: DatePickerProps) {
+export function DatePicker({ title, error, format, defaultValue, value, required, readOnly, ...props }: DatePickerProps) {
     const [defaultDate, date] = useDateValue(defaultValue, value, format);
     const mainRef = useRef<HTMLDivElement>(null);
     const state = useDatePickerState({
@@ -33,15 +33,14 @@ export function DatePicker({ title, error, format, defaultValue, value, readOnly
             ...props,
             label: title,
             isReadOnly: readOnly,
+            isRequired: required,
+            isDisabled: props.disabled,
             defaultValue: defaultDate,
             value: date
         },
         state,
         inputWrapperRef
     );
-
-    // console.log('string', defaultDate && defaultDate.toString(), date && date.toString());
-    // console.log(fieldProps?.value?.toDate().toISOString());
 
     return (
         <div
@@ -51,9 +50,9 @@ export function DatePicker({ title, error, format, defaultValue, value, readOnly
             })}
             ref={mainRef}
         >
-            {title && <Label {...labelProps} text={title} />}
+            {title && <Label {...labelProps} text={title} error={error} required={required} disabled={props.disabled} />}
             <div className="rje-date-picker__input" {...groupProps} ref={inputWrapperRef}>
-                <DateInputControlled {...fieldProps}>
+                <DateInputControlled {...fieldProps} error={error} >
                     <Button variant="text" disabled={readOnly} {...buttonProps} icon="event" />
                 </DateInputControlled>
             </div>

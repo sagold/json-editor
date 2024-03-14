@@ -57,13 +57,14 @@ export function DateInput({
 }
 
 export type DateInputControlledProps = {
+    error?: boolean;
     children?: ReactNode | ReactNode[];
     local?: string;
     createCalendar?: (name: string) => Calendar;
 } & Omit<DateFieldStateOptions, 'locale' | 'createCalendar'> &
     AriaDateFieldProps<DateValue>;
 
-export function DateInputControlled({ children, ...props }: DateInputControlledProps) {
+export function DateInputControlled({ children, error, ...props }: DateInputControlledProps) {
     const { locale } = useLocale();
     // https://react-spectrum.adobe.com/react-stately/useDateFieldState.html#interface
     const state = useDateFieldState({
@@ -78,11 +79,12 @@ export function DateInputControlled({ children, ...props }: DateInputControlledP
         <div
             className={classNames('rje-date-input', {
                 'rje-date-input--readonly': props.isReadOnly,
-                'rje-date-input--disabled': props.isDisabled
+                'rje-date-input--disabled': props.isDisabled,
+                'rje-date-input--invalid': error
             })}
         >
             {props.label && (
-                <Label {...labelProps} text={props.label} required={props.isRequired} disabled={props.isDisabled} />
+                <Label {...labelProps} text={props.label} required={props.isRequired} disabled={props.isDisabled} error={error} />
             )}
             <div className="rje-date-input__fields" {...fieldProps} ref={ref}>
                 {state.segments.map((segment, index) => (

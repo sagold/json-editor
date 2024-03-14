@@ -13,6 +13,15 @@
             color: rgb(var(--rje-color-light-text));
         }
     }
+
+    .rje-date-input--invalid {
+        .rje-date-input__fields{
+            border-color: $color-light-error;
+        }
+        button {
+            color: $color-light-error;
+        }
+    }
 }
 
 @mixin date-input-dark {
@@ -25,6 +34,15 @@
 
         &.rje-date-input__segment--value {
             color: rgb(var(--rje-color-dark-text));
+        }
+    }
+
+    .rje-date-input--invalid {
+        .rje-date-input__fields {
+            border-color: $color-dark-error;
+        }
+        button {
+            color: $color-dark-error;
         }
     }
 }
