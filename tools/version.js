@@ -30,7 +30,7 @@ function setVersion(version) {
                     json.peerDependencies[name] = `^${version}`;
                 }
             });
-        fs.writeFileSync(pathToPkg, JSON.stringify(json, null, 4));
+        fs.writeFileSync(pathToPkg, `${JSON.stringify(json, null, 4)}\n`);
     });
 }
 
