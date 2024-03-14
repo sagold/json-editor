@@ -244,7 +244,7 @@ export function ModalContentSelectItem({ close, editor, node, items, onInsertIte
     );
 }
 
-export const ArrayWidgetPlugin: WidgetPlugin = {
+export const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
     id: 'array-widget',
     use: (node) => node.schema.type === 'array',
     Widget: ArrayWidget

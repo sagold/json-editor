@@ -60,8 +60,8 @@ export function widget<T extends Node = Node, V = unknown>(WidgetComponent: Deco
     }, isEqual);
 }
 
-export type WidgetPlugin = {
+export type WidgetPlugin<N extends Node = any> = {
     readonly id: string;
     use: (node: Node, options?: AnyOption) => boolean;
-    Widget: Widget<any>;
+    Widget: Widget<N>;
 };
