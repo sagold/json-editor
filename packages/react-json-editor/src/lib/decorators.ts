@@ -14,7 +14,7 @@ export type WidgetProps<T extends Node = Node> = {
  * interface of generic json editor component.
  * it takes the current editor and the current node along with a localized option interface
  */
-export type Widget<T extends Node = Node> = (props: WidgetProps<T>) => ReactNode | null;
+export type Widget<NodeType extends Node = Node> = (props: WidgetProps<NodeType>) => ReactNode | null;
 
 /**
  * react memo node comparison
@@ -27,27 +27,27 @@ const isEqual = (prev: WidgetProps, next: WidgetProps) => {
 /**
  * props of your decorated editor
  */
-export type DecoratedWidgetProps<T extends Node, V = unknown> = {
-    node: T;
+export type DecoratedWidgetProps<NodeType extends Node, ValueType = unknown> = {
+    node: NodeType;
     editor: Editor;
-    options: T['options'];
-    setValue: (value: V) => void;
+    options: NodeType['options'];
+    setValue: (value: ValueType) => void;
 };
 
 /**
  * interface to your decorated editor
  */
-export type DecoratedWidget<T extends Node, V = unknown> = (props: DecoratedWidgetProps<T, V>) => ReactNode | null;
+export type DecoratedWidget<NodeType extends Node, ValueType = unknown> = (props: DecoratedWidgetProps<NodeType, ValueType>) => ReactNode | null;
 
 /**
  * add setValue helper to editor component and reduce update cycles
  */
-export function widget<T extends Node = Node, V = unknown>(WidgetComponent: DecoratedWidget<T, V>) {
+export function widget<NodeType extends Node = Node, ValueType = unknown>(WidgetComponent: DecoratedWidget<NodeType, ValueType>) {
     // eslint-disable-next-line react/display-name
-    return memo((props: WidgetProps<T>) => {
+    return memo((props: WidgetProps<NodeType>) => {
         const setValue = useCallback(
             // eslint-disable-next-line react/prop-types
-            (value: V) => props.editor.setValue(props.node.pointer, value),
+            (value: ValueType) => props.editor.setValue(props.node.pointer, value),
             // eslint-disable-next-line react-hooks/exhaustive-deps, react/prop-types
             [props.node.id, props.node.pointer, props.editor]
         );

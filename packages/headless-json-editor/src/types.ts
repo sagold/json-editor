@@ -46,7 +46,6 @@ export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
 };
 
 export type ObjectType = 'object';
-
 export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ObjectType;
