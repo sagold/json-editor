@@ -11,9 +11,8 @@ type NumberOptions = {
     withButtons?: boolean;
 } & DefaultNodeOptions;
 
-type HTMLNumberInputElement = HTMLInputElement & { valueAsNumber: number };
 
-export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
+export const NumberWidget = widget<NumberNode<NumberOptions>, number | null>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;
     const isValidConst = node.schema.const != null && !hasError;
 
@@ -26,7 +25,7 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
                 icon={options.icon}
                 iconPosition={options.swapIconPosition ? 'right' : 'left'}
                 id={node.id}
-                onPress={setValue}
+                onPress={(value) => setValue(isNaN(value) ? null : value)}
                 placeholder={options.placeholder}
                 readOnly={options.readOnly}
                 required={options.required}

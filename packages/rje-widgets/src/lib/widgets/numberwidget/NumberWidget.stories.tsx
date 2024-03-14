@@ -1,3 +1,4 @@
+import React from "react";
 import { ComponentStory } from '@storybook/react';
 import { useEditor } from '@sagold/react-json-editor';
 import { widgets, NumberWidget } from '@sagold/rje-widgets';
@@ -83,5 +84,16 @@ ErrorState.args = {
         title: 'Default number widget',
         type: 'number',
         maximum: 2000
+    }
+};
+
+export const EmptyState = Template.bind({});
+EmptyState.args = {
+    data: null,
+    validate: true,
+    schema: {
+        title: 'Default number widget',
+        type: 'number',
+        default: null
     }
 };
