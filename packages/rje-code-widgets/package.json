@@ -1,6 +1,6 @@
 {
     "name": "@sagold/rje-code-widgets",
-    "version": "0.32.4",
+    "version": "0.32.5",
     "license": "MIT",
     "module": "./dist/es6/src/index.js",
     "types": "./dist/es6/src/index.d.ts",
@@ -12,6 +12,6 @@
         "markdown-to-jsx": "^7.4.1"
     },
     "peerDependencies": {
-        "@sagold/react-json-editor": "^0.32.4"
+        "@sagold/react-json-editor": "^0.32.5"
     }
 }
