@@ -1,6 +1,6 @@
 import { JsonError } from 'json-schema-library';
 import { JsonSchema } from './jsonSchema';
-import { DefaultNodeOptions } from './node/create';
+import { DefaultNodeOptions } from './node/createNode';
 
 export { JsonSchema };
 

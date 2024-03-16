@@ -1,4 +1,4 @@
-import { DefaultNodeOptions } from "./node/create";
+import { DefaultNodeOptions } from "./node/createNode";
 
 /**
  * JSON Schema v7 taken from "json-schema" library

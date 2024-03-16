@@ -1,7 +1,7 @@
 import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
 // import { deepEqual } from 'fast-equals';
 import { json } from '../../node/json';
-import { create } from '../../node/create';
+import { createNode } from '../../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
 import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
 import { invalidPathError } from '../../errors';
@@ -25,7 +25,7 @@ export function set<T extends Node = Node>(
 
     // if change on root, replace all, but reuse root-id
     if (frags.length === 0 || !isParentNode(ast)) {
-        const newAst = create<T>(draft, value);
+        const newAst = createNode<T>(draft, value);
         changeSet.push({ type: 'delete', node: ast });
         changeSet.push({ type: 'create', node: newAst });
         newAst.id = ast.id;
@@ -44,7 +44,7 @@ export function set<T extends Node = Node>(
         if (!deepEqual(currentSchema, nextSchema)) {
             const fullNextData = draft.getTemplate(nextData, draft.getSchema(), { addOptionalProps: false });
             // console.log('root schema change', draft.getSchema(), "for", fullNextData);
-            const newAst = create<T>(draft, fullNextData);
+            const newAst = createNode<T>(draft, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
             changeSet.push({ type: 'create', node: newAst });
             newAst.id = ast.id;
@@ -160,7 +160,7 @@ function setNext(
 
         if (!deepEqual(currentSchema, nextSchema)) {
             // console.log('child schema changes', currentSchema, '->', nextSchema);
-            const newChild = create(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
+            const newChild = createNode(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });
             changeSet.push({ type: 'create', node: newChild });
             newChild.id = childNode.id;

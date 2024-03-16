@@ -1,5 +1,5 @@
 import { Draft07, Draft } from 'json-schema-library';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
@@ -35,7 +35,7 @@ describe('remove', () => {
 
     describe('array', () => {
         it('should remove item in list', () => {
-            const before = create(core, { list: ['1', '2', '3', '4'] });
+            const before = createNode(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
             const [after] = remove(core, before, '/list/2');
@@ -54,7 +54,7 @@ describe('remove', () => {
 
     describe('object', () => {
         it('should remove property from object', () => {
-            const before = create(core, { list: ['1', '2', '3', '4'] });
+            const before = createNode(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
             const [after] = remove(core, before, '/list');
@@ -88,7 +88,7 @@ describe('remove', () => {
         });
 
         it('should reduce list of optional properties for added properties', () => {
-            const before = create(
+            const before = createNode(
                 core,
                 core.getTemplate({ size: {} }, core.getSchema(), { addOptionalProps: false })
             ) as ObjectNode;
@@ -119,7 +119,7 @@ describe('remove', () => {
                     }
                 }
             });
-            const before = create(
+            const before = createNode(
                 draft,
                 draft.getTemplate({ one: 'triggers two' }, draft.getSchema(), { addOptionalProps: false })
             ) as ObjectNode;

@@ -1,11 +1,9 @@
 import { get as getPointer } from '@sagold/json-pointer';
 import { DefaultNodeOptions, ParentNode, Node, json, widget, WidgetPlugin } from '@sagold/react-json-editor';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useModal, Modal } from '../../components/modal/Modal';
 import { Button } from '../../components/button/Button';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
-import { Label } from '../../components/label/Label';
-import { Icon } from '../../components/icon/Icon';
 import { Theme } from '../../components/theme/Theme';
 import { SectionHeader } from '../../components/sectionheader/SectionHeader';
 

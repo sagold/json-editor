@@ -38,7 +38,7 @@ export type {
 
 // re-exports from headless-json-editor & json-schema-library
 import {
-    create,
+    createNode,
     deepEqual,
     errors,
     EventLoggerPlugin,
@@ -91,7 +91,7 @@ import {
 } from 'headless-json-editor';
 
 export {
-    create,
+    createNode,
     errors,
     deepEqual,
     EventLoggerPlugin,

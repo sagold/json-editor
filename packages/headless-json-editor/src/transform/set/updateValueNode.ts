@@ -1,6 +1,6 @@
 import { Draft } from 'json-schema-library';
 import { ValueNode, isJsonError, ParentNode, isNode, Change } from '../../types';
-import { create } from '../../node/create';
+import { createNode } from '../../node/createNode';
 import { getChildNodeIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 import { getSchemaOfChild } from './getSchemaOfChild';
@@ -42,7 +42,7 @@ export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNo
         // @change replace node
         changeSet.push({ type: 'delete', node: parent.children[targetIndex] });
     }
-    parent.children[targetIndex] = create(draft, value, schema, childPointer, parent.type === 'array');
+    parent.children[targetIndex] = createNode(draft, value, schema, childPointer, parent.type === 'array');
     changeSet.push({ type: 'create', node: parent.children[targetIndex] });
     return changeSet;
 }

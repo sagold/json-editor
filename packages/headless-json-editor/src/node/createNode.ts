@@ -132,7 +132,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             const childSchema = core.step(key, schema, data, pointer);
             if (childSchema && !isJsonError(childSchema)) {
                 childSchema.isArrayItem = true;
-                node.children.push(create(core, next, childSchema, `${pointer}/${key}`, true));
+                node.children.push(createNode(core, next, childSchema, `${pointer}/${key}`, true));
             }
         });
 
@@ -176,7 +176,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         currentProperties.forEach((key) => {
             const nextSchema = draft.step(key, staticSchema, resolvedData, pointer);
             if (nextSchema && !isJsonError(nextSchema)) {
-                node.children.push(create(draft, resolvedData[key], nextSchema, `${pointer}/${key}`));
+                node.children.push(createNode(draft, resolvedData[key], nextSchema, `${pointer}/${key}`));
             }
         });
 
@@ -258,7 +258,7 @@ export const NODES: Record<NodeType, CreateNode> = {
     }
 };
 
-export function create<T extends Node = Node>(
+export function createNode<T extends Node = Node>(
     draft: Draft,
     data: unknown,
     schema: JsonSchema = draft.rootSchema,

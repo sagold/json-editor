@@ -1,6 +1,6 @@
 import { Draft } from 'json-schema-library';
 import { isJsonError, ParentNode, Change } from '../../types';
-import { create } from '../../node/create';
+import { createNode } from '../../node/createNode';
 import { getChildNodeIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 import { getSchemaOfChild } from './getSchemaOfChild';
@@ -17,7 +17,7 @@ export function replaceChildNode(core: Draft, parent: ParentNode, child: ParentN
 
     const changeSet: Change[] = [];
     const targetIndex = getChildNodeIndex(parent, child.property);
-    const nextNode = create<ParentNode>(core, value, schema, child.pointer, parent.type === 'array');
+    const nextNode = createNode<ParentNode>(core, value, schema, child.pointer, parent.type === 'array');
     // replace change - @todo sync old subtree with new subtree
     parent.children[targetIndex] = nextNode;
 

@@ -6,7 +6,7 @@ import { updatePath } from './updatePath';
 import { split } from '@sagold/json-pointer';
 import { unlinkPath } from './unlinkPath';
 import { json } from '../node/json';
-import { updateOptionalPropertyList } from '../node/create';
+import { updateOptionalPropertyList } from '../node/createNode';
 
 export function remove<T extends Node = Node>(
     draft: Draft,

@@ -1,5 +1,5 @@
 import gp from '@sagold/json-pointer';
-import { create } from './node/create';
+import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
 import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
 import { errors } from './node/errors';
@@ -65,7 +65,7 @@ export class HeadlessEditor<Data = unknown> {
         this.options = options;
         this.templateOptions.addOptionalProps = addOptionalProps;
         this.draft = new JsonEditor(schema, draftConfig);
-        this.root = create<ParentNode>(
+        this.root = createNode<ParentNode>(
             this.draft,
             this.draft.getTemplate(data, this.draft.getSchema(), this.templateOptions)
         );
@@ -92,7 +92,7 @@ export class HeadlessEditor<Data = unknown> {
     setData(data?: Data): Node {
         const { draft } = this;
         const previousState = this.root;
-        this.root = create<ParentNode>(
+        this.root = createNode<ParentNode>(
             draft,
             draft.getTemplate(data, draft.getSchema(), {
                 addOptionalProps: false

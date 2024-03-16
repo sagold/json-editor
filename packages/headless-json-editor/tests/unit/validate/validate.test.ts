@@ -1,6 +1,6 @@
 import { Draft07, Draft, JsonValidator, JsonError, isJsonError } from 'json-schema-library';
 import { strict as assert } from 'assert';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { get } from '../../../src/node/get';
 import { set } from '../../../src/transform/set';
 import { updateErrors as validate } from '../../../src/validate/updateErrors';
@@ -25,7 +25,7 @@ describe('validate', () => {
     });
 
     it('should add property errors', () => {
-        const root = create(core, { title: '', caption: 'c' });
+        const root = createNode(core, { title: '', caption: 'c' });
 
         validate(core, root);
 
@@ -36,7 +36,7 @@ describe('validate', () => {
     });
 
     it('should update property errors', () => {
-        const root = create(core, { title: '', caption: 'c' });
+        const root = createNode(core, { title: '', caption: 'c' });
 
         validate(core, root);
 
@@ -53,7 +53,7 @@ describe('validate', () => {
     });
 
     it('should validate from pointer only', () => {
-        const root = create(core, { title: '', caption: '' });
+        const root = createNode(core, { title: '', caption: '' });
 
         validate(core, root, '/caption');
 
@@ -103,7 +103,7 @@ describe('validate', () => {
         });
 
         it('should perform async validation', async () => {
-            const root = create(async, { title: '', caption: '' });
+            const root = createNode(async, { title: '', caption: '' });
 
             await validate(async, root);
 
@@ -113,7 +113,7 @@ describe('validate', () => {
         });
 
         it('should assign validation error once only', async () => {
-            const root = create(async, { title: '', caption: '' });
+            const root = createNode(async, { title: '', caption: '' });
 
             validate(async, root);
             await validate(async, root);

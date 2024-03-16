@@ -1,29 +1,29 @@
 import { Draft07, Draft } from 'json-schema-library';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { json } from '../../../src/node/json';
 import { strict as assert } from 'assert';
 import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
 
-describe('create', () => {
+describe('createNode', () => {
     let draft: Draft;
 
     beforeEach(() => (draft = new Draft07()));
 
     it('should create a node', () => {
         draft.setSchema({ type: 'string' });
-        const root = create(draft, '');
+        const root = createNode(draft, '');
         assert(root.type === 'string');
     });
 
     it('should support null properties', () => {
         draft.setSchema({ type: 'null' });
-        const root = create(draft, null);
+        const root = createNode(draft, null);
         assert(root.type === 'null');
     });
 
     it('should create a node tree with additionalProperties set', () => {
         draft.setSchema({ type: 'object', additionalProperties: true });
-        const root = create(draft, { list: ['test-item'] });
+        const root = createNode(draft, { list: ['test-item'] });
 
         assert(root.type === 'object');
         assert(root.children.length === 1);
@@ -43,7 +43,7 @@ describe('create', () => {
             }
         });
 
-        const root = create(draft, {
+        const root = createNode(draft, {
             second: 'second',
             first: 'first'
         }) as ObjectNode;
@@ -56,14 +56,14 @@ describe('create', () => {
 
     it('should add any node with `additionalProperty=true`', () => {
         draft.setSchema({ type: 'object', additionalProperties: true });
-        const root = create(draft, { item: 'keep-me' });
+        const root = createNode(draft, { item: 'keep-me' });
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
     });
 
     it('should treat `additionalProperty=true` per default', () => {
         draft.setSchema({ type: 'object' });
-        const root = create(draft, { item: 'keep-me' });
+        const root = createNode(draft, { item: 'keep-me' });
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
     });
@@ -76,7 +76,7 @@ describe('create', () => {
                 additionalProperties: false
             });
 
-            const root = create(draft, {
+            const root = createNode(draft, {
                 unknownInvalid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
@@ -91,7 +91,7 @@ describe('create', () => {
                 additionalProperties: true
             });
 
-            const root = create(draft, {
+            const root = createNode(draft, {
                 unknownValid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
@@ -112,7 +112,7 @@ describe('create', () => {
                 }
             });
 
-            const root = create(draft, {}) as ObjectNode;
+            const root = createNode(draft, {}) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.missingProperties, ['one']);
         });
@@ -127,7 +127,7 @@ describe('create', () => {
                 }
             });
 
-            const root = create(draft, { one: 'optional value added' }) as ObjectNode;
+            const root = createNode(draft, { one: 'optional value added' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.missingProperties, []);
         });
@@ -145,7 +145,7 @@ describe('create', () => {
                 }
             });
 
-            const root = create(draft, { one: 'optional value added' }) as ObjectNode;
+            const root = createNode(draft, { one: 'optional value added' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one']);
             assert.deepEqual(root.missingProperties, []);
@@ -164,7 +164,7 @@ describe('create', () => {
                 }
             });
 
-            const root = create(draft, {}) as ObjectNode;
+            const root = createNode(draft, {}) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.missingProperties, ['one', 'two']);
@@ -177,7 +177,7 @@ describe('create', () => {
                     one: { type: 'string' }
                 }
             });
-            const root = create(draft, { one: 'string', two: 'string' }) as ObjectNode;
+            const root = createNode(draft, { one: 'string', two: 'string' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.children[0].property, 'one');
@@ -201,7 +201,7 @@ describe('create', () => {
                     }
                 });
 
-                const root = create<ObjectNode>(draft, { test: 'with value', additionalValue: 'additional' });
+                const root = createNode<ObjectNode>(draft, { test: 'with value', additionalValue: 'additional' });
                 assert.equal(root.children.length, 2);
                 assert.deepEqual(json(root), { test: 'with value', additionalValue: 'additional' });
             });
@@ -217,7 +217,7 @@ describe('create', () => {
                         test: ['additionalValue']
                     }
                 });
-                const root = create<ObjectNode>(draft, { test: 'with value' });
+                const root = createNode<ObjectNode>(draft, { test: 'with value' });
                 assert.equal(root.children.length, 2);
                 assert.deepEqual(json(root), { test: 'with value', additionalValue: '' });
             });
@@ -227,40 +227,40 @@ describe('create', () => {
             let conditionalSchema: JsonSchema;
             beforeEach(
                 () =>
-                    (conditionalSchema = {
-                        type: 'object',
+                (conditionalSchema = {
+                    type: 'object',
+                    required: ['test'],
+                    properties: {
+                        test: { type: 'string' }
+                    },
+                    if: {
                         required: ['test'],
                         properties: {
-                            test: { type: 'string' }
-                        },
-                        if: {
-                            required: ['test'],
-                            properties: {
-                                test: {
-                                    type: 'string',
-                                    minLength: 10
-                                }
-                            }
-                        },
-                        then: {
-                            required: ['additionalValue'],
-                            properties: {
-                                additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
-                            }
-                        },
-                        else: {
-                            required: ['additionalValue'],
-                            properties: {
-                                additionalValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                            test: {
+                                type: 'string',
+                                minLength: 10
                             }
                         }
-                    })
+                    },
+                    then: {
+                        required: ['additionalValue'],
+                        properties: {
+                            additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                        }
+                    },
+                    else: {
+                        required: ['additionalValue'],
+                        properties: {
+                            additionalValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                        }
+                    }
+                })
             );
 
             it('should add then-schema for valid if-schema', () => {
                 draft.setSchema(conditionalSchema);
 
-                const root = create<ObjectNode>(draft, { test: 'with value' });
+                const root = createNode<ObjectNode>(draft, { test: 'with value' });
                 assert.equal(root.children.length, 2);
                 assert.deepEqual(json(root), { test: 'with value', additionalValue: 'dynamic then' });
             });
@@ -268,7 +268,7 @@ describe('create', () => {
             it('should add else-schema for invalid if-schema', () => {
                 draft.setSchema(conditionalSchema);
 
-                const root = create<ObjectNode>(draft, { test: '' });
+                const root = createNode<ObjectNode>(draft, { test: '' });
                 assert.equal(root.children.length, 2);
                 assert.equal(root.children[1].schema.description, 'else');
                 assert.deepEqual(json(root), { test: '', additionalValue: 'dynamic else' });
@@ -297,7 +297,7 @@ describe('create', () => {
                     }
                 });
 
-                const root = create<ObjectNode>(draft, { test: 'with-value' });
+                const root = createNode<ObjectNode>(draft, { test: 'with-value' });
                 assert.equal(root.children.length, 1);
                 assert.deepEqual(json(root), { test: 'with-value' });
             });
@@ -332,7 +332,7 @@ describe('create', () => {
                     additionalProperties: false
                 });
 
-                const root = create<ObjectNode>(draft, {
+                const root = createNode<ObjectNode>(draft, {
                     test: 'triggers then',
                     thenValue: 'input then',
                     elseValue: 'input else'
@@ -362,7 +362,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, {});
+            const root = createNode(draft, {});
             assert(root.type === 'object');
             assert.equal(root.children.length, 1);
             assert.equal(root.children[0].schema.$id, 'one');
@@ -391,7 +391,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, { type: 'section', title: '' });
+            const root = createNode(draft, { type: 'section', title: '' });
             assert(root.type === 'object');
             assert.equal(root.schema.getOneOfOrigin?.().index, 1);
         });
@@ -417,7 +417,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, {});
+            const root = createNode(draft, {});
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[0].schema.$id === 'title');
@@ -446,7 +446,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, {});
+            const root = createNode(draft, {});
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[0].schema.$id === 'title');
@@ -478,7 +478,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, { title: 'main topic' });
+            const root = createNode(draft, { title: 'main topic' });
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[1].schema.$id === 'date');
@@ -509,7 +509,7 @@ describe('create', () => {
                     }
                 ]
             });
-            const root = create(draft, {});
+            const root = createNode(draft, {});
             assert(root.type === 'object');
             assert(root.children.length === 1);
             assert(root.children[0].schema.$id === 'title');

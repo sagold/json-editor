@@ -221,7 +221,7 @@ const draft = new Draft07(jsonSchema);
 create node tree from schema and data
 
 ```ts
-const currentRootNode = create(draft, data);
+const currentRootNode = createNode(draft, data);
 ```
 
 move an array item by index

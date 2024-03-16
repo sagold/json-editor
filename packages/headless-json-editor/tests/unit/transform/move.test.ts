@@ -1,5 +1,5 @@
 import { Draft07, Draft } from 'json-schema-library';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { json } from '../../../src/node/json';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
@@ -34,7 +34,7 @@ describe('move', () => {
     });
 
     it('should move item to given array index', () => {
-        const before = create(core, { list: ['1', '2', '3', '4', '5'] });
+        const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
         const beforeString = JSON.stringify(before);
 
         const [after] = move(core, before, '/list', 3, 1);
@@ -62,7 +62,7 @@ describe('move', () => {
 
     it('should move item in root array', () => {
         core.setSchema({ type: 'array', items: { type: 'string' } });
-        const before = create(core, ['1', '2', '3', '4', '5']);
+        const before = createNode(core, ['1', '2', '3', '4', '5']);
 
         const [after] = move(core, before, '#', 3, 1);
 
@@ -71,7 +71,7 @@ describe('move', () => {
     });
 
     it('should append item if target index is too large', () => {
-        const before = create(core, { list: ['1', '2', '3', '4', '5'] });
+        const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
 
         const [after] = move(core, before, '/list', 1, 90);
         assert(after.type !== 'error');

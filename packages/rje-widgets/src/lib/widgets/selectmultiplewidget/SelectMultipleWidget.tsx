@@ -3,8 +3,6 @@ import {
     WidgetPlugin,
     ArrayNode,
     DefaultNodeOptions,
-    WidgetProps,
-    DecoratedWidgetProps,
     json
 } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';

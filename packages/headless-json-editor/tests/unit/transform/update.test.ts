@@ -3,7 +3,7 @@ import { update } from '../../../src/transform/update';
 import { get } from "../../../src/node/get";
 import { Node, NumberNode, } from '../../../src/types';
 import { strict as assert } from 'assert';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { trace } from "../../../src/node/trace";
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
@@ -42,7 +42,7 @@ describe('update', () => {
                 height: { type: 'number', default: 360 }
             }
         });
-        ast = create(core, core.getTemplate({ size: { width: 11, height: 22}, list: ["item"]}));
+        ast = createNode(core, core.getTemplate({ size: { width: 11, height: 22 }, list: ["item"] }));
     });
 
     it('should recreate node at pointer location', () => {
@@ -84,7 +84,7 @@ describe('update', () => {
         const after = get<NumberNode>(newAst, "/size/width");
         assert(!isJsonError(after));
 
-        assert.deepEqual(changes, [{ type: "delete", node: before }, {type: "create", node: after }]);
+        assert.deepEqual(changes, [{ type: "delete", node: before }, { type: "create", node: after }]);
     });
 
     it('should return a json-error if the target does not exist', () => {

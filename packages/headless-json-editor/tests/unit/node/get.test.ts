@@ -1,4 +1,4 @@
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { get } from '../../../src/node/get';
 import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
@@ -8,29 +8,29 @@ describe('get', () => {
     let node: Node;
     beforeEach(
         () =>
-            (node = create(
-                new Draft07({
-                    type: 'object',
-                    additionalProperties: true
-                }),
-                {
-                    title: 'my-title',
-                    main: true,
-                    description: null,
-                    contents: [
-                        {
-                            type: 'intro',
-                            id: 0,
-                            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-                        },
-                        {
-                            type: 'paragraph',
-                            id: 1,
-                            content: 'Praetereo multos, in bis doctum hominem et suavem, Hieronymum'
-                        }
-                    ]
-                }
-            ))
+        (node = createNode(
+            new Draft07({
+                type: 'object',
+                additionalProperties: true
+            }),
+            {
+                title: 'my-title',
+                main: true,
+                description: null,
+                contents: [
+                    {
+                        type: 'intro',
+                        id: 0,
+                        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+                    },
+                    {
+                        type: 'paragraph',
+                        id: 1,
+                        content: 'Praetereo multos, in bis doctum hominem et suavem, Hieronymum'
+                    }
+                ]
+            }
+        ))
     );
 
     it('should return target property for json-pointer', () => {

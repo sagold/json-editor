@@ -1,5 +1,5 @@
 import gp from '@sagold/json-pointer';
-import { DefaultNodeOptions, create } from '../node/create';
+import { DefaultNodeOptions, createNode } from '../node/createNode';
 import { Draft, JsonError, JsonPointer } from "json-schema-library";
 import { get } from "../node/get";
 import { json } from "../node/json";
@@ -16,46 +16,46 @@ import { unlinkPath } from './unlinkPath';
  * @return [newRootNode, listOfChanges]
  */
 export function update<T extends Node = Node>(
-  draft: Draft,
-  ast: T,
-  pointer: JsonPointer
+    draft: Draft,
+    ast: T,
+    pointer: JsonPointer
 ): [JsonError | T, Change[]?] {
-  const targetNode = get(ast, pointer);
-  if (isJsonError(targetNode)) {
-    return [targetNode];
-  }
-  // unlink nodes along the path, ensuring we do not modify the previous ast
-  const result = unlinkPath(ast, pointer);
-  if (isJsonError(result)) {
-    return [result];
-  }
-  // get the uptodate json-schema of this node
-  const schema = draft.getSchema({
-    pointer,
-    data: json(ast),
-  });
+    const targetNode = get(ast, pointer);
+    if (isJsonError(targetNode)) {
+        return [targetNode];
+    }
+    // unlink nodes along the path, ensuring we do not modify the previous ast
+    const result = unlinkPath(ast, pointer);
+    if (isJsonError(result)) {
+        return [result];
+    }
+    // get the uptodate json-schema of this node
+    const schema = draft.getSchema({
+        pointer,
+        data: json(ast),
+    });
 
-  if (isJsonError(schema)) {
-    return [schema];
-  }
+    if (isJsonError(schema)) {
+        return [schema];
+    }
 
-  const [newRootNode] = result;
-  // create new node and replace the old one with it
-  const newNode = create(draft, json(targetNode), schema, pointer);
-  const [pointerToParent] = gp.splitLast(pointer);
-  const parentNode = get(newRootNode, pointerToParent) as ParentNode;
-  parentNode.children = parentNode.children.map((node) =>
-    node.pointer === targetNode.pointer ? newNode : node
-  );
+    const [newRootNode] = result;
+    // create new node and replace the old one with it
+    const newNode = createNode(draft, json(targetNode), schema, pointer);
+    const [pointerToParent] = gp.splitLast(pointer);
+    const parentNode = get(newRootNode, pointerToParent) as ParentNode;
+    parentNode.children = parentNode.children.map((node) =>
+        node.pointer === targetNode.pointer ? newNode : node
+    );
 
-  // return the new root node and a list of changes
-  return [
-    newRootNode,
-    [
-      { type: 'delete', node: targetNode },
-      { type: 'create', node: newNode },
-    ],
-  ];
+    // return the new root node and a list of changes
+    return [
+        newRootNode,
+        [
+            { type: 'delete', node: targetNode },
+            { type: 'create', node: newNode },
+        ],
+    ];
 }
 
 /**

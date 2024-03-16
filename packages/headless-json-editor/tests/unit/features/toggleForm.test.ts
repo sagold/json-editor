@@ -1,5 +1,5 @@
 import { Draft07, Draft } from 'json-schema-library';
-import { create } from '../../../src/node/create';
+import { createNode } from '../../../src/node/createNode';
 import { json } from '../../../src/node/json';
 import { set } from '../../../src/transform/set';
 import { errors } from '../../../src/node/errors';
@@ -17,44 +17,44 @@ describe('feature: toggle form', () => {
     let draft: Draft;
     beforeEach(
         () =>
-            (draft = new Draft07({
-                type: 'object',
-                required: ['trigger'],
-                properties: {
-                    trigger: { type: 'boolean', $id: 'trigger', default: false },
-                    addition: {
-                        options: { hidden: true },
-                        type: 'object'
-                    }
-                },
-                allOf: [
-                    {
-                        if: {
-                            required: ['trigger'],
-                            properties: {
-                                trigger: { const: true }
-                            }
-                        },
-                        then: {
-                            required: ['addition'],
-                            properties: {
-                                addition: {
-                                    options: { hidden: false },
-                                    type: 'object',
-                                    required: ['title'],
-                                    properties: {
-                                        title: { type: 'string' }
-                                    }
+        (draft = new Draft07({
+            type: 'object',
+            required: ['trigger'],
+            properties: {
+                trigger: { type: 'boolean', $id: 'trigger', default: false },
+                addition: {
+                    options: { hidden: true },
+                    type: 'object'
+                }
+            },
+            allOf: [
+                {
+                    if: {
+                        required: ['trigger'],
+                        properties: {
+                            trigger: { const: true }
+                        }
+                    },
+                    then: {
+                        required: ['addition'],
+                        properties: {
+                            addition: {
+                                options: { hidden: false },
+                                type: 'object',
+                                required: ['title'],
+                                properties: {
+                                    title: { type: 'string' }
                                 }
                             }
                         }
                     }
-                ]
-            }))
+                }
+            ]
+        }))
     );
 
     it('should not show inactive node', () => {
-        const root = create(draft, { trigger: false });
+        const root = createNode(draft, { trigger: false });
 
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
@@ -63,7 +63,7 @@ describe('feature: toggle form', () => {
 
     it('should not return errors for invalid hidden property', () => {
         const data = { trigger: false, addition: { title: 4 } };
-        const root = create(draft, data);
+        const root = createNode(draft, data);
 
         const errs = draft.validate(data);
         assert.equal(errs.length, 0);
@@ -71,7 +71,7 @@ describe('feature: toggle form', () => {
 
     it('should return errors for invalid property', () => {
         const data = { trigger: true, addition: { title: 4 } };
-        const root = create(draft, data);
+        const root = createNode(draft, data);
 
         const errs = draft.validate(data);
         // @todo error is duplicated - check in json-schema-library
@@ -79,7 +79,7 @@ describe('feature: toggle form', () => {
     });
 
     it('should show active node', () => {
-        const root = create(draft, { trigger: true });
+        const root = createNode(draft, { trigger: true });
 
         assert(root.type === 'object');
         assert.equal(root.children.length, 2);
@@ -88,7 +88,7 @@ describe('feature: toggle form', () => {
     });
 
     it('should switch node to active', () => {
-        const root = create(draft, { trigger: false });
+        const root = createNode(draft, { trigger: false });
 
         const [update] = set(draft, root, '/trigger', true);
 
@@ -99,7 +99,7 @@ describe('feature: toggle form', () => {
     });
 
     it('should switch node to inactive', () => {
-        const root = create(draft, { trigger: true });
+        const root = createNode(draft, { trigger: true });
 
         const [update] = set(draft, root, '/trigger', false);
 

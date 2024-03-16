@@ -1,7 +1,7 @@
 // settings
 import { setErrorMessages } from './settings';
 // create
-import { create, getOptions, DefaultNodeOptions } from './node/create';
+import { createNode, getOptions, DefaultNodeOptions } from './node/createNode';
 import { json } from './node/json';
 // traversal
 import { errors } from './node/errors';
@@ -58,7 +58,7 @@ import {
 } from './types';
 
 export {
-    create,
+    createNode,
     errors,
     EventLoggerPlugin,
     find,
