@@ -4,7 +4,7 @@ import { deepEqual } from 'fast-equals';
 import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
 import { errors } from './node/errors';
 import { flat } from './node/flat';
-import { get } from './node/get';
+import { getNode } from './node/getNode';
 import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
 import { move as moveItem } from './transform/move';
@@ -168,7 +168,7 @@ export class HeadlessEditor<Data = unknown> {
     getNode(): Node;
     getNode(pointer?: string) {
         if (pointer && typeof pointer === 'string' && pointer.replace(/^[/#]+/, '') !== '') {
-            return get(this.root, pointer);
+            return getNode(this.root, pointer);
         }
         return this.root;
     }
@@ -219,7 +219,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node or current one if nothing changed
      */
     setValue(pointer: string, value: unknown) {
-        const previousNode = get(this.root, pointer);
+        const previousNode = getNode(this.root, pointer);
         if (!isJsonError(previousNode)) {
             const previousValue = getData(previousNode);
             if (deepEqual(previousValue, value)) {
@@ -367,7 +367,7 @@ function getRootChange(changes: Change[]) {
 function validateState(draft: Draft, root: Node, pointer = '#') {
     // always evaluate parent as it can be that children are referenced in parent
     let validationTarget = gp.join(pointer, '..');
-    const startNode = get(root, validationTarget);
+    const startNode = getNode(root, validationTarget);
     if (startNode.type === 'error') {
         // if the node no longer exists, fallback to validate all
         validationTarget = '#';

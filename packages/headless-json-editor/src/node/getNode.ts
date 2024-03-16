@@ -7,7 +7,7 @@ import { getData } from './getData';
 /**
  * returns the node with the corresponding pointer
  */
-export function get<T extends Node = Node>(node: Node, pointer: string): T | JsonError {
+export function getNode<T extends Node = Node>(node: Node, pointer: string): T | JsonError {
     const frags = gp.split(pointer);
     return step(node, frags, []) as T | JsonError;
 }

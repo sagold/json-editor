@@ -1,7 +1,7 @@
 import { Draft, JsonPointer, JsonError } from 'json-schema-library';
 import { Node, isJsonError } from '../types';
 import { getData } from '../node/getData';
-import { get } from '../node/get';
+import { getNode } from '../node/getNode';
 
 // function filterAllErrors(errors: any[]): (JsonError | Promise<JsonError | undefined>)[] {
 //     return errors.filter((item) => isJsonError(item) || item instanceof Promise);
@@ -11,7 +11,7 @@ import { get } from '../node/get';
  * validate current node and return the validation errors
  */
 export function getErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') {
-    const startNode = get(root, pointer);
+    const startNode = getNode(root, pointer);
     if (startNode.type === 'error') {
         return startNode;
     }

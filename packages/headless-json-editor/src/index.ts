@@ -7,7 +7,7 @@ import { getData } from './node/getData';
 import { errors } from './node/errors';
 import { find } from './node/find';
 import { flat } from './node/flat';
-import { get } from './node/get';
+import { getNode } from './node/getNode';
 import { trace } from './node/trace';
 import { getChildNode } from './node/getChildNode';
 // transformation
@@ -63,7 +63,7 @@ export {
     EventLoggerPlugin,
     find,
     flat,
-    get,
+    getNode,
     getChildNode,
     getErrors,
     getOptions,

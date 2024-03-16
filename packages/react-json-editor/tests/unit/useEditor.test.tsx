@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { useEditor, UseEditorOptions } from "../../src/lib/useEditor";
 import { strict as assert } from 'assert';
-import { isJsonError, JsonSchema, ObjectNode, StringNode, get } from 'headless-json-editor';
+import { isJsonError, JsonSchema, ObjectNode, StringNode, getNode } from 'headless-json-editor';
 
 describe('useEditor', () => {
     it("should return state and editor instance", () => {
@@ -26,11 +26,11 @@ describe('useEditor', () => {
         });
 
         const [state, editor] = result.current;
-        const titleNode = get<StringNode>(state, "/title");
+        const titleNode = getNode<StringNode>(state, "/title");
         rerender({ schema, data: { title: "updated title" } });
 
         const [stateAfter, editorAfter] = result.current;
-        const titleNodeAfter = get<StringNode>(stateAfter, "/title");
+        const titleNodeAfter = getNode<StringNode>(stateAfter, "/title");
 
         assert(!isJsonError(titleNode) && !isJsonError(titleNodeAfter));
         assert.equal(editor, editorAfter, "should not recreate editor when data has changed");
@@ -46,7 +46,7 @@ describe('useEditor', () => {
             initialProps: { schema, data }
         });
         const [state, editor] = result.current;
-        const titleNode = get<StringNode>(state, "/title");
+        const titleNode = getNode<StringNode>(state, "/title");
 
         rerender({
             schema: {
@@ -59,7 +59,7 @@ describe('useEditor', () => {
         });
 
         const [stateAfter, editorAfter] = result.current;
-        const titleNodeAfter = get<StringNode>(stateAfter, "/title");
+        const titleNodeAfter = getNode<StringNode>(stateAfter, "/title");
 
         assert(!isJsonError(titleNode) && !isJsonError(titleNodeAfter));
         assert.equal(editor, editorAfter, "should not recreate editor when schema has changed");
@@ -112,7 +112,7 @@ describe('useEditor', () => {
         });
 
         const [root, editor] = result.current;
-        const titleNode = get(root, "#/title");
+        const titleNode = getNode(root, "#/title");
         assert.equal(titleNode.type, "string");
         assert.equal(titleNode.value, "X");
         assert.equal(editor.getErrors().length, 1);

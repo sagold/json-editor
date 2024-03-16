@@ -3,7 +3,7 @@ import { createNode } from '../../../src/node/createNode';
 import { set } from '../../../src/transform/set';
 import { getData } from '../../../src/node/getData';
 import { trace } from '../../../src/node/trace';
-import { get } from '../../../src/node/get';
+import { getNode } from '../../../src/node/getNode';
 import { strict as assert } from 'assert';
 import { Node, ArrayNode, ObjectNode, StringNode } from '../../../src/types';
 
@@ -45,12 +45,12 @@ describe('set', () => {
     it('should update string value defined on root', () => {
         const before = createNode(core, core.getTemplate({})) as ObjectNode;
         const beforeString = JSON.stringify(before);
-        const titleBefore = get(before, '#/title');
+        const titleBefore = getNode(before, '#/title');
 
         const [after, changes] = set(core, before, '#/title', 'changed');
 
         assert(after.type !== 'error');
-        const titleAfter = get(after, '#/title');
+        const titleAfter = getNode(after, '#/title');
         assert(titleAfter.type === 'string');
         assert.equal(titleAfter.value, 'changed');
         assert.equal(titleBefore.id, titleAfter.id, 'node id should not have changed');
@@ -68,7 +68,7 @@ describe('set', () => {
         const [after, changes] = set(core, before, '#/size', { width: 4, height: 1 });
 
         assert(after.type !== 'error');
-        const size = get(after, '#/size');
+        const size = getNode(after, '#/size');
         assert(size.type === 'object');
         assert.deepEqual(getData(size), { width: 4, height: 1 });
         // check linking
@@ -76,11 +76,11 @@ describe('set', () => {
         assertUnlinkedNodes(before, after, '#/size');
         // check changeset
         assert.deepEqual(changes, [
-            { type: 'update', node: get(after, '#/size') },
-            { type: 'delete', node: get(before, '#/size/width') },
-            { type: 'delete', node: get(before, '#/size/height') },
-            { type: 'create', node: get(after, '#/size/width') },
-            { type: 'create', node: get(after, '#/size/height') }
+            { type: 'update', node: getNode(after, '#/size') },
+            { type: 'delete', node: getNode(before, '#/size/width') },
+            { type: 'delete', node: getNode(before, '#/size/height') },
+            { type: 'create', node: getNode(after, '#/size/width') },
+            { type: 'create', node: getNode(after, '#/size/height') }
         ]);
     });
 
@@ -101,7 +101,7 @@ describe('set', () => {
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { title: 'latest headline', list: [], size: {} });
-        const titleNode = get(after, '/title') as StringNode;
+        const titleNode = getNode(after, '/title') as StringNode;
         assert.equal(titleNode.schema.default, 'initial title');
         // check linking
         assert(beforeString === JSON.stringify(before), 'original data should not have changed');
@@ -117,7 +117,7 @@ describe('set', () => {
         assert(after.type !== 'error');
 
         assert.deepEqual(getData(after), { unknown: 'unknown property', title: 'initial title', list: [], size: {} });
-        const unknownNode = get(after, '/unknown') as StringNode;
+        const unknownNode = getNode(after, '/unknown') as StringNode;
         assert.equal(unknownNode.schema.type, 'string');
     });
 
@@ -134,16 +134,16 @@ describe('set', () => {
 
     it('should be able to replace object on root property by different type', () => {
         const before = createNode(core, core.getTemplate({})) as ObjectNode;
-        const idsBefore = [get(before, '/size').id];
+        const idsBefore = [getNode(before, '/size').id];
 
         const [after] = set(core, before, '/size', '1024x768');
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { ...template, size: '1024x768' });
-        const sizeNode = get(after, '/size');
+        const sizeNode = getNode(after, '/size');
         assert.equal(sizeNode.type, 'string', 'root type should have changed to datatype string');
 
-        const idsAfter = [get(after, '/size').id];
+        const idsAfter = [getNode(after, '/size').id];
         assert.notDeepEqual(idsBefore, idsAfter, 'node.ids should have changed');
     });
 
@@ -216,7 +216,7 @@ describe('set', () => {
             // check linking
             assertUnlinkedNodes(after, before, '/list/0');
             // check changeset
-            assert.deepEqual(changes, [{ type: 'update', node: get(after, '/list/0') }]);
+            assert.deepEqual(changes, [{ type: 'update', node: getNode(after, '/list/0') }]);
         });
 
         it('should be able to append string item to array', () => {
@@ -229,7 +229,7 @@ describe('set', () => {
             // check linking
             assertUnlinkedNodes(after, before, '/list/1');
             // check changeset
-            assert.deepEqual(changes, [{ type: 'create', node: get(after, '/list/1') }]);
+            assert.deepEqual(changes, [{ type: 'create', node: getNode(after, '/list/1') }]);
         });
 
         it('should have new item flagged by isArrayItem', () => {
@@ -238,7 +238,7 @@ describe('set', () => {
             const [after, changes] = set(core, before, '/list/1', 'b');
 
             assert(after.type !== 'error');
-            const arrayItem = get(after, '/list/1');
+            const arrayItem = getNode(after, '/list/1');
             assert.equal(arrayItem.isArrayItem, true);
         });
 
@@ -274,7 +274,7 @@ describe('set', () => {
             assertUnlinkedNodes(after, before, '/list/2');
             // check changeset
             assert(changes);
-            assert.deepEqual(changes[0], { type: 'update', node: get(after, '/list') });
+            assert.deepEqual(changes[0], { type: 'update', node: getNode(after, '/list') });
         });
     });
 
@@ -283,8 +283,8 @@ describe('set', () => {
             const draft = new Draft07({ type: 'object' });
             const before = createNode(draft, draft.getTemplate({ switch: ['first', 2] })) as ObjectNode;
 
-            assert.equal(get(before, '/switch/0').type, 'string');
-            assert.equal(get(before, '/switch/1').type, 'number');
+            assert.equal(getNode(before, '/switch/0').type, 'string');
+            assert.equal(getNode(before, '/switch/1').type, 'number');
         });
     });
 
@@ -303,7 +303,7 @@ describe('set', () => {
 
         it('should switch between string and number', () => {
             const before = createNode(oneOf, { switch: 'as-string' }) as ObjectNode;
-            const beforeSwitch = get(before, '/switch');
+            const beforeSwitch = getNode(before, '/switch');
             assert.equal(beforeSwitch.type, 'string');
 
             const [after] = set(oneOf, before, '/switch', 23);
@@ -413,7 +413,7 @@ describe('set', () => {
             const [after] = set(allOf, before, '/title', 'triggers an error');
 
             assert(after.type === 'object');
-            assert.equal(get(before, '/title').id, get(after, '/title').id, 'should not have replaced node');
+            assert.equal(getNode(before, '/title').id, getNode(after, '/title').id, 'should not have replaced node');
         });
     });
 
@@ -468,8 +468,8 @@ describe('set', () => {
             assert(after.type !== 'error');
             assert(before.id === after.id, 'parent id of object should not have changed');
             assert.equal(
-                get(before, '/text').id,
-                get(after, '/text').id,
+                getNode(before, '/text').id,
+                getNode(after, '/text').id,
                 'id of updated value should not have changed'
             );
             // check linking
@@ -512,14 +512,14 @@ describe('set', () => {
 
         it('should switch between object schema', () => {
             const before = createNode(oneOf, { switch: { type: 'header', text: 'test' } }) as ObjectNode;
-            const beforeSwitch = get(before, '/switch');
+            const beforeSwitch = getNode(before, '/switch');
             assert(!isJsonError(beforeSwitch));
             assert.equal(beforeSwitch.schema.id, 'header');
 
             const [after, changes] = set(oneOf, before, '/switch/type', 'paragraph');
 
             assert(after.type !== 'error');
-            const afterSwitch = get(after, '/switch');
+            const afterSwitch = getNode(after, '/switch');
             assert(!isJsonError(afterSwitch));
             assert.equal(afterSwitch.schema.id, 'paragraph');
             // check linking
@@ -534,16 +534,16 @@ describe('set', () => {
 
         it('should not replace nodes on value update', () => {
             const before = createNode(oneOf, { switch: { type: 'header', text: 'test' } }) as ObjectNode;
-            const switchBefore = JSON.parse(JSON.stringify(get(before, '/switch')));
+            const switchBefore = JSON.parse(JSON.stringify(getNode(before, '/switch')));
 
             const [after] = set(oneOf, before, '/switch/text', 'updated-test-string');
 
             assert(after.type !== 'error');
-            const switchAfter = get(after, '/switch') as StringNode;
+            const switchAfter = getNode(after, '/switch') as StringNode;
             assert(switchBefore.id === switchAfter.id, 'parent id of object should not have changed');
             assert.equal(
-                get(switchBefore, '/text').id,
-                get(switchAfter, '/text').id,
+                getNode(switchBefore, '/text').id,
+                getNode(switchAfter, '/text').id,
                 'id of updated value should not have changed'
             );
             // check linking
@@ -594,12 +594,12 @@ describe('set', () => {
 
             const [after1] = set(oneOf, before, '/switch/0', 1);
             assert(after1.type !== 'error');
-            const first = get(after1, '/switch/0');
+            const first = getNode(after1, '/switch/0');
             assert.equal(first.type, 'number');
 
             const [after2] = set(oneOf, after1, '/switch/1', 'second');
             assert(after2.type !== 'error');
-            const second = get(after2, '/switch/1');
+            const second = getNode(after2, '/switch/1');
             assert.equal(second.type, 'string');
 
             // check linking
@@ -613,14 +613,14 @@ describe('set', () => {
             const [after, changes] = set(core, before, '/content/0', { type: 'paragraph' });
 
             assert(after.type !== 'error');
-            const firstNode = get(after, '/content/0');
+            const firstNode = getNode(after, '/content/0');
             assert(!isJsonError(firstNode));
             assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
             // check linking
             assertUnlinkedNodes(after, before, '/content/0');
             // check changeset
             assert.deepEqual(changes, [
-                { type: 'delete', node: get(before, '/content/0') },
+                { type: 'delete', node: getNode(before, '/content/0') },
                 { type: 'create', node: firstNode }
             ]);
         });
@@ -632,7 +632,7 @@ describe('set', () => {
         //     const [after] = set(core, before, '/content/0', { type: 'paragraph' });
 
         //     assert(after.type !== 'error');
-        //     const firstNode = get(after, '/content/0');
+        //     const firstNode = getNode(after, '/content/0');
         //     assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
         // });
 
@@ -642,7 +642,7 @@ describe('set', () => {
             const [after] = set(core, before, '/content/0/type', 'paragraph');
 
             assert(after.type !== 'error');
-            const firstNode = get(after, '/content/0');
+            const firstNode = getNode(after, '/content/0');
 
             assert(!isJsonError(firstNode));
             assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
@@ -931,7 +931,7 @@ describe('set', () => {
             [state] = set(core, state, '/switch/2', { type: 'header', text: '' });
             assert(state.type !== 'error');
 
-            const list = get(state, '/switch') as ArrayNode;
+            const list = getNode(state, '/switch') as ArrayNode;
             assert.equal(list.children.length, 3);
 
             [state] = set(core, state, '/switch/0/text', 'first item updated');
@@ -944,7 +944,7 @@ describe('set', () => {
                 ]
             });
 
-            const updatedList = get(state, '/switch') as ArrayNode;
+            const updatedList = getNode(state, '/switch') as ArrayNode;
             assert.equal(updatedList.children.length, 3);
         });
     });

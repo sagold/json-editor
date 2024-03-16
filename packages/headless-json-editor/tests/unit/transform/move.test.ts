@@ -1,7 +1,7 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
 import { getData } from '../../../src/node/getData';
-import { get } from '../../../src/node/get';
+import { getNode } from '../../../src/node/getNode';
 import { trace } from '../../../src/node/trace';
 import { Node, ArrayNode } from '../../../src/types';
 import { strict as assert } from 'assert';
@@ -43,7 +43,7 @@ describe('move', () => {
         const data = getData(after);
         assert.deepEqual(data, { list: ['1', '4', '2', '3', '5'] });
 
-        const list = get(after, '#/list') as ArrayNode;
+        const list = getNode(after, '#/list') as ArrayNode;
         assert.equal(list.children[1].pointer, '#/list/1');
         assert.equal(list.children[1].property, '1');
         assert.equal(list.children[2].pointer, '#/list/2');
@@ -56,8 +56,8 @@ describe('move', () => {
         assertUnlinkedNodes(before, after, '/list/1');
         assertUnlinkedNodes(before, after, '/list/2');
         assertUnlinkedNodes(before, after, '/list/3');
-        assert.equal(get(before, '#/list/0'), get(after, '#/list/0'));
-        assert.equal(get(before, '#/list/4'), get(after, '#/list/4'));
+        assert.equal(getNode(before, '#/list/0'), getNode(after, '#/list/0'));
+        assert.equal(getNode(before, '#/list/4'), getNode(after, '#/list/4'));
     });
 
     it('should move item in root array', () => {

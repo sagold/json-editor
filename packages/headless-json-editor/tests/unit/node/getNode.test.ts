@@ -1,10 +1,10 @@
 import { createNode } from '../../../src/node/createNode';
-import { get } from '../../../src/node/get';
+import { getNode } from '../../../src/node/getNode';
 import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { Node } from '../../../src/types';
 
-describe('get', () => {
+describe('getNode', () => {
     let node: Node;
     beforeEach(
         () =>
@@ -34,25 +34,25 @@ describe('get', () => {
     );
 
     it('should return target property for json-pointer', () => {
-        const result = get(node, '/title');
+        const result = getNode(node, '/title');
         assert(result.type === 'string');
         assert(result.value === 'my-title');
     });
 
     it('should return not found error for not matching json-pointer', () => {
-        const result = get(node, '/contents/3/notfound');
+        const result = getNode(node, '/contents/3/notfound');
         assert(result.type === 'error');
     });
 
     it('should return target item for json-pointer', () => {
-        const result = get(node, '/contents/1');
+        const result = getNode(node, '/contents/1');
         assert(result.type === 'object');
         assert(result.children[0].type === 'string');
         assert.equal(result.children[0].value, 'paragraph');
     });
 
     it('should return nested property for json-pointer', () => {
-        const result = get(node, '/contents/1/type');
+        const result = getNode(node, '/contents/1/type');
         assert(result.type === 'string');
         assert.equal(result.value, 'paragraph');
     });

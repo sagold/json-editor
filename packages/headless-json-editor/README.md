@@ -187,7 +187,7 @@ const allNodes = flat(root);
 get a specific node by its path
 
 ```ts
-const target = get(root, "#/page/header");
+const target = getNode(root, "#/page/header");
 ```
 
 get a childnode by property or index

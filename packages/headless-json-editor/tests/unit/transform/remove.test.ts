@@ -1,7 +1,7 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
 import { getData } from '../../../src/node/getData';
-import { get } from '../../../src/node/get';
+import { getNode } from '../../../src/node/getNode';
 import { trace } from '../../../src/node/trace';
 import { Node, ObjectNode } from '../../../src/types';
 import { strict as assert } from 'assert';
@@ -43,7 +43,7 @@ describe('remove', () => {
             assert(after.type !== 'error');
             const data = getData(after);
             assert.deepEqual(data, { list: ['1', '2', '4'] });
-            const lastNode = get(after, '/list/2');
+            const lastNode = getNode(after, '/list/2');
             assert(lastNode.type === 'string', 'should have fetched last node with pointer to last item');
             assert.equal(lastNode.pointer, '#/list/2', 'should have updated pointer');
             assert.equal(lastNode.value, '4', 'last node should be 4');
