@@ -1,6 +1,6 @@
 import { Draft, JsonPointer, JsonError } from 'json-schema-library';
 import { Node, isJsonError, isParentNode } from '../types';
-import { json } from '../node/json';
+import { getData } from '../node/getData';
 import { get } from '../node/get';
 import { splitErrors } from './getErrors';
 
@@ -33,7 +33,7 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointe
     });
 
     // retrieve errors
-    const errors = draft.validate(json(startNode), startNode.schema, startNode.pointer).flat(Infinity);
+    const errors = draft.validate(getData(startNode), startNode.schema, startNode.pointer).flat(Infinity);
     const [syncErrors, asyncErrors] = splitErrors(errors);
 
     // assign errors

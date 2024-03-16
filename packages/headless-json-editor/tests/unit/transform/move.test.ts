@@ -1,6 +1,6 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
-import { json } from '../../../src/node/json';
+import { getData } from '../../../src/node/getData';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
 import { Node, ArrayNode } from '../../../src/types';
@@ -40,7 +40,7 @@ describe('move', () => {
         const [after] = move(core, before, '/list', 3, 1);
 
         assert(after.type !== 'error');
-        const data = json(after);
+        const data = getData(after);
         assert.deepEqual(data, { list: ['1', '4', '2', '3', '5'] });
 
         const list = get(after, '#/list') as ArrayNode;
@@ -67,7 +67,7 @@ describe('move', () => {
         const [after] = move(core, before, '#', 3, 1);
 
         assert(after.type !== 'error');
-        assert.deepEqual(json(after), ['1', '4', '2', '3', '5']);
+        assert.deepEqual(getData(after), ['1', '4', '2', '3', '5']);
     });
 
     it('should append item if target index is too large', () => {
@@ -75,6 +75,6 @@ describe('move', () => {
 
         const [after] = move(core, before, '/list', 1, 90);
         assert(after.type !== 'error');
-        assert.deepEqual(json(after), { list: ['1', '3', '4', '5', '2'] });
+        assert.deepEqual(getData(after), { list: ['1', '3', '4', '5', '2'] });
     });
 });

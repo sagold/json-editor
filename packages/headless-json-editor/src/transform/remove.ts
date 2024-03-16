@@ -1,11 +1,11 @@
-import { JsonPointer, JsonError, Draft, reduceSchema, isDynamicSchema } from 'json-schema-library';
+import { JsonPointer, JsonError, Draft, reduceSchema } from 'json-schema-library';
 import { isParentNode, Node, isJsonError, Change } from '../types';
 import { invalidPathError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
 import { split } from '@sagold/json-pointer';
 import { unlinkPath } from './unlinkPath';
-import { json } from '../node/json';
+import { getData } from '../node/getData';
 import { updateOptionalPropertyList } from '../node/createNode';
 
 export function remove<T extends Node = Node>(
@@ -28,7 +28,7 @@ export function remove<T extends Node = Node>(
             invalidPathError({
                 pointer: parentNode.pointer,
                 schema: parentNode.schema,
-                value: json(parentNode),
+                value: getData(parentNode),
                 reason: `path does not lead to valid destination in data/tree at ${parentNode.pointer}`,
                 where: `transform: 'remove' data at '${pointer}'`
             })
@@ -53,7 +53,7 @@ export function remove<T extends Node = Node>(
 
     // dynamic schema might change
     if (parentNode.type === 'object') {
-        const nextData = json(parentNode) as Record<string, unknown>;
+        const nextData = getData(parentNode) as Record<string, unknown>;
         // @ts-ignore
         const staticSchema = reduceSchema(draft, parentNode.sourceSchema, nextData);
         // @todo recreate node instead of patching to take care for changes in children

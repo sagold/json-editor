@@ -1,6 +1,6 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
-import { json } from '../../../src/node/json';
+import { getData } from '../../../src/node/getData';
 import { get } from '../../../src/node/get';
 import { trace } from '../../../src/node/trace';
 import { Node, ObjectNode } from '../../../src/types';
@@ -41,7 +41,7 @@ describe('remove', () => {
             const [after] = remove(core, before, '/list/2');
 
             assert(after.type !== 'error');
-            const data = json(after);
+            const data = getData(after);
             assert.deepEqual(data, { list: ['1', '2', '4'] });
             const lastNode = get(after, '/list/2');
             assert(lastNode.type === 'string', 'should have fetched last node with pointer to last item');
@@ -60,7 +60,7 @@ describe('remove', () => {
             const [after] = remove(core, before, '/list');
 
             assert(after.type !== 'error');
-            const data = json(after);
+            const data = getData(after);
             assert.deepEqual(data, {});
             assert.equal(beforeString, JSON.stringify(before), 'should not have modified previous state');
             assertUnlinkedNodes(before, after, '/list');

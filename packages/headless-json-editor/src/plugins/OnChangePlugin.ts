@@ -1,6 +1,6 @@
 import { Plugin, HeadlessEditor } from '../HeadlessEditor';
 import { Node } from '../types';
-import { json } from '../node/json';
+import { getData } from '../node/getData';
 
 // currently using any as we  need toi figure out how to parameterize plugin for use (usePlugin)
 export type OnChangeListener<Data = any> = (data: Data, root: Node, editor: HeadlessEditor<Data>) => void;
@@ -23,7 +23,7 @@ export const OnChangePlugin: Plugin<OnChangeOptions> = (he, options) => {
         id: options.pluginId ?? 'onChange',
         onEvent(root, event) {
             if (event.type === 'done') {
-                onChange(json(root), root, he);
+                onChange(getData(root), root, he);
             }
         }
     };

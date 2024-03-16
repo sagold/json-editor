@@ -1,10 +1,7 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
-import { json } from '../../../src/node/json';
 import { set } from '../../../src/transform/set';
-import { errors } from '../../../src/node/errors';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
 
 /**
  * conditional forms should

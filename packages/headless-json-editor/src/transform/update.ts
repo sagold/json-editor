@@ -2,7 +2,7 @@ import gp from '@sagold/json-pointer';
 import { DefaultNodeOptions, createNode } from '../node/createNode';
 import { Draft, JsonError, JsonPointer } from "json-schema-library";
 import { get } from "../node/get";
-import { json } from "../node/json";
+import { getData } from "../node/getData";
 import { Node, isJsonError, Change, ParentNode, JsonSchema } from '../types';
 import { unlinkPath } from './unlinkPath';
 
@@ -32,7 +32,7 @@ export function update<T extends Node = Node>(
     // get the uptodate json-schema of this node
     const schema = draft.getSchema({
         pointer,
-        data: json(ast),
+        data: getData(ast),
     });
 
     if (isJsonError(schema)) {
@@ -41,7 +41,7 @@ export function update<T extends Node = Node>(
 
     const [newRootNode] = result;
     // create new node and replace the old one with it
-    const newNode = createNode(draft, json(targetNode), schema, pointer);
+    const newNode = createNode(draft, getData(targetNode), schema, pointer);
     const [pointerToParent] = gp.splitLast(pointer);
     const parentNode = get(newRootNode, pointerToParent) as ParentNode;
     parentNode.children = parentNode.children.map((node) =>

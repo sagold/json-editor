@@ -1,5 +1,5 @@
 import { get as getPointer } from '@sagold/json-pointer';
-import { DefaultNodeOptions, ParentNode, Node, json, widget, WidgetPlugin } from '@sagold/react-json-editor';
+import { DefaultNodeOptions, ParentNode, Node, getData, widget, WidgetPlugin } from '@sagold/react-json-editor';
 import { useRef } from 'react';
 import { useModal, Modal } from '../../components/modal/Modal';
 import { Button } from '../../components/button/Button';
@@ -13,10 +13,10 @@ function getPreviewText(node: Node) {
     }
 
     if (node.options.previewValue === '.') {
-        return json(node) as string;
+        return getData(node) as string;
     }
 
-    const previewText = getPointer(json(node), node.options.previewValue);
+    const previewText = getPointer(getData(node), node.options.previewValue);
     return `${previewText}`;
 }
 

@@ -1,6 +1,6 @@
 import { type Key } from 'react';
 import { TagListInput } from '../../components/taglistinput/TagListInput';
-import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, json } from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, getData } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 // import { TextArea } from '../../components/textarea/TextArea';
 // import { useFocus } from 'react-aria';
@@ -22,7 +22,7 @@ export const TagListWidget = widget<ArrayNode<TagListWidgetOptions>, string[]>((
     const allowDuplicates = node.schema.uniqueItems === true;
 
     // actual list data
-    const data = json(node) as string[];
+    const data = getData(node) as string[];
 
     // a) we can have labels for values
     // const labels = options.values ?? [];

@@ -1,6 +1,6 @@
 import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
 // import { deepEqual } from 'fast-equals';
-import { json } from '../../node/json';
+import { getData } from '../../node/getData';
 import { createNode } from '../../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
 import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
@@ -36,9 +36,9 @@ export function set<T extends Node = Node>(
     if (isDynamicSchema(currentRootSchema)) {
         // root node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
-        const currentData = json(ast);
+        const currentData = getData(ast);
         const currentSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, currentData, pointer);
-        const nextData = json(ast);
+        const nextData = getData(ast);
         gp.set(nextData, pointer, value);
         const nextSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, nextData, pointer);
         if (!deepEqual(currentSchema, nextSchema)) {
@@ -138,7 +138,7 @@ function setNext(
         // given path is invalid
         return invalidPathError({
             pointer: join(parentNode.pointer, property, ...frags),
-            value: json(childNode),
+            value: getData(childNode),
             schema: childNode.schema,
             reason: 'expected parent data to be object or array',
             where: 'resolving json pointer to node in transform.change'
@@ -152,9 +152,9 @@ function setNext(
         // console.log('child has dynamic schema', property, childSchema);
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
-        const currentData = json(childNode);
+        const currentData = getData(childNode);
         const currentSchema = resolveDynamicSchema(draft, childSchema, currentData, childNode.pointer);
-        let nextData = json(childNode);
+        let nextData = getData(childNode);
         nextData = gp.set(nextData, join(frags), value);
         const nextSchema = resolveDynamicSchema(draft, childSchema, nextData, childNode.pointer);
 

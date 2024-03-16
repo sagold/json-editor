@@ -199,7 +199,7 @@ const page = getChildNode(root, "page");
 get json data starting from node
 
 ```ts
-const jsonData = json(root);
+const jsonData = getData(root);
 ```
 
 get all nodes along the path

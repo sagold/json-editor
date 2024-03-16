@@ -1,6 +1,6 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
-import { json } from '../../../src/node/json';
+import { getData } from '../../../src/node/getData';
 import { strict as assert } from 'assert';
 import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
 
@@ -81,7 +81,7 @@ describe('createNode', () => {
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
             assert(isJsonError(root.children[0].schema));
-            assert.deepEqual(json(root), { unknownInvalid: 'property' });
+            assert.deepEqual(getData(root), { unknownInvalid: 'property' });
         });
 
         it('should not return schema as error for undefined but valid data', () => {
@@ -97,7 +97,7 @@ describe('createNode', () => {
             assert.equal(root.children[0].type, 'string');
             assert(!isJsonError(root.children[0].schema));
             assert.equal((root.children[0] as StringNode).value, 'property');
-            assert.deepEqual(json(root), { unknownValid: 'property' });
+            assert.deepEqual(getData(root), { unknownValid: 'property' });
         });
     });
 
@@ -203,7 +203,7 @@ describe('createNode', () => {
 
                 const root = createNode<ObjectNode>(draft, { test: 'with value', additionalValue: 'additional' });
                 assert.equal(root.children.length, 2);
-                assert.deepEqual(json(root), { test: 'with value', additionalValue: 'additional' });
+                assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'additional' });
             });
 
             it('should add required missing dependency', () => {
@@ -219,7 +219,7 @@ describe('createNode', () => {
                 });
                 const root = createNode<ObjectNode>(draft, { test: 'with value' });
                 assert.equal(root.children.length, 2);
-                assert.deepEqual(json(root), { test: 'with value', additionalValue: '' });
+                assert.deepEqual(getData(root), { test: 'with value', additionalValue: '' });
             });
         });
 
@@ -262,7 +262,7 @@ describe('createNode', () => {
 
                 const root = createNode<ObjectNode>(draft, { test: 'with value' });
                 assert.equal(root.children.length, 2);
-                assert.deepEqual(json(root), { test: 'with value', additionalValue: 'dynamic then' });
+                assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'dynamic then' });
             });
 
             it('should add else-schema for invalid if-schema', () => {
@@ -271,7 +271,7 @@ describe('createNode', () => {
                 const root = createNode<ObjectNode>(draft, { test: '' });
                 assert.equal(root.children.length, 2);
                 assert.equal(root.children[1].schema.description, 'else');
-                assert.deepEqual(json(root), { test: '', additionalValue: 'dynamic else' });
+                assert.deepEqual(getData(root), { test: '', additionalValue: 'dynamic else' });
             });
 
             it('should not add then-schema for invalid if-schema', () => {
@@ -299,7 +299,7 @@ describe('createNode', () => {
 
                 const root = createNode<ObjectNode>(draft, { test: 'with-value' });
                 assert.equal(root.children.length, 1);
-                assert.deepEqual(json(root), { test: 'with-value' });
+                assert.deepEqual(getData(root), { test: 'with-value' });
             });
 
             it('should not create a node for non-matching else case', () => {
@@ -338,7 +338,7 @@ describe('createNode', () => {
                     elseValue: 'input else'
                 });
                 assert.equal(root.children.length, 2);
-                assert.deepEqual(json(root), { test: 'triggers then', thenValue: 'input then' });
+                assert.deepEqual(getData(root), { test: 'triggers then', thenValue: 'input then' });
             });
         });
     });

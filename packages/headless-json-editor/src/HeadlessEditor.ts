@@ -5,7 +5,7 @@ import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
 import { errors } from './node/errors';
 import { flat } from './node/flat';
 import { get } from './node/get';
-import { json } from './node/json';
+import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
 import { move as moveItem } from './transform/move';
 import { remove as removeTarget } from './transform/remove';
@@ -82,7 +82,7 @@ export class HeadlessEditor<Data = unknown> {
      * @param [pointer] - optional json-pointer of data to return. Returns whole json-data per default
      */
     getData(pointer = '#') {
-        return gp.get(json(this.root), pointer);
+        return gp.get(getData(this.root), pointer);
     }
 
     /**
@@ -124,7 +124,7 @@ export class HeadlessEditor<Data = unknown> {
      */
     setSchema(schema: JsonSchema) {
         this.draft.setSchema(schema);
-        return this.setData(json(this.root) as Data);
+        return this.setData(getData(this.root) as Data);
     }
 
     /**
@@ -221,7 +221,7 @@ export class HeadlessEditor<Data = unknown> {
     setValue(pointer: string, value: unknown) {
         const previousNode = get(this.root, pointer);
         if (!isJsonError(previousNode)) {
-            const previousValue = json(previousNode);
+            const previousValue = getData(previousNode);
             if (deepEqual(previousValue, value)) {
                 return this.root;
             }
@@ -251,7 +251,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     addValue(pointer: string) {
-        const schema = this.draft.getSchema({ pointer, data: json(this.root) });
+        const schema = this.draft.getSchema({ pointer, data: getData(this.root) });
         const value = this.draft.getTemplate(undefined, schema, this.templateOptions);
         return this.setValue(pointer, value);
     }
@@ -342,7 +342,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return a list of available json subschemas to insert
      */
     getArrayAddOptions(node: ArrayNode) {
-        const schema = this.draft.getSchema({ pointer: node.pointer, data: json(this.root) });
+        const schema = this.draft.getSchema({ pointer: node.pointer, data: getData(this.root) });
         const selections = this.draft.getChildSchemaSelection(node.children.length, schema);
         if (isJsonError(selections)) {
             return [{ type: 'string' }];

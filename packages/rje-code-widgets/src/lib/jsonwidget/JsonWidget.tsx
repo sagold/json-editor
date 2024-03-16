@@ -2,12 +2,13 @@ import Markdown from 'markdown-to-jsx';
 import { useState, useCallback, useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
-import { Widget, Label, JsonError ,
+import {
+    Widget, Label, JsonError,
     widget,
     WidgetPlugin,
     StringNode,
     ParentNode,
-    json,
+    getData,
     DefaultNodeOptions,
     JsonSchema
 } from '@sagold/react-json-editor';
@@ -91,7 +92,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
             <Label>{options.title as string}</Label>
             {/*https://uiwjs.github.io/react-codemirror/*/}
             <CodeMirror
-                value={JSON.stringify(json(node), null, 2)}
+                value={JSON.stringify(getData(node), null, 2)}
                 basicSetup={options.setup}
                 editable={options.disabled === false}
                 extensions={extensions}

@@ -3,7 +3,7 @@ import {
     WidgetPlugin,
     ArrayNode,
     DefaultNodeOptions,
-    json
+    getData
 } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { TagList } from '../../components/taglist/TagList';
@@ -13,7 +13,7 @@ export type SelectMultipleWidgetOptions = {} & DefaultNodeOptions;
 export const SelectMultipleWidget = widget<ArrayNode<SelectMultipleWidgetOptions>, (string | number)[]>(
     ({ node, options, setValue }) => {
         const hasError = node.errors.length > 0;
-        const selectedKeys = json(node) as (string | number)[];
+        const selectedKeys = getData(node) as (string | number)[];
         // @ts-expect-error
         const enumValues = (node.schema.items.enum || []) as (string | number)[];
         const titles = (options.enum as string[]) ?? [];

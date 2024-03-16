@@ -4,7 +4,7 @@ import {
     WidgetPlugin,
     StringNode,
     ParentNode,
-    json,
+    getData,
     JsonError,
     DefaultNodeOptions,
     errors
@@ -81,7 +81,7 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
 });
 
 export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string>(({ node, options, setValue }) => {
-    const value = json(node);
+    const value = getData(node);
     const valueString = JSON.stringify(value, null, 2);
     const [error, setError] = useState<JsonError | undefined>();
     const isValidConst = node.schema.const != null && node.errors.length === 0;

@@ -3,7 +3,7 @@ import { isJsonError, ParentNode, Change, isNode } from '../../types';
 import { createNode } from '../../node/createNode';
 import { invalidPathError } from '../../errors';
 import { getSchemaOfChild } from './getSchemaOfChild';
-import { json } from '../../node/json';
+import { getData } from '../../node/getData';
 
 function isNumber(value: string) {
     return `${parseInt(value)}` === value;
@@ -18,7 +18,7 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
         return invalidPathError({
             pointer: node.pointer,
             schema: node.schema,
-            value: json(node),
+            value: getData(node),
             property,
             reason: `child property '${property}' to array is not a number`,
             where: 'resolving target node in transform.set'

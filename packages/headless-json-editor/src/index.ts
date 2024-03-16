@@ -2,7 +2,7 @@
 import { setErrorMessages } from './settings';
 // create
 import { createNode, getOptions, DefaultNodeOptions } from './node/createNode';
-import { json } from './node/json';
+import { getData } from './node/getData';
 // traversal
 import { errors } from './node/errors';
 import { find } from './node/find';
@@ -74,7 +74,7 @@ export {
     isNode,
     isParentNode,
     isValueNode,
-    json,
+    getData,
     move,
     OnChangePlugin,
     RemoteEnumOptionsPlugin,

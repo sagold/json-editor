@@ -3,7 +3,7 @@ import { isParentNode, Node } from '../types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildNodeIndex } from '../node/getChildNode';
 import { split, join } from '@sagold/json-pointer';
-import { json } from '../node/json';
+import { getData } from '../node/getData';
 
 export function buildPathsMap(paths: (JsonPointer | string[])[]) {
     const map: Record<string, unknown> = {};
@@ -45,7 +45,7 @@ export function unlinkPath<T extends Node = Node>(
         return invalidNodeTypeError({
             pointer,
             schema: previousRoot.schema,
-            value: json(previousRoot),
+            value: getData(previousRoot),
             expectedType: 'array or object',
             type: previousRoot?.type,
             reason: `root node must be of type array or object or else there is nothing to delete`,
@@ -66,7 +66,7 @@ export function unlinkPath<T extends Node = Node>(
             return invalidPathError({
                 pointer,
                 schema: targetNode.schema,
-                value: json(targetNode),
+                value: getData(targetNode),
                 reason: `path does not lead to valid destination in data/tree at ${targetNode.pointer}`,
                 where: `transform: 'remove' data at '${pointer}'`
             });

@@ -1,7 +1,7 @@
 import { Draft07, Draft, isJsonError } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
 import { set } from '../../../src/transform/set';
-import { json } from '../../../src/node/json';
+import { getData } from '../../../src/node/getData';
 import { trace } from '../../../src/node/trace';
 import { get } from '../../../src/node/get';
 import { strict as assert } from 'assert';
@@ -70,7 +70,7 @@ describe('set', () => {
         assert(after.type !== 'error');
         const size = get(after, '#/size');
         assert(size.type === 'object');
-        assert.deepEqual(json(size), { width: 4, height: 1 });
+        assert.deepEqual(getData(size), { width: 4, height: 1 });
         // check linking
         assert(beforeString === JSON.stringify(before), 'original data should not have changed');
         assertUnlinkedNodes(before, after, '#/size');
@@ -89,7 +89,7 @@ describe('set', () => {
         const [after, changes] = set(core, before, '#', { title: 'new', size: {}, list: ['99'] });
 
         assert(after.type !== 'error');
-        assert.deepEqual(json(after), { title: 'new', size: {}, list: ['99'] });
+        assert.deepEqual(getData(after), { title: 'new', size: {}, list: ['99'] });
         assert.equal(before.id, after.id, 'should not have changed id of updated object');
     });
 
@@ -100,7 +100,7 @@ describe('set', () => {
         const [after, changes] = set(core, before, '/title', 'latest headline');
 
         assert(after.type !== 'error');
-        assert.deepEqual(json(after), { title: 'latest headline', list: [], size: {} });
+        assert.deepEqual(getData(after), { title: 'latest headline', list: [], size: {} });
         const titleNode = get(after, '/title') as StringNode;
         assert.equal(titleNode.schema.default, 'initial title');
         // check linking
@@ -116,7 +116,7 @@ describe('set', () => {
         const [after] = set(core, before, '/unknown', 'unknown property');
         assert(after.type !== 'error');
 
-        assert.deepEqual(json(after), { unknown: 'unknown property', title: 'initial title', list: [], size: {} });
+        assert.deepEqual(getData(after), { unknown: 'unknown property', title: 'initial title', list: [], size: {} });
         const unknownNode = get(after, '/unknown') as StringNode;
         assert.equal(unknownNode.schema.type, 'string');
     });
@@ -129,7 +129,7 @@ describe('set', () => {
 
         assert(after.type === 'error');
         assert.equal(after.code, 'invalid-path-error');
-        assert.deepEqual(json(before), template, 'should not have modified data');
+        assert.deepEqual(getData(before), template, 'should not have modified data');
     });
 
     it('should be able to replace object on root property by different type', () => {
@@ -139,7 +139,7 @@ describe('set', () => {
         const [after] = set(core, before, '/size', '1024x768');
 
         assert(after.type !== 'error');
-        assert.deepEqual(json(after), { ...template, size: '1024x768' });
+        assert.deepEqual(getData(after), { ...template, size: '1024x768' });
         const sizeNode = get(after, '/size');
         assert.equal(sizeNode.type, 'string', 'root type should have changed to datatype string');
 
@@ -212,7 +212,7 @@ describe('set', () => {
             const [after, changes] = set(core, before, '/list/0', 'b');
 
             assert(after.type !== 'error');
-            assert.deepEqual(json(after), { ...template, list: ['b'] });
+            assert.deepEqual(getData(after), { ...template, list: ['b'] });
             // check linking
             assertUnlinkedNodes(after, before, '/list/0');
             // check changeset
@@ -225,7 +225,7 @@ describe('set', () => {
             const [after, changes] = set(core, before, '/list/1', 'b');
 
             assert(after.type !== 'error');
-            assert.deepEqual(json(after), { ...template, list: ['a', 'b'] });
+            assert.deepEqual(getData(after), { ...template, list: ['a', 'b'] });
             // check linking
             assertUnlinkedNodes(after, before, '/list/1');
             // check changeset
@@ -249,7 +249,7 @@ describe('set', () => {
 
             assert(after.type !== 'error');
             // eslint-disable-next-line no-sparse-arrays
-            assert.deepEqual(json(after), { ...template, list: ['a', , 'b'] });
+            assert.deepEqual(getData(after), { ...template, list: ['a', , 'b'] });
         });
 
         it('should return error if array index is not a number', () => {
@@ -259,7 +259,7 @@ describe('set', () => {
 
             assert(after.type === 'error');
             assert.equal(after.code, 'invalid-path-error');
-            assert.deepEqual(json(before), { ...template, list: ['a'] }, 'should not have modified data');
+            assert.deepEqual(getData(before), { ...template, list: ['a'] }, 'should not have modified data');
         });
 
         it('should return update change of array when being replaced', () => {
@@ -309,7 +309,7 @@ describe('set', () => {
             const [after] = set(oneOf, before, '/switch', 23);
 
             assert(after.type !== 'error');
-            assert.deepEqual(json(after), { switch: 23 });
+            assert.deepEqual(getData(after), { switch: 23 });
             assertUnlinkedNodes(after, before, '/switch');
         });
     });
@@ -681,7 +681,7 @@ describe('set', () => {
             const [after] = set<ObjectNode>(dependencies, before, '/test', '');
 
             assert(after.type === 'object');
-            assert.deepEqual(json(after), { test: '', additionalValue: 'before' });
+            assert.deepEqual(getData(after), { test: '', additionalValue: 'before' });
         });
 
         it('should add required node with added trigger node', () => {
@@ -701,7 +701,7 @@ describe('set', () => {
             const [after] = set<ObjectNode>(requiredDependency, before, '/test', 'added');
             assert(after.type === 'object');
             assert.equal(after.children.length, 2);
-            assert.deepEqual(json(after), { test: 'added', additionalValue: '' });
+            assert.deepEqual(getData(after), { test: 'added', additionalValue: '' });
         });
 
         it('should add required node with added trigger when set by parent', () => {
@@ -721,7 +721,7 @@ describe('set', () => {
             const [after] = set<ObjectNode>(requiredDependency, before, '#', { test: 'added' });
             assert(after.type === 'object');
             assert.equal(after.children.length, 2);
-            assert.deepEqual(json(after), { test: 'added', additionalValue: '' });
+            assert.deepEqual(getData(after), { test: 'added', additionalValue: '' });
         });
     });
 
@@ -759,7 +759,7 @@ describe('set', () => {
             const [after] = set<ObjectNode>(conditional, before, '/thenValue', 'updated value');
             assert(after.type === 'object');
             assert.equal(after.children.length, 2);
-            assert.deepEqual(json(after), { test: 'select then', thenValue: 'updated value' });
+            assert.deepEqual(getData(after), { test: 'select then', thenValue: 'updated value' });
         });
 
         it('should change conditional value to "then" case', () => {
@@ -881,13 +881,13 @@ describe('set', () => {
 
             const before = createNode(draft, draft.getTemplate({ addSchema: true, additionalSchema: 'added' }));
             assert(before.type === 'object');
-            const beforeString = json(before);
+            const beforeString = getData(before);
 
             const [after, changes] = set(draft, before, '', { addSchema: true, additionalSchema: 'updated' });
             assert(after.type === 'object');
 
             assert(before.id === after.id, 'should not have replaced root node');
-            assert.deepEqual(json(before), beforeString, 'should not have modified previous state');
+            assert.deepEqual(getData(before), beforeString, 'should not have modified previous state');
             assert(after.children[1].type === 'string');
             assert.equal(after.children[1].value, 'updated');
         });
@@ -936,7 +936,7 @@ describe('set', () => {
 
             [state] = set(core, state, '/switch/0/text', 'first item updated');
             assert(state.type !== 'error');
-            assert.deepEqual(json(state), {
+            assert.deepEqual(getData(state), {
                 switch: [
                     { type: 'header', text: 'first item updated' },
                     { type: 'paragraph', text: '' },
