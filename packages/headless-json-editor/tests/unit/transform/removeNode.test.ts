@@ -5,7 +5,7 @@ import { getNode } from '../../../src/node/getNode';
 import { getNodeTrace } from '../../../src/node/getNodeTrace';
 import { Node, ObjectNode } from '../../../src/types';
 import { strict as assert } from 'assert';
-import { remove } from '../../../src/transform/remove';
+import { removeNode } from '../../../src/transform/removeNode';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -18,7 +18,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     );
 }
 
-describe('remove', () => {
+describe('removeNode', () => {
     let core: Draft;
 
     beforeEach(() => {
@@ -38,7 +38,7 @@ describe('remove', () => {
             const before = createNode(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = remove(core, before, '/list/2');
+            const [after] = removeNode(core, before, '/list/2');
 
             assert(after.type !== 'error');
             const data = getData(after);
@@ -57,7 +57,7 @@ describe('remove', () => {
             const before = createNode(core, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = remove(core, before, '/list');
+            const [after] = removeNode(core, before, '/list');
 
             assert(after.type !== 'error');
             const data = getData(after);
@@ -95,7 +95,7 @@ describe('remove', () => {
             // precondition: title is required, size is set, but list is optional
             assert.deepEqual(before.missingProperties, ['list']);
 
-            const [after, changes] = remove(core, before, '/size');
+            const [after, changes] = removeNode(core, before, '/size');
 
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['size', 'list']);
@@ -124,7 +124,7 @@ describe('remove', () => {
                 draft.getTemplate({ one: 'triggers two' }, draft.getSchema(), { addOptionalProps: false })
             ) as ObjectNode;
 
-            const [after, changes] = remove(draft, before, '/one');
+            const [after, changes] = removeNode(draft, before, '/one');
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['one']);
             assert.deepEqual(after.optionalProperties, ['one', 'two']);

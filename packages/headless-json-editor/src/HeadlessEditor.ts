@@ -8,7 +8,7 @@ import { getNode } from './node/getNode';
 import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
 import { move as moveItem } from './transform/move';
-import { remove as removeTarget } from './transform/remove';
+import { removeNode } from './transform/removeNode';
 import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateErrors } from './validate/updateErrors';
@@ -261,7 +261,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     removeValue(pointer: string) {
-        const [state, changes] = removeTarget(this.draft, this.root, pointer);
+        const [state, changes] = removeNode(this.draft, this.root, pointer);
         if (isJsonError(state)) {
             console.error(`error removing '${pointer}'`);
             console.log(state);

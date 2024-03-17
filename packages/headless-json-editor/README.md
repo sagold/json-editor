@@ -233,12 +233,12 @@ const [newRootNode, changes] = move(draft, currentRootNode, "#/items", 2, 1);
 delete data at location
 
 ```ts
-const [newRootNode, changes] = remove(draft, currentRootNode, "#/page/header");
+const [newRootNode, changes] = removeNode(draft, currentRootNode, "#/page/header");
 ```
 
 set value at location
 
 ```ts
-const [newRootNode, changes] = set(draft, currentRootNode, "#/page/header", { text: "hey" });
+const [newRootNode, changes] = setValue(draft, currentRootNode, "#/page/header", { text: "hey" });
 ```
 

@@ -8,7 +8,7 @@ import { unlinkPath } from './unlinkPath';
 import { getData } from '../node/getData';
 import { updateOptionalPropertyList } from '../node/createNode';
 
-export function remove<T extends Node = Node>(
+export function removeNode<T extends Node = Node>(
     draft: Draft,
     previousRoot: T,
     pointer: JsonPointer
@@ -54,8 +54,7 @@ export function remove<T extends Node = Node>(
     // dynamic schema might change
     if (parentNode.type === 'object') {
         const nextData = getData(parentNode) as Record<string, unknown>;
-        // @ts-ignore
-        const staticSchema = reduceSchema(draft, parentNode.sourceSchema, nextData);
+        const staticSchema = reduceSchema(draft, parentNode.sourceSchema, nextData, parentNode.pointer);
         // @todo recreate node instead of patching to take care for changes in children
         parentNode.schema = staticSchema;
 

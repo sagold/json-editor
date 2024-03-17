@@ -12,7 +12,7 @@ import { getNodeTrace } from './node/getNodeTrace';
 import { getChildNode } from './node/getChildNode';
 // transformation
 import { setValue } from './transform/setValue';
-import { remove } from './transform/remove';
+import { removeNode } from './transform/removeNode';
 import { move } from './transform/move';
 import { unlinkAll } from './transform/unlinkAll';
 import { unlinkPath } from './transform/unlinkPath';
@@ -78,7 +78,7 @@ export {
     move,
     OnChangePlugin,
     RemoteEnumOptionsPlugin,
-    remove,
+    removeNode,
     setValue,
     setErrorMessages,
     SetOptionTitleToPlugin,
