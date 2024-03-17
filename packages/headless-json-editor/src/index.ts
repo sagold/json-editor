@@ -13,7 +13,7 @@ import { getChildNode } from './node/getChildNode';
 // transformation
 import { setValue } from './transform/setValue';
 import { removeNode } from './transform/removeNode';
-import { move } from './transform/move';
+import { moveNode } from './transform/moveNode';
 import { unlinkAll } from './transform/unlinkAll';
 import { unlinkPath } from './transform/unlinkPath';
 import { update, updateSchema, updateOptions } from './transform/update';
@@ -75,7 +75,7 @@ export {
     isParentNode,
     isValueNode,
     getData,
-    move,
+    moveNode,
     OnChangePlugin,
     RemoteEnumOptionsPlugin,
     removeNode,

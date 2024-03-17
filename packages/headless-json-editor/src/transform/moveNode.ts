@@ -7,9 +7,11 @@ import { unlinkPath } from './unlinkPath';
 import { getData } from '../node/getData';
 
 /**
- * move array item to another index
+ * Move an array item to another position
+ *
+ * @return new tree containing changed array
  */
-export function move(
+export function moveNode(
     core: Draft,
     rootNode: Node,
     pointerToArray: JsonPointer,

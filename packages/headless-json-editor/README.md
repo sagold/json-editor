@@ -227,7 +227,7 @@ const currentRootNode = createNode(draft, data);
 move an array item by index
 
 ```ts
-const [newRootNode, changes] = move(draft, currentRootNode, "#/items", 2, 1);
+const [newRootNode, changes] = moveNode(draft, currentRootNode, "#/items", 2, 1);
 ```
 
 delete data at location

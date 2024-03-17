@@ -5,7 +5,7 @@ import { getNode } from '../../../src/node/getNode';
 import { getNodeTrace } from '../../../src/node/getNodeTrace';
 import { Node, ArrayNode } from '../../../src/types';
 import { strict as assert } from 'assert';
-import { move } from '../../../src/transform/move';
+import { moveNode } from '../../../src/transform/moveNode';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -18,7 +18,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     );
 }
 
-describe('move', () => {
+describe('moveNode', () => {
     let core: Draft;
 
     beforeEach(() => {
@@ -37,7 +37,7 @@ describe('move', () => {
         const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
         const beforeString = JSON.stringify(before);
 
-        const [after] = move(core, before, '/list', 3, 1);
+        const [after] = moveNode(core, before, '/list', 3, 1);
 
         assert(after.type !== 'error');
         const data = getData(after);
@@ -64,7 +64,7 @@ describe('move', () => {
         core.setSchema({ type: 'array', items: { type: 'string' } });
         const before = createNode(core, ['1', '2', '3', '4', '5']);
 
-        const [after] = move(core, before, '#', 3, 1);
+        const [after] = moveNode(core, before, '#', 3, 1);
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), ['1', '4', '2', '3', '5']);
@@ -73,7 +73,7 @@ describe('move', () => {
     it('should append item if target index is too large', () => {
         const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
 
-        const [after] = move(core, before, '/list', 1, 90);
+        const [after] = moveNode(core, before, '/list', 1, 90);
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { list: ['1', '3', '4', '5', '2'] });
     });

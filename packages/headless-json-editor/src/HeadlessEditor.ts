@@ -7,7 +7,7 @@ import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
 import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
-import { move as moveItem } from './transform/move';
+import { moveNode } from './transform/moveNode';
 import { removeNode } from './transform/removeNode';
 import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
@@ -287,7 +287,7 @@ export class HeadlessEditor<Data = unknown> {
     moveItem(pointer: string, to: number) {
         const [parent, from] = gp.splitLast(pointer);
         // console.log('move', parent, from, to);
-        const [state, changes] = moveItem(this.draft, this.root, parent, parseInt(`${from}`), to);
+        const [state, changes] = moveNode(this.draft, this.root, parent, parseInt(`${from}`), to);
         if (isJsonError(state)) {
             console.error(`error moving nodes in '${pointer}'`);
             console.log(state);
