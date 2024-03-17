@@ -11,7 +11,7 @@ import { getNode } from './node/getNode';
 import { getNodeTrace } from './node/getNodeTrace';
 import { getChildNode } from './node/getChildNode';
 // transformation
-import { set } from './transform/set';
+import { setValue } from './transform/setValue';
 import { remove } from './transform/remove';
 import { move } from './transform/move';
 import { unlinkAll } from './transform/unlinkAll';
@@ -79,7 +79,7 @@ export {
     OnChangePlugin,
     RemoteEnumOptionsPlugin,
     remove,
-    set,
+    setValue,
     setErrorMessages,
     SetOptionTitleToPlugin,
     splitErrors,

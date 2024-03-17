@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import { HeadlessEditor, Plugin } from '../../src/HeadlessEditor';
 import { JsonSchema } from '../../src/types';
-import { set } from '../../src/transform/set';
+import { setValue } from '../../src/transform/setValue';
 
 describe('HeadlessEditor', () => {
     let schema: JsonSchema;
@@ -37,7 +37,7 @@ describe('HeadlessEditor', () => {
                 id: "change",
                 onEvent: (root, event) => {
                     if (event.type === "update") {
-                        const result = set(draft, root, "#/title", "X");
+                        const result = setValue(draft, root, "#/title", "X");
                         if (result.length === 2) {
                             return result;
                         }

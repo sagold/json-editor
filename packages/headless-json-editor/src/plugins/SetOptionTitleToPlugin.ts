@@ -1,6 +1,6 @@
 import { Node, StringNode, isChange, isJsonError } from "../types";
 import { Plugin } from '../HeadlessEditor';
-import { set } from "../transform/set";
+import { setValue } from "../transform/setValue";
 
 type StringEnumNode = StringNode & {
     schema: {
@@ -58,7 +58,7 @@ export const SetOptionTitleToPlugin: Plugin = ({ draft }) => ({
             return undefined;
         }
         const value = node.schema.options?.enum?.[index];
-        const [newAST, changes] = set(draft, root, target, value);
+        const [newAST, changes] = setValue(draft, root, target, value);
         if (isJsonError(newAST)) {
             console.log("SetOptionTitleToPlugin error:", newAST);
             return undefined;

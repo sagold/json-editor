@@ -1,18 +1,18 @@
 import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
 // import { deepEqual } from 'fast-equals';
-import { getData } from '../../node/getData';
-import { createNode } from '../../node/createNode';
+import { getData } from '../node/getData';
+import { createNode } from '../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
-import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
-import { invalidPathError } from '../../errors';
-import { getChildIndex } from '../../node/getChildNode';
+import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../types';
+import { invalidPathError } from '../errors';
+import { getChildIndex } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
-import { replaceChildNode } from './replaceChildNode';
-import { createChildNode } from './createChildNode';
-import { updateValueNode } from './updateValueNode';
+import { replaceChildNode } from './set/replaceChildNode';
+import { createChildNode } from './set/createChildNode';
+import { updateValueNode } from './set/updateValueNode';
 
-export function set<T extends Node = Node>(
+export function setValue<T extends Node = Node>(
     draft: Draft,
     ast: T,
     pointer: JsonPointer,

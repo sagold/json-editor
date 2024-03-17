@@ -1,6 +1,6 @@
 import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
-import { set } from '../../../src/transform/set';
+import { setValue } from '../../../src/transform/setValue';
 import { strict as assert } from 'assert';
 
 /**
@@ -87,7 +87,7 @@ describe('feature: toggle form', () => {
     it('should switch node to active', () => {
         const root = createNode(draft, { trigger: false });
 
-        const [update] = set(draft, root, '/trigger', true);
+        const [update] = setValue(draft, root, '/trigger', true);
 
         assert(update.type === 'object');
         assert.equal(update.children.length, 2);
@@ -98,7 +98,7 @@ describe('feature: toggle form', () => {
     it('should switch node to inactive', () => {
         const root = createNode(draft, { trigger: true });
 
-        const [update] = set(draft, root, '/trigger', false);
+        const [update] = setValue(draft, root, '/trigger', false);
 
         assert(update.type === 'object');
         assert.equal(update.children.length, 2);

@@ -9,7 +9,7 @@ import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
 import { move as moveItem } from './transform/move';
 import { remove as removeTarget } from './transform/remove';
-import { set } from './transform/set';
+import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateErrors } from './validate/updateErrors';
 
@@ -227,7 +227,7 @@ export class HeadlessEditor<Data = unknown> {
             }
         }
 
-        const [state, changes] = set(this.draft, this.root, pointer, value);
+        const [state, changes] = setValue(this.draft, this.root, pointer, value);
         if (isJsonError(state)) {
             console.error(`error setting '${pointer}' = ${JSON.stringify(value)}`);
             console.log(state);
@@ -311,7 +311,7 @@ export class HeadlessEditor<Data = unknown> {
     appendItem(node: ArrayNode, itemSchema: JsonSchema) {
         const value = this.draft.getTemplate(null, itemSchema, this.templateOptions);
         const pointer = `${node.pointer}/${node.children.length}`;
-        const [state, changes] = set(this.draft, this.root, pointer, value);
+        const [state, changes] = setValue(this.draft, this.root, pointer, value);
         if (isJsonError(state)) {
             console.error(`error apending item from schema '${node.pointer}'`);
             console.log(state);

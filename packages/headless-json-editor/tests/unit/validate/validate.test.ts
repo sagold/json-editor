@@ -2,7 +2,7 @@ import { Draft07, Draft, JsonValidator, JsonError, isJsonError } from 'json-sche
 import { strict as assert } from 'assert';
 import { createNode } from '../../../src/node/createNode';
 import { getNode } from '../../../src/node/getNode';
-import { set } from '../../../src/transform/set';
+import { setValue } from '../../../src/transform/setValue';
 import { updateErrors as validate } from '../../../src/validate/updateErrors';
 import { Node } from 'headless-json-editor';
 
@@ -42,7 +42,7 @@ describe('validate', () => {
         validate(core, root);
 
         assert(root.type === 'array' || root.type === 'object');
-        const [after] = set(core, root, '/title', 'minlength');
+        const [after] = setValue(core, root, '/title', 'minlength');
         assert(after.type !== 'error');
 
         validate(core, after);
