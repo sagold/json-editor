@@ -1,5 +1,5 @@
 import { Draft, JsonPointer, JsonError } from 'json-schema-library';
-import { Node, isJsonError, isParentNode } from '../types';
+import { Node, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
 import { splitErrors } from './getErrors';
@@ -9,10 +9,6 @@ function each(node: Node, cb: (node: Node) => void) {
     if (isParentNode(node)) {
         node.children.forEach((child) => each(child, cb));
     }
-}
-
-function filterErrors(errors: JsonError[]): JsonError[] {
-    return [errors].flat(Infinity).filter(isJsonError);
 }
 
 /**
@@ -48,15 +44,15 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointe
     });
 
     // await and assign async errors
-    asyncErrors.forEach((validation: Promise<JsonError[]>) =>
-        validation.then((errors) => {
-            // console.log(errors);
-            filterErrors(errors).forEach((err) => {
-                const pointer = err.data?.pointer ?? '#';
-                // schema may change
-                pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
-                pointerToErrors[pointer].push(err);
-            });
+    asyncErrors.forEach((validation: Promise<JsonError | undefined>) =>
+        validation.then((err) => {
+            if (err == null) {
+                return;
+            }
+            const pointer = err.data?.pointer ?? '#';
+            // schema may change
+            pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
+            pointerToErrors[pointer].push(err);
         })
     );
 

@@ -7,6 +7,10 @@ import { getNode } from '../node/getNode';
 //     return errors.filter((item) => isJsonError(item) || item instanceof Promise);
 // }
 
+function validationError(item: JsonError) {
+    return item instanceof Promise || isJsonError(item);
+}
+
 /**
  * validate current node and return the validation errors
  */
@@ -19,9 +23,7 @@ export function getErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') 
     const errors: (JsonError | Promise<JsonError | undefined>)[] = draft
         .validate(getData(startNode), startNode.schema, startNode.pointer)
         .flat(Infinity)
-        .filter((item) => {
-            return item instanceof Promise || isJsonError(item);
-        });
+        .filter(validationError);
 
     return errors;
 }
@@ -31,15 +33,15 @@ export function getErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') 
  */
 export function splitErrors(
     errors: (JsonError | Promise<JsonError | undefined>)[]
-): [JsonError[], Promise<JsonError[]>[]] {
+): [JsonError[], Promise<(JsonError | undefined)>[]] {
     const syncErrors: JsonError[] = [];
-    const asyncErrors: Promise<JsonError[]>[] = [];
+    const asyncErrors: Promise<(JsonError | undefined)>[] = [];
     for (let i = 0, l = errors.length; i < l; i += 1) {
-        if (isJsonError(errors[i])) {
-            syncErrors.push(errors[i] as JsonError);
-        } else if (errors[i] instanceof Promise) {
-            // @ts-ignore
-            asyncErrors.push(errors[i]);
+        const error = errors[i];
+        if (isJsonError(error)) {
+            syncErrors.push(error as JsonError);
+        } else if (error instanceof Promise) {
+            asyncErrors.push(error);
         }
     }
     return [syncErrors, asyncErrors];
