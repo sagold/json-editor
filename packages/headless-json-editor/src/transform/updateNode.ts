@@ -15,7 +15,7 @@ import { unlinkPath } from './unlinkPath';
  * @param targetNode - node to be recreated
  * @return [newRootNode, listOfChanges]
  */
-export function update<T extends Node = Node>(
+export function updateNode<T extends Node = Node>(
     draft: Draft,
     ast: T,
     pointer: JsonPointer

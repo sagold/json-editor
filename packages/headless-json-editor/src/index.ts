@@ -16,7 +16,7 @@ import { removeNode } from './transform/removeNode';
 import { moveNode } from './transform/moveNode';
 import { unlinkAll } from './transform/unlinkAll';
 import { unlinkPath } from './transform/unlinkPath';
-import { update, updateSchema, updateOptions } from './transform/update';
+import { updateNode, updateSchema, updateOptions } from './transform/updateNode';
 // hje
 import {
     HeadlessEditor,
@@ -86,7 +86,7 @@ export {
     getNodeTrace,
     unlinkAll,
     unlinkPath,
-    update,
+    updateNode,
     updateErrors,
     updateOptions,
     updateSchema

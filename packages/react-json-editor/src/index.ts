@@ -65,7 +65,7 @@ import {
     getNodeTrace,
     unlinkAll,
     unlinkPath,
-    update,
+    updateNode,
     updateErrors,
     updateOptions,
     updateSchema,
@@ -118,7 +118,7 @@ export {
     getNodeTrace,
     unlinkAll,
     unlinkPath,
-    update,
+    updateNode,
     updateErrors,
     updateOptions,
     updateSchema

@@ -1,5 +1,5 @@
 import { Draft07, Draft, isJsonError } from 'json-schema-library';
-import { update } from '../../../src/transform/update';
+import { updateNode } from '../../../src/transform/updateNode';
 import { getNode } from "../../../src/node/getNode";
 import { Node, NumberNode, } from '../../../src/types';
 import { strict as assert } from 'assert';
@@ -17,7 +17,7 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     );
 }
 
-describe('update', () => {
+describe('updateNode', () => {
     let core: Draft;
     let ast: Node;
 
@@ -48,7 +48,7 @@ describe('update', () => {
     it('should recreate node at pointer location', () => {
         const before = getNode<NumberNode>(ast, "/size/width");
 
-        const [newAst] = update(core, ast, "/size/width");
+        const [newAst] = updateNode(core, ast, "/size/width");
         assert(!isJsonError(newAst));
         const after = getNode<NumberNode>(newAst, "/size/width");
 
@@ -66,7 +66,7 @@ describe('update', () => {
         assert.equal(before.schema.default, 480);
 
         core.getSchema()!.$defs.width = { type: 'number', default: 800 };
-        const [newAst] = update(core, ast, "/size/width");
+        const [newAst] = updateNode(core, ast, "/size/width");
         assert(!isJsonError(newAst));
         const after = getNode<NumberNode>(newAst, "/size/width");
 
@@ -79,7 +79,7 @@ describe('update', () => {
     it('should return a list of changes', () => {
         const before = getNode<NumberNode>(ast, "/size/width");
 
-        const [newAst, changes] = update(core, ast, "/size/width");
+        const [newAst, changes] = updateNode(core, ast, "/size/width");
         assert(!isJsonError(newAst) && !isJsonError(before));
         const after = getNode<NumberNode>(newAst, "/size/width");
         assert(!isJsonError(after));
@@ -88,7 +88,7 @@ describe('update', () => {
     });
 
     it('should return a json-error if the target does not exist', () => {
-        const [newAst] = update(core, ast, "/size/unknown");
+        const [newAst] = updateNode(core, ast, "/size/unknown");
         assert(isJsonError(newAst));
     });
 });
