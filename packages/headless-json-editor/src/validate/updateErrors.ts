@@ -2,7 +2,7 @@ import { Draft, JsonPointer, JsonError } from 'json-schema-library';
 import { Node, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
-import { splitErrors } from './getErrors';
+import { splitErrors } from './validateNode';
 
 function each(node: Node, cb: (node: Node) => void) {
     cb(node);

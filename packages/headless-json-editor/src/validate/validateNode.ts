@@ -1,27 +1,21 @@
-import { Draft, JsonPointer, JsonError } from 'json-schema-library';
+import { Draft, JsonError } from 'json-schema-library';
 import { Node, isJsonError } from '../types';
 import { getData } from '../node/getData';
-import { getNode } from '../node/getNode';
 
-// function filterAllErrors(errors: any[]): (JsonError | Promise<JsonError | undefined>)[] {
-//     return errors.filter((item) => isJsonError(item) || item instanceof Promise);
-// }
 
 function validationError(item: JsonError) {
     return item instanceof Promise || isJsonError(item);
 }
 
 /**
- * validate current node and return the validation errors
+ * Perform json-schema validation on node and its child nodes. Does not
+ * modify nodes.
+ *
+ * @return list of validation errors
  */
-export function getErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') {
-    const startNode = getNode(root, pointer);
-    if (startNode.type === 'error') {
-        return startNode;
-    }
-
+export function validateNode(draft: Draft, node: Node) {
     const errors: (JsonError | Promise<JsonError | undefined>)[] = draft
-        .validate(getData(startNode), startNode.schema, startNode.pointer)
+        .validate(getData(node), node.schema, node.pointer)
         .flat(Infinity)
         .filter(validationError);
 

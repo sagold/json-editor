@@ -31,7 +31,7 @@ import { HistoryPlugin } from './plugins/HistoryPlugin';
 import { SetOptionTitleToPlugin } from './plugins/SetOptionTitleToPlugin';
 // validation
 import { updateErrors } from './validate/updateErrors';
-import { getErrors, splitErrors } from './validate/getErrors';
+import { validateNode, splitErrors } from './validate/validateNode';
 // jlib export
 import { isJsonError, JsonError } from 'json-schema-library';
 // bundled tools
@@ -65,7 +65,7 @@ export {
     getNodeList,
     getNode,
     getChildNode,
-    getErrors,
+    validateNode,
     getOptions,
     HeadlessEditor,
     HistoryPlugin,
