@@ -175,7 +175,7 @@ const validationErrors = errors(root);
 find a node
 
 ```ts
-const node = find(root, node => node.property === "this one");
+const node = findNode(root, node => node.property === "this one");
 ```
 
 get all nodes in a flat list
@@ -205,7 +205,7 @@ const jsonData = getData(root);
 get all nodes along the path
 
 ```ts
-const [rootNode, page, header, title] = trace(root, "#/page/header/title");
+const [rootNode, page, header, title] = getNodeTrace(root, "#/page/header/title");
 ```
 
 

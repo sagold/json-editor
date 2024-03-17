@@ -6,7 +6,7 @@ import { split } from '@sagold/json-pointer';
 /**
  * returns all nodes along the path, including the given starting node
  */
-export function trace(node: Node, pointer: JsonPointer) {
+export function getNodeTrace(node: Node, pointer: JsonPointer) {
     const frags = split(pointer).reverse();
     const selection = [node];
 

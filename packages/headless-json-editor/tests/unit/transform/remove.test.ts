@@ -2,15 +2,15 @@ import { Draft07, Draft } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
 import { getData } from '../../../src/node/getData';
 import { getNode } from '../../../src/node/getNode';
-import { trace } from '../../../src/node/trace';
+import { getNodeTrace } from '../../../src/node/getNodeTrace';
 import { Node, ObjectNode } from '../../../src/types';
 import { strict as assert } from 'assert';
 import { remove } from '../../../src/transform/remove';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
-    const a = trace(before, path);
-    const b = trace(after, path);
+    const a = getNodeTrace(before, path);
+    const b = getNodeTrace(after, path);
     assert.deepEqual(
         a.filter((node) => b.indexOf(node) >= 0),
         [],

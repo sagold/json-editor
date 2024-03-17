@@ -1,10 +1,10 @@
 import { createNode } from '../../../src/node/createNode';
-import { trace } from '../../../src/node/trace';
+import { getNodeTrace } from '../../../src/node/getNodeTrace';
 import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { Node } from '../../../src/types';
 
-describe('trace', () => {
+describe('getNodeTrace', () => {
     let node: Node;
     beforeEach(
         () =>
@@ -34,7 +34,7 @@ describe('trace', () => {
     );
 
     it('should return all nodes along the path', () => {
-        const result = trace(node, '#/contents/1/content');
+        const result = getNodeTrace(node, '#/contents/1/content');
 
         assert.equal(result.length, 4);
         assert.equal(result[0].pointer, '#');
@@ -48,6 +48,6 @@ describe('trace', () => {
     });
 
     it.skip('should throw if the path is invalid', () => {
-        assert.throws(() => trace(node, '#/contents/9a/content'));
+        assert.throws(() => getNodeTrace(node, '#/contents/9a/content'));
     });
 });

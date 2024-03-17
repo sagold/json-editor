@@ -5,10 +5,10 @@ import { createNode, getOptions, DefaultNodeOptions } from './node/createNode';
 import { getData } from './node/getData';
 // traversal
 import { errors } from './node/errors';
-import { find } from './node/find';
+import { findNode } from './node/findNode';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
-import { trace } from './node/trace';
+import { getNodeTrace } from './node/getNodeTrace';
 import { getChildNode } from './node/getChildNode';
 // transformation
 import { set } from './transform/set';
@@ -61,7 +61,7 @@ export {
     createNode,
     errors,
     EventLoggerPlugin,
-    find,
+    findNode,
     getNodeList,
     getNode,
     getChildNode,
@@ -83,7 +83,7 @@ export {
     setErrorMessages,
     SetOptionTitleToPlugin,
     splitErrors,
-    trace,
+    getNodeTrace,
     unlinkAll,
     unlinkPath,
     update,
