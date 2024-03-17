@@ -1,4 +1,4 @@
-import { flat } from './flat';
+import { getNodeList } from './getNodeList';
 import { JsonError } from 'json-schema-library';
 import { Node } from '../types';
 
@@ -8,6 +8,6 @@ const errorReducer = (previous: JsonError[], current: Node): JsonError[] => {
 };
 
 export function errors(node: Node): JsonError[] {
-    const nodes = flat(node);
+    const nodes = getNodeList(node);
     return nodes.reduceRight(errorReducer, []);
 }

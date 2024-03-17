@@ -181,7 +181,7 @@ const node = find(root, node => node.property === "this one");
 get all nodes in a flat list
 
 ```ts
-const allNodes = flat(root);
+const allNodes = getNodeList(root);
 ```
 
 get a specific node by its path

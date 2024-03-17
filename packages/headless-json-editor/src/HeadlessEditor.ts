@@ -3,7 +3,7 @@ import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
 import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
 import { errors } from './node/errors';
-import { flat } from './node/flat';
+import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
 import { getData } from './node/getData';
 import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
@@ -99,7 +99,7 @@ export class HeadlessEditor<Data = unknown> {
             })
         );
         this.options.validate === true && this.validate();
-        const changes: Change[] = flat(this.root).map((node) => ({ type: 'create', node }));
+        const changes: Change[] = getNodeList(this.root).map((node) => ({ type: 'create', node }));
         this.root = this.runPlugins(previousState, this.root, changes);
         return this.root;
     }

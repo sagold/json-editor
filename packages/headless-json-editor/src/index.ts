@@ -6,7 +6,7 @@ import { getData } from './node/getData';
 // traversal
 import { errors } from './node/errors';
 import { find } from './node/find';
-import { flat } from './node/flat';
+import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
 import { trace } from './node/trace';
 import { getChildNode } from './node/getChildNode';
@@ -62,7 +62,7 @@ export {
     errors,
     EventLoggerPlugin,
     find,
-    flat,
+    getNodeList,
     getNode,
     getChildNode,
     getErrors,
