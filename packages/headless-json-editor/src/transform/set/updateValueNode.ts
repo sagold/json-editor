@@ -1,7 +1,7 @@
 import { Draft } from 'json-schema-library';
 import { ValueNode, isJsonError, ParentNode, isNode, Change } from '../../types';
 import { createNode } from '../../node/createNode';
-import { getChildNodeIndex } from '../../node/getChildNode';
+import { getChildIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 import { getSchemaOfChild } from './getSchemaOfChild';
 
@@ -12,7 +12,7 @@ import { getSchemaOfChild } from './getSchemaOfChild';
  */
 export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNode, value: any) {
     // console.log('update', child.pointer, value);
-    const targetIndex = getChildNodeIndex(parent, child.property);
+    const targetIndex = getChildIndex(parent, child.property);
     const changeSet: Change[] = [];
     if (typeof child.value === typeof value) {
         const newChild = { ...child };

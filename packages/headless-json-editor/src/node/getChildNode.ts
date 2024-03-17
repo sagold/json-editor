@@ -13,7 +13,7 @@ export function getChildNode(node: Node, property: string) {
 /**
  * @returns index of child node identified by property or -1
  */
-export function getChildNodeIndex(node: Node, property: string) {
+export function getChildIndex(node: Node, property: string) {
     if (isParentNode(node)) {
         return node.children.findIndex((node) => node.property === property);
     }

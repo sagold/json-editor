@@ -1,7 +1,7 @@
 import { JsonPointer, JsonError } from 'json-schema-library';
 import { isParentNode, Node } from '../types';
 import { invalidPathError, invalidNodeTypeError } from '../errors';
-import { getChildNodeIndex } from '../node/getChildNode';
+import { getChildIndex } from '../node/getChildNode';
 import { split, join } from '@sagold/json-pointer';
 import { getData } from '../node/getData';
 
@@ -61,7 +61,7 @@ export function unlinkPath<T extends Node = Node>(
 
     while (frags.length > 0) {
         childProperty = frags.shift() as string;
-        childIndex = getChildNodeIndex(targetNode, childProperty);
+        childIndex = getChildIndex(targetNode, childProperty);
         if (!isParentNode(targetNode) || childIndex < 0) {
             return invalidPathError({
                 pointer,

@@ -1,7 +1,7 @@
 import { JsonPointer, JsonError, Draft, reduceSchema } from 'json-schema-library';
 import { isParentNode, Node, isJsonError, Change } from '../types';
 import { invalidPathError } from '../errors';
-import { getChildNodeIndex } from '../node/getChildNode';
+import { getChildIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
 import { split } from '@sagold/json-pointer';
 import { unlinkPath } from './unlinkPath';
@@ -22,7 +22,7 @@ export function remove<T extends Node = Node>(
     }
 
     const [nextRoot, parentNode] = result;
-    const removeNodeIndex = getChildNodeIndex(parentNode, property);
+    const removeNodeIndex = getChildIndex(parentNode, property);
     if (!isParentNode(parentNode)) {
         return [
             invalidPathError({

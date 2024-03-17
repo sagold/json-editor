@@ -5,7 +5,7 @@ import { createNode } from '../../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
 import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../../types';
 import { invalidPathError } from '../../errors';
-import { getChildNodeIndex } from '../../node/getChildNode';
+import { getChildIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 
 import { replaceChildNode } from './replaceChildNode';
@@ -84,7 +84,7 @@ function setNext(
     // console.log('set next', property, frags, value);
 
     // get next child node at 'property'
-    const childNodeIndex = getChildNodeIndex(parentNode, property);
+    const childNodeIndex = getChildIndex(parentNode, property);
     if (childNodeIndex === -1 && frags.length > 0) {
         // given path is invalid
         return invalidPathError({
