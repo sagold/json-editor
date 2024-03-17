@@ -4,6 +4,7 @@ import { createNode } from '../../../src/node/createNode';
 import { getNode } from '../../../src/node/getNode';
 import { set } from '../../../src/transform/set';
 import { updateErrors as validate } from '../../../src/validate/updateErrors';
+import { Node } from 'headless-json-editor';
 
 describe('validate', () => {
     let core: Draft;
@@ -55,7 +56,7 @@ describe('validate', () => {
     it('should validate from pointer only', () => {
         const root = createNode(core, { title: '', caption: '' });
 
-        validate(core, root, '/caption');
+        validate(core, getNode(root, '/caption') as Node);
 
         const caption = getNode(root, '/caption');
         assert(!isJsonError(caption));

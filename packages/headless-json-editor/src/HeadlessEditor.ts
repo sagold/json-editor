@@ -366,11 +366,11 @@ function getRootChange(changes: Change[]) {
 
 function validateState(draft: Draft, root: Node, pointer = '#') {
     // always evaluate parent as it can be that children are referenced in parent
-    let validationTarget = gp.join(pointer, '..');
-    const startNode = getNode(root, validationTarget);
+    const validationTarget = gp.join(pointer, '..');
+    let startNode = getNode(root, validationTarget);
     if (startNode.type === 'error') {
         // if the node no longer exists, fallback to validate all
-        validationTarget = '#';
+        startNode = root;
     }
-    updateErrors(draft, root, validationTarget);
+    updateErrors(draft, startNode);
 }

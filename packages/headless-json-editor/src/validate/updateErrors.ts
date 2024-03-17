@@ -1,4 +1,4 @@
-import { Draft, JsonPointer, JsonError } from 'json-schema-library';
+import { Draft, JsonError } from 'json-schema-library';
 import { Node, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
@@ -12,24 +12,18 @@ function each(node: Node, cb: (node: Node) => void) {
 }
 
 /**
- * perform validation and assign errors to corresponding nodes
+ * Perform json-schema validation and assign errors to corresponding nodes
  */
-export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointer = '#') {
-    const startNode = getNode(root, pointer);
-    if (startNode.type === 'error') {
-        console.error(`Invalid pointer: '${pointer}' to validate - abort`);
-        return;
-    }
-
+export async function updateErrors(draft: Draft, node: Node) {
     const pointerToErrors: Record<string, JsonError[]> = {};
     // reset errors
-    each(startNode, (node) => {
-        node.errors = [];
-        pointerToErrors[node.pointer] = node.errors;
+    each(node, (n) => {
+        n.errors = [];
+        pointerToErrors[n.pointer] = n.errors;
     });
 
     // retrieve errors
-    const errors = draft.validate(getData(startNode), startNode.schema, startNode.pointer).flat(Infinity);
+    const errors = draft.validate(getData(node), node.schema, node.pointer).flat(Infinity);
     const [syncErrors, asyncErrors] = splitErrors(errors);
 
     // assign errors
@@ -37,8 +31,8 @@ export async function updateErrors(draft: Draft, root: Node, pointer: JsonPointe
         const pointer = err.data?.pointer ?? '#';
         if (pointerToErrors[pointer] == null) {
             // retrieve new (dynamic) node
-            const node = getNode(root, pointer) as Node; // @todo ignoring possible JsonError
-            pointerToErrors[pointer] = node.errors;
+            const n = getNode(node, pointer) as Node; // @todo ignoring possible JsonError
+            pointerToErrors[pointer] = n.errors;
         }
         pointerToErrors[pointer].push(err);
     });
