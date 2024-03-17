@@ -7,7 +7,7 @@ import {
     getData,
     JsonError,
     DefaultNodeOptions,
-    errors
+    getErrors
 } from '@sagold/react-json-editor';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { TextArea } from '../../components/textarea/TextArea';
@@ -86,7 +86,7 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
     const [error, setError] = useState<JsonError | undefined>();
     const isValidConst = node.schema.const != null && node.errors.length === 0;
 
-    const jsonErrors = errors(node);
+    const jsonErrors = getErrors(node);
 
     return (
         <WidgetField widgetType="simple-json" node={node} options={options} errors={jsonErrors} additionalError={error}>

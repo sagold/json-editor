@@ -7,7 +7,7 @@ const errorReducer = (previous: JsonError[], current: Node): JsonError[] => {
     return previous;
 };
 
-export function errors(node: Node): JsonError[] {
+export function getErrors(node: Node): JsonError[] {
     const nodes = getNodeList(node);
     return nodes.reduceRight(errorReducer, []);
 }

@@ -2,7 +2,7 @@ import gp from '@sagold/json-pointer';
 import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
 import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
-import { errors } from './node/errors';
+import { getErrors } from './node/getErrors';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
 import { getData } from './node/getData';
@@ -137,7 +137,7 @@ export class HeadlessEditor<Data = unknown> {
         }
         const state = unlinkAll(this.root);
         validateState(this.draft, state);
-        const validationErrors = errors(this.root);
+        const validationErrors = getErrors(this.root);
         const event: ValidationEvent = { type: 'validation', previous: this.root, next: state, errors: validationErrors };
         this.root = this.runPlugins(this.root, state, [event]);
         return validationErrors;
@@ -148,7 +148,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return validation errors of state
      */
     getErrors() {
-        return this.root ? errors(this.root) : [];
+        return this.root ? getErrors(this.root) : [];
     }
 
     /**

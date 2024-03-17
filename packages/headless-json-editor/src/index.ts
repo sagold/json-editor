@@ -4,7 +4,7 @@ import { setErrorMessages } from './settings';
 import { createNode, getOptions, DefaultNodeOptions } from './node/createNode';
 import { getData } from './node/getData';
 // traversal
-import { errors } from './node/errors';
+import { getErrors } from './node/getErrors';
 import { findNode } from './node/findNode';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
@@ -59,7 +59,7 @@ import {
 
 export {
     createNode,
-    errors,
+    getErrors,
     EventLoggerPlugin,
     findNode,
     getNodeList,

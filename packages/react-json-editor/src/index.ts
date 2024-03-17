@@ -40,7 +40,7 @@ export type {
 import {
     createNode,
     deepEqual,
-    errors,
+    getErrors,
     EventLoggerPlugin,
     findNode,
     getNodeList,
@@ -92,7 +92,7 @@ import {
 
 export {
     createNode,
-    errors,
+    getErrors,
     deepEqual,
     EventLoggerPlugin,
     findNode,
