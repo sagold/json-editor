@@ -51,7 +51,7 @@ import {
     PluginEvent,
     StringNode,
     ValueNode,
-    isChange,
+    isChangeEvent,
     isNode,
     isParentNode,
     isValueNode
@@ -69,7 +69,7 @@ export {
     getOptions,
     HeadlessEditor,
     HistoryPlugin,
-    isChange,
+    isChangeEvent,
     isJsonError,
     isNode,
     isParentNode,

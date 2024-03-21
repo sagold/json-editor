@@ -1,4 +1,4 @@
-import { Node, StringNode, isChange, isJsonError } from "../types";
+import { Node, StringNode, isChangeEvent, isJsonError } from "../types";
 import { Plugin } from '../HeadlessEditor';
 import { setValue } from "../transform/setValue";
 
@@ -48,7 +48,7 @@ const SCHEMA_KEY = "setOptionTitleTo";
 export const SetOptionTitleToPlugin: Plugin = ({ draft }) => ({
     id: "set-option-title-to",
     onEvent(root, event) {
-        if (!isChange(event) || event.node.schema[SCHEMA_KEY] == null || !isStringEnumNode(event.node)) {
+        if (!isChangeEvent(event) || event.node.schema[SCHEMA_KEY] == null || !isStringEnumNode(event.node)) {
             return undefined;
         }
         const node = event.node;

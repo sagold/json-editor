@@ -9,7 +9,7 @@
     <a href="#node">node</a> |
     <a href="#api">api</a> | 
     <a href="#plugins">plugins</a> |
-    <a href="#functional-api">functional api</a>
+    <a href="#functional-api">functional api</a> |
     <a href="#exposed-utilities">exposed utilities</a>
 </p> 
 
@@ -266,12 +266,12 @@ export const MyPlugin: Plugin<{ myOption: string }> = (he, options) => {
 Witin `onEvent` you have access to all events omitted. You can hook into changes and modify the state. When chaning the state you have to pass back a list of changes to the editor for further processing:
 
 ```ts
-import { Plugin, isChange } from 'headless-json-editor';
+import { Plugin, isChangeEvent } from 'headless-json-editor';
 
 export const MyPlugin: Plugin<{ myOption: string }> = ({ draft}, options) => ({
     id: "set-option-title-to",
     onEvent(root, event) {
-        if (!isChange(event) || event.node.schema["MyKey"] == null) {
+        if (!isChangeEvent(event) || event.node.schema["MyKey"] == null) {
             return undefined;
         }
         const node = event.node;
@@ -305,7 +305,7 @@ Note, plugins are run sequentially to avoid circular updates. This also means pl
 
 ```ts
 onEvent(root, event) {
-    if (isChange(event)) {
+    if (isChangeEvent(event)) {
         setTimeout(() => {
           he.setValue("#/1", 124);
         });
@@ -417,10 +417,8 @@ const [rootNode, page, header, title] = getNodeTrace(root, "#/page/header/title"
 type guards
 
 ```ts
-import { isJsonError, isParentNode, isValueNode, isChange } from "headless-json-editor";
+import { isJsonError, isParentNode, isValueNode, isChangeEvent } from "headless-json-editor";
 ```
-
-@todo rename `isChange` to `isChangeEvent`
 
 change default error messages globally, [@see settings](https://github.com/sagold/json-editor/blob/main/packages/headless-json-editor/src/settings.ts);
 
