@@ -106,9 +106,9 @@ rootNode = he.setValue('#/1', 124);
 
 ## introduction
 
-From your input data and schema `headless-json-editor` creates a tree data-structure that reflects your input-data. Each node within this tree is a data-point containing either children (_object_ or _array_ «» _parent node_) or the property value (_leaf node_ «» _value node_) and its json-schema. Thus, each tree also contains your state of data. You can retrieve the data of a tree or node anytime using `getData(node)`.
+From your input data and json-schema, `headless-json-editor` creates a tree data-structure that reflects your input-data. Each node within this tree is a data-point containing its json-schema and either children (_object_ or _array_ «» _parent node_) or the property value (_leaf node_ «» _value node_). Thus, each tree also contains your state of data. You can retrieve the data of a tree or node anytime using `getData(node)`.
 
-The functional api works on a tree. Functions that modify a tree will always return a new tree, supporting immutable data. Note, new trees are generated shallow so you should not edit nodes directly unless this is on purpose.
+You may work on a node-tree using the functional api. Functions that modify a tree will always return a new tree to support immutable data. Just be aware that new trees are generated shallow so you should not edit nodes directly unless this is on purpose.
 
 
 ## node
@@ -207,7 +207,7 @@ const data = he.getTemplateData();
 
 ### plugins
 
-> plugin api is supported by stateful-api. Internally each plugin may use the functional api to modify the current state and pass a new state to statefule-api along with changes made
+> plugin-api is supported by stateful-api. Internally, each plugin may use the functional api to modify the current state, passing back a new state and the changes made to stateful-api.
 
 **OnChangePlugin**
 
@@ -262,7 +262,7 @@ export const MyPlugin: Plugin<{ myOption: string }> = (he, options) => {
 };
 ```
 
-Witin `onEvent` you have access to all events omitted. You can hook into changes and modify the root state. When chaning the state you have to pass a list of changes back to the editor for further processing:
+Witin `onEvent` you have access to all events omitted. You can hook into changes and modify the state. When chaning the state you have to pass back a list of changes to the editor for further processing:
 
 ```ts
 import { Plugin, isChange } from 'headless-json-editor';
@@ -290,7 +290,7 @@ export const MyPlugin: Plugin<{ myOption: string }> = ({ draft}, options) => {
 });
 ```
 
-The last event, `done`-event, does not accept node-changes. It lists all changes made with the final root node. Use this event to hook into completed update-cycles.
+The last event, the `done`-event, does not accept node-changes. It lists all changes made with the final root node. Use this event to hook into completed update-cycles.
 
 ```ts
 onEvent(root, event) {
@@ -300,7 +300,7 @@ onEvent(root, event) {
 }
 ```
 
-Note, plugins are run sequentially to avoid circular updates. This also means plugin order matters. To break out of the update loop and trigger a fresh update-cycle use the editor data-update methods, like setValue (asynchronously).
+Note, plugins are run sequentially to avoid circular updates. This also means plugin order matters. To break out of the update loop and trigger a fresh update-cycle use the editor's data-update methods, like `setValue` (asynchronously):
 
 ```ts
 onEvent(root, event) {
@@ -315,7 +315,8 @@ onEvent(root, event) {
 
 ## functional api
 
-> functional api requires a json-schema draft to work on. An instance needs to be passed for actions changing nodes. In this example a modified draft `JsonEditor` is used. [@see json-schema-library](https://github.com/sagold/json-schema-library) for more details
+> functional api requires an instance of a json-schema draft to work with. This instance needs to be passed for all actions that change nodes. In the following example a modified draft `JsonEditor` is used. 
+> [@see json-schema-library](https://github.com/sagold/json-schema-library) for more details
 
 quick overview
 
