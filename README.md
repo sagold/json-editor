@@ -40,7 +40,7 @@ yarn add @sagold/react-json-editor
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-widgets)
 ![Types](https://badgen.net/npm/types/@sagold/rje-widgets)
 
-Set of default widgets for _react-json-editor_ using _semantic-ui_ that render a user form for all basic json datatypes.
+Set of default widgets for _react-json-editor_ using _react-aria_ that render a user form for all basic json datatypes.
 
 ```sh
 yarn add @sagold/rje-widgets

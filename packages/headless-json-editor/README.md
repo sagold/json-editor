@@ -147,6 +147,8 @@ const value = node.children;
 
 ## api
 
+[plugins](#plugins) | [how to write plugins](#how-to-write-plugins)
+
 > stateful api removes management of json-schema-draft, current state and offers a simple interface for plugins
 
 ```ts
@@ -246,7 +248,7 @@ history.undo();
 ```
 
 
-#### how to write plugins
+### how to write plugins
 
 plugins are function that return an object with a unique `id` and a method `onEvent(Node, PluginEvent)`.
 
@@ -315,6 +317,9 @@ onEvent(root, event) {
 
 
 ## functional api
+
+[create and change state](#create-and-change-state) | [working with nodes](#working-with-nodes)
+
 
 > The functional api requires an instance of a json-schema draft to work with. This instance needs to be passed for all actions that change nodes. In the following example a modified draft `JsonEditor` is used. This draft offers some additions helpful to build user-forms.
 > [@see json-schema-library](https://github.com/sagold/json-schema-library) for more details
@@ -433,5 +438,5 @@ import { deepEqual } from "headless-json-editor";
 ```
 
 
-**Happy Building!**
+# Happy Building!
 
