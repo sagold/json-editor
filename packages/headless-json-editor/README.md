@@ -1,4 +1,3 @@
-<!-- <p align="center"><img src="./docs/helogo01.png" width="360 alt="headless-json-editor"></p> -->
 <p align="center">
     <img src="./docs/he-full-blue-2000x564.png" width="100%" alt="headless-json-editor"><br />
     <img src="./docs/title-700x54.png" width="350px" alt="headless-json-editor">
@@ -102,7 +101,9 @@ render(rootNode);
 
 ## introduction
 
-> about tree approach, state and functional helpers
+From your input data and schema `headless-json-editor` creates a tree-data-structure that reflects the input data. Each node within this tree is a data-point containing either children (object or array//parent node) or the property value (leaf node//value node) and its json-schema. Thus each tree also contains your state of data. You can retrieve the data of a tree or node anytime using `getData(node)`.
+
+The functional api works on a tree. Functions that modify a tree will always return a new tree, supporting immutable data. Note, new trees are generated shallow, thus you should not edit nodes directly unless this is on purpose.
 
 
 ## api
