@@ -38,11 +38,6 @@ export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     schema: JsonSchema;
     /** list of validation errors on this array */
     errors: JsonError[];
-    /** interaction state **/
-    // actions: {
-    //     canAddItem: boolean;
-    //     canRemoveItem: boolean;
-    // };
 };
 
 export type ObjectType = 'object';
@@ -135,12 +130,14 @@ export function isNode(node: any): node is Node {
     return NodeTypes.includes(node?.type);
 }
 
-export function isParentNode(node: Node | JsonError): node is ObjectNode | ArrayNode {
-    return node.type === 'array' || node.type === 'object';
+export function isParentNode(node: unknown): node is (ObjectNode | ArrayNode) {
+    // @ts-expect-error unknown object
+    return node != null && (node.type === 'array' || node.type === 'object');
 }
 
-export function isValueNode(node: Node | JsonError): node is StringNode | NumberNode | NullNode | BooleanNode {
-    return node.type === 'string' || node.type === 'number' || node.type === 'null' || node.type === 'boolean';
+export function isValueNode(node: unknown): node is (StringNode | NumberNode | NullNode | BooleanNode) {
+    // @ts-expect-error unknown object
+    return node != null && (node.type === 'string' || node.type === 'number' || node.type === 'null' || node.type === 'boolean');
 }
 
 export { isJsonError } from 'json-schema-library';
