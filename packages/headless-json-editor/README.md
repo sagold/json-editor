@@ -10,6 +10,7 @@
     <a href="#api">api</a> | 
     <a href="#plugins">plugins</a> |
     <a href="#functional-api">functional api</a>
+    <a href="#exposed-utilities">exposed utilities</a>
 </p> 
 
 install
@@ -267,7 +268,7 @@ Witin `onEvent` you have access to all events omitted. You can hook into changes
 ```ts
 import { Plugin, isChange } from 'headless-json-editor';
 
-export const MyPlugin: Plugin<{ myOption: string }> = ({ draft}, options) => {
+export const MyPlugin: Plugin<{ myOption: string }> = ({ draft}, options) => ({
     id: "set-option-title-to",
     onEvent(root, event) {
         if (!isChange(event) || event.node.schema["MyKey"] == null) {
@@ -315,7 +316,7 @@ onEvent(root, event) {
 
 ## functional api
 
-> functional api requires an instance of a json-schema draft to work with. This instance needs to be passed for all actions that change nodes. In the following example a modified draft `JsonEditor` is used. 
+> The functional api requires an instance of a json-schema draft to work with. This instance needs to be passed for all actions that change nodes. In the following example a modified draft `JsonEditor` is used. This draft offers some additions helpful to build user-forms.
 > [@see json-schema-library](https://github.com/sagold/json-schema-library) for more details
 
 quick overview
@@ -411,5 +412,28 @@ const [rootNode, page, header, title] = getNodeTrace(root, "#/page/header/title"
 ```
 
 
+## exposed utilities
 
+type guards
+
+```ts
+import { isJsonError, isParentNode, isValueNode, isChange } from "headless-json-editor";
+```
+
+@todo rename `isChange` to `isChangeEvent`
+
+change default error messages globally, [@see settings](https://github.com/sagold/json-editor/blob/main/packages/headless-json-editor/src/settings.ts);
+
+```ts
+import { setErrorMessages } from "headless-json-editor";
+```
+
+bundled library [fast-equals](https://github.com/planttheidea/fast-equals) to compare data
+
+```ts
+import { deepEqual } from "headless-json-editor";
+```
+
+
+**Happy Building!**
 
