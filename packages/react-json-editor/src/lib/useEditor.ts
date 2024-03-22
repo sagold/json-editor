@@ -53,6 +53,7 @@ export function useEditor<Data = unknown, T extends Node = Node>(
             validate: settings.validate,
             liveUpdate: settings.liveUpdate,
             addOptionalProps: settings.addOptionalProps,
+            extendDefaults: settings.extendDefaults,
             draftConfig: settings.draftConfig
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

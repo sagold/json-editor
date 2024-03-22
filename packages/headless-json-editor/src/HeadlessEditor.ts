@@ -41,6 +41,8 @@ export type HeadlessEditorOptions<Data = unknown> = {
     validate?: boolean;
     /** if all optional properties should be added when missing */
     addOptionalProps?: boolean;
+    /** if json-schema default-values should be extended (required properties, min-length of items). Defaults to false */
+    extendDefaults?: boolean;
     [p: string]: unknown;
 } & O;
 
@@ -57,13 +59,15 @@ export class HeadlessEditor<Data = unknown> {
     /** input options for this editor instance */
     options: HeadlessEditorOptions<Data>;
     templateOptions = {
-        addOptionalProps: false
+        addOptionalProps: false,
+        extendDefaults: false
     };
 
     constructor(options: HeadlessEditorOptions<Data>) {
-        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false } = options;
+        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false, extendDefaults = false } = options;
         this.options = options;
         this.templateOptions.addOptionalProps = addOptionalProps;
+        this.templateOptions.extendDefaults = extendDefaults;
         this.draft = new JsonEditor(schema, draftConfig);
         this.root = createNode<ParentNode>(
             this.draft,
@@ -95,7 +99,8 @@ export class HeadlessEditor<Data = unknown> {
         this.root = createNode<ParentNode>(
             draft,
             draft.getTemplate(data, draft.getSchema(), {
-                addOptionalProps: false
+                addOptionalProps: false,
+                extendDefaults: this.templateOptions.extendDefaults
             })
         );
         this.options.validate === true && this.validate();
