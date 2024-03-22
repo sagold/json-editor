@@ -18,6 +18,8 @@ jobs:
                   cache: 'yarn'
             - name: install dependencies
               run: yarn --frozen-lockfile
+            - name: build packages
+              run: yarn hje:dist; yarn rje:dist
             - name: run unit tests
               run: yarn test:ci
             - uses: dorny/test-reporter@v1.6.0
