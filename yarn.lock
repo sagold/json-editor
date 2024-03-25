@@ -4666,11 +4666,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/react-json-editor@^0.33.2, @sagold/react-json-editor@workspace:packages/react-json-editor":
+"@sagold/react-json-editor@^0.33.3, @sagold/react-json-editor@workspace:packages/react-json-editor":
   version: 0.0.0-use.local
   resolution: "@sagold/react-json-editor@workspace:packages/react-json-editor"
   dependencies:
-    headless-json-editor: ^0.33.2
+    headless-json-editor: ^0.33.3
     markdown-to-jsx: ^7.4.1
   languageName: unknown
   linkType: soft
@@ -4684,7 +4684,7 @@ __metadata:
     "@uiw/react-codemirror": ^4.21.24
     markdown-to-jsx: ^7.4.1
   peerDependencies:
-    "@sagold/react-json-editor": ^0.33.2
+    "@sagold/react-json-editor": ^0.33.3
   languageName: unknown
   linkType: soft
 
@@ -4695,7 +4695,7 @@ __metadata:
     "@internationalized/date": ^3.5.2
     "@react-aria/color": 3.0.0-beta.31
     "@react-stately/color": ^3.5.3
-    "@sagold/react-json-editor": ^0.33.2
+    "@sagold/react-json-editor": ^0.33.3
     "@types/sortablejs": "*"
     classnames: ^2.5.1
     react-aria: ^3.32.1
@@ -10562,7 +10562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"headless-json-editor@^0.33.2, headless-json-editor@workspace:packages/headless-json-editor":
+"headless-json-editor@^0.33.3, headless-json-editor@workspace:packages/headless-json-editor":
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
