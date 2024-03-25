@@ -153,5 +153,65 @@ describe('useEditor', () => {
 
         assert.equal(result.current[1].getErrors().length, 1);
     });
+
+    describe("options: extendDefaults", () => {
+        it('should set `extendDefault` in draft to false', () => {
+            const { result, rerender } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    extendDefaults: false,
+                    schema: { type: "array" }
+                }
+            });
+            const [state, editor] = result.current;
+            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+        });
+
+        it('should set `extendDefault` in draft to true', () => {
+            const { result, rerender } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    extendDefaults: true,
+                    schema: { type: "array" }
+                }
+            });
+            const [state, editor] = result.current;
+            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, true);
+        });
+
+
+        it("should not add minimum required array items if default-value is []", () => {
+            const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    schema: { type: "array", minItems: 1, default: [], items: { type: "string" } }
+                }
+            });
+
+            const [state, editor] = result.current;
+
+            assert.equal(state.type, "array");
+            assert.equal(state.children.length, 0);
+        });
+
+        it("should not add minimum required array items if default-value is [] (2)", () => {
+            const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    schema: {
+                        required: ["list"],
+                        type: "object",
+                        properties: {
+                            list: {
+                                type: "array", minItems: 1, default: [], items: { type: "string" }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const [state, editor] = result.current;
+            const list = getNode(state, "/list");
+
+            assert.equal(list.type, "array");
+            assert.equal(list.children.length, 0);
+        });
+    })
 });
 

@@ -9,6 +9,19 @@ describe('HeadlessEditor', () => {
         schema = { type: "object", properties: { title: { type: "string" } } };
     });
 
+    describe("options", () => {
+        it('should set `extendDefault` in draft', () => {
+            let editor = new HeadlessEditor({ schema, extendDefaults: false });
+            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+
+            editor = new HeadlessEditor({ schema, extendDefaults: true });
+            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, true);
+
+            editor = new HeadlessEditor({ schema, extendDefaults: false, draftConfig: {} });
+            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+        });
+    });
+
     describe("plugins", () => {
         let plugin: Plugin<{ id?: string }>;
         beforeEach(() => {
