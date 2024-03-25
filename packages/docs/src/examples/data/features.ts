@@ -48,6 +48,7 @@ export const schema: JsonSchema = {
         'readOnlyFile',
         'array',
         'arrayOfStrings',
+        'arrayOfStringsError',
         'arrayOfUniqueStrings',
         'arrayItemSelection',
         'arrayHeadline',
@@ -487,6 +488,15 @@ export const schema: JsonSchema = {
                 type: 'string'
             },
             default: ['first item']
+        },
+        arrayOfStringsError: {
+            title: 'Expect at least one item, but enforce empty list',
+            type: 'array',
+            minItems: 1,
+            items: {
+                type: 'string'
+            },
+            default: []
         },
         arrayOfUniqueStrings: {
             title: 'Array of unique strings',

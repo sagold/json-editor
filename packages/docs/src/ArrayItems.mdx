@@ -70,6 +70,17 @@ support for `minItems` and `maxItems` length restrictions:
 
 <Canvas className="inline" of={ArrayItems.Length} />
 
+With `minItems > 0` the editor will add items per default, if possible:
+
+<Canvas className="inline" of={ArrayItems.LengthTemplate} />
+
+You may explicitely override this behaviour by adding a default value `default: []`
+
+<Canvas className="inline" of={ArrayItems.LengthDefaultOverride} />
+
+> Note: this behaviour is defined by the editor `extendDefaults` option
+
+
 ## if-then-else
 
 example: if any number is above 1 the list is restricted to one item, else no item is allowed

@@ -240,6 +240,47 @@ export const Length: Story = {
     }
 };
 
+export const LengthTemplate: Story = {
+    args: {
+        theme: 'light',
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: {
+            title: 'minItems: 1 - empty data',
+            type: 'array',
+            minItems: 1,
+            maxItems: 2,
+            items: {
+                title: 'option',
+                type: 'string',
+                enum: ["first", "second", "third"]
+            }
+        }
+    }
+};
+
+export const LengthDefaultOverride: Story = {
+    args: {
+        theme: 'light',
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: {
+            title: 'minItems: 1 - empty data',
+            type: 'array',
+            minItems: 1,
+            maxItems: 2,
+            default: [],
+            items: {
+                title: 'option',
+                type: 'string',
+                enum: ["first", "second", "third"]
+            }
+        }
+    }
+};
+
 export const IfThenElse: Story = {
     args: {
         theme: 'light',
