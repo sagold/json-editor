@@ -3,10 +3,6 @@ import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema } from 'json-s
 import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
 
 
-const TEMPLATE_OPTIONS = {
-    addOptionalProps: false
-};
-
 function propertySortResult(aIndex: number, bIndex: number) {
     if (aIndex === -1 && bIndex === -1) {
         return 0;
@@ -152,7 +148,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         }
         // staticSchema._oneOfOrigin = schema._oneOfOrigin;
         // final data complemented with missing data from resolved static schema
-        const resolvedData = draft.getTemplate(data, staticSchema, TEMPLATE_OPTIONS);
+        const resolvedData = draft.getTemplate(data, staticSchema);
         const property = getPropertyName(pointer);
 
         const node: ObjectNode = {

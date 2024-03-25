@@ -27,6 +27,8 @@ const Template: ComponentStory<any> = () => {
     }, [editor, data]);
 
     console.log("errors", editor?.getErrors());
+    // @ts-ignore
+    window.editor = editor;
 
     return (
         <Theme>

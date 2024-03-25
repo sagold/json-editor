@@ -66,9 +66,15 @@ export class HeadlessEditor<Data = unknown> {
     constructor(options: HeadlessEditorOptions<Data>) {
         const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false, extendDefaults = false } = options;
         this.options = options;
+        // setup getTemplate options for json-schema-library so that options are used by createNode and others
         this.templateOptions.addOptionalProps = addOptionalProps;
         this.templateOptions.extendDefaults = extendDefaults;
-        this.draft = new JsonEditor(schema, draftConfig);
+        const config = draftConfig ?? {};
+        config.templateDefaultOptions = {
+            ...(config.templateDefaultOptions ?? {}),
+            ...this.templateOptions
+        }
+        this.draft = new JsonEditor(schema, config);
         this.root = createNode<ParentNode>(
             this.draft,
             this.draft.getTemplate(data, this.draft.getSchema(), this.templateOptions)
