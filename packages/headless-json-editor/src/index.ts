@@ -41,6 +41,7 @@ import {
     ArrayNode,
     BooleanNode,
     Change,
+    FileNode,
     JsonSchema,
     Node,
     NodeType,
@@ -53,8 +54,9 @@ import {
     ValueNode,
     isChangeEvent,
     isNode,
+    isFileNode,
     isParentNode,
-    isValueNode
+    isValueNode,
 } from './types';
 
 export {
@@ -70,6 +72,7 @@ export {
     HeadlessEditor,
     HistoryPlugin,
     isChangeEvent,
+    isFileNode,
     isJsonError,
     isNode,
     isParentNode,
@@ -97,6 +100,7 @@ export type {
     BooleanNode,
     Change,
     DefaultNodeOptions,
+    FileNode,
     HeadlessEditorOptions,
     JsonSchema,
     JsonError,

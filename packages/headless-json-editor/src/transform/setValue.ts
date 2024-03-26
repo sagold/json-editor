@@ -3,7 +3,7 @@ import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } 
 import { getData } from '../node/getData';
 import { createNode } from '../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
-import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema } from '../types';
+import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema, isFileNode } from '../types';
 import { invalidPathError } from '../errors';
 import { getChildIndex } from '../node/getChildNode';
 import { deepEqual } from 'fast-equals';
@@ -112,7 +112,7 @@ function setNext(
     const childNode = parentNode.children[childNodeIndex];
     if (frags.length === 0) {
         // update target node's value
-        if (isValueNode(childNode)) {
+        if (isValueNode(childNode) || isFileNode(childNode)) {
             const changesOrError = updateValueNode(draft, parentNode, childNode, value);
             if (isJsonError(changesOrError)) {
                 return changesOrError;

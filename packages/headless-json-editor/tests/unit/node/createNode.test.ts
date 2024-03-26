@@ -515,4 +515,17 @@ describe('createNode', () => {
             assert(root.children[0].schema.$id === 'title');
         });
     });
+
+    describe("file", () => {
+        let draft: Draft;
+        beforeEach(() => (draft = new Draft07()));
+
+        it('should create a node', () => {
+            const file = new File([], "testfile.pdf");
+            draft.setSchema({ type: ['string', 'object'], format: "file" });
+            const root = createNode(draft, file);
+            assert.equal(root.type, 'file');
+            assert.equal(root.value, file);
+        });
+    })
 });

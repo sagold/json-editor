@@ -22,6 +22,50 @@ describe('HeadlessEditor', () => {
         });
     });
 
+    describe("file", () => {
+        let schema: JsonSchema;
+        let file: File;
+        beforeEach(() => {
+            schema = { type: "object", properties: { file: { type: ["string", "object"], format: "file" } } };
+            file = new File([], "testfile.pdf");
+        });
+
+        it('should keep file-instance in create', () => {
+            const editor = new HeadlessEditor({ schema, data: { file } });
+            const data = editor.getData();
+            assert.equal(data.file, file);
+        });
+
+        it('should keep file-instance on setData', () => {
+            const editor = new HeadlessEditor({ schema, data: {} });
+            editor.setData({ file });
+            const data = editor.getData();
+            assert.equal(data.file, file);
+        });
+
+        it('should keep file-instance on setValue', () => {
+            const editor = new HeadlessEditor({ schema, data: {} });
+            editor.setValue("/file", file);
+            const data = editor.getData();
+            assert.equal(data.file, file);
+        });
+
+        it('should keep file-instance on setSchema', () => {
+            const editor = new HeadlessEditor({ schema, data: { file } });
+            editor.setSchema({ type: "object", properties: { title: { type: "string" }, file: { type: ["string", "object"], format: "file" } } });
+            const data = editor.getData();
+            assert.equal(data.file, file);
+        });
+
+        it('should replace file-instance using setValue', () => {
+            const editor = new HeadlessEditor({ schema, data: { file } });
+            const newFile = new File([], "new-testfile.pdf");
+            editor.setValue("/file", newFile);
+            const data = editor.getData();
+            assert.equal(data.file, newFile);
+        });
+    });
+
     describe("plugins", () => {
         let plugin: Plugin<{ id?: string }>;
         beforeEach(() => {

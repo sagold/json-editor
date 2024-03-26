@@ -10,7 +10,7 @@ export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
 export type ValidationEvent = { type: 'validation'; previous: Node; next: Node; errors: JsonError[] };
 export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | ValidationEvent;
 
-export type Node = ArrayNode | ObjectNode | StringNode | NumberNode | BooleanNode | NullNode;
+export type Node = ArrayNode | ObjectNode | FileNode | StringNode | NumberNode | BooleanNode | NullNode;
 
 export type Change = { type: 'update' | 'create' | 'delete'; node: Node };
 export function isChangeEvent(event: Record<string, unknown>): event is Change {
@@ -22,7 +22,7 @@ export function isChangeEvent(event: Record<string, unknown>): event is Change {
 }
 
 /** node type refers to the actual data value - it is not the expected schema type */
-export type NodeType = ArrayType | ObjectType | StringType | NumberType | BooleanType | NullType;
+export type NodeType = ArrayType | ObjectType | FileType | StringType | NumberType | BooleanType | NullType;
 
 export type ArrayType = 'array';
 export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
@@ -76,6 +76,20 @@ export type StringNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     errors: JsonError[];
 };
 
+export type FileType = 'file';
+export type FileNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
+    id: string;
+    type: FileType;
+    options: T;
+    pointer: string;
+    /** do we store parent property here or on parent node? */
+    property: string;
+    isArrayItem: boolean;
+    schema: JsonSchema;
+    value?: File;
+    errors: JsonError[];
+};
+
 export type NumberType = 'number';
 export type NumberNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
@@ -125,7 +139,7 @@ export type ValueNode<T extends DefaultNodeOptions = DefaultNodeOptions> =
     | NullNode<T>
     | BooleanNode<T>;
 
-const NodeTypes = ['array', 'object', 'string', 'number', 'null', 'boolean'] as const;
+const NodeTypes = ['array', 'object', 'file', 'string', 'number', 'null', 'boolean'] as const;
 export function isNode(node: any): node is Node {
     return NodeTypes.includes(node?.type);
 }
@@ -133,6 +147,11 @@ export function isNode(node: any): node is Node {
 export function isParentNode(node: unknown): node is (ObjectNode | ArrayNode) {
     // @ts-expect-error unknown object
     return node != null && (node.type === 'array' || node.type === 'object');
+}
+
+export function isFileNode(node: unknown): node is FileNode {
+    // @ts-expect-error unknown object
+    return node != null && node.type === 'file';
 }
 
 export function isValueNode(node: unknown): node is (StringNode | NumberNode | NullNode | BooleanNode) {

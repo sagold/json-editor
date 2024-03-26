@@ -1,6 +1,6 @@
-import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, deepEqual } from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, FileNode, deepEqual } from '@sagold/react-json-editor';
 import { render } from '../../render';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../../components/button/Button';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { FileField } from '../../components/filefield/FileField';
@@ -23,6 +23,7 @@ export type FileWidgetOptions = {
      * contain a {{value}} placeholder which will be replaced by the actual input value
      */
     imageUrlTemplate?: string;
+    showPreview?: boolean;
 } & DefaultNodeOptions;
 
 const MIME_TO_ICON: Record<string, string> = {
@@ -77,10 +78,18 @@ async function getDataUrl(file: File): Promise<string | undefined> {
  * and then an object is created. this has to be support thouroughly. Until then,
  * single files using strings do work.
  */
-export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>(({ node, options, setValue }) => {
+export const FileWidget = widget<StringNode<FileWidgetOptions> | FileNode<FileWidgetOptions>, string | File>(({ node, options, setValue }) => {
     const { value } = node;
     const { disabled, imageUrlTemplate, downloadUrlTemplate } = options;
     const [imageData, setImageData] = useState<string | undefined>();
+
+    useEffect(() => {
+        if (isFile(value) && isImageFile(value)) {
+            getDataUrl(value).then(dataUrl => {
+                if (dataUrl) { setImageData(dataUrl); }
+            });
+        }
+    }, [value]);
 
     let icon = 'folder_open';
     let status: 'empty' | 'file' | 'filename' | 'imageUrl' | 'imageData' = 'empty';
@@ -94,8 +103,6 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         status = 'filename';
         icon = getFileIcon({ type: options.accept || '' } as File);
     }
-
-    // console.log(status, downloadUrlTemplate);
 
     async function setFile(file?: File) {
         if (file == null) {
@@ -123,11 +130,13 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
         imageData && setImageData(undefined);
     }
 
-    const withPreview = (status === 'filename' && imageUrlTemplate) || (isFile(value) && status === 'imageData');
+    const withPreview = options.showPreview !== false && ((status === 'filename' && imageUrlTemplate) || (isFile(value) && status === 'imageData'));
 
     // @todo File date and added flag
     // {new Date(value.lastModified).toString().replace(/ GMT.*/, '')}
     // <Label color="yellow">added</Label>
+
+    console.log("file value", isFile(value), status)
 
     const hasError = node.errors.length > 0;
     return (
@@ -142,7 +151,7 @@ export const FileWidget = widget<StringNode<FileWidgetOptions>, string | File>((
                 label={options.title}
                 onPress={setFile}
                 title={options.title}
-                value={value}
+                value={isFile(value) ? value.name : value}
             >
                 {withPreview && (
                     <div className="rje-file__preview">

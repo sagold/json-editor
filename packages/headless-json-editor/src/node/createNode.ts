@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema } from 'json-schema-library';
-import { Node, NodeType, ArrayNode, ObjectNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
-
+import { Node, NodeType, ArrayNode, ObjectNode, FileNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
 
 function propertySortResult(aIndex: number, bIndex: number) {
     if (aIndex === -1 && bIndex === -1) {
@@ -207,6 +206,24 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
         return node;
     },
+    file: (core, value: File, schema, pointer, isArrayItem): FileNode => {
+        const property = getPropertyName(pointer);
+        const node: FileNode = {
+            id: uuid(),
+            type: 'file',
+            pointer,
+            property,
+            isArrayItem,
+            options: {
+                ...getOptions(schema, property),
+                required: schema.minLength != null && schema.minLength > 0
+            },
+            schema,
+            value,
+            errors: []
+        };
+        return node;
+    },
     number: (core, value: number, schema, pointer, isArrayItem): NumberNode => {
         const property = getPropertyName(pointer);
         const node: NumberNode = {
@@ -264,6 +281,9 @@ export function createNode<T extends Node = Node>(
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schema.const) as NodeType);
 
     if (NODES[dataType]) {
+        if (data instanceof File) {
+            return NODES.file(draft, data, schema, pointer, isArrayItem) as T;
+        }
         const node = NODES[dataType](draft, data, schema, pointer, isArrayItem) as T;
         return node;
     }
