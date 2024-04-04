@@ -51,6 +51,7 @@ import {
     getOptions,
     HistoryPlugin,
     isBooleanNode,
+    isChangeEvent,
     isFileNode,
     isJsonError,
     isNode,
@@ -110,6 +111,7 @@ export {
     getOptions,
     HistoryPlugin,
     isBooleanNode,
+    isChangeEvent,
     isFileNode,
     isJsonError,
     isNode,
@@ -131,7 +133,7 @@ export {
     updateErrors,
     updateNode,
     updateOptions,
-    updateSchema
+    updateSchema,
     validateNode,
 };
 
