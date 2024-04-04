@@ -1,7 +1,7 @@
 import gp from '@sagold/json-pointer';
 import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
-import { Draft, DraftConfig, JsonEditor } from 'json-schema-library';
+import { Draft, DraftConfig, JsonEditor, JsonError } from 'json-schema-library';
 import { getErrors } from './node/getErrors';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
@@ -173,10 +173,15 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Get current node at json-pointer location. Returns root node per default
-     * @return node at given location (default root node) or json-error
+     * Get current root-node
+     * @return root node
      */
     getNode(): Node;
+    /**
+     * Get current node at json-pointer location
+     * @return node at requested location or json-error
+     */
+    getNode(pointer: string): Node | JsonError;
     getNode(pointer?: string) {
         if (pointer && typeof pointer === 'string' && pointer.replace(/^[/#]+/, '') !== '') {
             return getNode(this.root, pointer);
