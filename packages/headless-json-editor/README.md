@@ -114,34 +114,46 @@ You may work on a node-tree using the functional api. Functions that modify a tr
 
 ## node
 
-get current validation errors of node
-
-```ts
-const errors: JsonError[] = node.errors;
-```
-
-get json-schema of value
-
-```ts
-const schema: JsonSchema = node.schema;
-```
-
-get options for current node
-
-```ts
-const options = node.options;
-```
-
 get current value of valueNode
 
 ```ts
 const value = node.value;
 ```
 
+get type of node
+
+```ts
+const nodeType: string = node.type;
+```
+
+get current json-pointer of node
+
+```ts
+const nodeLocation: string = node.pointer;
+```
+
+get current validation errors of node
+
+```ts
+const errors: JsonError[] = node.errors;
+```
+
+get options for current node
+
+```ts
+const options: Record<string, any> = node.options;
+```
+
 get children of parentNode
 
 ```ts
-const value = node.children;
+const value: Node[] = node.children;
+```
+
+get json-schema of value
+
+```ts
+const schema: JsonSchema = node.schema;
 ```
 
 
