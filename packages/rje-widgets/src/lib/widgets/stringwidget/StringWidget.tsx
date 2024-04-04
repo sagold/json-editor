@@ -2,13 +2,13 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/re
 import { StringInput } from '../../components/input/StringInput';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 
-export type StringOptions = {
+export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;
-} & DefaultNodeOptions;
+}>;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;

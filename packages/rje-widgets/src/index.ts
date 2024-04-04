@@ -3,26 +3,27 @@ import { JsonForm } from './lib/components/JsonForm';
 // main export
 import { widgets } from './lib/widgets/index';
 // widgets
-import { ArrayWidget, ArrayWidgetPlugin } from './lib/widgets/arraywidget/ArrayWidget';
-import { BooleanWidget, BooleanWidgetPlugin, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
-import { ColorWidget, ColorWidgetPlugin } from './lib/widgets/colorwidget/ColorWidget';
-import { DateWidget, DateWidgetPlugin } from './lib/widgets/datewidget/DateWidget';
-import { FileWidget, FileWidgetPlugin } from './lib/widgets/filewidget/FileWidget';
-import { NavigationWidget } from './lib/widgets/navigationwidget/NavigationWidget';
-import { NullWidget, NullWidgetPlugin } from './lib/widgets/nullwidget/NullWidget';
-import { NumberWidget, NumberWidgetPlugin } from './lib/widgets/numberwidget/NumberWidget';
-import { ObjectWidget, ObjectWidgetPlugin } from './lib/widgets/objectwidget/ObjectWidget';
+import { ArrayWidget, ArrayWidgetPlugin, ArrayOptions } from './lib/widgets/arraywidget/ArrayWidget';
+import { BooleanWidget, BooleanWidgetPlugin, BooleanOptions, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
+import { ColorWidget, ColorWidgetPlugin, ColorOptions } from './lib/widgets/colorwidget/ColorWidget';
+import { DateWidget, DateWidgetPlugin, DateOptions } from './lib/widgets/datewidget/DateWidget';
+import { FileWidget, FileWidgetPlugin, FileOptions } from './lib/widgets/filewidget/FileWidget';
+import { NavigationWidget, NavigationOptions } from './lib/widgets/navigationwidget/NavigationWidget';
+import { NullWidget, NullWidgetPlugin, NullOptions } from './lib/widgets/nullwidget/NullWidget';
+import { NumberWidget, NumberWidgetPlugin, NumberOptions } from './lib/widgets/numberwidget/NumberWidget';
+import { ObjectWidget, ObjectWidgetPlugin, ObjectOptions } from './lib/widgets/objectwidget/ObjectWidget';
 import { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
 import {
     SelectMultipleWidget,
-    SelectMultipleWidgetPlugin
+    SelectMultipleWidgetPlugin,
+    SelectMultipleOptions
 } from './lib/widgets/selectmultiplewidget/SelectMultipleWidget';
-import { StringWidget, StringWidgetPlugin } from './lib/widgets/stringwidget/StringWidget';
-import { SelectWidget, SelectWidgetPlugin } from './lib/widgets/selectwidget/SelectWidget';
-import { SimpleJsonWidget, SimpleJsonWidgetPlugin } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
+import { StringWidget, StringWidgetPlugin, StringOptions } from './lib/widgets/stringwidget/StringWidget';
+import { SelectWidget, SelectWidgetPlugin, SelectOptions } from './lib/widgets/selectwidget/SelectWidget';
+import { SimpleJsonWidget, SimpleJsonWidgetPlugin, SimpleJsonOptions } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
 import { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
-import { TextWidget, TextWidgetPlugin } from './lib/widgets/textwidget/TextWidget';
-import { TagListWidget, TagListWidgetPlugin } from './lib/widgets/taglistwidget/TagListWidget';
+import { TextWidget, TextWidgetPlugin, TextOptions } from './lib/widgets/textwidget/TextWidget';
+import { TagListWidget, TagListWidgetPlugin, TagListOptions } from './lib/widgets/taglistwidget/TagListWidget';
 // components
 import { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
 import { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
@@ -65,36 +66,51 @@ export {
     // all widgets
     widgets,
     // widgets
+    ArrayOptions,
     ArrayWidget,
     ArrayWidgetPlugin,
+    BooleanOptions,
     booleanDefaultOptions,
     BooleanWidget,
     BooleanWidgetPlugin,
+    ColorOptions,
     ColorWidget,
     ColorWidgetPlugin,
+    DateOptions,
     DateWidget,
     DateWidgetPlugin,
+    FileOptions,
     FileWidget,
     FileWidgetPlugin,
+    NavigationOptions,
     NavigationWidget,
+    NullOptions,
     NullWidget,
     NullWidgetPlugin,
+    NumberOptions,
     NumberWidget,
     NumberWidgetPlugin,
+    ObjectOptions,
     ObjectWidget,
     ObjectWidgetPlugin,
+    SelectMultipleOptions,
     SelectMultipleWidget,
     SelectMultipleWidgetPlugin,
     SelectOneOfWidget,
     SelectOneOfWidgetPlugin,
+    SelectOptions,
     SelectWidget,
     SelectWidgetPlugin,
+    SimpleJsonOptions,
     SimpleJsonWidget,
     SimpleJsonWidgetPlugin,
+    StringOptions,
     StringWidget,
     StringWidgetPlugin,
+    TagListOptions,
     TagListWidget,
     TagListWidgetPlugin,
+    TextOptions,
     TextWidget,
     TextWidgetPlugin,
     UnknownWidget,

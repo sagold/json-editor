@@ -176,7 +176,7 @@ function ChildNavigation({
 }: {
     node: Node;
     editor: Editor;
-    options: NavigationWidgetOptions;
+    options: NavigationOptions;
     portalContainer: RefObject<Element>;
 }) {
     if (node.type === 'array') {
@@ -188,9 +188,9 @@ function ChildNavigation({
     return <NavigationLink node={node} />;
 }
 
-export type NavigationWidgetOptions = {
+export type NavigationOptions = DefaultNodeOptions<{
     showProperties?: boolean;
-} & DefaultNodeOptions;
+}>;
 
 /**
  * Navigation Editor
@@ -208,7 +208,7 @@ export type NavigationWidgetOptions = {
  *  />
  * ```
  */
-export const NavigationWidget = widget<ParentNode<NavigationWidgetOptions>>(({ node, editor, options }) => {
+export const NavigationWidget = widget<ParentNode<NavigationOptions>>(({ node, editor, options }) => {
     const portalContainer = useRef<HTMLUListElement>(null);
     return (
         <ul className="rje-navigation" ref={portalContainer}>

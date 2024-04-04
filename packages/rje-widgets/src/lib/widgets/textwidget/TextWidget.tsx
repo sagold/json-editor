@@ -2,12 +2,12 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/re
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { TextArea } from '../../components/textarea/TextArea';
 
-export type TextWidgetOptions = {
+export type TextOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
-} & DefaultNodeOptions;
+}>;
 
-export const TextWidget = widget<StringNode<TextWidgetOptions>, string>(({ node, options, setValue }) => {
+export const TextWidget = widget<StringNode<TextOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;
     const isValidConst = node.schema.const != null && !hasError;
     return (

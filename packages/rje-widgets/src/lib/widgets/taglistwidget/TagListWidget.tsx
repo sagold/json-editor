@@ -14,11 +14,11 @@ type TagListWidgetItem = {
     label?: string;
 };
 
-export type TagListWidgetOptions = {
+export type TagListOptions = DefaultNodeOptions<{
     values?: TagListWidgetItem[];
-} & DefaultNodeOptions;
+}>;
 
-export const TagListWidget = widget<ArrayNode<TagListWidgetOptions>, string[]>(({ node, options, setValue }) => {
+export const TagListWidget = widget<ArrayNode<TagListOptions>, string[]>(({ node, options, setValue }) => {
     const allowDuplicates = node.schema.uniqueItems === true;
 
     // actual list data

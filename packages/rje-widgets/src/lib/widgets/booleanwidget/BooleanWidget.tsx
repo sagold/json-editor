@@ -10,9 +10,9 @@ import { Switch } from '../../components/switch/Switch';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { Checkbox } from '../../components/checkbox/Checkbox';
 
-export type BooleanOptions = {
+export type BooleanOptions = DefaultNodeOptions<{
     type?: 'checkbox' | 'toggle';
-} & DefaultNodeOptions;
+}>;
 
 export const booleanDefaultOptions = {
     type: 'toggle'

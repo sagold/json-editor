@@ -1,8 +1,8 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions } from '@sagold/react-json-editor';
-import { ColorInput, ColorInputProps } from '../../components/colorinput/ColorInput';
+import { ColorInput } from '../../components/colorinput/ColorInput';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 
-export type ColorOptions = {} & DefaultNodeOptions;
+export type ColorOptions = DefaultNodeOptions;
 
 export const ColorWidget = widget<StringNode<ColorOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;

@@ -3,14 +3,7 @@ import { DatePicker, DatePickerProps } from '../../components/datepicker/DatePic
 import { TimeInput } from '../../components/timeinput/TimeInput';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 
-export type DateOptions = {
-    // icon?: string;
-    // tag?: string;
-    // swapIconPosition?: boolean;
-    // format?: DatePickerProps['format'];
-    // /* add increment/decrement buttons */
-    // withButtons?: boolean;
-} & DefaultNodeOptions;
+export type DateOptions = DefaultNodeOptions;
 
 export const DateWidget = widget<StringNode<DateOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;

@@ -2,7 +2,7 @@ import { widget, WidgetPlugin, NumberNode, DefaultNodeOptions } from '@sagold/re
 import { NumberInput } from '../../components/input/NumberInput';
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 
-type NumberOptions = {
+export type NumberOptions = {
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;

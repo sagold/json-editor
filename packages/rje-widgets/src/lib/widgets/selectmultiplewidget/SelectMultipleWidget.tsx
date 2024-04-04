@@ -8,9 +8,9 @@ import {
 import { WidgetField } from '../../components/widgetfield/WidgetField';
 import { TagList } from '../../components/taglist/TagList';
 
-export type SelectMultipleWidgetOptions = {} & DefaultNodeOptions;
+export type SelectMultipleOptions = DefaultNodeOptions;
 
-export const SelectMultipleWidget = widget<ArrayNode<SelectMultipleWidgetOptions>, (string | number)[]>(
+export const SelectMultipleWidget = widget<ArrayNode<SelectMultipleOptions>, (string | number)[]>(
     ({ node, options, setValue }) => {
         const hasError = node.errors.length > 0;
         const selectedKeys = getData(node) as (string | number)[];

@@ -7,7 +7,7 @@ import { FileField } from '../../components/filefield/FileField';
 
 const isFile = (v): v is File => Object.prototype.toString.call(v) === '[object File]';
 
-export type FileWidgetOptions = {
+export type FileOptions = DefaultNodeOptions<{
     /**
      * mime types to accept for this file selection
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
@@ -24,7 +24,7 @@ export type FileWidgetOptions = {
      */
     imageUrlTemplate?: string;
     showPreview?: boolean;
-} & DefaultNodeOptions;
+}>;
 
 const MIME_TO_ICON: Record<string, string> = {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'insert_drive_file', // .xlsx
@@ -78,7 +78,7 @@ async function getDataUrl(file: File): Promise<string | undefined> {
  * and then an object is created. this has to be support thouroughly. Until then,
  * single files using strings do work.
  */
-export const FileWidget = widget<StringNode<FileWidgetOptions> | FileNode<FileWidgetOptions>, string | File>(({ node, options, setValue }) => {
+export const FileWidget = widget<StringNode<FileOptions> | FileNode<FileOptions>, string | File>(({ node, options, setValue }) => {
     const { value } = node;
     const { disabled, imageUrlTemplate, downloadUrlTemplate } = options;
     const [imageData, setImageData] = useState<string | undefined>();
