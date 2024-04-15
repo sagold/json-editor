@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema } from 'json-schema-library';
+import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isDynamicSchema } from 'json-schema-library';
 import { Node, NodeType, ArrayNode, ObjectNode, FileNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
 
 function propertySortResult(aIndex: number, bIndex: number) {
@@ -127,7 +127,16 @@ export const NODES: Record<NodeType, CreateNode> = {
             const childSchema = core.step(key, schema, data, pointer);
             if (childSchema && !isJsonError(childSchema)) {
                 childSchema.isArrayItem = true;
-                node.children.push(createNode(core, next, childSchema, `${pointer}/${key}`, true));
+                const itemNode = createNode(core, next, childSchema, `${pointer}/${key}`, true);
+                // @todo this is a quick-fix. We need the/a source-schema to trigger change detection
+                // in setValue (is schema dynamic?). core.step currently returns a resolved schema which prevents
+                // updates in certain nested dynamic schemas.
+                if (getTypeOf(schema.items) === "object" && isDynamicSchema(schema.items)) {
+                    // @ts-expect-error until we have a proper solution
+                    itemNode.sourceSchema = schema.items;
+                    // misses: additionalItems
+                }
+                node.children.push(itemNode);
             }
         });
 
@@ -169,9 +178,13 @@ export const NODES: Record<NodeType, CreateNode> = {
         // create child nodes
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
+            // @attention @todo
+            // this resolves the schema and omits the source-schema
             const nextSchema = draft.step(key, staticSchema, resolvedData, pointer);
             if (nextSchema && !isJsonError(nextSchema)) {
-                node.children.push(createNode(draft, resolvedData[key], nextSchema, `${pointer}/${key}`));
+                // @todo store sourceSchema on property node
+                const propertyNode = createNode(draft, resolvedData[key], nextSchema, `${pointer}/${key}`);
+                node.children.push(propertyNode);
             }
         });
 
