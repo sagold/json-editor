@@ -1,17 +1,11 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isDynamicSchema, isSchemaNode, SchemaNode } from 'json-schema-library';
+import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isSchemaNode, SchemaNode } from 'json-schema-library';
 import { Node, NodeType, ArrayNode, ObjectNode, FileNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
 
 function propertySortResult(aIndex: number, bIndex: number) {
-    if (aIndex === -1 && bIndex === -1) {
-        return 0;
-    }
-    if (aIndex === -1) {
-        return 1;
-    }
-    if (bIndex === -1) {
-        return -1;
-    }
+    if (aIndex === -1 && bIndex === -1) { return 0; }
+    if (aIndex === -1) { return 1; }
+    if (bIndex === -1) { return -1; }
     return aIndex - bIndex;
 }
 
@@ -103,7 +97,6 @@ export function updateOptionalPropertyList(node: ObjectNode, data: Record<string
 
 export const NODES: Record<NodeType, CreateNode> = {
     array: (arraySchemaNode, data: unknown[], isArrayItem): ArrayNode => {
-
         const { draft, schema, pointer } = arraySchemaNode;
         const property = getPropertyName(pointer);
         const node: ArrayNode = {
@@ -124,22 +117,18 @@ export const NODES: Record<NodeType, CreateNode> = {
         data.forEach((next, key) => {
             // here we move from a dynamic parent schema to a resolved/reduced child-schema
             // without dynamic schema-properties.
+            const length = arraySchemaNode.path.length;
             const itemSchemaNode = draft.step(arraySchemaNode, key, data);
-
             if (isSchemaNode(itemSchemaNode)) {
                 itemSchemaNode.schema.isArrayItem = true;
                 const itemNode = _createNode(itemSchemaNode, next, true);
-                // @todo find explicit retrieval of source schema
-
-                // We need the/a source-schema to trigger change detectionin setValue (is schema dynamic?).
-                // draft.step currently returns a resolved schema which prevents updates in certain nested
-                // dynamic schemas.
-                const unresolvedSchema = itemSchemaNode.path[itemSchemaNode.path.length - 1] ?? schema.items;
-                if (unresolvedSchema && isDynamicSchema(unresolvedSchema)) {
-                    // @ts-expect-error until we have a proper solution
+                if (itemNode.type === "object") {
+                    const unresolvedSchema = itemSchemaNode.path[length + 1] ?? itemSchemaNode.schema;
+                    // We need the/a source-schema to trigger change detectionin setValue (is schema dynamic?).
+                    // draft.step currently returns a resolved schema which prevents updates in certain nested
+                    // dynamic schemas.
                     itemNode.sourceSchema = unresolvedSchema;
                 }
-
                 // misses: additionalItems
                 node.children.push(itemNode);
             }
@@ -148,28 +137,26 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     object: (objectSchemaNode, data: Record<string, unknown>, isArrayItem): ObjectNode => {
-        const { draft, schema, pointer } = objectSchemaNode;
-        // if this is an object from a oneOf-list, the schema comes resolved
-        // to this data. Resolve schema back to actual source
-        let sourceSchema: JsonSchema = schema;
-        if (schema.getOneOfOrigin) {
-            // @todo we need this for all sorts of schemas. an annotated schema from
-            // path would also solve this
-            sourceSchema = schema.getOneOfOrigin().schema as JsonSchema;
-        }
+        const { draft, schema, pointer, path } = objectSchemaNode;
 
-        // schema without any dynamic properties, those have been resolved by given data
-        const reducedObjectSchemaNode = reduceSchema(objectSchemaNode, data);
-        let staticSchema = reducedObjectSchemaNode.schema as JsonSchema;
+        // get the unresolved schema of this object and store it for later comparison.
+        // This will allow us to correctly recreate this node for different input-data
+        // (previously used schema.getOneOfOrigin().schema)
+        const unresolvedObjectSchema: JsonSchema = path[path.length - 1] ?? schema;
+
+        // get schema without any dynamic properties, those have been resolved by given data
+        const resolvedObjectSchemaNode = reduceSchema(objectSchemaNode, data);
+
         // @todo reduceSchema now returns an error if a oneOf statement cannot be resolved
         // per default the initial schema was returned, which we restore here...
-        if (isJsonError(reducedObjectSchemaNode) && reducedObjectSchemaNode?.code === 'one-of-error') {
-            staticSchema = sourceSchema;
+        let resolvedSchema = resolvedObjectSchemaNode.schema as JsonSchema;
+        if (isJsonError(resolvedObjectSchemaNode) && resolvedObjectSchemaNode?.code === 'one-of-error') {
+            resolvedSchema = unresolvedObjectSchema;
         }
 
         // @todo getTemplate should not require type-setting in this case
         // final data complemented with missing data from resolved static schema
-        const resolvedData = draft.getTemplate(data, { type: "object", ...staticSchema });
+        const resolvedData = draft.getTemplate(data, { type: "object", ...resolvedSchema });
         const property = getPropertyName(pointer);
         const node: ObjectNode = {
             id: uuid(),
@@ -177,37 +164,33 @@ export const NODES: Record<NodeType, CreateNode> = {
             pointer,
             property,
             isArrayItem,
-            schema: staticSchema,
-            // @ts-ignore
-            sourceSchema,
+            schema: resolvedSchema,
+            sourceSchema: unresolvedObjectSchema,
             optionalProperties: [],
             missingProperties: [],
-            options: getOptions(staticSchema, property),
+            options: getOptions(resolvedSchema, property),
             children: [],
             errors: []
         };
 
-        // create child nodes
+        // CREATE CHILD NODES
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
-            // @attention @todo
-            // this resolves the schema and omits the source-schema
-            const nextSchemaNode = draft.step(draft.createNode(staticSchema, pointer), key, resolvedData);
+            // @attention this resolves the schema and omits the source-schema
+            const nextSchemaNode = draft.step(objectSchemaNode.next(resolvedSchema), key, resolvedData);
             if (isSchemaNode(nextSchemaNode)) {
-                // console.log("next node", nextSchemaNode.path);
                 // @todo store sourceSchema on property node
                 const propertyNode = _createNode(nextSchemaNode, resolvedData[key]);
                 node.children.push(propertyNode);
             }
         });
 
-        const listOfProperties = Object.keys(staticSchema.properties ?? {});
-
         // track optional properties (duplicate of this is in remove)
         updateOptionalPropertyList(node, resolvedData);
 
         // simplified solution to maintain order as is given by json-schema
         // should probably use combination of additionalProperties, dependencies, etc
+        const listOfProperties = resolvedSchema.properties ? Object.keys(resolvedSchema.properties) : [];
         node.children.sort((a, b) =>
             propertySortResult(listOfProperties.indexOf(a.property), listOfProperties.indexOf(b.property))
         );

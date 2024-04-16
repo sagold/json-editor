@@ -80,11 +80,6 @@ export interface JsonSchema {
     */
     isActive?: boolean;
     isDynamic?: boolean;
-    getOneOfOrigin?: () => {
-        index: number;
-        schema: JsonSchema;
-        isItem?: boolean;
-    };
     /**
      * use besides oneOf-statements to sepcifically identify oneOf-object by object-property
      * @see https://github.com/sagold/json-schema-library?tab=readme-ov-file#oneofproperty

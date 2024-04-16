@@ -12,6 +12,10 @@ import { replaceChildNode } from './set/replaceChildNode';
 import { createChildNode } from './set/createChildNode';
 import { updateValueNode } from './set/updateValueNode';
 
+/**
+ * sets given value of the specified node and returns a new (shallow) node-tree
+ * @returns error or new node-tree with a list of changes applied
+ */
 export function setValue<T extends Node = Node>(
     draft: Draft,
     ast: T,
@@ -34,27 +38,23 @@ export function setValue<T extends Node = Node>(
 
     const currentRootSchema = draft.getSchema();
     if (isDynamicSchema(currentRootSchema)) {
+        const schemaNode = draft.createNode(currentRootSchema as JsonSchema, pointer);
+
         // root node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
-        const schemaNode = draft.createNode(currentRootSchema as JsonSchema, pointer);
         const currentData = getData(ast);
         const currentSchema = resolveDynamicSchema(schemaNode, currentData);
-        const nextData = getData(ast);
-        gp.set(nextData, pointer, value);
+        const nextData = gp.set(getData(ast), pointer, value);
         const nextSchema = resolveDynamicSchema(schemaNode, nextData);
+
         if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
             const fullNextData = draft.getTemplate(nextData, draft.rootSchema, { addOptionalProps: false });
-            // console.log('root schema change', draft.getSchema(), "for", fullNextData);
             const newAst = createNode<T>(draft, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
             changeSet.push({ type: 'create', node: newAst });
             newAst.id = ast.id;
             return [newAst, changeSet];
-        } else {
-            // console.log('root schema doesnt change', currentSchema);
         }
-    } else {
-        // console.log('root is not a dynamic schema', currentRootSchema);
     }
 
     // unlink tree and follow path to value
@@ -124,6 +124,7 @@ function setNext(
 
         // replace node, creating new object or array tree
         if (isParentNode(childNode)) {
+            // @todo further diff schema and check for specific changes (sync)
             const changesOrError = replaceChildNode(draft, parentNode, childNode, value);
             if (isJsonError(changesOrError)) {
                 return changesOrError;
@@ -146,22 +147,20 @@ function setNext(
         });
     }
 
-    // @attention helper properties set by create
-    // @ts-ignore
+    // @ts-ignore @todo type helper properties set by create
     const childSchema = childNode.sourceSchema ?? childNode.schema;
     if (isDynamicSchema(childSchema)) {
-        // console.log('child has dynamic schema', property, childSchema);
+        const schemaNode = draft.createNode(childSchema, childNode.pointer);
+
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(childNode);
-        const schemaNode = draft.createNode(childSchema, childNode.pointer);
         const currentSchema = resolveDynamicSchema(schemaNode, currentData);
-        let nextData = getData(childNode);
-        nextData = gp.set(nextData, join(frags), value);
+        const nextData = gp.set(getData(childNode), join(frags), value);
         const nextSchema = resolveDynamicSchema(schemaNode, nextData);
 
         if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
-            // console.log('child schema changes', currentSchema, '->', nextSchema);
+            // @todo further diff schema and check for specific changes (sync)
             const newChild = createNode(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });
             changeSet.push({ type: 'create', node: newChild });
@@ -169,9 +168,6 @@ function setNext(
             parentNode.children[childNodeIndex] = newChild;
             return;
         }
-    } else {
-        // @ts-ignore
-        // console.log('child has no dynamic schema', property, childSchema);
     }
 
     const nextParentNode = { ...childNode };
