@@ -368,6 +368,50 @@ describe('createNode', () => {
             assert.equal(root.children[0].schema.$id, 'one');
         });
 
+        it('should create node from correct oneOf schema', () => {
+            draft.setSchema({
+                type: 'object',
+                properties: {
+                    switch: {
+                        type: 'object',
+                        oneOf: [
+                            {
+                                id: 'header',
+                                // type: 'object',
+                                required: ['type', 'text'],
+                                properties: {
+                                    type: { const: 'header' },
+                                    text: { type: 'string' }
+                                }
+                            },
+                            {
+                                id: 'paragraph',
+                                // type: 'object',
+                                required: ['type', 'text'],
+                                properties: {
+                                    type: { const: 'paragraph' },
+                                    text: { type: 'string' }
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+
+            const root = createNode(draft, { switch: { type: 'header', text: 'test' } });
+            assert(root.type === 'object');
+            assert.deepEqual(getData(root), { switch: { type: 'header', text: 'test' } });
+            const switchNode = root.children[0];
+            assert.deepEqual(switchNode.schema, {
+                id: 'header',
+                required: ['type', 'text'],
+                properties: {
+                    type: { const: 'header' },
+                    text: { type: 'string' }
+                }
+            },)
+        });
+
         it('should expose oneOf origin from root node schema', () => {
             draft.setSchema({
                 type: 'object',

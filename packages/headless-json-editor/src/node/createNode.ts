@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isDynamicSchema } from 'json-schema-library';
+import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isDynamicSchema, isSchemaNode, SchemaNode } from 'json-schema-library';
 import { Node, NodeType, ArrayNode, ObjectNode, FileNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
 
 function propertySortResult(aIndex: number, bIndex: number) {
@@ -33,7 +33,7 @@ export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<
     required?: boolean;
 } & Options;
 
-type CreateNode = (draft: Draft, data: any, schema: JsonSchema, pointer: JsonPointer, isArrayItem: boolean) => Node;
+type CreateNode = (schemaNode: SchemaNode, data: any, isArrayItem: boolean) => Node;
 
 export function getOptions(schema: JsonSchema, property: string) {
     if (schema == null) {
@@ -102,8 +102,9 @@ export function updateOptionalPropertyList(node: ObjectNode, data: Record<string
 }
 
 export const NODES: Record<NodeType, CreateNode> = {
-    array: (core, data: unknown[], schema, pointer, isArrayItem): ArrayNode => {
-        // console.log("create array", schema);
+    array: (arraySchemaNode, data: unknown[], isArrayItem): ArrayNode => {
+
+        const { draft, schema, pointer } = arraySchemaNode;
         const property = getPropertyName(pointer);
         const node: ArrayNode = {
             id: uuid(),
@@ -120,45 +121,56 @@ export const NODES: Record<NodeType, CreateNode> = {
             errors: []
         };
 
-        // const variableSchema = getTypeOf(schema.items) === 'object' && isDynamicSchema(schema.items);
-        // console.log("create array items from", schema);
-        // @todo replace by jlib helpers
         data.forEach((next, key) => {
-            const childSchema = core.step(key, schema, data, pointer);
-            if (childSchema && !isJsonError(childSchema)) {
-                childSchema.isArrayItem = true;
-                const itemNode = createNode(core, next, childSchema, `${pointer}/${key}`, true);
-                // @todo this is a quick-fix. We need the/a source-schema to trigger change detection
-                // in setValue (is schema dynamic?). core.step currently returns a resolved schema which prevents
-                // updates in certain nested dynamic schemas.
-                if (getTypeOf(schema.items) === "object" && isDynamicSchema(schema.items)) {
+            // here we move from a dynamic parent schema to a resolved/reduced child-schema
+            // without dynamic schema-properties.
+            const itemSchemaNode = draft.step(arraySchemaNode, key, data);
+
+            if (isSchemaNode(itemSchemaNode)) {
+                itemSchemaNode.schema.isArrayItem = true;
+                const itemNode = _createNode(itemSchemaNode, next, true);
+                // @todo find explicit retrieval of source schema
+
+                // We need the/a source-schema to trigger change detectionin setValue (is schema dynamic?).
+                // draft.step currently returns a resolved schema which prevents updates in certain nested
+                // dynamic schemas.
+                const unresolvedSchema = itemSchemaNode.path[itemSchemaNode.path.length - 1] ?? schema.items;
+                if (unresolvedSchema && isDynamicSchema(unresolvedSchema)) {
                     // @ts-expect-error until we have a proper solution
-                    itemNode.sourceSchema = schema.items;
-                    // misses: additionalItems
+                    itemNode.sourceSchema = unresolvedSchema;
                 }
+
+                // misses: additionalItems
                 node.children.push(itemNode);
             }
         });
 
         return node;
     },
-    object: (draft, data: Record<string, unknown>, schema, pointer, isArrayItem): ObjectNode => {
+    object: (objectSchemaNode, data: Record<string, unknown>, isArrayItem): ObjectNode => {
+        const { draft, schema, pointer } = objectSchemaNode;
         // if this is an object from a oneOf-list, the schema comes resolved
         // to this data. Resolve schema back to actual source
-        const sourceSchema: JsonSchema =
-            (schema.getOneOfOrigin && (schema.getOneOfOrigin().schema as JsonSchema)) || schema;
+        let sourceSchema: JsonSchema = schema;
+        if (schema.getOneOfOrigin) {
+            // @todo we need this for all sorts of schemas. an annotated schema from
+            // path would also solve this
+            sourceSchema = schema.getOneOfOrigin().schema as JsonSchema;
+        }
+
         // schema without any dynamic properties, those have been resolved by given data
-        let staticSchema = reduceSchema(draft, sourceSchema, data, pointer);
+        const reducedObjectSchemaNode = reduceSchema(objectSchemaNode, data);
+        let staticSchema = reducedObjectSchemaNode.schema as JsonSchema;
         // @todo reduceSchema now returns an error if a oneOf statement cannot be resolved
         // per default the initial schema was returned, which we restore here...
-        if (staticSchema?.code === 'one-of-error') {
+        if (isJsonError(reducedObjectSchemaNode) && reducedObjectSchemaNode?.code === 'one-of-error') {
             staticSchema = sourceSchema;
         }
-        // staticSchema._oneOfOrigin = schema._oneOfOrigin;
-        // final data complemented with missing data from resolved static schema
-        const resolvedData = draft.getTemplate(data, staticSchema);
-        const property = getPropertyName(pointer);
 
+        // @todo getTemplate should not require type-setting in this case
+        // final data complemented with missing data from resolved static schema
+        const resolvedData = draft.getTemplate(data, { type: "object", ...staticSchema });
+        const property = getPropertyName(pointer);
         const node: ObjectNode = {
             id: uuid(),
             type: 'object',
@@ -180,10 +192,11 @@ export const NODES: Record<NodeType, CreateNode> = {
         currentProperties.forEach((key) => {
             // @attention @todo
             // this resolves the schema and omits the source-schema
-            const nextSchema = draft.step(key, staticSchema, resolvedData, pointer);
-            if (nextSchema && !isJsonError(nextSchema)) {
+            const nextSchemaNode = draft.step(draft.createNode(staticSchema, pointer), key, resolvedData);
+            if (isSchemaNode(nextSchemaNode)) {
+                // console.log("next node", nextSchemaNode.path);
                 // @todo store sourceSchema on property node
-                const propertyNode = createNode(draft, resolvedData[key], nextSchema, `${pointer}/${key}`);
+                const propertyNode = _createNode(nextSchemaNode, resolvedData[key]);
                 node.children.push(propertyNode);
             }
         });
@@ -201,7 +214,8 @@ export const NODES: Record<NodeType, CreateNode> = {
 
         return node;
     },
-    string: (core, value: string, schema, pointer, isArrayItem): StringNode => {
+    string: (schemaNode, value: string, isArrayItem): StringNode => {
+        const { schema, pointer } = schemaNode;
         const property = getPropertyName(pointer);
         const node: StringNode = {
             id: uuid(),
@@ -219,7 +233,8 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
         return node;
     },
-    file: (core, value: File, schema, pointer, isArrayItem): FileNode => {
+    file: (schemaNode, value: File, isArrayItem): FileNode => {
+        const { schema, pointer } = schemaNode;
         const property = getPropertyName(pointer);
         const node: FileNode = {
             id: uuid(),
@@ -237,7 +252,8 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
         return node;
     },
-    number: (core, value: number, schema, pointer, isArrayItem): NumberNode => {
+    number: (schemaNode, value: number, isArrayItem): NumberNode => {
+        const { schema, pointer } = schemaNode;
         const property = getPropertyName(pointer);
         const node: NumberNode = {
             id: uuid(),
@@ -252,7 +268,8 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
         return node;
     },
-    boolean: (core, value: boolean, schema, pointer, isArrayItem): BooleanNode => {
+    boolean: (schemaNode, value: boolean, isArrayItem): BooleanNode => {
+        const { schema, pointer } = schemaNode;
         const property = getPropertyName(pointer);
         const node: BooleanNode = {
             id: uuid(),
@@ -267,7 +284,8 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
         return node;
     },
-    null: (core, value: null, schema, pointer, isArrayItem): NullNode => {
+    null: (schemaNode, value: null, isArrayItem): NullNode => {
+        const { schema, pointer } = schemaNode;
         const property = getPropertyName(pointer);
         const node: NullNode = {
             id: uuid(),
@@ -284,6 +302,24 @@ export const NODES: Record<NodeType, CreateNode> = {
     }
 };
 
+function _createNode<T extends Node = Node>(
+    schemaNode: SchemaNode,
+    data: unknown,
+    isArrayItem = false
+): T {
+    const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
+
+    if (NODES[dataType]) {
+        if (data instanceof File) {
+            return NODES.file(schemaNode, data, isArrayItem) as T;
+        }
+        const node = NODES[dataType](schemaNode, data, isArrayItem) as T;
+        return node;
+    }
+    // e.g. null, undefined, etc
+    throw new Error(`unsupported datatype '${dataType}' in create node`);
+}
+
 export function createNode<T extends Node = Node>(
     draft: Draft,
     data: unknown,
@@ -291,15 +327,5 @@ export function createNode<T extends Node = Node>(
     pointer: JsonPointer = '#',
     isArrayItem = false
 ): T {
-    const dataType = data == null ? 'null' : (getTypeOf(data ?? schema.const) as NodeType);
-
-    if (NODES[dataType]) {
-        if (data instanceof File) {
-            return NODES.file(draft, data, schema, pointer, isArrayItem) as T;
-        }
-        const node = NODES[dataType](draft, data, schema, pointer, isArrayItem) as T;
-        return node;
-    }
-    // e.g. null, undefined, etc
-    throw new Error(`unsupported datatype '${dataType}' in create node`);
+    return _createNode(draft.createNode(schema, pointer), data, isArrayItem);
 }

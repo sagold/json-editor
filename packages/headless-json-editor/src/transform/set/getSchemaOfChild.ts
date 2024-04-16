@@ -17,15 +17,15 @@ export function getSchemaOfChild(
 ): JsonSchema | JsonError {
     const data = getData(node) as UnknownObject;
     data[property] = value;
-    const schema = draft.step(property, node.schema, data, node.pointer);
+    const schemaNode = draft.step(draft.createNode(node.schema, node.pointer), property, data);
     // unknown property in schema
-    if (isJsonError(schema)) {
-        if (schema.code !== 'unknown-property-error') {
+    if (isJsonError(schemaNode)) {
+        if (schemaNode.code !== 'unknown-property-error') {
             console.log(`failed retrieving schema for '${node.pointer}/${property}'`);
-            console.log(schema);
-            return schema;
+            console.log(schemaNode);
+            return schemaNode;
         }
         return draft.createSchemaOf(value);
     }
-    return schema;
+    return schemaNode.schema;
 }

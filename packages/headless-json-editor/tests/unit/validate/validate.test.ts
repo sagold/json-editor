@@ -70,13 +70,13 @@ describe('validate', () => {
     describe('async validation', () => {
         let async: Draft;
         // @ts-ignore
-        const validator: JsonValidator = (core, schema, value, pointer) => {
+        const validator: JsonValidator = (node: SchemaNode, value: unknown) => {
             const error: JsonError = {
                 type: 'error',
                 code: 'async-error',
                 message: 'an async error',
                 name: 'AsyncError',
-                data: { pointer, schema, value }
+                data: { pointer: node.pointer, schema: node.schema, value }
             };
             return Promise.resolve(error);
         };

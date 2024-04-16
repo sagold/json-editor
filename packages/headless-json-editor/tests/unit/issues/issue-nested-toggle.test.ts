@@ -3,7 +3,7 @@ import { createNode } from '../../../src/node/createNode';
 import { getNode } from '../../../src/node/getNode';
 import { strict as assert } from 'assert';
 import { isJsonError } from '../../../src/types';
-import { setValue } from 'headless-json-editor';
+import { setValue } from '../../../src/transform/setValue';
 
 describe('createNode', () => {
     let draft: Draft;

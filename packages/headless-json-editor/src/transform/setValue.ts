@@ -36,13 +36,14 @@ export function setValue<T extends Node = Node>(
     if (isDynamicSchema(currentRootSchema)) {
         // root node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
+        const schemaNode = draft.createNode(currentRootSchema as JsonSchema, pointer);
         const currentData = getData(ast);
-        const currentSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, currentData, pointer);
+        const currentSchema = resolveDynamicSchema(schemaNode, currentData);
         const nextData = getData(ast);
         gp.set(nextData, pointer, value);
-        const nextSchema = resolveDynamicSchema(draft, currentRootSchema as JsonSchema, nextData, pointer);
-        if (!deepEqual(currentSchema, nextSchema)) {
-            const fullNextData = draft.getTemplate(nextData, draft.getSchema(), { addOptionalProps: false });
+        const nextSchema = resolveDynamicSchema(schemaNode, nextData);
+        if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
+            const fullNextData = draft.getTemplate(nextData, draft.rootSchema, { addOptionalProps: false });
             // console.log('root schema change', draft.getSchema(), "for", fullNextData);
             const newAst = createNode<T>(draft, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
@@ -153,12 +154,13 @@ function setNext(
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(childNode);
-        const currentSchema = resolveDynamicSchema(draft, childSchema, currentData, childNode.pointer);
+        const schemaNode = draft.createNode(childSchema, childNode.pointer);
+        const currentSchema = resolveDynamicSchema(schemaNode, currentData);
         let nextData = getData(childNode);
         nextData = gp.set(nextData, join(frags), value);
-        const nextSchema = resolveDynamicSchema(draft, childSchema, nextData, childNode.pointer);
+        const nextSchema = resolveDynamicSchema(schemaNode, nextData);
 
-        if (!deepEqual(currentSchema, nextSchema)) {
+        if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
             // console.log('child schema changes', currentSchema, '->', nextSchema);
             const newChild = createNode(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });

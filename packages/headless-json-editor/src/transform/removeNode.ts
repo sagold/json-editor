@@ -1,4 +1,4 @@
-import { JsonPointer, JsonError, Draft, reduceSchema } from 'json-schema-library';
+import { JsonPointer, JsonError, Draft, reduceSchema, JsonSchema } from 'json-schema-library';
 import { isParentNode, Node, isJsonError, Change } from '../types';
 import { invalidPathError } from '../errors';
 import { getChildIndex } from '../node/getChildNode';
@@ -54,9 +54,9 @@ export function removeNode<T extends Node = Node>(
     // dynamic schema might change
     if (parentNode.type === 'object') {
         const nextData = getData(parentNode) as Record<string, unknown>;
-        const staticSchema = reduceSchema(draft, parentNode.sourceSchema, nextData, parentNode.pointer);
+        const staticSchema = reduceSchema(draft.createNode(parentNode.sourceSchema, parentNode.pointer), nextData);
         // @todo recreate node instead of patching to take care for changes in children
-        parentNode.schema = staticSchema;
+        parentNode.schema = staticSchema.schema as JsonSchema;
 
         // update required and missing properties
         updateOptionalPropertyList(parentNode, nextData);
