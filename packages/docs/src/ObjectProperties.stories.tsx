@@ -261,6 +261,7 @@ export const AllOf: Story = {
     args: {
         theme: 'light',
         validate: true,
+        liveUpdate: true,
         data: { title: 'five!' },
         schema: {
             type: 'object',
@@ -284,7 +285,7 @@ export const AllOf: Story = {
                     }
                 }
             ]
-        } as JsonSchema
+        } as unknown as JsonSchema
     }
 };
 

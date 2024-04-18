@@ -380,7 +380,7 @@ describe('setValue', () => {
         });
 
         // @todo - this might get complex. Simple diff is no longer sufficient here
-        it.skip('should update modified node', () => {
+        it('should update modified node', () => {
             const allOf = new Draft07({
                 type: 'object',
                 properties: {

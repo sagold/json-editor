@@ -4,6 +4,8 @@ import { createNode } from '../../node/createNode';
 import { getChildIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 import { getSchemaOfChild } from './getSchemaOfChild';
+import { syncNodes } from './syncNodes';
+
 
 /**
  * replaces child node in given parent node
@@ -28,6 +30,7 @@ export function replaceChildNode(core: Draft, parent: ParentNode, child: ParentN
     }
 
     if (!deepEqual(child.schema, nextNode.schema)) {
+        syncNodes(child, nextNode);
         // @change replace node
         changeSet.push({ type: 'delete', node: child });
         changeSet.push({ type: 'create', node: nextNode });

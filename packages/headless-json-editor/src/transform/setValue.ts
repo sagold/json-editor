@@ -11,6 +11,7 @@ import { deepEqual } from 'fast-equals';
 import { replaceChildNode } from './set/replaceChildNode';
 import { createChildNode } from './set/createChildNode';
 import { updateValueNode } from './set/updateValueNode';
+import { syncNodes } from './set/syncNodes';
 
 /**
  * sets given value of the specified node and returns a new (shallow) node-tree
@@ -53,6 +54,7 @@ export function setValue<T extends Node = Node>(
             changeSet.push({ type: 'delete', node: ast });
             changeSet.push({ type: 'create', node: newAst });
             newAst.id = ast.id;
+            syncNodes(ast, newAst);
             return [newAst, changeSet];
         }
     }
@@ -166,6 +168,7 @@ function setNext(
             changeSet.push({ type: 'create', node: newChild });
             newChild.id = childNode.id;
             parentNode.children[childNodeIndex] = newChild;
+            syncNodes(childNode, newChild);
             return;
         }
     }
