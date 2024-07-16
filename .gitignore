@@ -17,7 +17,7 @@ node_modules
 .c9/
 *.launch
 .settings/
-*.sublime-workspace
+*.sublime-*
 *.pxd
 *.xml
 *.zip
