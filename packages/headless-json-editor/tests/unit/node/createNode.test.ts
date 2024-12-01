@@ -403,6 +403,8 @@ describe('createNode', () => {
             assert.deepEqual(getData(root), { switch: { type: 'header', text: 'test' } });
             const switchNode = root.children[0];
             assert.deepEqual(switchNode.schema, {
+                // @@todo how to manage control variable
+                __oneOfIndex: 0,
                 id: 'header',
                 // @todo 1: check if this is a problem - schema is merged
                 type: 'object',
@@ -414,7 +416,7 @@ describe('createNode', () => {
             });
         });
 
-        it.skip('should expose oneOf origin from root node schema', () => {
+        it('should expose oneOf origin from root node schema', () => {
             draft.setSchema({
                 type: 'object',
                 oneOfProperty: 'type',
@@ -439,8 +441,55 @@ describe('createNode', () => {
             });
             const root = createNode(draft, { type: 'section', title: '' });
             assert(root.type === 'object');
+
+            // console.log(JSON.stringify(root.sourceSchema, null, 2), JSON.stringify(root.schema, null, 2));
+
             // @todo 2: getOneOfOrigin is no longer exposed by jlib
-            assert.equal(root.schema.getOneOfOrigin?.().index, 1);
+            // assert.equal(root.schema.getOneOfOrigin?.().index, 1);
+            assert.equal(root.schema.__oneOfIndex, 1);
+        });
+
+        /*+
+         * In case of ambigious oneOf schema, return the first valid schema. In
+         * documentation we encourage the use of `oneOfProperty` for this case.
+         */
+        it('should return first matching schema in case of one-of-error', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOf: [
+                    {
+                        type: 'object',
+                        required: ['number'],
+                        properties: {
+                            number: { type: 'number', value: 12 }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', title: 'first' }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', title: 'second' }
+                        }
+                    }
+                ]
+            });
+            const root = createNode(draft, { title: 'ambigious object' });
+            assert(root.type === 'object');
+            assert.deepEqual(root.schema, {
+                __oneOfIndex: 1,
+                type: 'object',
+                required: ['title'],
+                properties: {
+                    title: { type: 'string', title: 'first' }
+                }
+            });
         });
     });
 

@@ -40,7 +40,7 @@ export function unlinkPath<T extends Node = Node>(
     previousRoot: T,
     pointer: JsonPointer | string[]
 ): JsonError | [T, Node] {
-    pointer = join(pointer);
+    pointer = join(pointer as JsonPointer);
     if (!isParentNode(previousRoot)) {
         return invalidNodeTypeError({
             pointer,

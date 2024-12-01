@@ -18,13 +18,16 @@ export type OneOfOptions = {
 } & DefaultNodeOptions;
 
 export function useSelectOneOfWidget(node, { skipSelectOneOf = false } = {}) {
-    const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && node.schema.getOneOfOrigin;
+    const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.sourceSchema?.oneOf);
     return chooseThisWidget;
 }
 
 export const SelectOneOfWidget = widget<ValueNode<OneOfOptions>>(({ editor, node, options }) => {
     const selectedSchema = node.schema as SelectedOneOfSchema;
-    const origin = selectedSchema.getOneOfOrigin();
+    // const origin = selectedSchema.getOneOfOrigin();
+    // @ts-ignore
+    const origin = { schema: node.sourceSchema, index: node.oneOfIndex ?? 0 };
+    console.log('oneof origin', origin);
     const oneOf = origin.schema.oneOf as JsonSchema[];
     if (!Array.isArray(oneOf)) {
         console.error('Error in SelectOneOfWidget: Expected oneOfOrigin to contain schema');

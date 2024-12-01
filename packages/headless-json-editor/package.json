@@ -11,10 +11,10 @@
         "url": "https://github.com/sagold/"
     },
     "dependencies": {
-        "@sagold/json-pointer": "^5.1.1",
+        "@sagold/json-pointer": "^6.0.1",
         "@types/uuid": "^9.0.8",
         "fast-equals": "^5.0.1",
-        "json-schema-library": "^10.0.0-rc2",
+        "json-schema-library": "portal:/Users/saschagoldhofer/Arbeit/versioned/sagold/json-schema-library",
         "uuid": "^9.0.1"
     }
 }

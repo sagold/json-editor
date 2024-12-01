@@ -4649,13 +4649,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/json-pointer@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "@sagold/json-pointer@npm:5.1.1"
-  checksum: d0aa16330997d479b8035f22cab3e2f63f3ae8d9e5ab1137746056581606baba47a7b15116a751c9ea430e1aba9ee7a5459a3ee352509a4afca109cce1dcd9e1
-  languageName: node
-  linkType: hard
-
 "@sagold/json-pointer@npm:^5.1.2":
   version: 5.1.2
   resolution: "@sagold/json-pointer@npm:5.1.2"
@@ -10580,10 +10573,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
-    "@sagold/json-pointer": ^5.1.1
+    "@sagold/json-pointer": ^6.0.1
     "@types/uuid": ^9.0.8
     fast-equals: ^5.0.1
-    json-schema-library: ^10.0.0-rc2
+    json-schema-library: "portal:/Users/saschagoldhofer/Arbeit/versioned/sagold/json-schema-library"
     uuid: ^9.0.1
   languageName: unknown
   linkType: soft
@@ -12226,9 +12219,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^10.0.0-rc2":
-  version: 10.0.0-rc2
-  resolution: "json-schema-library@npm:10.0.0-rc2"
+"json-schema-library@portal:/Users/saschagoldhofer/Arbeit/versioned/sagold/json-schema-library::locator=headless-json-editor%40workspace%3Apackages%2Fheadless-json-editor":
+  version: 0.0.0-use.local
+  resolution: "json-schema-library@portal:/Users/saschagoldhofer/Arbeit/versioned/sagold/json-schema-library::locator=headless-json-editor%40workspace%3Apackages%2Fheadless-json-editor"
   dependencies:
     "@sagold/json-pointer": ^6.0.1
     "@sagold/json-query": ^6.1.3
@@ -12237,9 +12230,8 @@ __metadata:
     fast-deep-equal: ^3.1.3
     smtp-address-parser: 1.0.10
     valid-url: ^1.0.9
-  checksum: d65658a91e6fb8bfd63954507e5fb6244472c47a3eaceeb05d8ca92d9b3742864661b44721e4e2ca7c03137bd400e0d05cb180d25b11e4654212ba8d791a3aed
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1

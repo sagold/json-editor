@@ -1,11 +1,36 @@
 import { v4 as uuid } from 'uuid';
-import { getTypeOf, Draft, JsonPointer, isJsonError, reduceSchema, isSchemaNode, SchemaNode } from 'json-schema-library';
-import { Node, NodeType, ArrayNode, ObjectNode, FileNode, StringNode, NumberNode, BooleanNode, NullNode, JsonSchema } from '../types';
+import {
+    getTypeOf,
+    Draft,
+    JsonPointer,
+    isJsonError,
+    reduceSchema,
+    isSchemaNode,
+    SchemaNode
+} from 'json-schema-library';
+import {
+    Node,
+    NodeType,
+    ArrayNode,
+    ObjectNode,
+    FileNode,
+    StringNode,
+    NumberNode,
+    BooleanNode,
+    NullNode,
+    JsonSchema
+} from '../types';
 
 function propertySortResult(aIndex: number, bIndex: number) {
-    if (aIndex === -1 && bIndex === -1) { return 0; }
-    if (aIndex === -1) { return 1; }
-    if (bIndex === -1) { return -1; }
+    if (aIndex === -1 && bIndex === -1) {
+        return 0;
+    }
+    if (aIndex === -1) {
+        return 1;
+    }
+    if (bIndex === -1) {
+        return -1;
+    }
     return aIndex - bIndex;
 }
 
@@ -53,7 +78,6 @@ export function getOptions(schema: JsonSchema, property: string) {
 function getPropertyName(pointer: string) {
     return pointer.split('/').pop() as string;
 }
-
 
 function isHidden(properties: Record<string, any>, property: string) {
     return properties[property]?.options?.hidden === true;
@@ -122,7 +146,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             if (isSchemaNode(itemSchemaNode)) {
                 itemSchemaNode.schema.isArrayItem = true;
                 const itemNode = _createNode(itemSchemaNode, next, true);
-                if (itemNode.type === "object") {
+                if (itemNode.type === 'object') {
                     const unresolvedSchema = itemSchemaNode.path[length + 1] ?? itemSchemaNode.schema;
                     // We need the/a source-schema to trigger change detectionin setValue (is schema dynamic?).
                     // draft.step currently returns a resolved schema which prevents updates in certain nested
@@ -143,20 +167,33 @@ export const NODES: Record<NodeType, CreateNode> = {
         // This will allow us to correctly recreate this node for different input-data
         // (previously used schema.getOneOfOrigin().schema)
         const unresolvedObjectSchema: JsonSchema = path[path.length - 1] ?? schema;
-
         // get schema without any dynamic properties, those have been resolved by given data
         const resolvedObjectSchemaNode = reduceSchema(objectSchemaNode, data);
 
         // @todo reduceSchema now returns an error if a oneOf statement cannot be resolved
         // per default the initial schema was returned, which we restore here...
-        let resolvedSchema = resolvedObjectSchemaNode.schema as JsonSchema;
+        let resolvedSchema: JsonSchema = resolvedObjectSchemaNode.schema as JsonSchema;
         if (isJsonError(resolvedObjectSchemaNode) && resolvedObjectSchemaNode?.code === 'one-of-error') {
-            resolvedSchema = unresolvedObjectSchema;
+            if (
+                unresolvedObjectSchema.__oneOfIndex === undefined &&
+                unresolvedObjectSchema.oneOf?.length &&
+                unresolvedObjectSchema.oneOf.length > 0
+            ) {
+                // @opnionated: if a json-schema could not be resolved, fallback to the first schema available
+                // @todo: inform user/dev about this behaviour
+                resolvedSchema = unresolvedObjectSchema.oneOf[0] as JsonSchema;
+            } else {
+                resolvedSchema = unresolvedObjectSchema;
+            }
         }
+
+        // @ts-ignore
+        const oneOfIndex = resolvedSchema.__oneOfIndex;
+        // console.log('oneOf', oneOfIndex);
 
         // @todo getTemplate should not require type-setting in this case
         // final data complemented with missing data from resolved static schema
-        const resolvedData = draft.getTemplate(data, { type: "object", ...resolvedSchema });
+        const resolvedData = draft.getTemplate(data, { type: 'object', ...resolvedSchema });
         const property = getPropertyName(pointer);
         const node: ObjectNode = {
             id: uuid(),
@@ -165,6 +202,8 @@ export const NODES: Record<NodeType, CreateNode> = {
             property,
             isArrayItem,
             schema: resolvedSchema,
+            // @ts-ignore
+            oneOfIndex,
             sourceSchema: unresolvedObjectSchema,
             optionalProperties: [],
             missingProperties: [],
@@ -285,11 +324,7 @@ export const NODES: Record<NodeType, CreateNode> = {
     }
 };
 
-function _createNode<T extends Node = Node>(
-    schemaNode: SchemaNode,
-    data: unknown,
-    isArrayItem = false
-): T {
+function _createNode<T extends Node = Node>(schemaNode: SchemaNode, data: unknown, isArrayItem = false): T {
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
 
     if (NODES[dataType]) {

@@ -58,7 +58,7 @@ function runJsonSchemaLinter(draft: Draft, schema: JsonSchema, view: EditorView)
         let flagPropertyValueOnly = true;
         let pointer = error.data?.pointer;
         if (error.code === 'no-additional-properties-error') {
-            pointer = gp.join(error.data?.pointer, error.data?.property);
+            pointer = gp.join(error.data?.pointer as string, error.data?.property as string);
             flagPropertyNameOnly = true;
         } else if (error.code === 'min-length-error') {
             flagPropertyValueOnly = true;
