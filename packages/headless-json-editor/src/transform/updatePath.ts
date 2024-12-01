@@ -2,9 +2,9 @@ import { JsonPointer } from 'json-schema-library';
 import { Node } from '../types';
 import gp from '@sagold/json-pointer';
 
-const POINTER_PREFIX = '#/';
+const POINTER_PREFIX = '#';
 function ensurePointer(pointer: JsonPointer) {
-    return pointer.replace(/^[#/]*/, POINTER_PREFIX);
+    return pointer.replace(/^[#/]*\//, POINTER_PREFIX).replace(/^[#/]*$/, POINTER_PREFIX);
 }
 
 /**
@@ -19,8 +19,7 @@ export function updatePath(node: Node, parentPointer: string, property: string) 
     if (copy.type === 'array') {
         copy.children = copy.children.map((child, index) => updatePath(child, copy.pointer, `${index}`));
     } else if (copy.type === 'object') {
-        copy.children = copy.children.map((child, index) => updatePath(child, copy.pointer, child.property));
+        copy.children = copy.children.map((child) => updatePath(child, copy.pointer, child.property));
     }
-
     return copy;
 }
