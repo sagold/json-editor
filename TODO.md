@@ -6,7 +6,8 @@
 todo
 
 - test json schema editors
-
+- test sync nodes for same type but different properties
+- support additionalProperties/Items in getArrayAddOptions/getChildSelection, return empty list if false
 
 code smells
 
@@ -14,7 +15,6 @@ code smells
 - `schema.sourceSchema`, heavy duplication but probably required. Alternative?
 - `create` `isArrayItem` introduces error surface if omitted -> property as number
 
-
-maybe 
+maybe
 
 - [cannot reproduce] with _liveupdate=false_ multiselect delete is slow or misses update
