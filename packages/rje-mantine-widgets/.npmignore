@@ -1,0 +1,9 @@
+.eslintrc.json
+/dist/ignore
+/docs
+/node_modules
+/src/*.ts
+/src/*.tsx
+/tests
+tsconfig.json
+yarn*

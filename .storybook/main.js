@@ -29,7 +29,8 @@ module.exports = {
             '@sagold/react-json-editor': getPackagePath('react-json-editor', 'src'),
             'headless-json-editor': getPackagePath('headless-json-editor', 'src'),
             '@sagold/rje-widgets': getPackagePath('rje-widgets', 'src'),
-            '@sagold/rje-code-widgets': getPackagePath('rje-code-widgets', 'src')
+            '@sagold/rje-code-widgets': getPackagePath('rje-code-widgets', 'src'),
+            '@sagold/rje-mantine-widgets': getPackagePath('rje-mantine-widgets', 'src')
         };
 
         config.module.rules.push({

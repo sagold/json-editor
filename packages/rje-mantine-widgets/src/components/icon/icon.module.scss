@@ -1,0 +1,30 @@
+.icon {
+    font-family: 'Icon';
+    user-select: none;
+    max-width: 2em;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon--solid {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.icon--clickable {
+    &:hover {
+        cursor: pointer;
+    }
+}
