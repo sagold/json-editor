@@ -6,8 +6,8 @@
 todo
 
 - test json schema editors
-- test sync nodes for same type but different properties
-- support additionalProperties/Items in getArrayAddOptions/getChildSelection, return empty list if false
+- fix support additionalProperties/Items in getArrayAddOptions/getChildSelection, return empty list if false
+- maybe refocus replaced widget (e.g. input to textarea while typing)
 
 code smells
 

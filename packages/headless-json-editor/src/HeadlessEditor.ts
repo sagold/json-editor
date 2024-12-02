@@ -6,7 +6,17 @@ import { getErrors } from './node/getErrors';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
 import { getData } from './node/getData';
-import { JsonSchema, Change, Node, ParentNode, ArrayNode, isJsonError, PluginEvent, DoneEvent, ValidationEvent } from './types';
+import {
+    JsonSchema,
+    Change,
+    Node,
+    ParentNode,
+    ArrayNode,
+    isJsonError,
+    PluginEvent,
+    DoneEvent,
+    ValidationEvent
+} from './types';
 import { moveNode } from './transform/moveNode';
 import { removeNode } from './transform/removeNode';
 import { setValue } from './transform/setValue';
@@ -24,7 +34,6 @@ export type PluginInstance<Signature extends O = O> = {
      */
     onEvent: (root: Node, event: PluginEvent) => void | [Node, Change[]];
 } & Signature;
-
 
 export type Plugin<
     Options extends Parameters<Plugin>[1] = any,
@@ -46,7 +55,6 @@ export type HeadlessEditorOptions<Data = unknown> = {
     [p: string]: unknown;
 } & O;
 
-
 // @todo test setSchema
 // @todo difference between setValue and setData (root?)?
 export class HeadlessEditor<Data = unknown> {
@@ -64,7 +72,14 @@ export class HeadlessEditor<Data = unknown> {
     };
 
     constructor(options: HeadlessEditorOptions<Data>) {
-        const { schema, data = {}, plugins = [], draftConfig, addOptionalProps = false, extendDefaults = false } = options;
+        const {
+            schema,
+            data = {},
+            plugins = [],
+            draftConfig,
+            addOptionalProps = false,
+            extendDefaults = false
+        } = options;
         this.options = options;
         // setup getTemplate options for json-schema-library so that options are used by createNode and others
         this.templateOptions.addOptionalProps = addOptionalProps;
@@ -73,7 +88,7 @@ export class HeadlessEditor<Data = unknown> {
         config.templateDefaultOptions = {
             ...(config.templateDefaultOptions ?? {}),
             ...this.templateOptions
-        }
+        };
         this.draft = new JsonEditor(schema, config);
         this.root = createNode<ParentNode>(
             this.draft,
@@ -149,7 +164,12 @@ export class HeadlessEditor<Data = unknown> {
         const state = unlinkAll(this.root);
         validateState(this.draft, state);
         const validationErrors = getErrors(this.root);
-        const event: ValidationEvent = { type: 'validation', previous: this.root, next: state, errors: validationErrors };
+        const event: ValidationEvent = {
+            type: 'validation',
+            previous: this.root,
+            next: state,
+            errors: validationErrors
+        };
         this.root = this.runPlugins(this.root, state, [event]);
         return validationErrors;
     }
@@ -213,7 +233,7 @@ export class HeadlessEditor<Data = unknown> {
             plugins.forEach((p) => {
                 const [modifiedState, newChanges] = p.onEvent(newState, change) ?? [];
                 if (modifiedState) {
-                    currentRoot = modifiedState
+                    currentRoot = modifiedState;
                     if (newChanges && newChanges.length > 0) {
                         changes.push(...newChanges);
                         validateState(this.draft, currentRoot, getRootChange(newChanges));
@@ -360,7 +380,7 @@ export class HeadlessEditor<Data = unknown> {
     getArrayAddOptions(node: ArrayNode) {
         const schema = this.draft.getSchema({ pointer: node.pointer, data: getData(this.root) });
         const selections = this.draft.getChildSchemaSelection(node.children.length, schema);
-        if (isJsonError(selections)) {
+        if (isJsonError(selections) || selections.length === 0) {
             return [{ type: 'string' }];
         }
         return selections;

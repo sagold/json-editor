@@ -175,7 +175,7 @@ describe('setValue', () => {
             // precondition: title is required, but size and list are optional
             assert.deepEqual(before.missingProperties, ['size', 'list']);
 
-            const [after, changes] = setValue(core, before, '/size', {});
+            const [after] = setValue(core, before, '/size', {});
 
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['list']);
@@ -197,7 +197,7 @@ describe('setValue', () => {
             // precondition
             assert.deepEqual(before.missingProperties, ['b']);
 
-            const [after, changes] = setValue(core, before, '/b', '2');
+            const [after] = setValue(core, before, '/b', '2');
 
             assert(after.type !== 'error');
             assert.deepEqual(after.children.length, 3);
@@ -235,7 +235,7 @@ describe('setValue', () => {
         it('should have new item flagged by isArrayItem', () => {
             const before = createNode(core, core.getTemplate({ list: ['a'] })) as ObjectNode;
 
-            const [after, changes] = setValue(core, before, '/list/1', 'b');
+            const [after] = setValue(core, before, '/list/1', 'b');
 
             assert(after.type !== 'error');
             const arrayItem = getNode(after, '/list/1');
@@ -448,7 +448,7 @@ describe('setValue', () => {
             const before = createNode(oneOf, { type: 'header', text: 'test' }) as ObjectNode;
             assert.equal(before.schema.description, 'header');
 
-            const [after, changes] = setValue(oneOf, before, '/type', 'paragraph');
+            const [after] = setValue(oneOf, before, '/type', 'paragraph');
 
             assert(after.type !== 'error');
             assert.equal(after.schema.description, 'paragraph');
@@ -461,7 +461,6 @@ describe('setValue', () => {
 
         it('should not replace nodes on value update', () => {
             const before = createNode(oneOf, { type: 'header', text: 'test' }) as ObjectNode;
-            const beforeJson = JSON.parse(JSON.stringify(before));
 
             const [after] = setValue(oneOf, before, '/text', 'updated-test-string');
 
@@ -883,7 +882,7 @@ describe('setValue', () => {
             assert(before.type === 'object');
             const beforeString = getData(before);
 
-            const [after, changes] = setValue(draft, before, '', { addSchema: true, additionalSchema: 'updated' });
+            const [after] = setValue(draft, before, '', { addSchema: true, additionalSchema: 'updated' });
             assert(after.type === 'object');
 
             assert(before.id === after.id, 'should not have replaced root node');
