@@ -3,8 +3,12 @@ import { Node } from '../types';
 import gp from '@sagold/json-pointer';
 
 const POINTER_PREFIX = '#';
-function ensurePointer(pointer: JsonPointer) {
-    return pointer.replace(/^[#/]*\//, POINTER_PREFIX).replace(/^[#/]*$/, POINTER_PREFIX);
+export function ensurePointer(pointer: JsonPointer) {
+    if (pointer == null) {
+        return POINTER_PREFIX;
+    }
+    const clean = pointer.replace(/^([#/]*\/)|(^[#/]*$)/, '');
+    return clean.length === 0 ? POINTER_PREFIX : `${POINTER_PREFIX}/${clean}`;
 }
 
 /**
@@ -12,7 +16,6 @@ function ensurePointer(pointer: JsonPointer) {
  */
 export function updatePath(node: Node, parentPointer: string, property: string) {
     const copy = { ...node };
-
     parentPointer = ensurePointer(parentPointer);
     copy.property = property;
     copy.pointer = gp.join(parentPointer, property);

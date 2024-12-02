@@ -8,29 +8,29 @@ describe('getNodeTrace', () => {
     let node: Node;
     beforeEach(
         () =>
-        (node = createNode(
-            new Draft07({
-                type: 'object',
-                additionalProperties: true
-            }),
-            {
-                title: 'my-title',
-                main: true,
-                description: null,
-                contents: [
-                    {
-                        type: 'intro',
-                        id: 0,
-                        content: 'Lorem ipsum dolor sit amet'
-                    },
-                    {
-                        type: 'paragraph',
-                        id: 1,
-                        content: 'Praetereo multos'
-                    }
-                ]
-            }
-        ))
+            (node = createNode(
+                new Draft07({
+                    type: 'object',
+                    additionalProperties: true
+                }),
+                {
+                    title: 'my-title',
+                    main: true,
+                    description: null,
+                    contents: [
+                        {
+                            type: 'intro',
+                            id: 0,
+                            content: 'Lorem ipsum dolor sit amet'
+                        },
+                        {
+                            type: 'paragraph',
+                            id: 1,
+                            content: 'Praetereo multos'
+                        }
+                    ]
+                }
+            ))
     );
 
     it('should return all nodes along the path', () => {
