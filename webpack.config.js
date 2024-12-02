@@ -47,6 +47,12 @@ const config = {
             amd: '@sagold/rje-widgets',
             root: 'rjeWidgets'
         },
+        '@sagold/rje-mantine-widgets': {
+            commonjs: '@sagold/rje-mantine-widgets',
+            commonjs2: '@sagold/rje-mantine-widgets',
+            amd: '@sagold/rje-mantine-widgets',
+            root: 'rjeMantineWidgets'
+        },
         '@sagold/react-json-editor': {
             commonjs: '@sagold/react-json-editor',
             commonjs2: '@sagold/react-json-editor',
@@ -76,6 +82,24 @@ const config = {
             commonjs2: 'react-dom/client',
             amd: 'react-dom/client',
             root: 'ReactDOM'
+        },
+        '@mantine/core': {
+            commonjs: '@mantine/core',
+            commonjs2: '@mantine/core',
+            amd: '@mantine/core',
+            root: ''
+        },
+        '@mantine/hooks': {
+            commonjs: '@mantine/hooks',
+            commonjs2: '@mantine/hooks',
+            amd: '@mantine/hooks',
+            root: ''
+        },
+        '@mantine/dates': {
+            commonjs: '@mantine/dates',
+            commonjs2: '@mantine/dates',
+            amd: '@mantine/dates',
+            root: ''
         }
     },
     resolve: {
@@ -107,6 +131,30 @@ const config = {
                     }
                 }
             },
+            // {
+            //     test: /\module\.s?css$/i,
+            //     use: [
+            //         'style-loader',
+            //         {
+            //             loader: 'css-loader',
+            //             options: {
+            //                 sourceMap: true,
+            //                 importLoaders: 3,
+            //                 modules: {
+            //                     localIdentName: '[name]__[local]___[hash:base64:5]' // Adjust as needed
+            //                 }
+            //             }
+            //         },
+            //         'resolve-url-loader',
+            //         {
+            //             loader: 'sass-loader',
+            //             options: {
+            //                 sourceMap: true,
+            //                 sassOptions: { outputStyle: 'compressed' }
+            //             }
+            //         }
+            //     ]
+            // },
             {
                 test: /\.scss$/,
                 use: [
@@ -114,11 +162,11 @@ const config = {
                     {
                         loader: 'css-loader',
                         options: {
-                            importLoaders: 3,
-                            sourceMap: true
+                            sourceMap: true,
+                            importLoaders: 3
                         }
                     },
-                    { loader: 'resolve-url-loader' },
+                    'resolve-url-loader',
                     {
                         loader: 'sass-loader',
                         options: {

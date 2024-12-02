@@ -1,6 +1,11 @@
+import { ArrayWidgetPlugin } from './ArrayWidget';
+import { BooleanWidgetPlugin } from './BooleanWidget';
+import { NullWidgetPlugin } from './NullWidget';
+import { NumberWidgetPlugin } from './NumberWidget';
+import { ObjectWidgetPlugin } from './ObjectWidget';
+import { SelectWidgetPlugin } from './SelectWidget';
+import { StringWidgetPlugin } from './StringWidget';
 import { WidgetPlugin } from '@sagold/react-json-editor';
-import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
-import { StringWidgetPlugin } from './stringwidget/StringWidget';
 
 export const widgets: WidgetPlugin[] = [
     {
@@ -8,6 +13,11 @@ export const widgets: WidgetPlugin[] = [
         use: (node) => node.options?.hidden,
         Widget: () => null
     },
+    ArrayWidgetPlugin,
+    ObjectWidgetPlugin,
+    SelectWidgetPlugin,
+    BooleanWidgetPlugin,
+    NumberWidgetPlugin,
     StringWidgetPlugin,
-    ObjectWidgetPlugin
+    NullWidgetPlugin
 ];

@@ -1,7 +1,7 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { TextInput } from '@mantine/core';
 import { ReactNode } from 'react';
-import { Icon } from '../../components/icon/Icon';
+import { Icon } from '../components/icon/Icon';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
