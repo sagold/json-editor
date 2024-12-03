@@ -1,8 +1,15 @@
+import * as React from 'react';
 import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
-import { data, schema } from './data/longform';
 import { widgets } from '@sagold/rje-widgets';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
+import { StoryObj } from '@storybook/react';
 
+export default {
+    title: 'Testing/ReplaceWidget',
+    component: Form
+};
+
+type Story = StoryObj<UseEditorOptions>;
 function Form({ data, schema }: UseEditorOptions) {
     const [node, editor] = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
     const WidgetComponent = editor.getWidget(node);
@@ -15,16 +22,7 @@ function Form({ data, schema }: UseEditorOptions) {
     );
 }
 
-export default {
-    title: 'Testing/ReplaceWidget',
-    component: Form,
-    argTypes: {
-        data: { control: { type: 'object' }, defaultValue: data },
-        schema: { control: { type: 'object' }, defaultValue: schema }
-    }
-};
-
-export const SameType: StoryObj = {
+export const SameType: Story = {
     args: {
         data: {
             textarea: false
@@ -54,7 +52,7 @@ export const SameType: StoryObj = {
     }
 };
 
-export const SameTypeLiveUpdate: StoryObj = {
+export const SameTypeLiveUpdate: Story = {
     args: {
         data: {
             text: '1234'
