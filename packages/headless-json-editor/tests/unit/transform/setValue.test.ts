@@ -132,9 +132,55 @@ describe('setValue', () => {
         assert.deepEqual(getData(before), template, 'should not have modified data');
     });
 
-    it('should be able to replace object on root property by different type', () => {
+    it.skip('should be able to replace object on root property by different type', () => {
+        // skip this test for now - we changed behaciour in createNode to
+        // maintain datatype of json-schema instead of datatype
+        // changing type should only be possible with a supporting schema
+        // @see following test
         const before = createNode(core, core.getTemplate({})) as ObjectNode;
         const idsBefore = [getNode(before, '/size').id];
+
+        const [after] = setValue(core, before, '/size', '1024x768');
+
+        assert(after.type !== 'error');
+        assert.deepEqual(getData(after), { ...template, size: '1024x768' });
+        const sizeNode = getNode(after, '/size');
+        assert.equal(sizeNode.type, 'string', 'root type should have changed to datatype string');
+
+        const idsAfter = [getNode(after, '/size').id];
+        assert.notDeepEqual(idsBefore, idsAfter, 'node.ids should have changed');
+    });
+
+    it('should be able to switch type of object on root property', () => {
+        core = new Draft07({
+            type: 'object',
+            additionalProperties: false,
+            required: ['title', 'size', 'list'],
+            properties: {
+                title: { type: 'string', default: 'initial title' },
+                size: {
+                    oneOf: [
+                        {
+                            type: 'object',
+                            required: ['width', 'height'],
+                            properties: {
+                                width: { type: 'number', default: 480 },
+                                height: { type: 'number', default: 360 }
+                            }
+                        },
+                        {
+                            type: 'string'
+                        }
+                    ]
+                },
+                list: { type: 'array', items: { type: 'string' } }
+            }
+        });
+        const before = createNode(core, core.getTemplate({})) as ObjectNode;
+        const sizeBefore = getNode(before, '/size');
+        assert(sizeBefore.type !== 'error');
+        assert.deepEqual(getData(sizeBefore), { width: 480, height: 360 });
+        const idsBefore = [sizeBefore.id];
 
         const [after] = setValue(core, before, '/size', '1024x768');
 
@@ -625,15 +671,16 @@ describe('setValue', () => {
         });
 
         // bug?
-        // it('should not change schema if type of object changes', () => {
-        //     const before = createNode(oneOf, { content: [{ type: 'header' }, { type: 'paragraph' }] }) as ObjectNode;
+        it('should not change schema if type of object changes', () => {
+            const before = createNode(oneOf, { content: [{ type: 'header' }, { type: 'paragraph' }] }) as ObjectNode;
 
-        //     const [after] = setValue(core, before, '/content/0', { type: 'paragraph' });
+            const [after] = setValue(core, before, '/content/0', { type: 'paragraph' });
 
-        //     assert(after.type !== 'error');
-        //     const firstNode = getNode(after, '/content/0');
-        //     assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
-        // });
+            assert(after.type !== 'error');
+            const firstNode = getNode(after, '/content/0');
+            assert(firstNode.type !== 'error');
+            assert.equal(firstNode.schema.id, 'paragraph', 'should have change oneOf schema');
+        });
 
         it('should change schema if nested properties change', () => {
             const before = createNode(oneOf, { content: [{ type: 'header' }, { type: 'paragraph' }] }) as ObjectNode;

@@ -368,6 +368,30 @@ describe('createNode', () => {
             assert.equal(root.children[0].schema.$id, 'one');
         });
 
+        it('should create root node with second schema', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOf: [
+                    {
+                        required: ['one'],
+                        properties: {
+                            one: { type: 'string', $id: 'one' }
+                        }
+                    },
+                    {
+                        required: ['two'],
+                        properties: {
+                            two: { type: 'number', $id: 'two' }
+                        }
+                    }
+                ]
+            });
+            const root = createNode(draft, { two: 2 });
+            assert(root.type === 'object');
+            assert.equal(root.children.length, 1);
+            assert.equal(root.children[0].schema.$id, 'two');
+        });
+
         it('should create node from correct oneOf schema', () => {
             draft.setSchema({
                 type: 'object',
@@ -377,7 +401,6 @@ describe('createNode', () => {
                         oneOf: [
                             {
                                 id: 'header',
-                                // type: 'object',
                                 required: ['type', 'text'],
                                 properties: {
                                     type: { const: 'header' },
@@ -386,7 +409,6 @@ describe('createNode', () => {
                             },
                             {
                                 id: 'paragraph',
-                                // type: 'object',
                                 required: ['type', 'text'],
                                 properties: {
                                     type: { const: 'paragraph' },
@@ -403,10 +425,9 @@ describe('createNode', () => {
             assert.deepEqual(getData(root), { switch: { type: 'header', text: 'test' } });
             const switchNode = root.children[0];
             assert.deepEqual(switchNode.schema, {
-                // @@todo how to manage control variable
                 __oneOfIndex: 0,
                 id: 'header',
-                // @todo 1: check if this is a problem - schema is merged
+                // @todo check if this is a problem - schema is merged
                 type: 'object',
                 required: ['type', 'text'],
                 properties: {
@@ -490,6 +511,84 @@ describe('createNode', () => {
                     title: { type: 'string', title: 'first' }
                 }
             });
+        });
+
+        /*+
+         * In case of ambigious oneOf schema, return the first valid schema. In
+         * documentation we encourage the use of `oneOfProperty` for this case.
+         */
+        it('should return first schema in case of one-of-error', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOf: [
+                    {
+                        type: 'object',
+                        required: ['number'],
+                        properties: {
+                            number: { type: 'number', value: 12 }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', title: 'first' }
+                        }
+                    }
+                ]
+            });
+            const root = createNode(draft, { other: 'property' });
+            assert(root.type === 'object');
+            assert.deepEqual(root.schema, {
+                __oneOfIndex: 0,
+                type: 'object',
+                required: ['number'],
+                properties: {
+                    number: { type: 'number', value: 12 }
+                }
+            });
+        });
+
+        /*+
+         * In case of wrong input data
+         *
+         * @todo attention this modifies input data - we should give the use
+         * the ability to fix the issue within the ui
+         *
+         * @note setValue has a feature where we can change the type by giving
+         * another input value
+         */
+        it('should return schema for invalid data and an error', () => {
+            draft.setSchema({
+                type: 'object',
+                oneOf: [
+                    {
+                        type: 'object',
+                        required: ['number'],
+                        properties: {
+                            number: { type: 'number', default: 12 }
+                        }
+                    },
+                    {
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: { type: 'string', title: 'first' }
+                        }
+                    }
+                ]
+            });
+            const root = createNode(draft, 123);
+            assert(root.type === 'object');
+            assert.deepEqual(root.schema, {
+                __oneOfIndex: 0,
+                type: 'object',
+                required: ['number'],
+                properties: {
+                    number: { type: 'number', default: 12 }
+                }
+            });
+            assert.deepEqual(getData(root), { number: 12 });
         });
     });
 

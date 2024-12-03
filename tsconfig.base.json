@@ -10,7 +10,6 @@
         "lib": ["es2019", "dom"],
         "module": "es6",
         "moduleResolution": "node",
-        "rootDir": ".",
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "sourceMap": true,

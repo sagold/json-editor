@@ -182,6 +182,7 @@ export const NODES: Record<NodeType, CreateNode> = {
                 // @opnionated: if a json-schema could not be resolved, fallback to the first schema available
                 // @todo: inform user/dev about this behaviour
                 resolvedSchema = unresolvedObjectSchema.oneOf[0] as JsonSchema;
+                resolvedSchema.__oneOfIndex = 0;
             } else {
                 resolvedSchema = unresolvedObjectSchema;
             }
@@ -189,7 +190,6 @@ export const NODES: Record<NodeType, CreateNode> = {
 
         // @ts-ignore
         const oneOfIndex = resolvedSchema.__oneOfIndex;
-        // console.log('oneOf', oneOfIndex);
 
         // @todo getTemplate should not require type-setting in this case
         // final data complemented with missing data from resolved static schema
@@ -327,11 +327,21 @@ export const NODES: Record<NodeType, CreateNode> = {
 function _createNode<T extends Node = Node>(schemaNode: SchemaNode, data: unknown, isArrayItem = false): T {
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
 
-    if (NODES[dataType]) {
+    // 03/12/24 we now resolve the type defined by the json-schema instead of the data-type
+    // - this ensures the form is generated
+    // - @attention this drops invalid data
+    const schemaType = schemaNode.schema.type as keyof typeof NODES;
+    let resolvedType: keyof typeof NODES = schemaType ?? dataType;
+    if (Array.isArray(schemaType)) {
+        resolvedType = (schemaType.includes(dataType) ? dataType : schemaType[0]) as keyof typeof NODES;
+    }
+    // const resolvedType = dataType;
+
+    if (NODES[resolvedType]) {
         if (data instanceof File) {
             return NODES.file(schemaNode, data, isArrayItem) as T;
         }
-        const node = NODES[dataType](schemaNode, data, isArrayItem) as T;
+        const node = NODES[resolvedType](schemaNode, data, isArrayItem) as T;
         return node;
     }
     // e.g. null, undefined, etc
