@@ -27,7 +27,7 @@ export const Default: Story = {
         schema: {
             title: 'Json Editor Mantine Widgets',
             type: 'object',
-            required: ['string', 'number', 'boolean', 'select', 'null', 'array'],
+            required: ['string', 'number', 'boolean', 'select', 'selectTag', 'null', 'array'],
             properties: {
                 string: {
                     type: 'string',
@@ -61,6 +61,13 @@ export const Default: Story = {
                     description: 'standard non-native mantine select',
                     enum: ['yes', 'maybe', 'no'],
                     pattern: '(yes|maybe)'
+                },
+                selectTag: {
+                    type: 'string',
+                    title: 'select',
+                    format: 'taglist',
+                    description: 'standard non-native mantine select',
+                    enum: ['yes', 'maybe', 'no']
                 },
                 null: {
                     type: 'null',
