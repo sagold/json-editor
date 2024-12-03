@@ -1,5 +1,6 @@
-import { Stack } from '@mantine/core';
+import { ActionIcon, Button, Table } from '@mantine/core';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, Widget, WidgetField } from '@sagold/react-json-editor';
+import { Icon } from '../components/icon/Icon';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -29,8 +30,24 @@ export type ArrayOptions = DefaultNodeOptions<{
     descriptionInline?: boolean;
 }>;
 
+// copy of rje-widgets -- maybe rje utility?
+function getActionStates(node: ArrayNode) {
+    const minItems = node.schema.minItems || 0;
+    let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
+    if (
+        Array.isArray(node.schema.items) &&
+        (node.schema.additionalItems === false || node.schema.additionalItems == null)
+    ) {
+        isAddEnabled = node.children.length < node.schema.items.length;
+    }
+    return { isAddEnabled, isDeleteEnabled: minItems < node.children.length };
+}
+
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
     const childOptions = {};
+
+    const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
+
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
             <WidgetField.Header>{options.title}</WidgetField.Header>
@@ -39,20 +56,52 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             </WidgetField.Description>
             <WidgetField.Error errors={node.errors} />
 
-            <Stack className="rje-array__items">
-                {node.children.map((child) => (
-                    <div key={child.id} className="rje-array__item">
-                        <Widget
-                            key={child.id}
-                            node={child}
-                            editor={editor}
-                            options={{
-                                ...childOptions
-                            }}
-                        />
-                    </div>
-                ))}
-            </Stack>
+            <Table striped withRowBorders={false}>
+                <Table.Tbody>
+                    {node.children.map((child) => (
+                        <Table.Tr key={child.id}>
+                            <Table.Td width={'100%'}>
+                                <Widget
+                                    key={child.id}
+                                    node={child}
+                                    editor={editor}
+                                    options={{
+                                        ...childOptions
+                                    }}
+                                />
+                            </Table.Td>
+                            <Table.Td valign="top" align="right">
+                                <ActionIcon
+                                    variant="transparent"
+                                    aria-label="delete"
+                                    disabled={!isDeleteEnabled || options.readOnly || options.disabled}
+                                    onClick={() => editor.removeValue(child.pointer)}
+                                >
+                                    <Icon>delete</Icon>
+                                </ActionIcon>
+                            </Table.Td>
+                        </Table.Tr>
+                    ))}
+                    <Table.Tr>
+                        <Table.Td colSpan={2} valign="middle" align="center">
+                            {isAddEnabled && (
+                                <Button
+                                    variant="light"
+                                    disabled={options.readOnly || options.disabled}
+                                    onClick={() => {
+                                        const insertOptions = editor.getArrayAddOptions(node);
+                                        if (insertOptions[0]) {
+                                            editor.appendItem(node, insertOptions[0]);
+                                        }
+                                    }}
+                                >
+                                    <Icon>add</Icon>
+                                </Button>
+                            )}
+                        </Table.Td>
+                    </Table.Tr>
+                </Table.Tbody>
+            </Table>
         </WidgetField>
     );
 });

@@ -1,5 +1,6 @@
 import { ArrayWidgetPlugin } from './ArrayWidget';
 import { BooleanWidgetPlugin } from './BooleanWidget';
+import { MultiSelectWidgetPlugin } from './MultiSelect';
 import { NullWidgetPlugin } from './NullWidget';
 import { NumberWidgetPlugin } from './NumberWidget';
 import { ObjectWidgetPlugin } from './ObjectWidget';
@@ -13,6 +14,7 @@ export const widgets: WidgetPlugin[] = [
         use: (node) => node.options?.hidden,
         Widget: () => null
     },
+    MultiSelectWidgetPlugin,
     ArrayWidgetPlugin,
     ObjectWidgetPlugin,
     SelectWidgetPlugin,

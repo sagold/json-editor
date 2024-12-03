@@ -6,6 +6,7 @@ import '@mantine/core/styles.css';
 // import { JsonSchema } from 'headless-json-editor';
 
 const meta: Meta<typeof JsonForm> = {
+    title: 'packages/rje-mantine-widgets/Overview',
     component: JsonForm,
     render(props) {
         return (
@@ -28,7 +29,7 @@ export const Default: Story = {
         schema: {
             title: 'Json Editor Mantine Widgets',
             type: 'object',
-            required: ['string', 'number', 'boolean', 'select', 'selectTag', 'null', 'array'],
+            required: ['string', 'number', 'boolean', 'select', 'selectTag', 'multiSelect', 'null', 'array'],
             properties: {
                 string: {
                     type: 'string',
@@ -51,29 +52,39 @@ export const Default: Story = {
                     }
                 },
                 boolean: {
-                    type: 'boolean',
                     title: 'boolean',
                     description: 'standard mantine switch',
+                    type: 'boolean',
                     options: {}
                 },
                 select: {
-                    type: 'string',
                     title: 'select',
                     description: 'standard non-native mantine select',
+                    type: 'string',
                     enum: ['yes', 'maybe', 'no'],
                     pattern: '(yes|maybe)'
                 },
                 selectTag: {
                     type: 'string',
+                    description: 'standard mantine chip-group',
                     title: 'select',
                     format: 'taglist',
-                    description: 'standard mantine chip-group',
                     enum: ['yes', 'maybe', 'no']
                 },
+                multiSelect: {
+                    title: 'multi-select',
+                    description: 'standard mantine multi-select',
+                    type: 'array',
+                    uniqueItems: true,
+                    items: {
+                        type: 'string',
+                        enum: ['yes', 'maybe', 'no']
+                    }
+                },
                 null: {
-                    type: 'null',
                     title: 'null widget',
-                    description: 'standard mantine divider'
+                    description: 'standard mantine divider',
+                    type: 'null'
                 },
                 array: {
                     type: 'array',
