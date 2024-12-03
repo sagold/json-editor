@@ -1,17 +1,15 @@
-import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
-// import { deepEqual } from 'fast-equals';
-import { getData } from '../node/getData';
-import { createNode } from '../node/createNode';
 import gp, { split, join } from '@sagold/json-pointer';
-import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema, isFileNode } from '../types';
-import { invalidPathError } from '../errors';
-import { getChildIndex } from '../node/getChildNode';
-import { deepEqual } from 'fast-equals';
-
-import { replaceChildNode } from './set/replaceChildNode';
 import { createChildNode } from './set/createChildNode';
-import { updateValueNode } from './set/updateValueNode';
+import { createNode } from '../node/createNode';
+import { deepEqual } from 'fast-equals';
+import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
+import { getChildIndex } from '../node/getChildNode';
+import { getData } from '../node/getData';
+import { invalidPathError } from '../errors';
+import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema, isFileNode } from '../types';
+import { replaceChildNode } from './set/replaceChildNode';
 import { syncNodes } from './set/syncNodes';
+import { updateValueNode } from './set/updateValueNode';
 
 /**
  * sets given value of the specified node and returns a new (shallow) node-tree
@@ -83,8 +81,6 @@ function setNext(
     if (property == null || property === '') {
         throw new Error(`Invalid property: '${property}'`);
     }
-
-    // console.log('set next', property, frags, value);
 
     // get next child node at 'property'
     const childNodeIndex = getChildIndex(parentNode, property);

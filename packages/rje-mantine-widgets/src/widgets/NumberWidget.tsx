@@ -36,20 +36,20 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <NumberInput
                 id={node.id}
-                leftSection={leftSection}
-                rightSection={rightSection}
-                label={options.title}
-                type={type}
-                value={node.value}
+                // emitOnChange={options.liveUpdate}
+                description={options.description}
+                disabled={options.disabled || isValidConst}
                 error={node.errors.map((e) => e.message).join('\n')}
+                label={options.title}
+                leftSection={leftSection}
+                onChange={(value) => setValue(+value)}
+                placeholder={options.placeholder}
                 readOnly={options.readOnly}
                 required={options.required}
+                rightSection={rightSection}
+                type={type}
+                value={node.value}
                 withAsterisk={options.required}
-                placeholder={options.placeholder}
-                description={options.description}
-                // emitOnChange={options.liveUpdate}
-                onChange={(value) => setValue(+value)}
-                disabled={options.disabled || isValidConst}
             />
         </WidgetField>
     );

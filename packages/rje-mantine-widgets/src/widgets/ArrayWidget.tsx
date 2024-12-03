@@ -1,3 +1,4 @@
+import { Stack } from '@mantine/core';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, Widget, WidgetField } from '@sagold/react-json-editor';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
@@ -38,7 +39,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             </WidgetField.Description>
             <WidgetField.Error errors={node.errors} />
 
-            <div className="rje-array__items">
+            <Stack className="rje-array__items">
                 {node.children.map((child) => (
                     <div key={child.id} className="rje-array__item">
                         <Widget
@@ -51,7 +52,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         />
                     </div>
                 ))}
-            </div>
+            </Stack>
         </WidgetField>
     );
 });

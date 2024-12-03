@@ -10,7 +10,8 @@ const meta: Meta<typeof JsonForm> = {
     render(props) {
         return (
             <MantineProvider>
-                <JsonForm {...props} />
+                {/* mobile devices should havea min size of 16px (which prevents zoom on focus*/}
+                <JsonForm {...props} style={{ '--input-fz': '16px' }} />
             </MantineProvider>
         );
     }
@@ -66,7 +67,7 @@ export const Default: Story = {
                     type: 'string',
                     title: 'select',
                     format: 'taglist',
-                    description: 'standard non-native mantine select',
+                    description: 'standard mantine chip-group',
                     enum: ['yes', 'maybe', 'no']
                 },
                 null: {

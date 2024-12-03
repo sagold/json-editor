@@ -70,18 +70,18 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <Select
                 id={node.id}
-                label={options.title}
-                description={options.description}
-                placeholder={options.placeholder}
-                required={options.required}
-                error={node.errors.map((e) => e.message).join('\n')}
-                disabled={options.disabled}
-                value={node.value}
-                onChange={(value) => value && setValue(value)}
                 data={enumValues.map((value, index) => ({
                     value,
                     label: titles[index] ?? value
                 }))}
+                description={options.description}
+                disabled={options.disabled}
+                error={node.errors.map((e) => e.message).join('\n')}
+                label={options.title}
+                onChange={(value) => value && setValue(value)}
+                placeholder={options.placeholder}
+                required={options.required}
+                value={node.value}
             ></Select>
         </WidgetField>
     );
