@@ -324,7 +324,7 @@ export const NODES: Record<NodeType, CreateNode> = {
     }
 };
 
-function _createNode<T extends Node = Node>(schemaNode: SchemaNode, data: unknown, isArrayItem = false): T {
+export function _createNode<T extends Node = Node>(schemaNode: SchemaNode, data: unknown, isArrayItem = false): T {
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
 
     // 03/12/24 we now resolve the type defined by the json-schema instead of the data-type

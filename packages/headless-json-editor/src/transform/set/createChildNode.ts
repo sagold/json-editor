@@ -1,6 +1,6 @@
 import { Draft } from 'json-schema-library';
 import { isJsonError, ParentNode, Change, isNode } from '../../types';
-import { createNode } from '../../node/createNode';
+import { _createNode } from '../../node/createNode';
 import { invalidPathError } from '../../errors';
 import { getSchemaOfChild } from './getSchemaOfChild';
 import { getData } from '../../node/getData';
@@ -25,9 +25,9 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
         });
     }
 
-    const schema = getSchemaOfChild(draft, node, property, value);
-    if (isJsonError(schema)) {
-        return schema;
+    const schemaNode = getSchemaOfChild(draft, node, property, value);
+    if (isJsonError(schemaNode)) {
+        return schemaNode;
     }
 
     const changeSet: Change[] = [];
@@ -36,7 +36,7 @@ export function createChildNode(draft: Draft, node: ParentNode, property: string
         changeSet.push({ type: 'delete', node: node.children[childIndex] });
     }
 
-    const newNode = createNode(draft, value, schema, `${node.pointer}/${property}`, node.type === 'array');
+    const newNode = _createNode(schemaNode, value, node.type === 'array');
     // @change create node
     changeSet.push({ type: 'create', node: newNode });
 

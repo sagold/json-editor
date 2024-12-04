@@ -1,4 +1,4 @@
-import { Draft07, Draft, isJsonError } from 'json-schema-library';
+import { JsonEditor, Draft, isJsonError } from 'json-schema-library';
 import { createNode } from '../../../src/node/createNode';
 import { setValue } from '../../../src/transform/setValue';
 import { getData } from '../../../src/node/getData';
@@ -23,7 +23,7 @@ describe('setValue', () => {
     let template: Record<string, unknown>;
 
     beforeEach(() => {
-        core = new Draft07({
+        core = new JsonEditor({
             type: 'object',
             additionalProperties: false,
             required: ['title', 'size', 'list'],
@@ -152,7 +152,7 @@ describe('setValue', () => {
     });
 
     it('should be able to switch type of object on root property', () => {
-        core = new Draft07({
+        core = new JsonEditor({
             type: 'object',
             additionalProperties: false,
             required: ['title', 'size', 'list'],
@@ -196,7 +196,7 @@ describe('setValue', () => {
     describe('object optional properties', () => {
         let core: Draft;
         beforeEach(() => {
-            core = new Draft07({
+            core = new JsonEditor({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -326,7 +326,7 @@ describe('setValue', () => {
 
     describe('unknown data', () => {
         it('should add correct schema', () => {
-            const draft = new Draft07({ type: 'object' });
+            const draft = new JsonEditor({ type: 'object' });
             const before = createNode(draft, draft.getTemplate({ switch: ['first', 2] })) as ObjectNode;
 
             assert.equal(getNode(before, '/switch/0').type, 'string');
@@ -337,7 +337,7 @@ describe('setValue', () => {
     describe('value oneOf', () => {
         let oneOf: Draft;
         beforeEach(() => {
-            oneOf = new Draft07({
+            oneOf = new JsonEditor({
                 type: 'object',
                 properties: {
                     switch: {
@@ -362,7 +362,7 @@ describe('setValue', () => {
 
     describe('object allOf', () => {
         it('should update allOf property', () => {
-            const allOf = new Draft07({
+            const allOf = new JsonEditor({
                 type: 'object',
                 required: ['switch'],
                 properties: {
@@ -396,7 +396,7 @@ describe('setValue', () => {
         });
 
         it('should update allOf location', () => {
-            const allOf = new Draft07({
+            const allOf = new JsonEditor({
                 type: 'object',
                 required: ['switch'],
                 properties: {
@@ -427,7 +427,7 @@ describe('setValue', () => {
 
         // @todo - this might get complex. Simple diff is no longer sufficient here
         it('should update modified node', () => {
-            const allOf = new Draft07({
+            const allOf = new JsonEditor({
                 type: 'object',
                 properties: {
                     title: { type: 'string' }
@@ -466,7 +466,7 @@ describe('setValue', () => {
     describe('object oneOf - root level', () => {
         let oneOf: Draft;
         beforeEach(() => {
-            oneOf = new Draft07({
+            oneOf = new JsonEditor({
                 oneOf: [
                     {
                         type: 'object',
@@ -525,7 +525,7 @@ describe('setValue', () => {
     describe('object oneOf', () => {
         let oneOf: Draft;
         beforeEach(() => {
-            oneOf = new Draft07({
+            oneOf = new JsonEditor({
                 type: 'object',
                 properties: {
                     switch: {
@@ -577,6 +577,32 @@ describe('setValue', () => {
             ]);
         });
 
+        it('should switch between object schema 123', () => {
+            const before = createNode(oneOf, { switch: { type: 'header', text: 'test' } }) as ObjectNode;
+            const beforeSwitch = getNode(before, '/switch');
+            assert(!isJsonError(beforeSwitch));
+            assert.equal(beforeSwitch.schema.id, 'header');
+
+            const [after, changes] = setValue(oneOf, before, '/switch', { type: 'paragraph', text: 'any' });
+
+            assert(after.type !== 'error');
+            const afterSwitch = getNode(after, '/switch') as ObjectNode;
+            assert(!isJsonError(afterSwitch));
+            assert.equal(afterSwitch.schema.id, 'paragraph');
+            // check linking
+            assertUnlinkedNodes(after, before, '/switch/type');
+            assertUnlinkedNodes(after, before, '/switch/text');
+            // check changeset
+            assert.deepEqual(changes, [
+                { type: 'delete', node: beforeSwitch },
+                { type: 'create', node: afterSwitch }
+            ]);
+
+            // tests an issue where a selected oneOf-option looses the oneof-options-values
+            // the schemaNode.path was empty as we worked on the schema only
+            assert.equal(afterSwitch.sourceSchema.oneOf?.length, 2, 'source-schema is missing oneOf-definition');
+        });
+
         it('should not replace nodes on value update', () => {
             const before = createNode(oneOf, { switch: { type: 'header', text: 'test' } }) as ObjectNode;
             const switchBefore = JSON.parse(JSON.stringify(getNode(before, '/switch')));
@@ -584,7 +610,7 @@ describe('setValue', () => {
             const [after] = setValue(oneOf, before, '/switch/text', 'updated-test-string');
 
             assert(after.type !== 'error');
-            const switchAfter = getNode(after, '/switch') as StringNode;
+            const switchAfter = getNode(after, '/switch') as ObjectNode;
             assert(switchBefore.id === switchAfter.id, 'parent id of object should not have changed');
             assert.equal(
                 getNode(switchBefore, '/text').id,
@@ -599,7 +625,7 @@ describe('setValue', () => {
     describe('array oneOf', () => {
         let oneOf: Draft;
         beforeEach(() => {
-            oneOf = new Draft07({
+            oneOf = new JsonEditor({
                 type: 'object',
                 properties: {
                     switch: {
@@ -699,7 +725,7 @@ describe('setValue', () => {
     describe('object dependencies', () => {
         let dependencies: Draft;
         beforeEach(() => {
-            dependencies = new Draft07({
+            dependencies = new JsonEditor({
                 type: 'object',
                 properties: { test: { type: 'string' } },
                 dependencies: {
@@ -731,7 +757,7 @@ describe('setValue', () => {
         });
 
         it('should add required node with added trigger node', () => {
-            const requiredDependency = new Draft07({
+            const requiredDependency = new JsonEditor({
                 type: 'object',
                 properties: {
                     test: { type: 'string' },
@@ -751,7 +777,7 @@ describe('setValue', () => {
         });
 
         it('should add required node with added trigger when set by parent', () => {
-            const requiredDependency = new Draft07({
+            const requiredDependency = new JsonEditor({
                 type: 'object',
                 properties: {
                     test: { type: 'string' },
@@ -774,7 +800,7 @@ describe('setValue', () => {
     describe('object if-then-else', () => {
         let conditional: Draft;
         beforeEach(() => {
-            conditional = new Draft07({
+            conditional = new JsonEditor({
                 type: 'object',
                 additionalProperties: false,
                 properties: { test: { type: 'string' } },
@@ -833,7 +859,7 @@ describe('setValue', () => {
         });
 
         it('should only remove "then"-schema on missing "else"', () => {
-            const thenOnlySchema = new Draft07({
+            const thenOnlySchema = new JsonEditor({
                 type: 'object',
                 additionalProperties: false,
                 properties: { test: { type: 'string' } },
@@ -861,7 +887,7 @@ describe('setValue', () => {
         });
 
         it('should not add optional properties from selected then schema', () => {
-            const thenOnlySchema = new Draft07({
+            const thenOnlySchema = new JsonEditor({
                 type: 'object',
                 required: ['trigger'],
                 properties: {
@@ -892,7 +918,7 @@ describe('setValue', () => {
 
     describe('scenarios', () => {
         it('should not replace node of updated object', () => {
-            const draft: Draft = new Draft07({
+            const draft: Draft = new JsonEditor({
                 type: 'object',
                 required: ['addSchema'],
                 properties: {
@@ -939,7 +965,7 @@ describe('setValue', () => {
         });
 
         it('should not lose oneOf objects when setting a value', () => {
-            const core: Draft = new Draft07({
+            const core: Draft = new JsonEditor({
                 type: 'object',
                 required: ['switch'],
                 properties: {

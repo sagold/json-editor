@@ -106,3 +106,44 @@ export const InvalidString: Story = {
         }
     }
 };
+
+export const OneOfType: Story = {
+    args: {
+        data: {},
+        schema: {
+            type: 'object',
+            required: ['typeSelection'],
+            properties: {
+                typeSelection: {
+                    type: 'object',
+                    title: 'OneOf Selection',
+                    description: 'Type selection using oneOf schema',
+                    options: {
+                        header: { color: 'black' }
+                    },
+                    oneOfProperty: 'type',
+                    oneOf: [
+                        {
+                            type: 'object',
+                            title: 'Schema Type One',
+                            required: ['type', 'property'],
+                            properties: {
+                                type: { type: 'string', const: 'first' },
+                                property: { type: 'number', title: 'A number for option one', default: 1 }
+                            }
+                        },
+                        {
+                            type: 'object',
+                            title: 'Schema Type Two',
+                            required: ['type', 'property'],
+                            properties: {
+                                type: { type: 'string', const: 'second' },
+                                property: { type: 'string', title: 'Schema two property', default: 'a string' }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+};

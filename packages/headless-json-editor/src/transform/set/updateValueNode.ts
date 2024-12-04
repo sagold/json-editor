@@ -1,6 +1,6 @@
 import { Draft } from 'json-schema-library';
 import { ValueNode, isJsonError, ParentNode, isNode, Change, FileNode } from '../../types';
-import { createNode } from '../../node/createNode';
+import { _createNode } from '../../node/createNode';
 import { getChildIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
 import { getSchemaOfChild } from './getSchemaOfChild';
@@ -23,12 +23,12 @@ export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNo
         return changeSet;
     }
 
-    const schema = getSchemaOfChild(draft, parent, child.property, value);
-    if (isJsonError(schema)) {
-        return schema;
+    const schemaNode = getSchemaOfChild(draft, parent, child.property, value);
+    if (isJsonError(schemaNode)) {
+        return schemaNode;
     }
 
-    if (deepEqual(schema, child.schema)) {
+    if (deepEqual(schemaNode.schema, child.schema)) {
         const newChild = { ...child };
         parent.children[targetIndex] = newChild;
         // @change update node
@@ -37,12 +37,12 @@ export function updateValueNode(draft: Draft, parent: ParentNode, child: ValueNo
         return changeSet;
     }
 
-    const childPointer = `${parent.pointer}/${child.property}`;
+    // const childPointer = `${parent.pointer}/${child.property}`;
     if (isNode(parent.children[targetIndex])) {
         // @change replace node
         changeSet.push({ type: 'delete', node: parent.children[targetIndex] });
     }
-    parent.children[targetIndex] = createNode(draft, value, schema, childPointer, parent.type === 'array');
+    parent.children[targetIndex] = _createNode(schemaNode, value, parent.type === 'array');
     changeSet.push({ type: 'create', node: parent.children[targetIndex] });
     return changeSet;
 }
