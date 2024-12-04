@@ -8,7 +8,8 @@
     "scripts": {
         "set-version": "node ./tools/version.js",
         "publish-all": "node ./tools/publish.js",
-        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn widgets:dist; yarn code:dist; yarn docs:dist",
+        "dist": "yarn dist:code; yarn docs:dist",
+        "dist:code": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn widgets:dist; yarn code:dist;",
         "hje:dist": "rm -rf packages/headless-json-editor/dist; yarn hje:bundle; yarn hje:ts",
         "hje:bundle": "NODE_ENV=production PACKAGE_NAME=headless-json-editor webpack",
         "hje:ts": "(cd packages/headless-json-editor && tsc --outDir dist --target ES2019 --declaration --noEmit false)",
