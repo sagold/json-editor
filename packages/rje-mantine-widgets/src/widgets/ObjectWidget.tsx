@@ -1,3 +1,4 @@
+import { InputWrapper } from '@mantine/core';
 import { DefaultNodeOptions, ObjectNode, Widget, WidgetField, WidgetPlugin, widget } from '@sagold/react-json-editor';
 
 export type ObjectOptions = DefaultNodeOptions<{
@@ -29,7 +30,6 @@ export type ObjectOptions = DefaultNodeOptions<{
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
     // const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
-    const { title, description, editJson = {} /*, layout, header*/ } = options;
     // const showHeader = editJson.enabled || title || description || options.collapsed != null;
     // const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
     // const withInlineAdd = options.inlineAddPropertyOption ?? !showHeader;
@@ -37,27 +37,27 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const childOptions = {};
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
-            <WidgetField.Header>{title}</WidgetField.Header>
-            <WidgetField.Description enabled={options.descriptionInline === true}>
-                {description}
-            </WidgetField.Description>
-            <WidgetField.Error errors={node.errors} />
-
-            <div className="rje-object__properties">
-                {node.children.map((child) => (
-                    <div key={child.id} className="rje-object__property">
-                        <Widget
-                            key={child.id}
-                            node={child}
-                            editor={editor}
-                            options={{
-                                ...childOptions,
-                                isOptional: node.optionalProperties.includes(child.property)
-                            }}
-                        />
-                    </div>
-                ))}
-            </div>
+            <InputWrapper
+                description={options.description}
+                label={options.title}
+                error={node.errors.map((e) => e.message).join('\n')}
+            >
+                <div className="rje-object__properties">
+                    {node.children.map((child) => (
+                        <div key={child.id} className="rje-object__property">
+                            <Widget
+                                key={child.id}
+                                node={child}
+                                editor={editor}
+                                options={{
+                                    ...childOptions,
+                                    isOptional: node.optionalProperties.includes(child.property)
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </InputWrapper>
         </WidgetField>
     );
 });

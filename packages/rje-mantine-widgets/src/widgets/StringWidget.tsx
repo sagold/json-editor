@@ -1,5 +1,5 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
-import { TextInput } from '@mantine/core';
+import { PasswordInput, TextInput } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
 import { Description } from '../components/Description';
@@ -15,7 +15,6 @@ export type StringOptions = DefaultNodeOptions<{
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const hasError = node.errors.length > 0;
     const isValidConst = node.schema.const != null && !hasError;
-    const type = node.schema.format === 'password' ? 'password' : 'text';
     let leftSection: ReactNode;
     let rightSection;
     if (options.icon) {
@@ -33,9 +32,11 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
         }
     }
 
+    const Input = node.schema.format === 'password' ? PasswordInput : TextInput;
+
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
-            <TextInput
+            <Input
                 id={node.id}
                 // emitOnChange={options.liveUpdate}
                 description={<Description text={options.description} />}
@@ -48,7 +49,6 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
                 readOnly={options.readOnly}
                 required={options.required}
                 rightSection={rightSection}
-                type={type}
                 value={node.value}
                 withAsterisk={options.required}
             />

@@ -31,12 +31,14 @@ export const Default: Story = {
             type: 'object',
             required: [
                 'string',
+                'password',
                 'text',
                 'jsonText',
                 'jsonObject',
                 'color',
                 'number',
                 'boolean',
+                'switch',
                 'select',
                 'selectTag',
                 'multiSelect',
@@ -57,6 +59,13 @@ export const Default: Story = {
                         icon: 'gesture',
                         tag: '👍'
                     }
+                },
+                password: {
+                    title: 'password',
+                    description: 'standard mantine **PasswordInput**',
+                    type: 'string',
+                    default: 'password123',
+                    format: 'password'
                 },
                 text: {
                     title: 'text',
@@ -110,8 +119,16 @@ export const Default: Story = {
                 },
                 boolean: {
                     title: 'boolean',
+                    description: 'standard mantine Checkbox',
+                    type: 'boolean',
+                    default: true,
+                    options: {}
+                },
+                switch: {
+                    title: 'switch',
                     description: 'standard mantine Switch',
                     type: 'boolean',
+                    format: 'switch',
                     options: {}
                 },
                 select: {
