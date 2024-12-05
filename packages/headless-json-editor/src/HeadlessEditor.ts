@@ -134,8 +134,8 @@ export class HeadlessEditor<Data = unknown> {
      * Shortcut to return default data based on json-schema only
      * @return default data confirming to json-schema
      */
-    getTemplateData(schema: JsonSchema) {
-        return this.draft.getTemplate(null, schema, this.templateOptions);
+    getTemplateData(schema: JsonSchema, data = null) {
+        return this.draft.getTemplate(data, schema, this.templateOptions);
     }
 
     /**
