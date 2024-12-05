@@ -70,10 +70,7 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <Select
                 id={node.id}
-                data={enumValues.map((value, index) => ({
-                    value,
-                    label: titles[index] ?? value
-                }))}
+                data={enumValues.map((value, index) => ({ value, label: titles[index] ?? value }))}
                 description={options.description}
                 disabled={options.disabled}
                 error={node.errors.map((e) => e.message).join('\n')}
@@ -89,6 +86,7 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
 
 export const SelectWidgetPlugin: WidgetPlugin = {
     id: 'select-widget',
-    use: (node) => node.schema.type === 'string' && Array.isArray(node.schema.enum),
+    use: (node) =>
+        (node.schema.type?.includes?.('string') || node.schema.type === 'string') && Array.isArray(node.schema.enum),
     Widget: SelectWidget
 };
