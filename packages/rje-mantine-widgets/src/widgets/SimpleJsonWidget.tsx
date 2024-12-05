@@ -12,6 +12,7 @@ import {
     Node
 } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
+import { Description } from '../components/Description';
 
 const invalidJsonError: JsonError = {
     type: 'error',
@@ -60,7 +61,7 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
                 // rightSection={rightSection}
                 autosize
                 value={internalValue}
-                description={options.description}
+                description={<Description text={options.description} />}
                 disabled={options.disabled || isValidConst}
                 error={errors}
                 label={options.title}
@@ -114,12 +115,14 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
                 options={options}
                 errors={jsonErrors}
                 additionalError={error}
+                showDescription={false}
+                showError={false}
             >
                 <Textarea
                     id={node.id}
                     autosize
                     value={internalValue}
-                    description={options.description}
+                    description={<Description text={options.description} />}
                     disabled={options.disabled || isValidConst}
                     error={errors}
                     label={options.title}

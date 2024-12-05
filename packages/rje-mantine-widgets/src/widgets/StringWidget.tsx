@@ -2,6 +2,7 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } fro
 import { TextInput } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
+import { Description } from '../components/Description';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -37,7 +38,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
             <TextInput
                 id={node.id}
                 // emitOnChange={options.liveUpdate}
-                description={options.description}
+                description={<Description text={options.description} />}
                 disabled={options.disabled || isValidConst}
                 error={node.errors.map((e) => e.message).join('\n')}
                 label={options.title}

@@ -8,6 +8,7 @@ import {
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
 import { Chip, Group, InputWrapper, Select } from '@mantine/core';
+import { Description } from '../components/Description';
 
 export type SelectOptions = {
     type?: 'select' | 'taglist';
@@ -40,7 +41,7 @@ export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(
             <InputWrapper
                 id={node.id}
                 label={options.title}
-                description={options.description}
+                description={<Description text={options.description} />}
                 required={options.required}
                 error={node.errors.map((e) => e.message).join('\n')}
             >
@@ -71,7 +72,7 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
             <Select
                 id={node.id}
                 data={enumValues.map((value, index) => ({ value, label: titles[index] ?? value }))}
-                description={options.description}
+                description={<Description text={options.description} />}
                 disabled={options.disabled}
                 error={node.errors.map((e) => e.message).join('\n')}
                 label={options.title}

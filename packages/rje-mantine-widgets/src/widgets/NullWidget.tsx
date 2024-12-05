@@ -1,5 +1,6 @@
 import { Divider } from '@mantine/core';
 import { DefaultNodeOptions, NullNode, widget, WidgetField, WidgetPlugin } from '@sagold/react-json-editor';
+import { Description } from '../components/Description';
 
 export type NullOptions = {
     /** if true, shows a separator line */
@@ -25,7 +26,7 @@ export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }
                 label={
                     !options.title && !options.description ? undefined : (
                         <>
-                            {options.title} - {options.description}
+                            {options.title} - <Description text={options.description} />
                         </>
                     )
                 }

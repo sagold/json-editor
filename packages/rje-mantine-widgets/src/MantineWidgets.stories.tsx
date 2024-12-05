@@ -34,6 +34,7 @@ export const Default: Story = {
                 'text',
                 'jsonText',
                 'jsonObject',
+                'color',
                 'number',
                 'boolean',
                 'select',
@@ -42,6 +43,7 @@ export const Default: Story = {
                 'multiSelectTag',
                 'null',
                 'array',
+                'arrayTag',
                 'oneOfType'
                 // 'oneOfTag'
             ],
@@ -49,7 +51,7 @@ export const Default: Story = {
                 string: {
                     type: 'string',
                     title: 'string',
-                    description: 'standard mantine textinput',
+                    description: 'standard mantine **TextInput**',
                     maxLength: 10,
                     options: {
                         icon: 'gesture',
@@ -58,7 +60,7 @@ export const Default: Story = {
                 },
                 text: {
                     title: 'text',
-                    description: 'standard mantine textarea',
+                    description: 'standard mantine TextArea',
                     type: 'string',
                     format: 'textarea',
                     minLength: 10,
@@ -90,10 +92,16 @@ export const Default: Story = {
                         boolean: { type: 'boolean', default: true }
                     }
                 },
+                color: {
+                    title: 'hex color',
+                    description: 'standard mantine ColorInput',
+                    type: 'string',
+                    format: 'hexColor'
+                },
                 number: {
                     type: 'number',
                     title: 'number',
-                    description: 'standard mantine numberinput',
+                    description: 'standard mantine NumberInput',
                     maximum: 123,
                     options: {
                         icon: '123',
@@ -102,7 +110,7 @@ export const Default: Story = {
                 },
                 boolean: {
                     title: 'boolean',
-                    description: 'standard mantine switch',
+                    description: 'standard mantine Switch',
                     type: 'boolean',
                     options: {}
                 },
@@ -204,7 +212,19 @@ export const Default: Story = {
                     type: 'array',
                     items: {
                         title: 'string item',
-                        description: 'standard mantine textinput',
+                        description: 'standard mantine TextInput',
+                        type: 'string'
+                    }
+                },
+                arrayTag: {
+                    title: 'string-array',
+                    description: 'standard mantine TagsInput',
+                    type: 'array',
+                    format: 'taglist',
+                    maxItems: 6,
+                    minItems: 1,
+                    default: [],
+                    items: {
                         type: 'string'
                     }
                 }

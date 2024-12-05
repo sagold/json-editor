@@ -7,6 +7,10 @@ import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widg
 import { WidgetError, WidgetErrorProps } from './lib/components/widget/WidgetError';
 import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from './lib/components/widget/WidgetField';
 import { Label } from './lib/components/label/Label';
+import Markdown from 'markdown-to-jsx';
+// export dependency
+export { Markdown };
+
 export {
     // components
     Label,
@@ -134,7 +138,7 @@ export {
     updateNode,
     updateOptions,
     updateSchema,
-    validateNode,
+    validateNode
 };
 
 export type {

@@ -1,4 +1,4 @@
-import { ActionIcon, Divider, Flex, Popover, Select, Text } from '@mantine/core';
+import { ActionIcon, Divider, Flex, Popover, Select } from '@mantine/core';
 import {
     widget,
     WidgetPlugin,
@@ -9,6 +9,7 @@ import {
     WidgetField
 } from '@sagold/react-json-editor';
 import { Icon } from '../components/icon/Icon';
+import { Description } from '../components/Description';
 
 export type OneOfOptions = {
     /** header font size relative to 1 (em). Defaults to 1 */
@@ -65,7 +66,7 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfOptions>>(({ editor, node
                                     </ActionIcon>
                                 </Popover.Target>
                                 <Popover.Dropdown style={{ maxWidth: '80%' }}>
-                                    <Text>{options.description}</Text>
+                                    <Description text={options.description} />
                                 </Popover.Dropdown>
                             </Popover>
                         )}

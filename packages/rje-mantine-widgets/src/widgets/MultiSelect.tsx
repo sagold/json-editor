@@ -9,6 +9,7 @@ import {
     WidgetProps,
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
+import { Description } from '../components/Description';
 
 export type SelectMultipleOptions = DefaultNodeOptions;
 
@@ -37,7 +38,7 @@ const SelectWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node,
             <MultiSelect
                 id={node.id}
                 data={data}
-                description={options.description}
+                description={<Description text={options.description} />}
                 disabled={options.disabled}
                 readOnly={options.readOnly}
                 error={node.errors.map((e) => e.message).join('\n')}

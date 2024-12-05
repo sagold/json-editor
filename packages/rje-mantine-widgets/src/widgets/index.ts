@@ -10,6 +10,9 @@ import { StringWidgetPlugin } from './StringWidget';
 import { WidgetPlugin } from '@sagold/react-json-editor';
 import { TextWidgetPlugin } from './TextWidget';
 import { SimpleJsonWidgetPlugin } from './SimpleJsonWidget';
+import { TagListWidgetPlugin } from './TagListWidget';
+import { UnknownWidgetPlugin } from './UnknownWidget';
+import { ColorWidgetPlugin } from './ColorWidget';
 
 export const widgets: WidgetPlugin[] = [
     {
@@ -20,12 +23,15 @@ export const widgets: WidgetPlugin[] = [
     SimpleJsonWidgetPlugin,
     OneOfSelectWidgetPlugin,
     MultiSelectWidgetPlugin,
+    TagListWidgetPlugin,
     ArrayWidgetPlugin,
     ObjectWidgetPlugin,
     SelectWidgetPlugin,
+    ColorWidgetPlugin,
     TextWidgetPlugin,
     StringWidgetPlugin,
     NumberWidgetPlugin,
     BooleanWidgetPlugin,
-    NullWidgetPlugin
+    NullWidgetPlugin,
+    UnknownWidgetPlugin
 ];

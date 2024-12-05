@@ -3,6 +3,7 @@ import { Textarea } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
 import styles from './text-widget.module.scss';
+import { Description } from '../components/Description';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -39,7 +40,7 @@ export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, opt
                 autosize
                 classNames={{ section: styles['section__icon'] }}
                 // emitOnChange={options.liveUpdate}
-                description={options.description}
+                description={<Description text={options.description} />}
                 disabled={options.disabled || isValidConst}
                 error={node.errors.map((e) => e.message).join('\n')}
                 label={options.title}

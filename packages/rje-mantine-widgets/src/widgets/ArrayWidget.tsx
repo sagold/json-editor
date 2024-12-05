@@ -49,7 +49,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
 
     return (
-        <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
+        <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <WidgetField.Header>{options.title}</WidgetField.Header>
             <WidgetField.Description enabled={options.descriptionInline === true}>
                 {options.description}
