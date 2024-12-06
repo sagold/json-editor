@@ -1,5 +1,5 @@
-import { updatePath, ensurePointer } from '../../../src/transform/updatePath';
-import { Node, ArrayNode } from '../../../src/types';
+import { updatePath, ensurePointer } from './updatePath';
+import { Node, ArrayNode } from '../types';
 import { strict as assert } from 'assert';
 
 describe('ensurePointer', () => {

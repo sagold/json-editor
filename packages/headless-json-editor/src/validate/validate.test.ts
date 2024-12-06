@@ -1,10 +1,10 @@
+import { createNode } from '../node/createNode';
 import { Draft07, Draft, JsonValidator, JsonError, isJsonError } from 'json-schema-library';
-import { strict as assert } from 'assert';
-import { createNode } from '../../../src/node/createNode';
-import { getNode } from '../../../src/node/getNode';
-import { setValue } from '../../../src/transform/setValue';
-import { updateErrors as validate } from '../../../src/validate/updateErrors';
+import { getNode } from '../node/getNode';
 import { Node } from 'headless-json-editor';
+import { setValue } from '../transform/setValue';
+import { strict as assert } from 'assert';
+import { updateErrors as validate } from '../validate/updateErrors';
 
 describe('validate', () => {
     let core: Draft;

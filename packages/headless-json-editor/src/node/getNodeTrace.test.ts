@@ -1,8 +1,8 @@
-import { createNode } from '../../../src/node/createNode';
-import { getNodeTrace } from '../../../src/node/getNodeTrace';
+import { createNode } from './createNode';
+import { getNodeTrace } from './getNodeTrace';
 import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
-import { Node } from '../../../src/types';
+import { Node } from '../types';
 
 describe('getNodeTrace', () => {
     let node: Node;

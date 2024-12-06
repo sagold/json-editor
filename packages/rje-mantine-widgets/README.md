@@ -30,3 +30,9 @@ function MyForm({ schema, data }) {
   );
 }
 ```
+
+TODO
+
+- [ ] array oneOf selection support
+- [ ] drag element to create array-item
+- [ ] datetime forms

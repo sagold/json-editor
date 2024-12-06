@@ -1,6 +1,6 @@
-import { HeadlessEditor } from '../../../src/HeadlessEditor';
+import { HeadlessEditor } from '../HeadlessEditor';
 import { strict as assert } from 'assert';
-import { HistoryPlugin } from '../../../src/plugins/HistoryPlugin';
+import { HistoryPlugin } from './HistoryPlugin';
 
 describe('HistoryPlugin', () => {
     describe('integration', () => {
@@ -9,7 +9,7 @@ describe('HistoryPlugin', () => {
         beforeEach(() => {
             he = new HeadlessEditor({
                 data: {
-                    a: "initial input"
+                    a: 'initial input'
                 },
                 schema: {
                     type: 'object',

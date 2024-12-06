@@ -1,11 +1,11 @@
+import { createNode } from '../node/createNode';
+import { getData } from '../node/getData';
+import { getNode } from '../node/getNode';
+import { getNodeTrace } from '../node/getNodeTrace';
 import { JsonEditor, Draft, isJsonError } from 'json-schema-library';
-import { createNode } from '../../../src/node/createNode';
-import { setValue } from '../../../src/transform/setValue';
-import { getData } from '../../../src/node/getData';
-import { getNodeTrace } from '../../../src/node/getNodeTrace';
-import { getNode } from '../../../src/node/getNode';
+import { Node, ArrayNode, ObjectNode, StringNode } from '../types';
+import { setValue } from './setValue';
 import { strict as assert } from 'assert';
-import { Node, ArrayNode, ObjectNode, StringNode } from '../../../src/types';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');

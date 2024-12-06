@@ -1,8 +1,8 @@
 import { Draft07, Draft } from 'json-schema-library';
-import { createNode } from '../../../src/node/createNode';
-import { getData } from '../../../src/node/getData';
+import { createNode } from './createNode';
+import { getData } from './getData';
 import { strict as assert } from 'assert';
-import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../../../src/types';
+import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../types';
 
 describe('createNode', () => {
     let draft: Draft;

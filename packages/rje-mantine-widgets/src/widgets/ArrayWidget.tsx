@@ -48,6 +48,8 @@ function getActionStates(node: ArrayNode) {
 }
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
+    const childOptions = {};
+    const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
     const ref = useRef<HTMLTableSectionElement>(null);
     const { sortableEnabled } = useDraggableItems(
         editor,
@@ -59,11 +61,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         },
         ref
     );
-    const childOptions = {};
 
-    const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
-
-    const items = node.children.map((child, index) => (
+    const items = node.children.map((child) => (
         <Table.Tr key={child.id}>
             {sortableEnabled && (
                 <Table.Td className="rje-drag__handle">
@@ -99,7 +98,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         <ActionIcon
                             variant="transparent"
                             aria-label="move-up"
-                            disabled={child.property === '0'}
+                            disabled={options.readOnly || options.disabled || child.property === '0'}
                             onClick={() => editor.moveItem(child.pointer, parseInt(child.property) - 1)}
                         >
                             <Icon>keyboard_arrow_up</Icon>
@@ -107,7 +106,9 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         <ActionIcon
                             variant="transparent"
                             aria-label="move-down"
-                            disabled={child.property === `${node.children.length - 1}`}
+                            disabled={
+                                options.readOnly || options.disabled || child.property === `${node.children.length - 1}`
+                            }
                             onClick={() => editor.moveItem(child.pointer, parseInt(child.property) + 1)}
                         >
                             <Icon>keyboard_arrow_down</Icon>

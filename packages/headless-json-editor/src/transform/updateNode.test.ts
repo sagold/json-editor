@@ -1,10 +1,10 @@
 import { Draft07, Draft, isJsonError } from 'json-schema-library';
-import { updateNode } from '../../../src/transform/updateNode';
-import { getNode } from "../../../src/node/getNode";
-import { Node, NumberNode, } from '../../../src/types';
+import { updateNode } from './updateNode';
+import { getNode } from '../node/getNode';
+import { Node, NumberNode } from '../types';
 import { strict as assert } from 'assert';
-import { createNode } from '../../../src/node/createNode';
-import { getNodeTrace } from "../../../src/node/getNodeTrace";
+import { createNode } from '../node/createNode';
+import { getNodeTrace } from '../node/getNodeTrace';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -31,8 +31,8 @@ describe('updateNode', () => {
                 size: {
                     type: 'object',
                     properties: {
-                        width: { $ref: "/$defs/width" },
-                        height: { $ref: "/$defs/height" }
+                        width: { $ref: '/$defs/width' },
+                        height: { $ref: '/$defs/height' }
                     }
                 },
                 list: { type: 'array', items: { type: 'string' } }
@@ -42,33 +42,33 @@ describe('updateNode', () => {
                 height: { type: 'number', default: 360 }
             }
         });
-        ast = createNode(core, core.getTemplate({ size: { width: 11, height: 22 }, list: ["item"] }));
+        ast = createNode(core, core.getTemplate({ size: { width: 11, height: 22 }, list: ['item'] }));
     });
 
     it('should recreate node at pointer location', () => {
-        const before = getNode<NumberNode>(ast, "/size/width");
+        const before = getNode<NumberNode>(ast, '/size/width');
 
-        const [newAst] = updateNode(core, ast, "/size/width");
+        const [newAst] = updateNode(core, ast, '/size/width');
         assert(!isJsonError(newAst));
-        const after = getNode<NumberNode>(newAst, "/size/width");
+        const after = getNode<NumberNode>(newAst, '/size/width');
 
         assert(!isJsonError(before) && !isJsonError(after));
-        assertUnlinkedNodes(before, after, "/size/width");
-        assert.notEqual(before, after, "expected different object references");
-        assert.notEqual(before.id, after.id, "expected id to be recreated");
+        assertUnlinkedNodes(before, after, '/size/width');
+        assert.notEqual(before, after, 'expected different object references');
+        assert.notEqual(before.id, after.id, 'expected id to be recreated');
         assert.equal(before.value, after.value);
         assert.equal(after.schema.default, 480);
     });
 
-    it("should recreate node from source json-schema", () => {
-        const before = getNode<NumberNode>(ast, "/size/width");
+    it('should recreate node from source json-schema', () => {
+        const before = getNode<NumberNode>(ast, '/size/width');
         assert(!isJsonError(before));
         assert.equal(before.schema.default, 480);
 
         core.getSchema()!.$defs.width = { type: 'number', default: 800 };
-        const [newAst] = updateNode(core, ast, "/size/width");
+        const [newAst] = updateNode(core, ast, '/size/width');
         assert(!isJsonError(newAst));
-        const after = getNode<NumberNode>(newAst, "/size/width");
+        const after = getNode<NumberNode>(newAst, '/size/width');
 
         assert(!isJsonError(before) && !isJsonError(after));
         assert.equal(before.value, after.value);
@@ -77,18 +77,21 @@ describe('updateNode', () => {
     });
 
     it('should return a list of changes', () => {
-        const before = getNode<NumberNode>(ast, "/size/width");
+        const before = getNode<NumberNode>(ast, '/size/width');
 
-        const [newAst, changes] = updateNode(core, ast, "/size/width");
+        const [newAst, changes] = updateNode(core, ast, '/size/width');
         assert(!isJsonError(newAst) && !isJsonError(before));
-        const after = getNode<NumberNode>(newAst, "/size/width");
+        const after = getNode<NumberNode>(newAst, '/size/width');
         assert(!isJsonError(after));
 
-        assert.deepEqual(changes, [{ type: "delete", node: before }, { type: "create", node: after }]);
+        assert.deepEqual(changes, [
+            { type: 'delete', node: before },
+            { type: 'create', node: after }
+        ]);
     });
 
     it('should return a json-error if the target does not exist', () => {
-        const [newAst] = updateNode(core, ast, "/size/unknown");
+        const [newAst] = updateNode(core, ast, '/size/unknown');
         assert(isJsonError(newAst));
     });
 });

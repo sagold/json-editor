@@ -1,7 +1,7 @@
-import { buildPathsMap } from '../../../src/transform/unlinkPath';
+import { buildPathsMap } from './unlinkPath';
 import { strict as assert } from 'assert';
 
-describe('buildPathsMap', () => {
+describe('unlinkPaths.buildPathsMap', () => {
     it('should return path as map', () => {
         const map = buildPathsMap(['#/parent/child/node']);
         assert.deepEqual(map, { parent: { child: { node: { $return: true } } } });
