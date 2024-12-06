@@ -36,9 +36,6 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     // const showHeader = editJson.enabled || title || description || options.collapsed != null;
     // const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
 
-    console.log('optional properties', node.optionalProperties);
-    console.log('missing properties', node.missingProperties);
-
     const childOptions = {};
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>

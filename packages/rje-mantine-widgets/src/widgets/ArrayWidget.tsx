@@ -1,6 +1,8 @@
-import { ActionIcon, Button, InputWrapper, Menu, MenuDropdown, Table } from '@mantine/core';
+import { ActionIcon, Button, InputWrapper, Menu, Table } from '@mantine/core';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, Widget, WidgetField } from '@sagold/react-json-editor';
 import { Icon } from '../components/icon/Icon';
+import { useDraggableItems, SortableOptions } from '../useDraggableItems';
+import { useRef } from 'react';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -28,6 +30,8 @@ export type ArrayOptions = DefaultNodeOptions<{
     controls?: boolean;
     /** set to true to inline description */
     descriptionInline?: boolean;
+    /** set to { enabled: true } for dragndrop */
+    sortable?: SortableOptions;
 }>;
 
 // copy of rje-widgets -- maybe rje utility?
@@ -44,9 +48,75 @@ function getActionStates(node: ArrayNode) {
 }
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
+    const ref = useRef<HTMLTableSectionElement>(null);
+    const { sortableEnabled } = useDraggableItems(
+        editor,
+        {
+            pointer: node.pointer,
+            disabled: options.disabled,
+            readOnly: options.readOnly,
+            sortable: options.sortable
+        },
+        ref
+    );
     const childOptions = {};
 
     const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
+
+    const items = node.children.map((child, index) => (
+        <Table.Tr key={child.id}>
+            {sortableEnabled && (
+                <Table.Td className="rje-drag__handle">
+                    <Icon>drag_indicator</Icon>
+                </Table.Td>
+            )}
+            <Table.Td width={'100%'}>
+                <Widget
+                    key={child.id}
+                    node={child}
+                    editor={editor}
+                    options={{
+                        ...childOptions
+                    }}
+                />
+            </Table.Td>
+            <Table.Td valign="top" align="right">
+                <Menu position="left">
+                    <Menu.Target>
+                        <ActionIcon variant="transparent">
+                            <Icon>menu</Icon>
+                        </ActionIcon>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                        <ActionIcon
+                            variant="transparent"
+                            aria-label="delete"
+                            disabled={!isDeleteEnabled || options.readOnly || options.disabled}
+                            onClick={() => editor.removeValue(child.pointer)}
+                        >
+                            <Icon>delete</Icon>
+                        </ActionIcon>
+                        <ActionIcon
+                            variant="transparent"
+                            aria-label="move-up"
+                            disabled={child.property === '0'}
+                            onClick={() => editor.moveItem(child.pointer, parseInt(child.property) - 1)}
+                        >
+                            <Icon>keyboard_arrow_up</Icon>
+                        </ActionIcon>
+                        <ActionIcon
+                            variant="transparent"
+                            aria-label="move-down"
+                            disabled={child.property === `${node.children.length - 1}`}
+                            onClick={() => editor.moveItem(child.pointer, parseInt(child.property) + 1)}
+                        >
+                            <Icon>keyboard_arrow_down</Icon>
+                        </ActionIcon>
+                    </Menu.Dropdown>
+                </Menu>
+            </Table.Td>
+        </Table.Tr>
+    ));
 
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
@@ -56,63 +126,11 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 error={node.errors.map((e) => e.message).join('\n')}
             >
                 <Table striped withRowBorders={false}>
-                    <Table.Tbody>
-                        {node.children.map((child) => (
-                            <Table.Tr key={child.id}>
-                                <Table.Td width={'100%'}>
-                                    <Widget
-                                        key={child.id}
-                                        node={child}
-                                        editor={editor}
-                                        options={{
-                                            ...childOptions
-                                        }}
-                                    />
-                                </Table.Td>
-                                <Table.Td valign="top" align="right">
-                                    <Menu position="left">
-                                        <Menu.Target>
-                                            <ActionIcon variant="transparent">
-                                                <Icon>menu</Icon>
-                                            </ActionIcon>
-                                        </Menu.Target>
-                                        <Menu.Dropdown>
-                                            <ActionIcon
-                                                variant="transparent"
-                                                aria-label="delete"
-                                                disabled={!isDeleteEnabled || options.readOnly || options.disabled}
-                                                onClick={() => editor.removeValue(child.pointer)}
-                                            >
-                                                <Icon>delete</Icon>
-                                            </ActionIcon>
-                                            <ActionIcon
-                                                variant="transparent"
-                                                aria-label="move-up"
-                                                disabled={child.property === '0'}
-                                                onClick={() =>
-                                                    editor.moveItem(child.pointer, parseInt(child.property) - 1)
-                                                }
-                                            >
-                                                <Icon>keyboard_arrow_up</Icon>
-                                            </ActionIcon>
-                                            <ActionIcon
-                                                variant="transparent"
-                                                aria-label="move-down"
-                                                disabled={child.property === `${node.children.length - 1}`}
-                                                onClick={() =>
-                                                    editor.moveItem(child.pointer, parseInt(child.property) + 1)
-                                                }
-                                            >
-                                                <Icon>keyboard_arrow_down</Icon>
-                                            </ActionIcon>
-                                        </Menu.Dropdown>
-                                    </Menu>
-                                </Table.Td>
-                            </Table.Tr>
-                        ))}
-                        <Table.Tr>
-                            <Table.Td colSpan={2} valign="middle" align="center">
-                                {isAddEnabled && (
+                    <Table.Tbody ref={ref}>{items}</Table.Tbody>
+                    {isAddEnabled && (
+                        <Table.Tfoot>
+                            <Table.Tr>
+                                <Table.Td colSpan={sortableEnabled ? 3 : 2} valign="middle" align="center">
                                     <Button
                                         variant="light"
                                         disabled={options.readOnly || options.disabled}
@@ -125,10 +143,10 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                     >
                                         <Icon>add</Icon>
                                     </Button>
-                                )}
-                            </Table.Td>
-                        </Table.Tr>
-                    </Table.Tbody>
+                                </Table.Td>
+                            </Table.Tr>
+                        </Table.Tfoot>
+                    )}
                 </Table>
             </InputWrapper>
         </WidgetField>
