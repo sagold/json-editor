@@ -6,58 +6,58 @@ import { widgets } from '../../../rje-widgets/src';
 import { Theme } from '../../../rje-widgets/src/lib/components/theme/Theme';
 
 function SideBySideComponent({ schema, data, onChange }: UseEditorOptions) {
-    const [node, editor] = useEditor({
-        schema,
-        widgets,
-        onChange,
-        plugins: [RemoteEnumOptionsPlugin],
-        data
-    });
+  const [node, editor] = useEditor({
+    schema,
+    widgets,
+    onChange,
+    plugins: [RemoteEnumOptionsPlugin],
+    data
+  });
 
-    // @ts-ignore
-    window.getEditor = () => editor;
+  // @ts-ignore
+  window.getEditor = () => editor;
 
-    const ChildWidget = editor.getWidget(node);
-    return (
-        <Theme>
-            <section
-                id="side-by-side"
-                style={{
-                    padding: 12,
-                    display: 'flex',
-                    justifyContent: 'space-evenly'
-                }}
-            >
-                <div style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
-                    <ChildWidget node={node} editor={editor} />
-                </div>
-                <div style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
-                    <ChildWidget node={node} editor={editor} />
-                </div>
-            </section>
-        </Theme>
-    );
+  const ChildWidget = editor.getWidget(node);
+  return (
+    <Theme>
+      <section
+        id="side-by-side"
+        style={{
+          padding: 12,
+          display: 'flex',
+          justifyContent: 'space-evenly'
+        }}
+      >
+        <div style={{ paddingRight: '12px', width: '100%', maxWidth: 560 }}>
+          <ChildWidget node={node} editor={editor} />
+        </div>
+        <div style={{ paddingLeft: '12px', width: '100%', maxWidth: 560 }}>
+          <ChildWidget node={node} editor={editor} />
+        </div>
+      </section>
+    </Theme>
+  );
 }
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Examples/SideBySide'
+  title: 'Examples/SideBySide'
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<any> = () => {
-    return (
-        <div>
-            <p>The following is the same editor rendered twice to test update mechanism</p>
-            <SideBySideComponent
-                schema={schema}
-                data={data}
-                onChange={(data, root) => {
-                    // console.log('on change', root);
-                }}
-            />
-        </div>
-    );
+  return (
+    <div>
+      <p>The following is the same editor rendered twice to test update mechanism</p>
+      <SideBySideComponent
+        schema={schema}
+        data={data}
+        onChange={(data, root) => {
+          // console.log('on change', root);
+        }}
+      />
+    </div>
+  );
 };
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

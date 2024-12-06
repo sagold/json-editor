@@ -5,12 +5,12 @@ import { parseDate, parseTime, parseAbsoluteToLocal, DateValue } from '@internat
 
 type Story = StoryObj<typeof Calendar>;
 const meta: Meta<typeof Calendar> = {
-    title: 'packages/rje-widgets/components/Calendar',
-    component: Calendar,
-    decorators: [ThemeDecorator],
-    args: {
-        value: parseDate('2023-12-04')
-    }
+  title: 'packages/rje-widgets/components/Calendar',
+  component: Calendar,
+  decorators: [ThemeDecorator],
+  args: {
+    value: parseDate('2023-12-04')
+  }
 };
 export default meta;
 

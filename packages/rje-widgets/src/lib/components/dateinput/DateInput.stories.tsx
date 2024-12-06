@@ -5,28 +5,28 @@ import { DateFormatter } from '@internationalized/date';
 
 type Story = StoryObj<DateInputProps>;
 const meta: Meta<DateInputProps> = {
-    title: 'packages/rje-widgets/components/DateInput',
-    component: DateInput,
-    decorators: [ThemeDecorator],
-    argTypes: {
-        // data: { control: { type: 'object' } }
-    },
-    args: {
-        title: 'Date input'
-    }
+  title: 'packages/rje-widgets/components/DateInput',
+  component: DateInput,
+  decorators: [ThemeDecorator],
+  argTypes: {
+    // data: { control: { type: 'object' } }
+  },
+  args: {
+    title: 'Date input'
+  }
 };
 export default meta;
 
 export const FormatDate: Story = {
-    args: {
-        title: 'Date',
-        defaultValue: '2023-12-01',
-        granularity: 'day',
-        format: 'date',
-        onChange: (date) => {
-            console.log('on change', `${date.toDate()}`);
-        }
+  args: {
+    title: 'Date',
+    defaultValue: '2023-12-01',
+    granularity: 'day',
+    format: 'date',
+    onChange: (date) => {
+      console.log('on change', `${date.toDate()}`);
     }
+  }
 };
 
 // export const Minutes: Story = {
@@ -41,13 +41,13 @@ export const FormatDate: Story = {
 // };
 
 export const FormatDateTime: Story = {
-    args: {
-        title: 'DateTime',
-        defaultValue: new Date().toISOString(),
-        granularity: 'second',
-        format: 'date-time',
-        onChange: (date) => {
-            console.log('on change', `${date.toDate()}`);
-        }
+  args: {
+    title: 'DateTime',
+    defaultValue: new Date().toISOString(),
+    granularity: 'second',
+    format: 'date-time',
+    onChange: (date) => {
+      console.log('on change', `${date.toDate()}`);
     }
+  }
 };

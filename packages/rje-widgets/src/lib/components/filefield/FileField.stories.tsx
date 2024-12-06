@@ -4,19 +4,19 @@ import { ThemeDecorator } from '../ThemeDecorator';
 
 type Story = StoryObj<typeof FileField>;
 const meta: Meta<typeof FileField> = {
-    title: 'packages/rje-widgets/components/FileField',
-    component: FileField,
-    decorators: [ThemeDecorator],
-    argTypes: {
-        data: { control: { type: 'object' } },
-        schema: { control: { type: 'object' } }
-    }
+  title: 'packages/rje-widgets/components/FileField',
+  component: FileField,
+  decorators: [ThemeDecorator],
+  argTypes: {
+    data: { control: { type: 'object' } },
+    schema: { control: { type: 'object' } }
+  }
 };
 export default meta;
 
 export const Default = {
-    args: {
-        title: 'Default file selection',
-        buttonText: 'Select a file'
-    }
+  args: {
+    title: 'Default file selection',
+    buttonText: 'Select a file'
+  }
 };

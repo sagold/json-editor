@@ -6,7 +6,6 @@ import { setDefaultWidgets } from '@sagold/react-json-editor';
 setDefaultWidgets(widgets);
 
 export const parameters = {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
         matchers: {
             color: /(background|color)$/i,

@@ -7,50 +7,46 @@ import { useEditor, Editor } from '@sagold/react-json-editor';
 
 type Story = StoryObj<typeof TypedJsonForm>;
 const meta: Meta<typeof TypedJsonForm> = {
-    component: TypedJsonForm
+  component: TypedJsonForm
 };
 export default meta;
 
 const jsonSchema: JsonSchema = {
-    type: 'object',
-    properties: {
-        title: { type: 'string' },
-        subTitle: { type: 'string' }
-    }
+  type: 'object',
+  properties: {
+    title: { type: 'string' },
+    subTitle: { type: 'string' }
+  }
 };
 
 type MyData = {
-    title: string;
-    subTitle: string;
+  title: string;
+  subTitle: string;
 };
 
 function TypedUseJsonEditor() {
-    // [Node, JsonEditor<MyData>]
-    const [node, editor] = useEditor<MyData>({
-        schema: jsonSchema,
-        // (data: MyData) => void
-        onChange(data) {}
-    });
+  // [Node, JsonEditor<MyData>]
+  const [node, editor] = useEditor<MyData>({
+    schema: jsonSchema,
+    // (data: MyData) => void
+    onChange(data) {}
+  });
 
-    // data: MyData
-    const data = editor.getData();
+  // data: MyData
+  const data = editor.getData();
 
-    return <div />;
+  return <div />;
 }
 
 function TypedJsonForm() {
-    const [editor, setEditor] = useState<Editor<MyData>>();
+  const [editor, setEditor] = useState<Editor<MyData>>();
 
-    // data: MyData
-    const data = editor?.getData();
+  // data: MyData
+  const data = editor?.getData();
 
-    return (
-        <Theme>
-            <JsonForm<MyData>
-                editor={setEditor}
-                onChange={(data) => {}}
-                schema={jsonSchema}
-            />
-        </Theme>
-    );
+  return (
+    <Theme>
+      <JsonForm<MyData> editor={setEditor} onChange={(data) => {}} schema={jsonSchema} />
+    </Theme>
+  );
 }
