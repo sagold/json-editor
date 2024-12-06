@@ -9,6 +9,21 @@ describe('HeadlessEditor', () => {
         schema = { type: 'object', properties: { title: { type: 'string' } } };
     });
 
+    it('should remove references on destroy', () => {
+        const editor = new HeadlessEditor({ schema, extendDefaults: false });
+        assert.notEqual(editor.root, null);
+        assert.notEqual(editor.plugins, null);
+        assert.notEqual(editor.draft, null);
+        assert.notEqual(editor.options, null);
+
+        editor.destroy();
+
+        assert.equal(editor.root, null);
+        assert.equal(editor.plugins, null);
+        assert.equal(editor.draft, null);
+        assert.equal(editor.options, null);
+    });
+
     describe('options', () => {
         it('should set `extendDefault` in draft', () => {
             let editor = new HeadlessEditor({ schema, extendDefaults: false });

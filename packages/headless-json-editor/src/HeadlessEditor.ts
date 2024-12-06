@@ -385,6 +385,11 @@ export class HeadlessEditor<Data = unknown> {
         }
         return selections;
     }
+
+    destroy() {
+        // @ts-expect-error unresolved property
+        ['root', 'draft', 'plugins', 'options'].forEach((property) => (this[property] = null));
+    }
 }
 
 function getRootChange(changes: Change[]) {

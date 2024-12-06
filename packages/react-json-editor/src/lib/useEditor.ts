@@ -1,11 +1,5 @@
-import { useState, useMemo } from 'react';
-import {
-    HeadlessEditorOptions,
-    Node,
-    OnChangePlugin,
-    deepEqual,
-    OnChangeListener
-} from 'headless-json-editor';
+import { useState, useMemo, useEffect } from 'react';
+import { HeadlessEditorOptions, Node, OnChangePlugin, deepEqual, OnChangeListener } from 'headless-json-editor';
 import { Editor } from './Editor';
 import { WidgetPlugin } from './decorators';
 import { useEditorPlugin } from './useEditorPlugin';
@@ -27,9 +21,7 @@ document.addEventListener('invalid', (e) => e.preventDefault(), true);
 /**
  * add json editor widget capabilities to your functional component
  */
-export function useEditor<Data = unknown, T extends Node = Node>(
-    settings: UseEditorOptions<Data>
-): [T, Editor<Data>] {
+export function useEditor<Data = unknown, T extends Node = Node>(settings: UseEditorOptions<Data>): [T, Editor<Data>] {
     const { schema, data, cacheKey } = settings;
     const setCurrentData = useState<Data | undefined>(data)[1];
 
@@ -38,41 +30,45 @@ export function useEditor<Data = unknown, T extends Node = Node>(
     const [previousSchema, setPreviousSchema] = useState(schema);
 
     let editorWasCreatedNow = false;
-    const editor = useMemo(() => {
-        // store last used input data - prevents an additional rerender where
-        // last change is lost. this is required in update loops where input
-        // data has changed
-        setPreviousData(data);
-        setPreviousSchema(schema);
-        const editor = new Editor<Data>({
-            ...settings,
-            schema,
-            data,
-            plugins: settings.plugins,
-            widgets: settings.widgets,
-            validate: settings.validate,
-            liveUpdate: settings.liveUpdate,
-            addOptionalProps: settings.addOptionalProps,
-            extendDefaults: settings.extendDefaults,
-            draftConfig: settings.draftConfig
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        editorWasCreatedNow = true;
-        return editor;
-    },
+    const editor = useMemo(
+        () => {
+            // store last used input data - prevents an additional rerender where
+            // last change is lost. this is required in update loops where input
+            // data has changed
+            setPreviousData(data);
+            setPreviousSchema(schema);
+            const editor = new Editor<Data>({
+                ...settings,
+                schema,
+                data,
+                plugins: settings.plugins,
+                widgets: settings.widgets,
+                validate: settings.validate,
+                liveUpdate: settings.liveUpdate,
+                addOptionalProps: settings.addOptionalProps,
+                extendDefaults: settings.extendDefaults,
+                draftConfig: settings.draftConfig
+            });
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            editorWasCreatedNow = true;
+            return editor;
+        },
         // a change of cacheKey completely recreates editor - resetting any changes made
         [cacheKey]
     );
 
+    // cleanup editor instance on destroy
+    useEffect(() => () => editor?.destroy(), [editor]);
+
     useEditorPlugin(editor, OnChangePlugin, {
-        pluginId: "InternalOnChange",
+        pluginId: 'InternalOnChange',
         onChange(data, root, editor) {
             setCurrentData(data);
             if (settings.onChange) {
                 settings.onChange(data, root, editor);
             }
         }
-    })
+    });
 
     if (editorWasCreatedNow) {
         return [editor.getNode() as T, editor];
