@@ -90,6 +90,9 @@ export function updateOptionalPropertyList(node: ObjectNode, data: Record<string
     const requiredProperties = node.schema.required ?? [];
     const propertiesInData = Object.keys(data ?? {});
 
+    // console.log('properties in schema', propertiesInSchema);
+    // console.log('requiredProperties', requiredProperties);
+
     // defined or set, but not required properties
     // - add all defined properties that are not required
     // - add all data properties that are missing and not required
@@ -147,7 +150,7 @@ export const NODES: Record<NodeType, CreateNode> = {
                 itemSchemaNode.schema.isArrayItem = true;
                 const itemNode = _createNode(itemSchemaNode, next, true);
                 if (itemNode.type === 'object') {
-                    const unresolvedSchema = itemSchemaNode.path[length + 1] ?? itemSchemaNode.schema;
+                    const unresolvedSchema = itemSchemaNode.path[length + 1]?.[1] ?? itemSchemaNode.schema;
                     // We need the/a source-schema to trigger change detectionin setValue (is schema dynamic?).
                     // draft.step currently returns a resolved schema which prevents updates in certain nested
                     // dynamic schemas.
@@ -166,7 +169,14 @@ export const NODES: Record<NodeType, CreateNode> = {
         // get the unresolved schema of this object and store it for later comparison.
         // This will allow us to correctly recreate this node for different input-data
         // (previously used schema.getOneOfOrigin().schema)
-        const unresolvedObjectSchema: JsonSchema = path[path.length - 1] ?? schema;
+        let unresolvedObjectSchema = schema;
+        if (path[path.length - 1]) {
+            const lastStep = path[path.length - 1];
+            if (lastStep[0] === objectSchemaNode.pointer) {
+                unresolvedObjectSchema = lastStep[1];
+            }
+        }
+
         // get schema without any dynamic properties, those have been resolved by given data
         const resolvedObjectSchemaNode = reduceSchema(objectSchemaNode, data);
 
@@ -211,6 +221,8 @@ export const NODES: Record<NodeType, CreateNode> = {
             children: [],
             errors: []
         };
+
+        // console.log('[create object]', node.pointer, node.schema, node.sourceSchema);
 
         // CREATE CHILD NODES
         const currentProperties = Object.keys(resolvedData ?? {});

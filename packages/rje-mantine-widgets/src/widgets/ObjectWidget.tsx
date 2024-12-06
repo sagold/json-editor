@@ -1,5 +1,6 @@
-import { InputWrapper } from '@mantine/core';
+import { ActionIcon, Button, Flex, InputWrapper } from '@mantine/core';
 import { DefaultNodeOptions, ObjectNode, Widget, WidgetField, WidgetPlugin, widget } from '@sagold/react-json-editor';
+import { Icon } from '../components/icon/Icon';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** additional classnames for object editor */
@@ -29,10 +30,14 @@ export type ObjectOptions = DefaultNodeOptions<{
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
+    const withInlineAdd = options.inlineAddPropertyOption ?? true;
+    const withInlineDelete = options.inlineDeletePropertyOption ?? true;
     // const [showContent, setShowContent] = useState<boolean>(options.collapsed ? !options.collapsed : true);
     // const showHeader = editJson.enabled || title || description || options.collapsed != null;
     // const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
-    // const withInlineAdd = options.inlineAddPropertyOption ?? !showHeader;
+
+    console.log('optional properties', node.optionalProperties);
+    console.log('missing properties', node.missingProperties);
 
     const childOptions = {};
     return (
@@ -44,7 +49,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             >
                 <div className="rje-object__properties">
                     {node.children.map((child) => (
-                        <div key={child.id} className="rje-object__property">
+                        <Flex key={child.id} className="rje-object__property">
                             <Widget
                                 key={child.id}
                                 node={child}
@@ -54,10 +59,39 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                                     isOptional: node.optionalProperties.includes(child.property)
                                 }}
                             />
-                        </div>
+                            {withInlineDelete &&
+                                editor.optionalProperties &&
+                                node.optionalProperties.includes(child.property) && (
+                                    <div className="rje-object__actions">
+                                        <ActionIcon
+                                            variant="transparent"
+                                            onClick={() => editor.removeValue(child.pointer)}
+                                        >
+                                            <Icon>close</Icon>
+                                        </ActionIcon>
+                                    </div>
+                                )}
+                        </Flex>
                     ))}
                 </div>
             </InputWrapper>
+            {withInlineAdd && node.missingProperties.length > 0 && (
+                <>
+                    <div className="rje-object__missing-properties" style={{ alignItems: 'center' }}>
+                        {node.missingProperties.map((name) => (
+                            <Button
+                                key={name}
+                                variant="subtle"
+                                // color="gray"
+                                leftSection={<Icon>add</Icon>}
+                                onClick={() => editor.addValue(`${node.pointer}/${name}`)}
+                            >
+                                {name}
+                            </Button>
+                        ))}
+                    </div>
+                </>
+            )}
         </WidgetField>
     );
 });

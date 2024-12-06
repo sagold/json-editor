@@ -25,7 +25,7 @@ export const Default: Story = {
     args: {
         validate: true,
         onChange: (v) => console.log(v),
-        data: { string: 'huhu', array: ['first', 'fourth'] },
+        data: { string: 'huhu', array: ['first', 'fourth'], objectOptionals: { optional1: 'input-value' } },
         schema: {
             title: 'Json Editor Mantine Widgets',
             type: 'object',
@@ -41,13 +41,15 @@ export const Default: Story = {
                 'switch',
                 'select',
                 'selectTag',
+                'selectRadio',
                 'multiSelect',
                 'multiSelectTag',
                 'null',
                 'array',
                 'arrayTag',
-                'oneOfType'
+                'oneOfType',
                 // 'oneOfTag'
+                'objectOptionals'
             ],
             properties: {
                 string: {
@@ -144,6 +146,14 @@ export const Default: Story = {
                     default: null,
                     title: 'select',
                     format: 'taglist',
+                    enum: ['yes', 'maybe', 'no']
+                },
+                selectRadio: {
+                    type: ['null', 'string'],
+                    description: 'standard mantine chip-group. Initially unselected, but required',
+                    default: null,
+                    title: 'select',
+                    format: 'radiogroup',
                     enum: ['yes', 'maybe', 'no']
                 },
                 multiSelect: {
@@ -243,6 +253,16 @@ export const Default: Story = {
                     default: [],
                     items: {
                         type: 'string'
+                    }
+                },
+                objectOptionals: {
+                    type: 'object',
+                    required: ['required'],
+                    properties: {
+                        required: { title: 'required', type: 'string' },
+                        optional1: { title: 'optional1', type: 'string' },
+                        optional2: { title: 'optional2', type: 'string' },
+                        optional3: { title: 'optional3', type: 'string' }
                     }
                 }
             }

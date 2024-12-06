@@ -7,7 +7,7 @@ import {
     WidgetProps,
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
-import { Chip, Group, InputWrapper, Select } from '@mantine/core';
+import { Chip, Group, InputWrapper, Radio, Select, Stack } from '@mantine/core';
 import { Description } from '../components/Description';
 
 export type SelectOptions = {
@@ -23,9 +23,9 @@ export const selectDefaultOptions = {
 
 export const SelectWidget = function (props: WidgetProps) {
     const type = (props.node.options?.type || props?.options?.type) ?? selectDefaultOptions.type;
-    // if (props.node.schema.format === 'radiogroup' || type === 'radiogroup') {
-    //     return <RadioGroupWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
-    // }
+    if (props.node.schema.format === 'radiogroup' || type === 'radiogroup') {
+        return <RadioGroupWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
+    }
     if (props.node.schema.format === 'taglist' || type === 'taglist') {
         return <TagListWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
@@ -59,6 +59,31 @@ export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(
                     </Group>
                 </Chip.Group>
             </InputWrapper>
+        </WidgetField>
+    );
+});
+
+const RadioGroupWidget = widget<StringNode<SelectOptions>, string | number>(({ node, options, setValue }) => {
+    const enumValues = (node.schema.enum || []) as string[];
+    const titles = (options.enum as string[]) ?? [];
+
+    return (
+        <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
+            <Radio.Group
+                id={node.id}
+                label={options.title}
+                description={<Description text={options.description} />}
+                required={options.required}
+                error={node.errors.map((e) => e.message).join('\n')}
+                value={node.value}
+                onChange={setValue}
+            >
+                <Stack mt="xs">
+                    {enumValues.map((value, index) => (
+                        <Radio key={value} value={value} label={titles[index] ?? value} disabled={options.disabled} />
+                    ))}
+                </Stack>
+            </Radio.Group>
         </WidgetField>
     );
 });
