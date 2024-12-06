@@ -1,3 +1,4 @@
+import './index.scss';
 import * as React from 'react';
 import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -16,7 +17,7 @@ function WithTwoColumns(props) {
         <MantineProvider>
             <Flex
                 className={classNames('rje-form', `rje-theme rje-theme--light`)}
-                style={{ '--input-fz': '16px' }}
+                style={{ '--input-fz': '16px', paddingBottom: '2em' }}
                 justify={'space-evenly'}
                 gap={'2em'}
             >

@@ -38,15 +38,18 @@ export const SimpleJsonWidget = (props) => {
 
 export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, string>(({ node, options, setValue }) => {
     const [error, setError] = useState<JsonError | undefined>(undefined);
-    const isValidConst = node.schema.const != null && node.errors.length === 0;
-    let defaultValue = node.value ?? '';
-    try {
-        defaultValue = JSON.stringify(JSON.parse(defaultValue), null, 2);
-    } catch (e) {
-        /* ignore */
-    }
-    const [internalValue, setInternalValue] = useState(defaultValue);
+    const [internalValue, setInternalValue] = useState(node.value ?? '');
+    useEffect(() => {
+        let value = node.value ?? '';
+        try {
+            value = JSON.stringify(JSON.parse(value), null, 2);
+        } catch (e) {
+            /* ignore */
+        }
+        setInternalValue(value);
+    }, [setInternalValue, node.value]);
 
+    const isValidConst = node.schema.const != null && node.errors.length === 0;
     let errors = node.errors.map((e) => e.message).join('\n');
     if (error) {
         errors = `${error.message}${node.errors.length ? `\n${node.errors.map((e) => e.message).join('\n')}` : ''}`;
