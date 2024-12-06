@@ -10,4 +10,19 @@
 
 .rje-drag__handle {
     cursor: pointer;
+    user-select: none;
+}
+
+.sortable-chosen {
+    background: var(--mantine-primary-color-0) !important;
+}
+
+.sortable-ghost {
+    background: var(--mantine-primary-color-0) !important;
+    opacity: 0.05;
+}
+
+.rje-form .mantine-Input-wrapper {
+    // array item padding for vertical centering - might cause trouble elsewhere
+    --input-margin-bottom: var(--input-margin-top);
 }

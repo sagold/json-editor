@@ -1,8 +1,17 @@
 import { ActionIcon, Button, InputWrapper, Menu, Table } from '@mantine/core';
-import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, Widget, WidgetField } from '@sagold/react-json-editor';
+import {
+    widget,
+    WidgetPlugin,
+    ArrayNode,
+    DefaultNodeOptions,
+    Widget,
+    WidgetField,
+    Node,
+    Editor
+} from '@sagold/react-json-editor';
 import { Icon } from '../components/icon/Icon';
 import { useDraggableItems, SortableOptions } from '../useDraggableItems';
-import { useRef } from 'react';
+import { CSSProperties, useRef } from 'react';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -49,7 +58,7 @@ function getActionStates(node: ArrayNode) {
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
     const childOptions = {};
-    const { isAddEnabled, isDeleteEnabled } = getActionStates(node);
+    const { isAddEnabled } = getActionStates(node);
     const ref = useRef<HTMLTableSectionElement>(null);
     const { sortableEnabled } = useDraggableItems(
         editor,
@@ -69,53 +78,35 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                     <Icon>drag_indicator</Icon>
                 </Table.Td>
             )}
-            <Table.Td width={'100%'}>
-                <Widget
-                    key={child.id}
-                    node={child}
-                    editor={editor}
-                    options={{
-                        ...childOptions
-                    }}
-                />
-            </Table.Td>
-            <Table.Td valign="top" align="right">
-                <Menu position="left">
-                    <Menu.Target>
-                        <ActionIcon variant="transparent">
-                            <Icon>menu</Icon>
-                        </ActionIcon>
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                        <ActionIcon
-                            variant="transparent"
-                            aria-label="delete"
-                            disabled={!isDeleteEnabled || options.readOnly || options.disabled}
-                            onClick={() => editor.removeValue(child.pointer)}
-                        >
-                            <Icon>delete</Icon>
-                        </ActionIcon>
-                        <ActionIcon
-                            variant="transparent"
-                            aria-label="move-up"
-                            disabled={options.readOnly || options.disabled || child.property === '0'}
-                            onClick={() => editor.moveItem(child.pointer, parseInt(child.property) - 1)}
-                        >
-                            <Icon>keyboard_arrow_up</Icon>
-                        </ActionIcon>
-                        <ActionIcon
-                            variant="transparent"
-                            aria-label="move-down"
-                            disabled={
-                                options.readOnly || options.disabled || child.property === `${node.children.length - 1}`
-                            }
-                            onClick={() => editor.moveItem(child.pointer, parseInt(child.property) + 1)}
-                        >
-                            <Icon>keyboard_arrow_down</Icon>
-                        </ActionIcon>
-                    </Menu.Dropdown>
-                </Menu>
-            </Table.Td>
+            {hasTitle(child) ? (
+                <Table.Td width={'100%'} style={{ position: 'relative' }}>
+                    <Widget
+                        key={child.id}
+                        node={child}
+                        editor={editor}
+                        options={{
+                            ...childOptions
+                        }}
+                    />
+                    <ArrayItemMenu editor={editor} parentNode={node} child={child} options={options} absolute />
+                </Table.Td>
+            ) : (
+                <>
+                    <Table.Td width={'100%'}>
+                        <Widget
+                            key={child.id}
+                            node={child}
+                            editor={editor}
+                            options={{
+                                ...childOptions
+                            }}
+                        />
+                    </Table.Td>
+                    <Table.Td>
+                        <ArrayItemMenu editor={editor} parentNode={node} child={child} options={options} />
+                    </Table.Td>
+                </>
+            )}
         </Table.Tr>
     ));
 
@@ -153,6 +144,71 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         </WidgetField>
     );
 });
+
+function hasTitle(child: Node) {
+    return (child.options.title?.length ?? 0) > 0;
+}
+
+function ArrayItemMenu({
+    editor,
+    parentNode,
+    child,
+    options,
+    absolute
+}: {
+    editor: Editor;
+    parentNode: ArrayNode;
+    child: Node;
+    options: ArrayOptions;
+    absolute?: boolean;
+}) {
+    const menuStyle: CSSProperties = absolute
+        ? {
+              position: 'absolute',
+              // mantine td padding:
+              top: 'var(--table-vertical-spacing)',
+              right: 'var(--table-horizontal-spacing, var(--mantine-spacing-xs))'
+          }
+        : {};
+    const { isDeleteEnabled } = getActionStates(parentNode);
+    return (
+        <Menu position="left">
+            <Menu.Target>
+                <ActionIcon variant="transparent" color="gray" style={menuStyle}>
+                    <Icon>more_horiz</Icon>
+                </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+                <ActionIcon
+                    variant="transparent"
+                    aria-label="delete"
+                    disabled={!isDeleteEnabled || options.readOnly || options.disabled}
+                    onClick={() => editor.removeValue(child.pointer)}
+                >
+                    <Icon>delete</Icon>
+                </ActionIcon>
+                <ActionIcon
+                    variant="transparent"
+                    aria-label="move-up"
+                    disabled={options.readOnly || options.disabled || child.property === '0'}
+                    onClick={() => editor.moveItem(child.pointer, parseInt(child.property) - 1)}
+                >
+                    <Icon>keyboard_arrow_up</Icon>
+                </ActionIcon>
+                <ActionIcon
+                    variant="transparent"
+                    aria-label="move-down"
+                    disabled={
+                        options.readOnly || options.disabled || child.property === `${parentNode.children.length - 1}`
+                    }
+                    onClick={() => editor.moveItem(child.pointer, parseInt(child.property) + 1)}
+                >
+                    <Icon>keyboard_arrow_down</Icon>
+                </ActionIcon>
+            </Menu.Dropdown>
+        </Menu>
+    );
+}
 
 export const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
     id: 'array-widget',
