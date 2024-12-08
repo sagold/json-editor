@@ -44,9 +44,6 @@
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.22.10",
-        "@babel/preset-env": "^7.22.10",
-        "@babel/preset-typescript": "^7.22.5",
         "@storybook/addon-actions": "^8.4.7",
         "@storybook/addon-essentials": "^8.4.7",
         "@storybook/addon-interactions": "^8.4.7",
@@ -62,7 +59,6 @@
         "@types/react-dom": "18.2.7",
         "@typescript-eslint/eslint-plugin": "^6.4.1",
         "@typescript-eslint/parser": "^6.4.1",
-        "babel-loader": "^9.1.2",
         "css-loader": "^6.8.1",
         "eslint": "^8.57.1",
         "eslint-import-resolver-typescript": "^3.7.0",
@@ -83,8 +79,7 @@
         "terser-webpack-plugin": "^5.3.9",
         "ts-jest": "^29.1.1",
         "ts-node": "^10.9.2",
-        "typescript": "~5.1.6",
-        "url-loader": "^4.1.1"
+        "typescript": "~5.1.6"
     },
     "resolutions": {
         "jackspeak": "2.1.1"
