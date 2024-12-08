@@ -12,6 +12,7 @@ module.exports = {
         getAbsolutePath('@storybook/addon-links'),
         getAbsolutePath('@storybook/addon-essentials'),
         getAbsolutePath('@storybook/addon-interactions'),
+        getAbsolutePath('@storybook/addon-mdx-gfm'),
         getAbsolutePath('@storybook/addon-webpack5-compiler-swc')
     ],
 
