@@ -1,4 +1,4 @@
-import { JsonSchema } from "@sagold/react-json-editor";
+import { JsonSchema } from '@sagold/react-json-editor';
 
 export const data = {
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita multo sanguine profuso in laetitia et in victoria est mortuus. Graccho, eius fere, aequalí? Illum mallem levares, quo optimum atque humanissimum virum, Cn. Quod dicit Epicurus etiam de voluptate, quae minime sint voluptates, eas obscurari saepe et obrui. Duo Reges: constructio interrete. Sed mehercule pergrata mihi oratio tua. Omnis enim est natura diligens sui. Illa argumenta propria videamus, cur omnia sint paria peccata. Atque his de rebus et splendida est eorum et illustris oratio.',
@@ -15,11 +15,11 @@ export const data = {
 export const schema: JsonSchema = {
     type: 'object',
     title: 'Widgets Overview',
-    description: 'This form consists of all basic widgets exposed by rje-widgets and some of their variations',
+    description: 'This form consists of all basic widgets exposed by rje-aria-widgets and some of their variations',
     options: {
         descriptionInline: true,
         headerFontSize: 1.75,
-        editJson: { enabled: true, liveUpdate: true },
+        editJson: { enabled: true, liveUpdate: true }
     },
     required: [
         'string',
@@ -555,7 +555,7 @@ export const schema: JsonSchema = {
                             },
                             text: {
                                 type: 'string',
-                                format: 'textarea',
+                                format: 'textarea'
                             }
                         }
                     }

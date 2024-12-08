@@ -41,10 +41,10 @@ const config = {
         globalObject: `(typeof self !== 'undefined' ? self : this)`
     },
     externals: {
-        '@sagold/rje-widgets': {
-            commonjs: '@sagold/rje-widgets',
-            commonjs2: '@sagold/rje-widgets',
-            amd: '@sagold/rje-widgets',
+        '@sagold/rje-aria-widgets': {
+            commonjs: '@sagold/rje-aria-widgets',
+            commonjs2: '@sagold/rje-aria-widgets',
+            amd: '@sagold/rje-aria-widgets',
             root: 'rjeWidgets'
         },
         '@sagold/rje-mantine-widgets': {

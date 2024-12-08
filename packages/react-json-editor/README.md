@@ -23,8 +23,8 @@ install
 
 ```tsx
 import { useEditor } from '@sagold/react-json-editor';
-import defaultWidgets from '@sagold/rje-widgets';
-import '@sagold/rje-widgets/dist/styles.css';
+import defaultWidgets from '@sagold/rje-aria-widgets';
+import '@sagold/rje-aria-widgets/dist/styles.css';
 
 function MyForm({ schema, data }) {
   const [root, editor] = useEditor({
@@ -202,8 +202,9 @@ const MyStringWidget = widget<StringNode, string>(({ node, options, setValue }) 
     defaultValue={node.value}
     disabled={options.disabled === true}
     onChange={(e) => {
-    setValue(e.target.value);
-  }} />
+      setValue(e.target.value);
+    }}
+  />
 ));
 ```
 
@@ -306,4 +307,3 @@ function MyForm({ schema }) {
 Note that an onChangePlugin is added per default.
 
 ### create custom plugin
-

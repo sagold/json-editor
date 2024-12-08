@@ -18,7 +18,7 @@
             "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"],
             "@sagold/rje-code-widgets": ["packages/rje-code-widgets/src/index.ts"],
             "@sagold/rje-mantine-widgets": ["packages/rje-mantine-widgets/src/index.ts"],
-            "@sagold/rje-widgets": ["packages/rje-widgets/src/index.ts"],
+            "@sagold/rje-aria-widgets": ["packages/rje-aria-widgets/src/index.ts"],
             "headless-json-editor": ["packages/headless-json-editor/src/index.ts"]
         }
     },
@@ -27,7 +27,7 @@
         { "path": "./packages/react-json-editor" },
         { "path": "./packages/rje-code-widgets" },
         { "path": "./packages/rje-mantine-widgets" },
-        { "path": "./packages/rje-widgets" }
+        { "path": "./packages/rje-aria-widgets" }
     ],
     "exclude": ["node_modules", "tmp"]
 }

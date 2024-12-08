@@ -43,7 +43,7 @@ export type ArrayOptions = DefaultNodeOptions<{
     sortable?: SortableOptions;
 }>;
 
-// copy of rje-widgets -- maybe rje utility?
+// copy of rje-aria-widgets -- maybe rje utility?
 function getActionStates(node: ArrayNode) {
     const minItems = node.schema.minItems || 0;
     let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
