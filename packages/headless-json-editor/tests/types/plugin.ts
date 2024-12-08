@@ -45,7 +45,7 @@ const WithOptions: EditorPlugin<Options> = (options) => ({
     onEvent(root) { console.log(root, options.msg); }
 });
 
-let withOptions = addPlugin(WithOptions, { msg: "title" });
+const withOptions = addPlugin(WithOptions, { msg: "title" });
 // withOptions?.mimi(); // should fail
 withOptions?.onEvent(node);
 // withOptions = addPlugin(WithOptions, { msg: 123 }); // should fail

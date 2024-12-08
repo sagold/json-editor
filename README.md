@@ -19,7 +19,6 @@ yarn add headless-json-editor
 
 - read more in package [headless-json-editor](./packages/headless-json-editor)
 
-
 ## [react-json-editor](./packages/react-json-editor)
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
@@ -34,22 +33,33 @@ yarn add @sagold/react-json-editor
 - read more in package [react-json-editor](./packages/react-json-editor)
 - [demo page](https://sagold.github.io/json-editor)
 
+## [rje-mantine-widgets](./packages/rje-mantine-widgets)
 
-## [rje-widgets](./packages/rje-widgets)
+[![Npm package version](https://badgen.net/npm/v/@sagold/rje-mantine-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-mantine-widgets)
+![Types](https://badgen.net/npm/types/@sagold/rje-mantine-widgets)
 
-[![Npm package version](https://badgen.net/npm/v/@sagold/rje-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-widgets)
-![Types](https://badgen.net/npm/types/@sagold/rje-widgets)
+Set of default widgets for _react-json-editor_ using _mantine_ that render a user form for all basic json datatypes.
+
+```sh
+yarn add @sagold/rje-mantine-widgets
+```
+
+- read more in package [react-json-editor](./packages/rje-mantine-widgets)
+- [demo page](https://sagold.github.io/json-editor)
+
+## [rje-aria-widgets](./packages/rje-aria-widgets)
+
+[![Npm package version](https://badgen.net/npm/v/@sagold/rje-aria-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-aria-widgets)
+![Types](https://badgen.net/npm/types/@sagold/rje-aria-widgets)
 
 Set of default widgets for _react-json-editor_ using _react-aria_ that render a user form for all basic json datatypes.
 
 ```sh
-yarn add @sagold/rje-widgets
+yarn add @sagold/rje-aria-widgets
 ```
 
-- read more in package [react-json-editor](./packages/rje-widgets)
+- read more in package [react-json-editor](./packages/rje-aria-widgets)
 - [demo page](https://sagold.github.io/json-editor)
-
-
 
 ## [rje-code-widgets](./packages/rje-code-widgets)
 
@@ -64,4 +74,3 @@ yarn add @sagold/rje-code-widgets
 
 - read more in package [rje-code-widgets](./packages/rje-code-widgets)
 - [demo page](https://sagold.github.io/json-editor/?path=/story/packages-rje-code-widgets-overview--page)
-
