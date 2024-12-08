@@ -7,23 +7,47 @@ on:
         branches: [main]
 
 jobs:
+    # install, build, upload artefacts and run tests
     ci:
-        name: unit tests
+        name: Install & Testing
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
               with:
-                  node-version: '16'
+                  node-version: '22'
                   cache: 'yarn'
-            - name: install dependencies
+            - name: Install dependencies
               run: yarn --frozen-lockfile
-            - name: build packages
+            - name: Build packages
               run: yarn hje:dist; yarn rje:dist
-            - name: run unit tests
+            - name: Build docs
+              run: yarn docs:dist
+            - name: Upload docs
+              id: deployment
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: docs
+            - name: Run unit tests
               run: yarn test:ci
             - uses: dorny/test-reporter@v1.6.0
               with:
                   name: unit test results
                   path: junit.xml
                   reporter: jest-junit
+
+    # publish docs
+    docs_publish:
+        needs: ci
+        name: Publish Docs
+        runs-on: ubuntu-latest
+        environment:
+            name: github-pages
+        permissions:
+            contents: write
+            pages: write
+            id-token: write
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4

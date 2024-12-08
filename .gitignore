@@ -22,7 +22,7 @@ node_modules
 *.xml
 *.zip
 
-/dev
+/docs
 
 # IDE - VSCode
 .vscode/*
