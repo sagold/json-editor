@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin modal-component {
     .rje-underlay--modal {

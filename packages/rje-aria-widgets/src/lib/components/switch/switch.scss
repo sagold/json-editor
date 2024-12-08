@@ -1,6 +1,6 @@
-@import '../../design';
-@import '../../reset';
-@import '../icon/icon';
+@use '../../design' as *;
+@use '../../reset';
+@use '../icon/icon';
 
 $switch-width: 56 !default;
 $switch-height: 30 !default;
@@ -33,7 +33,7 @@ $switch-state--enabled: '&:not([disabled])';
     }
 
     .rje-switch-input {
-        @include reset-input;
+        @include reset.reset-input;
         margin: 0;
         background-color: $color-black;
         border-radius: $switch-radius;

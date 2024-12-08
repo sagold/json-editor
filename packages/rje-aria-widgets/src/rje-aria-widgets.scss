@@ -1,14 +1,14 @@
+@use './lib/design' as *;
+@use './lib/widgets/arraywidget/array-widget';
+@use './lib/widgets/numberwidget/number-widget';
+@use './lib/widgets/datewidget/date-widget';
+@use './lib/widgets/filewidget/file-widget';
+@use './lib/widgets/objectwidget/object-widget';
+@use './lib/widgets/selectwidget/select-widget';
+@use './lib/widgets/selectoneofwidget/select-oneof';
+@use './lib/widgets/navigationwidget/navigation-widget';
+@use './lib/widgets/taglistwidget/tag-list-widget';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-@import './lib/widgets/arraywidget/array-widget';
-@import './lib/widgets/numberwidget/number-widget';
-@import './lib/widgets/datewidget/date-widget';
-@import './lib/widgets/filewidget/file-widget';
-@import './lib/widgets/objectwidget/object-widget';
-@import './lib/widgets/selectwidget/select-widget';
-@import './lib/widgets/selectoneofwidget/select-oneof';
-@import './lib/widgets/navigationwidget/navigation-widget';
-@import './lib/widgets/taglistwidget/tag-list-widget';
 
 .rje-form {
     .rje-section-header .rje-widget-action--menu {

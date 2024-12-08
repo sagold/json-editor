@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin section-header-light {
     .rje-section-header__separator {

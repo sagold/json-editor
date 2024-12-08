@@ -1,5 +1,5 @@
-@import '../packages/rje-aria-widgets/src/index';
-@import '../packages/rje-code-widgets/src/index';
+@use '../packages/rje-aria-widgets/src/index' as *;
+@use '../packages/rje-code-widgets/src/index' as *;
 
 @font-face {
     font-family: Icon;

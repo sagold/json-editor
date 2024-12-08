@@ -1,5 +1,5 @@
-@import '../../design';
-@import './radio-group';
+@use '../../design' as *;
+@use './radio-group' as *;
 
 @mixin radiogroup-light {
     .rje-radiogroup {

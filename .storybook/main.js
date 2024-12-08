@@ -68,10 +68,12 @@ module.exports = {
                 {
                     loader: 'sass-loader',
                     options: {
+                        sourceMap: true,
                         sassOptions: {
-                            outputStyle: 'compressed'
-                        },
-                        sourceMap: true
+                            api: 'modern-compiler',
+                            implementation: require.resolve('sass-embedded')
+                            // includePaths: ['node_modules', ...((sassLoader.options && sassLoader.options.sassOptions && sassLoader.options.sassOptions.includePaths) || [])],
+                        }
                     }
                 }
             ]

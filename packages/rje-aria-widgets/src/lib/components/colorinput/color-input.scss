@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin color-input-component {
     .rje-input--color {

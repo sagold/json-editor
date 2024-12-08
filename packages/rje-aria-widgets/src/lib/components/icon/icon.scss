@@ -1,3 +1,5 @@
+@use '../../design';
+
 @font-face {
     font-family: 'Icon';
     font-style: normal;
@@ -11,34 +13,42 @@
     $load-animation-time: 2s;
 
     @-moz-keyframes spin {
-        100% { -moz-transform: rotate(360deg); }
+        100% {
+            -moz-transform: rotate(360deg);
+        }
     }
     @-webkit-keyframes spin {
-        100% { -webkit-transform: rotate(360deg); }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
     }
     @keyframes spin {
         100% {
             -webkit-transform: rotate(360deg);
-            transform:rotate(360deg);
+            transform: rotate(360deg);
         }
     }
 
     .rje-icon {
-        @include icon-font;
+        @include design.icon-font;
     }
 
     .rje-icon--loading {
-        -webkit-animation:spin $load-animation-time linear infinite;
-        -moz-animation:spin $load-animation-time linear infinite;
-        animation:spin $load-animation-time linear infinite;
+        -webkit-animation: spin $load-animation-time linear infinite;
+        -moz-animation: spin $load-animation-time linear infinite;
+        animation: spin $load-animation-time linear infinite;
         padding: 0 0.125em;
         svg {
             height: 1em;
-            width: .75em;
+            width: 0.75em;
         }
     }
 
     .rje-icon--solid {
-        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48;
     }
 }

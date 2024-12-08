@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin date-picker-light {
     .rje-calendar__cell {

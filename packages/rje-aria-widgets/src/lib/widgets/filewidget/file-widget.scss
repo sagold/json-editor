@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 .rje-input--file {
     &.rje-input--invalid {

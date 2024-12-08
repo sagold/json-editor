@@ -1,4 +1,4 @@
-@import './rje-aria-widgets';
-@import './rje-theme';
-@import './rje-theme--light';
-@import './rje-theme--dark';
+@use './rje-aria-widgets' as *;
+@use './rje-theme' as *;
+@use './rje-theme--light' as *;
+@use './rje-theme--dark' as *;

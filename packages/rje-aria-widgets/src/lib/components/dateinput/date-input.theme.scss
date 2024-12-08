@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin date-input-light {
     .rje-date-input__fields {
@@ -15,7 +15,7 @@
     }
 
     .rje-date-input--invalid {
-        .rje-date-input__fields{
+        .rje-date-input__fields {
             border-color: $color-light-error;
         }
         button {

@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 $textarea-state--focus: '&:focus, &:hover';
 $textarea-state--disabled: '&[disabled]';

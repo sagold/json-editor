@@ -1,5 +1,5 @@
 @use 'sass:math';
-@import '../../design';
+@use '../../design' as *;
 
 @mixin input-light {
     .rje-input {

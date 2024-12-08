@@ -1,15 +1,12 @@
-@import "../../design";
-@import './icon';
+@use '../../design' as *;
 
 @mixin icon-light {
-    // @include icon-component;
     .rje-icon {
         fill: $color-black;
     }
 }
 
 @mixin icon-dark {
-    // @include icon-component;
     .rje-icon {
         fill: $color-white;
     }

@@ -1,5 +1,5 @@
-@import '../../design';
-@import './button';
+@use '../../design' as *;
+@use './button' as *;
 
 @mixin button-light {
     .rje-button--primary {

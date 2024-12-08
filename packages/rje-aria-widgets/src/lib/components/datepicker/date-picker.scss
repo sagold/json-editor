@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin date-picker-component {
     .rje-date-picker {
@@ -34,10 +34,10 @@
 
         table {
             border-collapse: separate;
-            border-spacing: .4em;
+            border-spacing: 0.4em;
             text-indent: initial;
             th {
-                text-align: center;;
+                text-align: center;
             }
         }
     }

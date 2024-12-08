@@ -1,26 +1,27 @@
-@import './components/button/button.theme';
-@import './components/checkbox/checkbox.theme';
-@import './components/colorinput/color-input.theme';
-@import './components/filefield/file-field.theme';
-@import './components/icon/icon.theme.scss';
-@import './components/label/label.theme';
-@import './components/modal/modal.theme';
-@import './components/popover/popover.theme';
-@import './components/radiogroup/radio-group.theme';
-@import './components/sectionheader/section-header.theme';
-@import './components/select/select.theme';
-@import './components/selectoptions/select-options.theme';
-@import './components/switch/switch.theme';
-@import './components/textarea/textarea.theme';
-@import './components/tooltip/tooltip.theme';
-@import './components/widgetdescription/widget-description.theme';
-@import './components/widgeterror/widget-error.theme';
-@import './components/widgetfield/widget-field.theme';
-@import './components/input/input.theme';
-@import './components/taglist/tag-list.theme';
-@import './components/taglistinput/tag-list-input.theme';
-@import './components/datepicker/date-picker.theme';
-@import './components/dateinput/date-input.theme';
+@use './design';
+@use './components/button/button.theme' as *;
+@use './components/checkbox/checkbox.theme' as *;
+@use './components/colorinput/color-input.theme' as *;
+@use './components/filefield/file-field.theme' as *;
+@use './components/icon/icon.theme.scss' as *;
+@use './components/label/label.theme' as *;
+@use './components/modal/modal.theme' as *;
+@use './components/popover/popover.theme' as *;
+@use './components/radiogroup/radio-group.theme' as *;
+@use './components/sectionheader/section-header.theme' as *;
+@use './components/select/select.theme' as *;
+@use './components/selectoptions/select-options.theme' as *;
+@use './components/switch/switch.theme' as *;
+@use './components/textarea/textarea.theme' as *;
+@use './components/tooltip/tooltip.theme' as *;
+@use './components/widgetdescription/widget-description.theme' as *;
+@use './components/widgeterror/widget-error.theme' as *;
+@use './components/widgetfield/widget-field.theme' as *;
+@use './components/input/input.theme' as *;
+@use './components/taglist/tag-list.theme' as *;
+@use './components/taglistinput/tag-list-input.theme' as *;
+@use './components/datepicker/date-picker.theme' as *;
+@use './components/dateinput/date-input.theme' as *;
 
 @mixin light-theme() {
     @include button-light();
@@ -49,7 +50,7 @@
 
     color: rgb(var(--rje-color-light-text));
     .rje-widget-action:not(:hover) .rje-icon {
-        color: $color-light-grey-1;
+        color: design.$color-light-grey-1;
     }
 }
 
@@ -80,6 +81,6 @@
 
     color: rgb(var(--rje-color-dark-text));
     .rje-widget-action:not(:hover) .rje-icon {
-        color: $color-dark-grey-1;
+        color: design.$color-dark-grey-1;
     }
 }

@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin checkbox-light {
     .rje-checkbox--unset,

@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 .rje-widget-actions {
     padding: em($unit);

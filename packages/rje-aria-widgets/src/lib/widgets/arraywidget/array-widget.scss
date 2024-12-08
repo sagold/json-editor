@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 $color-alternate: rgba(7, 23, 32, 0.02);
 $color-border: rgba(7, 23, 32, 0.08);

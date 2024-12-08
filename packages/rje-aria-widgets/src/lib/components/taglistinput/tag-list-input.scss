@@ -1,4 +1,4 @@
-@import '../../design';
+@use '../../design' as *;
 
 @mixin tag-list-input-component {
     .rje-tag-list-input {
