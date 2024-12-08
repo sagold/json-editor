@@ -4,7 +4,7 @@ export type DescriptionProps = {
     text?: string;
 };
 
-export function Description({ text }: WidgetDescriptionProps) {
+export function Description({ text }: DescriptionProps) {
     if (text == null || text.length === 0) {
         return null;
     }

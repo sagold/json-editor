@@ -4,7 +4,7 @@
     "license": "MIT",
     "module": "./dist/es6/src/index.js",
     "types": "./dist/es6/src/index.d.ts",
-    "main": "dist/reactJsonEditor.min.js",
+    "main": "dist/reactJsonEditor.js",
     "dependencies": {
         "headless-json-editor": "^0.33.8",
         "markdown-to-jsx": "^7.7.1"

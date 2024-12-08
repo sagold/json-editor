@@ -3,63 +3,72 @@ import { JsonForm } from './lib/components/JsonForm';
 // main export
 import { widgets } from './lib/widgets/index';
 // widgets
-import { ArrayWidget, ArrayWidgetPlugin, ArrayOptions } from './lib/widgets/arraywidget/ArrayWidget';
-import { BooleanWidget, BooleanWidgetPlugin, BooleanOptions, booleanDefaultOptions } from './lib/widgets/booleanwidget/BooleanWidget';
-import { ColorWidget, ColorWidgetPlugin, ColorOptions } from './lib/widgets/colorwidget/ColorWidget';
-import { DateWidget, DateWidgetPlugin, DateOptions } from './lib/widgets/datewidget/DateWidget';
-import { FileWidget, FileWidgetPlugin, FileOptions } from './lib/widgets/filewidget/FileWidget';
-import { NavigationWidget, NavigationOptions } from './lib/widgets/navigationwidget/NavigationWidget';
-import { NullWidget, NullWidgetPlugin, NullOptions } from './lib/widgets/nullwidget/NullWidget';
-import { NumberWidget, NumberWidgetPlugin, NumberOptions } from './lib/widgets/numberwidget/NumberWidget';
-import { ObjectWidget, ObjectWidgetPlugin, ObjectOptions } from './lib/widgets/objectwidget/ObjectWidget';
+import { ArrayWidget, ArrayWidgetPlugin, type ArrayOptions } from './lib/widgets/arraywidget/ArrayWidget';
+import {
+    BooleanWidget,
+    BooleanWidgetPlugin,
+    type BooleanOptions,
+    booleanDefaultOptions
+} from './lib/widgets/booleanwidget/BooleanWidget';
+import { ColorWidget, ColorWidgetPlugin, type ColorOptions } from './lib/widgets/colorwidget/ColorWidget';
+import { DateWidget, DateWidgetPlugin, type DateOptions } from './lib/widgets/datewidget/DateWidget';
+import { FileWidget, FileWidgetPlugin, type FileOptions } from './lib/widgets/filewidget/FileWidget';
+import { NavigationWidget, type NavigationOptions } from './lib/widgets/navigationwidget/NavigationWidget';
+import { NullWidget, NullWidgetPlugin, type NullOptions } from './lib/widgets/nullwidget/NullWidget';
+import { NumberWidget, NumberWidgetPlugin, type NumberOptions } from './lib/widgets/numberwidget/NumberWidget';
+import { ObjectWidget, ObjectWidgetPlugin, type ObjectOptions } from './lib/widgets/objectwidget/ObjectWidget';
 import { SelectOneOfWidget, SelectOneOfWidgetPlugin } from './lib/widgets/selectoneofwidget/SelectOneOfWidget';
 import {
     SelectMultipleWidget,
     SelectMultipleWidgetPlugin,
-    SelectMultipleOptions
+    type SelectMultipleOptions
 } from './lib/widgets/selectmultiplewidget/SelectMultipleWidget';
-import { StringWidget, StringWidgetPlugin, StringOptions } from './lib/widgets/stringwidget/StringWidget';
-import { SelectWidget, SelectWidgetPlugin, SelectOptions } from './lib/widgets/selectwidget/SelectWidget';
-import { SimpleJsonWidget, SimpleJsonWidgetPlugin, SimpleJsonOptions } from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
-import { UnknownWidget, UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
-import { TextWidget, TextWidgetPlugin, TextOptions } from './lib/widgets/textwidget/TextWidget';
-import { TagListWidget, TagListWidgetPlugin, TagListOptions } from './lib/widgets/taglistwidget/TagListWidget';
+import { StringWidget, StringWidgetPlugin, type StringOptions } from './lib/widgets/stringwidget/StringWidget';
+import { SelectWidget, SelectWidgetPlugin, type SelectOptions } from './lib/widgets/selectwidget/SelectWidget';
+import {
+    SimpleJsonWidget,
+    SimpleJsonWidgetPlugin,
+    type SimpleJsonOptions
+} from './lib/widgets/simplejsonwidget/SimpleJsonWidget';
+import { UnknownWidget, type UnknownWidgetPlugin } from './lib/widgets/unknownwidget/UnknownWidget';
+import { TextWidget, TextWidgetPlugin, type TextOptions } from './lib/widgets/textwidget/TextWidget';
+import { TagListWidget, TagListWidgetPlugin, type TagListOptions } from './lib/widgets/taglistwidget/TagListWidget';
 // components
-import { Button, ButtonProps, ButtonControlled, ButtonControlledProps } from './lib/components/button/Button';
-import { Checkbox, CheckboxProps } from './lib/components/checkbox/Checkbox';
-import { ColorInput, ColorInputProps } from './lib/components/colorinput/ColorInput';
+import { Button, ButtonProps, ButtonControlled, type ButtonControlledProps } from './lib/components/button/Button';
+import { Checkbox, type CheckboxProps } from './lib/components/checkbox/Checkbox';
+import { ColorInput, type ColorInputProps } from './lib/components/colorinput/ColorInput';
 import { DateInput, type DateInputProps } from './lib/components/dateinput/DateInput';
 import { DatePicker, type DatePickerProps } from './lib/components/datepicker/DatePicker';
 import { TagList, type TagListProps } from './lib/components/taglist/TagList';
 import { TagListInput, type TagListInputProps } from './lib/components/taglistinput/TagListInput';
-import { FileField, FileFieldProps } from './lib/components/filefield/FileField';
-import { Icon, IconProps } from './lib/components/icon/Icon';
-import { StringInput, StringInputProps } from './lib/components/input/StringInput';
-import { TimeInput, TimeInputProps } from './lib/components/timeinput/TimeInput';
-import { NumberInput, NumberInputProps } from './lib/components/input/NumberInput';
-import { Label, LabelProps } from './lib/components/label/Label';
-import { useModal, UseModalProps, Modal, ModalProps } from './lib/components/modal/Modal';
-import { usePopover, UsePopoverProps, Popover, PopoverProps } from './lib/components/popover/Popover';
+import { FileField, type FileFieldProps } from './lib/components/filefield/FileField';
+import { Icon, type IconProps } from './lib/components/icon/Icon';
+import { StringInput, type StringInputProps } from './lib/components/input/StringInput';
+import { TimeInput, type TimeInputProps } from './lib/components/timeinput/TimeInput';
+import { NumberInput, type NumberInputProps } from './lib/components/input/NumberInput';
+import { Label, type LabelProps } from './lib/components/label/Label';
+import { useModal, type UseModalProps, Modal, type ModalProps } from './lib/components/modal/Modal';
+import { usePopover, type UsePopoverProps, Popover, type PopoverProps } from './lib/components/popover/Popover';
 import {
     SectionHeader,
     SectionHeaderLabel,
-    SectionHeaderLabelProps
+    type SectionHeaderLabelProps
 } from './lib/components/sectionheader/SectionHeader';
-import { Select, SelectProps } from './lib/components/select/Select';
+import { Select, type SelectProps } from './lib/components/select/Select';
 import {
-    SingleSelectOptions,
-    MultiSelectOptions,
-    SelectOptionProps,
+    type SingleSelectOptions,
+    type MultiSelectOptions,
+    type SelectOptionProps,
     SelectOptionsControlled,
-    SelectOptionsControlledProps
+    type SelectOptionsControlledProps
 } from './lib/components/selectoptions/SelectOptions';
-import { Switch, SwitchProps } from './lib/components/switch/Switch';
-import { TextArea, TextAreaProps } from './lib/components/textarea/TextArea';
-import { Theme, ThemeProps } from './lib/components/theme/Theme';
-import { useTooltip, UseTooltipProps, Tooltip, TooltipProps } from './lib/components/tooltip/Tooltip';
-import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widgetdescription/WidgetDescription';
-import { WidgetError, WidgetErrorProps } from './lib/components/widgeterror/WidgetError';
-import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from '@sagold/react-json-editor';
+import { Switch, type SwitchProps } from './lib/components/switch/Switch';
+import { TextArea, type TextAreaProps } from './lib/components/textarea/TextArea';
+import { Theme, type ThemeProps } from './lib/components/theme/Theme';
+import { useTooltip, type UseTooltipProps, Tooltip, type TooltipProps } from './lib/components/tooltip/Tooltip';
+import { WidgetDescription, type WidgetDescriptionProps } from './lib/components/widgetdescription/WidgetDescription';
+import { WidgetError, type WidgetErrorProps } from './lib/components/widgeterror/WidgetError';
+import { WidgetField, type WidgetFieldProps, type WidgetFieldHeaderProps } from '@sagold/react-json-editor';
 
 export default widgets;
 export {

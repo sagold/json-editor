@@ -1,10 +1,10 @@
 import { JsonError, getTypeOf } from 'json-schema-library';
-import { JsonSchema } from './jsonSchema';
+import type { JsonSchema } from './jsonSchema';
 import { DefaultNodeOptions } from './node/createNode';
 
-export { JsonSchema };
+export type { JsonSchema };
 
-const isObject = (v: unknown): v is Record<string, any> => (getTypeOf(v) === "object");
+const isObject = (v: unknown): v is Record<string, any> => getTypeOf(v) === 'object';
 
 export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
 export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
@@ -16,9 +16,9 @@ export type Node = ArrayNode | ObjectNode | FileNode | StringNode | NumberNode |
 
 export type Change = { type: 'update' | 'create' | 'delete'; node: Node };
 export function isChangeEvent(event: Record<string, unknown>): event is Change {
-    if (event && typeof event === "object" && typeof event.type === "string") {
+    if (event && typeof event === 'object' && typeof event.type === 'string') {
         const type = event.type;
-        return event.node != null && (type === "update" || type === "create" || type === "delete");
+        return event.node != null && (type === 'update' || type === 'create' || type === 'delete');
     }
     return false;
 }
@@ -143,14 +143,16 @@ export type ValueNode<T extends DefaultNodeOptions = DefaultNodeOptions> =
 
 const NodeTypes = ['array', 'object', 'file', 'string', 'number', 'null', 'boolean'] as const;
 export const isNode = (node: any): node is Node => NodeTypes.includes(node?.type);
-const ParentTypes = ["array", "object"];
-export const isParentNode = (node: unknown): node is (ObjectNode | ArrayNode) => isObject(node) && ParentTypes.includes(node.type);
+const ParentTypes = ['array', 'object'];
+export const isParentNode = (node: unknown): node is ObjectNode | ArrayNode =>
+    isObject(node) && ParentTypes.includes(node.type);
 export const isFileNode = (node: unknown): node is FileNode => isObject(node) && node.type === 'file';
 const ValueTypes = ['string', 'number', 'null', 'boolean'];
-export const isValueNode = (node: unknown): node is (StringNode | NumberNode | NullNode | BooleanNode) => isObject(node) && ValueTypes.includes(node.type);
-export const isNumberNode = (node: unknown): node is NumberNode => isObject(node) && node.type === "number";
-export const isStringNode = (node: unknown): node is StringNode => isObject(node) && node.type === "string";
-export const isBooleanNode = (node: unknown): node is BooleanNode => isObject(node) && node.type === "boolean";
-export const isNullNode = (node: unknown): node is NullNode => isObject(node) && node.type === "null";
+export const isValueNode = (node: unknown): node is StringNode | NumberNode | NullNode | BooleanNode =>
+    isObject(node) && ValueTypes.includes(node.type);
+export const isNumberNode = (node: unknown): node is NumberNode => isObject(node) && node.type === 'number';
+export const isStringNode = (node: unknown): node is StringNode => isObject(node) && node.type === 'string';
+export const isBooleanNode = (node: unknown): node is BooleanNode => isObject(node) && node.type === 'boolean';
+export const isNullNode = (node: unknown): node is NullNode => isObject(node) && node.type === 'null';
 
 export { isJsonError } from 'json-schema-library';
