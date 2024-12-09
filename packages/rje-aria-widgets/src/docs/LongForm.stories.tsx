@@ -1,10 +1,9 @@
-import { useEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/longform';
-import { NavigationWidget, widgets } from '@sagold/rje-aria-widgets';
-import { Theme } from '../../../rje-aria-widgets/src/lib/components/theme/Theme';
+import { NavigationWidget, widgets, Theme } from '@sagold/rje-aria-widgets';
+import { useEditor } from '@sagold/react-json-editor';
 
 export default {
-    title: 'Examples/LargeForm',
+    title: 'packages/rje-aria-widgets/examples/LongForm',
     argTypes: {
         data: { control: { type: 'object' }, defaultValue: data },
         schema: { control: { type: 'object' }, defaultValue: schema }

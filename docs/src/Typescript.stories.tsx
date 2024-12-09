@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Theme } from '../../rje-aria-widgets/src/lib/components/theme/Theme';
 import { JsonSchema } from 'headless-json-editor';
-import { JsonForm } from '@sagold/rje-aria-widgets';
+import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { useEditor, Editor } from '@sagold/react-json-editor';
+import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
 
 type Story = StoryObj<typeof TypedJsonForm>;
 const meta: Meta<typeof TypedJsonForm> = {
-    component: TypedJsonForm
+    title: 'docs/Typescript',
+    component: TypedJsonForm,
+    decorators: [MantineThemeDecorator]
 };
 export default meta;
 
@@ -31,7 +33,6 @@ function TypedUseJsonEditor() {
         // (data: MyData) => void
         onChange(data) {}
     });
-
     // data: MyData
     const data = editor.getData();
 
@@ -40,13 +41,8 @@ function TypedUseJsonEditor() {
 
 function TypedJsonForm() {
     const [editor, setEditor] = useState<Editor<MyData>>();
-
     // data: MyData
     const data = editor?.getData();
 
-    return (
-        <Theme>
-            <JsonForm<MyData> editor={setEditor} onChange={(data) => {}} schema={jsonSchema} />
-        </Theme>
-    );
+    return <JsonForm<MyData> editor={setEditor} onChange={(data) => {}} schema={jsonSchema} />;
 }

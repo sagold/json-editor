@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { ComponentStory } from '@storybook/react';
+import { useEffect, useState } from 'react';
 import { data, schema } from './data/features';
-import { JsonSchema, errors, json } from 'headless-json-editor';
+import { JsonSchema } from 'headless-json-editor';
 import { Editor } from '@sagold/react-json-editor';
-import { widgets, JsonForm } from '@sagold/rje-aria-widgets';
-import { Theme } from '../../../rje-aria-widgets/src/lib/components/theme/Theme';
+import { widgets, JsonForm, Theme } from '@sagold/rje-aria-widgets';
 import { JsonWidgetPlugin } from '@sagold/rje-code-widgets';
 
 export default {
-    title: 'Examples/Widgets'
+    title: 'packages/rje-aria-widgets/examples/WidgetsOverview'
 };
 
-const Template: ComponentStory<any> = () => {
+function Template() {
     const [editor, setEditor] = useState<Editor>();
     const [editorData, setEditorData] = useState(data);
     useEffect(() => {
@@ -41,6 +39,6 @@ const Template: ComponentStory<any> = () => {
             />
         </Theme>
     );
-};
+}
 
 export const DefaultWidgets = Template.bind({});

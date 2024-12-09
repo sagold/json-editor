@@ -1,9 +1,7 @@
-import { ComponentStory } from '@storybook/react';
 import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
 import { data, schema } from './data/features';
 import { RemoteEnumOptionsPlugin } from 'headless-json-editor';
-import { widgets } from '../../../rje-aria-widgets/src';
-import { Theme } from '../../../rje-aria-widgets/src/lib/components/theme/Theme';
+import { widgets, Theme } from '@sagold/rje-aria-widgets';
 
 function SideBySideComponent({ schema, data, onChange }: UseEditorOptions) {
     const [node, editor] = useEditor({
@@ -41,11 +39,11 @@ function SideBySideComponent({ schema, data, onChange }: UseEditorOptions) {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Examples/SideBySide'
+    title: 'packages/rje-aria-widgets/examples/SideBySide'
 };
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<any> = () => {
+function Template() {
     return (
         <div>
             <p>The following is the same editor rendered twice to test update mechanism</p>
@@ -58,7 +56,7 @@ const Template: ComponentStory<any> = () => {
             />
         </div>
     );
-};
+}
 
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 export const SideBySide = Template.bind({});

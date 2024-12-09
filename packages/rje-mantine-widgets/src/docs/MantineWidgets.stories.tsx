@@ -1,12 +1,12 @@
-import './index.scss';
-import * as React from 'react';
+import '../index.scss';
+import '@mantine/core/styles.css';
 import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { Flex, MantineProvider } from '@mantine/core';
-import { widgets } from './widgets';
-import '@mantine/core/styles.css';
+import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { useEditor } from '@sagold/react-json-editor';
+import { widgets } from '../widgets';
+import { MantineThemeDecorator } from './MantineThemeDecorator';
 
 function WithTwoColumns(props) {
     const [node, editor] = useEditor({ ...props, widgets });
@@ -42,7 +42,8 @@ function OneColumn(props) {
 }
 
 const meta: Meta<typeof JsonForm> = {
-    title: 'packages/rje-mantine-widgets/Widgets',
+    title: 'packages/rje-mantine-widgets/examples/Widgets',
+    decorators: [MantineThemeDecorator],
     component: JsonForm,
     render: OneColumn
 };

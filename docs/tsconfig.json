@@ -1,7 +1,6 @@
 {
-    "extends": "../../tsconfig.base.json",
+    "extends": "../tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "./dist/es6",
         "rootDir": "./",
         "jsx": "react-jsx",
         "allowJs": true,
@@ -18,10 +17,19 @@
     "include": ["src/**/*"],
     "references": [
         {
-            "path": "../headless-json-editor"
+            "path": "../packages/headless-json-editor"
         },
         {
-            "path": "../react-json-editor"
+            "path": "../packages/react-json-editor"
+        },
+        {
+            "path": "../packages/rje-aria-widgets"
+        },
+        {
+            "path": "../packages/rje-mantine-widgets"
+        },
+        {
+            "path": "../packages/rje-code-widgets"
         }
     ]
 }

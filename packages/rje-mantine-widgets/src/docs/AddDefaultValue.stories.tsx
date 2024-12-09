@@ -1,25 +1,19 @@
-import * as React from 'react';
 import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
-import { widgets } from '@sagold/rje-aria-widgets';
-import { Theme } from '../../../rje-aria-widgets/src/lib/components/theme/Theme';
+import { widgets } from '@sagold/rje-mantine-widgets';
 import { StoryObj } from '@storybook/react';
+import { MantineThemeDecorator } from './MantineThemeDecorator';
 
 export default {
-    title: 'Testing/AddDefaultValue',
-    component: Form
+    title: 'packages/rje-mantine-widgets/examples/AddDefaultValue',
+    component: Form,
+    decorators: [MantineThemeDecorator]
 };
 
 type Story = StoryObj<UseEditorOptions>;
 function Form({ data, schema }: UseEditorOptions) {
     const [node, editor] = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
     const WidgetComponent = editor.getWidget(node);
-    return (
-        <Theme>
-            <div className="rje-form">
-                <WidgetComponent node={node} editor={editor} />
-            </div>
-        </Theme>
-    );
+    return <WidgetComponent node={node} editor={editor} />;
 }
 
 export const InvalidData: Story = {

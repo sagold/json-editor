@@ -1,5 +1,13 @@
 import { ActionIcon, Button, Flex, InputWrapper } from '@mantine/core';
-import { DefaultNodeOptions, ObjectNode, Widget, WidgetField, WidgetPlugin, widget } from '@sagold/react-json-editor';
+import {
+    DefaultNodeOptions,
+    ObjectNode,
+    Widget,
+    WidgetField,
+    WidgetPlugin,
+    Node,
+    widget
+} from '@sagold/react-json-editor';
 import { Icon } from '../components/icon/Icon';
 
 export type ObjectOptions = DefaultNodeOptions<{
@@ -37,6 +45,39 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     // const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
 
     const childOptions = {};
+    const properties = node.children.map((child) => (
+        <Flex key={child.id} className="rje-object__property" style={{ position: 'relative' }}>
+            <Widget
+                key={child.id}
+                node={child}
+                editor={editor}
+                options={{
+                    ...childOptions,
+                    isOptional: node.optionalProperties.includes(child.property)
+                }}
+            />
+            {withInlineDelete && editor.optionalProperties && node.optionalProperties.includes(child.property) && (
+                <div
+                    className="rje-object__actions"
+                    style={
+                        hasTitle(child)
+                            ? {
+                                  position: 'absolute',
+                                  // mantine td padding:
+                                  top: 'var(--table-vertical-spacing)',
+                                  right: 0
+                              }
+                            : {}
+                    }
+                >
+                    <ActionIcon variant="transparent" onClick={() => editor.removeValue(child.pointer)}>
+                        <Icon>close</Icon>
+                    </ActionIcon>
+                </div>
+            )}
+        </Flex>
+    ));
+
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
             <InputWrapper
@@ -44,33 +85,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 label={options.title}
                 error={node.errors.map((e) => e.message).join('\n')}
             >
-                <div className="rje-object__properties">
-                    {node.children.map((child) => (
-                        <Flex key={child.id} className="rje-object__property">
-                            <Widget
-                                key={child.id}
-                                node={child}
-                                editor={editor}
-                                options={{
-                                    ...childOptions,
-                                    isOptional: node.optionalProperties.includes(child.property)
-                                }}
-                            />
-                            {withInlineDelete &&
-                                editor.optionalProperties &&
-                                node.optionalProperties.includes(child.property) && (
-                                    <div className="rje-object__actions">
-                                        <ActionIcon
-                                            variant="transparent"
-                                            onClick={() => editor.removeValue(child.pointer)}
-                                        >
-                                            <Icon>close</Icon>
-                                        </ActionIcon>
-                                    </div>
-                                )}
-                        </Flex>
-                    ))}
-                </div>
+                <div className="rje-object__properties">{properties}</div>
             </InputWrapper>
             {withInlineAdd && node.missingProperties.length > 0 && (
                 <>
@@ -92,6 +107,10 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         </WidgetField>
     );
 });
+
+function hasTitle(child: Node) {
+    return (child.options.title?.length ?? 0) > 0;
+}
 
 export const ObjectWidgetPlugin: WidgetPlugin = {
     id: 'object-widget',

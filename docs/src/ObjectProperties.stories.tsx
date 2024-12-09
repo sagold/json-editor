@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonForm } from '@sagold/rje-aria-widgets';
+import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonSchema } from 'headless-json-editor';
+import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
 
 const meta: Meta<typeof JsonForm> = {
-    component: JsonForm
+    title: 'docs/ObjectProperties',
+    component: JsonForm,
+    decorators: [MantineThemeDecorator]
 };
 export default meta;
 type Story = StoryObj<typeof JsonForm>;

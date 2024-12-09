@@ -1,11 +1,9 @@
-import React from 'react';
-import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
-import { JsonSchema } from '../../../headless-json-editor/src/types';
-import { HistoryPlugin } from '../../../headless-json-editor/src/plugins/HistoryPlugin';
+import { Button } from '@mantine/core';
+import { HistoryPlugin, JsonSchema } from 'headless-json-editor';
 import { Meta, StoryObj } from '@storybook/react';
-import { widgets } from '@sagold/rje-aria-widgets';
-import { Button } from '../../../rje-aria-widgets/src/lib/components/button/Button';
-import { Theme } from '../../../rje-aria-widgets/src/lib/components/theme/Theme';
+import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-mantine-widgets';
+import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
 
 const schema = {
     type: 'object',
@@ -43,21 +41,25 @@ function UndoRedoExample() {
     const Widget = editor.getWidget(node);
 
     return (
-        <Theme style={{ flexDirection: 'column' }}>
+        <>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
-                <Button icon="undo" onPress={() => history?.undo()} disabled={!isUndoEnabled}></Button>
-                <Button icon="redo" onPress={() => history?.redo()} disabled={!isRedoEnabled}></Button>
+                <Button onClick={() => history?.undo()} disabled={!isUndoEnabled}>
+                    undo
+                </Button>
+                <Button onClick={() => history?.redo()} disabled={!isRedoEnabled}>
+                    redo
+                </Button>
             </div>
             <div className="rje-form">
                 <Widget node={node} editor={editor} />
             </div>
-        </Theme>
+        </>
     );
 }
 
 const meta: Meta<unknown> = {
-    title: 'Examples/UndoRedo',
-    component: UndoRedoExample
+    component: UndoRedoExample,
+    decorators: [MantineThemeDecorator]
 };
 export default meta;
 

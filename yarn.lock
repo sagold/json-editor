@@ -3941,7 +3941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/theming@npm:8.4.7":
+"@storybook/theming@npm:8.4.7, @storybook/theming@npm:^8.4.7":
   version: 8.4.7
   resolution: "@storybook/theming@npm:8.4.7"
   peerDependencies:
@@ -10385,6 +10385,7 @@ __metadata:
     "@storybook/react": ^8.4.7
     "@storybook/react-webpack5": ^8.4.7
     "@storybook/test": ^8.4.7
+    "@storybook/theming": ^8.4.7
     "@testing-library/react": ^16.1.0
     "@types/jest": ^29.5.4
     "@types/node": 20.5.4
