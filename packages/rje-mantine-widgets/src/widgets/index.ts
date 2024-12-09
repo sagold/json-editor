@@ -3,7 +3,7 @@ import { BooleanWidgetPlugin } from './BooleanWidget';
 import { MultiSelectWidgetPlugin } from './MultiSelect';
 import { NullWidgetPlugin } from './NullWidget';
 import { NumberWidgetPlugin } from './NumberWidget';
-import { ObjectWidgetPlugin } from './ObjectWidget';
+import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
 import { OneOfSelectWidgetPlugin } from './OneOfSelectWidget';
 import { SelectWidgetPlugin } from './SelectWidget';
 import { StringWidgetPlugin } from './StringWidget';

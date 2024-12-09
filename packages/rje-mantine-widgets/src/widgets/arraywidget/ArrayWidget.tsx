@@ -81,6 +81,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         ref
     );
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
+    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
 
     const insertOptions = editor.getArrayAddOptions(node);
     const addAction =
@@ -161,8 +162,6 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     if (sortableEnabled) {
         columnCount += 1;
     }
-
-    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
 
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
