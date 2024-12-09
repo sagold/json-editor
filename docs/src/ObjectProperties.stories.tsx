@@ -16,6 +16,7 @@ export const OptionalProperties: Story = {
         theme: 'light',
         schema: {
             type: 'object',
+
             properties: {
                 optionalProperty: { title: 'Optional property', type: 'string' }
             }

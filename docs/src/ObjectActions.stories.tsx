@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
+import { ObjectOptions } from 'packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget';
 
 const meta: Meta<typeof JsonForm> = {
     title: 'docs/ObjectActions',
@@ -36,6 +37,7 @@ export const OptionalProperties: Story = {
         schema: {
             title: 'Properties may be removed',
             type: 'object',
+            options: { showEditJsonAction: true } as ObjectOptions,
             properties: {
                 optionalProperty1: { title: '1. Optional property', type: 'object' },
                 optionalProperty2: { title: '2. Optional property', type: 'object' }
