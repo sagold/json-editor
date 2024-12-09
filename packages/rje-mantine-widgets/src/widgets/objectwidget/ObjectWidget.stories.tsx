@@ -30,10 +30,10 @@ export const Options: Story = {
         // DEFAULT OPTIONS
         // ----------------
         /** additional classnames the ui should add to the root of this data point */
-        classNames: ['my-array'],
+        classNames: ['my-object'],
         /** description of this data point */
         description:
-            'Options from these control settings can be passed to options-object in `{ type: "array", options: {} }`',
+            'Options from these control settings can be passed to options-object in `{ type: "object", options: {} }`',
         /** set to true to inline description */
         descriptionInline: false,
         /** if changes to this data point are disabled */
