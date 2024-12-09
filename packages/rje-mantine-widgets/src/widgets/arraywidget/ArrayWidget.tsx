@@ -15,6 +15,7 @@ import { useDraggableItems, SortableOptions } from '../../useDraggableItems';
 import { CSSProperties, useRef } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
+import { Description } from '../../components/Description';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -86,8 +87,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const insertOptions = editor.getArrayAddOptions(node);
     const addAction =
         insertOptions.length === 1 ? (
-            <Button
-                variant="light"
+            <ActionIcon
+                variant="subtle"
                 disabled={options.readOnly || options.disabled}
                 onClick={() => {
                     const insertOptions = editor.getArrayAddOptions(node);
@@ -97,18 +98,25 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 }}
             >
                 <Icon>add</Icon>
-            </Button>
+            </ActionIcon>
         ) : (
             <Menu position="top">
                 <Menu.Target>
-                    <Button variant="light" disabled={options.readOnly || options.disabled}>
+                    <ActionIcon variant="subtle" disabled={options.readOnly || options.disabled}>
                         <Icon>add</Icon>
-                    </Button>
+                    </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
                     {insertOptions.map((option, index) => (
-                        <Menu.Item key={index} onClick={() => editor.appendItem(node, option)}>
+                        <Menu.Item
+                            key={index}
+                            onClick={() => editor.appendItem(node, option)}
+                            leftSection={<Icon>add</Icon>}
+                        >
                             {option.title}
+                            <Menu.Label>
+                                <Description text={option.description} />
+                            </Menu.Label>
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>
@@ -234,7 +242,12 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 }
             >
                 <Collapse in={contentOpened}>
-                    <Table striped withRowBorders={false} classNames={{ table: styles['table'] }}>
+                    <Table
+                        className="rje-array__items"
+                        striped
+                        withRowBorders={false}
+                        classNames={{ table: styles['table'] }}
+                    >
                         <Table.Tbody ref={ref}>{items}</Table.Tbody>
                         {isAddEnabled && options.readOnly !== true && (
                             <Table.Tfoot>

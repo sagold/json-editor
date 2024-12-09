@@ -272,6 +272,7 @@ const schema: JsonSchema = {
                 oneOf: [
                     {
                         title: 'header',
+                        description: 'article header',
                         type: 'object',
                         required: ['title'],
                         properties: {
@@ -282,6 +283,7 @@ const schema: JsonSchema = {
                     },
                     {
                         title: 'paragraph',
+                        description: 'article paragraph',
                         type: 'object',
                         required: ['text'],
                         properties: {

@@ -29,42 +29,49 @@ export function WidgetInputWrapper({
     errors,
     options
 }: WidgetInputWrapperProps) {
+    const hasTitle = (options.title && options.title.length > 0) || options.descriptionInline;
+    const hasSection = !!leftSection ?? !!rightSection ?? false;
+    const hasLabel = hasTitle || hasSection;
+
     return (
         <InputWrapper
             description={<Description text={options.description} hide={options.descriptionInline} />}
             label={
-                <>
-                    {leftSection}
-                    <Divider
-                        labelPosition="left"
-                        color={options.showTitleDivider ? undefined : 'transparent'}
-                        {...(options.dividerProps ?? {})}
-                        style={{ flexGrow: 1, '--mantine-color-dimmed': '#333' }}
-                        label={
-                            <Title order={order} {...(options.titleProps ?? {})}>
-                                {options.title}
-                                {options.required && (
-                                    <sup className={styles['asterisk']} aria-hidden>
-                                        {' *'}
-                                    </sup>
-                                )}
-                                {options.description && options.descriptionInline && (
-                                    <Popover position="top" withArrow shadow="md">
-                                        <Popover.Target>
-                                            <ActionIcon variant="transparent" color="gray">
-                                                <Icon>info</Icon>
-                                            </ActionIcon>
-                                        </Popover.Target>
-                                        <Popover.Dropdown style={{ maxWidth: '80%' }}>
-                                            <Description text={options.description} />
-                                        </Popover.Dropdown>
-                                    </Popover>
-                                )}
-                            </Title>
-                        }
-                    />
-                    {rightSection}
-                </>
+                hasLabel && (
+                    <>
+                        {leftSection}
+                        <Divider
+                            my="md"
+                            labelPosition="left"
+                            color={options.showTitleDivider ? undefined : 'transparent'}
+                            {...(options.dividerProps ?? {})}
+                            style={{ flexGrow: 1, '--mantine-color-dimmed': '#333' }}
+                            label={
+                                <Title order={order} {...(options.titleProps ?? {})}>
+                                    {options.title}
+                                    {options.required && (
+                                        <sup className={styles['asterisk']} aria-hidden>
+                                            {' *'}
+                                        </sup>
+                                    )}
+                                    {options.description && options.descriptionInline && (
+                                        <Popover position="top" withArrow shadow="md">
+                                            <Popover.Target>
+                                                <ActionIcon variant="transparent" color="gray">
+                                                    <Icon>info</Icon>
+                                                </ActionIcon>
+                                            </Popover.Target>
+                                            <Popover.Dropdown style={{ maxWidth: '80%' }}>
+                                                <Description text={options.description} />
+                                            </Popover.Dropdown>
+                                        </Popover>
+                                    )}
+                                </Title>
+                            }
+                        />
+                        {rightSection}
+                    </>
+                )
             }
             error={errors?.map((e) => e.message).join('\n')}
             classNames={{ label: styles['label'] }}

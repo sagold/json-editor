@@ -1,7 +1,7 @@
 import { DefaultNodeOptions, NullNode, widget, WidgetField, WidgetPlugin } from '@sagold/react-json-editor';
 import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 
-export type NullOptions = WidgetInputWrapperProps & DefaultNodeOptions;
+export type NullOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
 
 export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }) => {
     return (

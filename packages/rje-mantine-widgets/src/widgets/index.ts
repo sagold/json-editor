@@ -4,7 +4,7 @@ import { MultiSelectWidgetPlugin } from './MultiSelect';
 import { NullWidgetPlugin } from './nullwidget/NullWidget';
 import { NumberWidgetPlugin } from './NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
-import { OneOfSelectWidgetPlugin } from './OneOfSelectWidget';
+import { OneOfSelectWidgetPlugin } from './oneofselectwidget/OneOfSelectWidget';
 import { SelectWidgetPlugin } from './SelectWidget';
 import { StringWidgetPlugin } from './StringWidget';
 import { WidgetPlugin } from '@sagold/react-json-editor';
