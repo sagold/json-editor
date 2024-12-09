@@ -52,11 +52,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const headerMenuActions: ReactNode[] = [];
     if (options.showEditJsonAction == true) {
         headerMenuActions.push(
-            <Menu.Item
-                leftSection={<Icon>edit</Icon>}
-                // closeMenuOnClick={false}
-                onClick={jsonModal.open}
-            >
+            <Menu.Item leftSection={<Icon>edit</Icon>} onClick={jsonModal.open}>
                 edit Json
             </Menu.Item>
         );

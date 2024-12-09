@@ -174,6 +174,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <WidgetInputWrapper
+                errors={node.errors}
                 order={order}
                 options={options}
                 leftSection={
@@ -219,6 +220,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                     <Menu.Item
                                         leftSection={<Icon>add</Icon>}
                                         closeMenuOnClick={false}
+                                        disabled={!isAddEnabled}
                                         onClick={() => editor.appendItem(node, insertOptions[0])}
                                     >
                                         add item
@@ -227,6 +229,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                     insertOptions.map((item, index) => (
                                         <Menu.Item
                                             key={index}
+                                            disabled={!isAddEnabled}
                                             leftSection={<Icon>add</Icon>}
                                             // @todo option
                                             closeMenuOnClick={false}
