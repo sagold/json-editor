@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="./docs/he-full-2000x564.png" width="100%" alt="rje-aria-widgets"><br />
-  <img src="./docs/title-widgets-700x76.png" width="350px" alt="rje-aria-widgets">
+  <img src="./src/docs/images/he-full-2000x564.png" width="100%" alt="rje-aria-widgets"><br />
+  <img src="./src/docs/images/title-widgets-700x76.png" width="350px" alt="rje-aria-widgets">
 </p>
 
 > Simple and extensible React component capable of using JSON Schema to declaratively build and customize user forms.
