@@ -71,6 +71,39 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         ref
     );
 
+    const insertOptions = editor.getArrayAddOptions(node);
+    console.log(insertOptions);
+    const addAction =
+        insertOptions.length === 1 ? (
+            <Button
+                variant="light"
+                disabled={options.readOnly || options.disabled}
+                onClick={() => {
+                    const insertOptions = editor.getArrayAddOptions(node);
+                    if (insertOptions[0]) {
+                        editor.appendItem(node, insertOptions[0]);
+                    }
+                }}
+            >
+                <Icon>add</Icon>
+            </Button>
+        ) : (
+            <Menu position="top">
+                <Menu.Target>
+                    <Button variant="light" disabled={options.readOnly || options.disabled}>
+                        <Icon>add</Icon>
+                    </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                    {insertOptions.map((option, index) => (
+                        <Menu.Item key={index} onClick={() => editor.appendItem(node, option)}>
+                            {option.title}
+                        </Menu.Item>
+                    ))}
+                </Menu.Dropdown>
+            </Menu>
+        );
+
     const items = node.children.map((child) => (
         <Table.Tr key={child.id}>
             {sortableEnabled && (
@@ -123,18 +156,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         <Table.Tfoot>
                             <Table.Tr>
                                 <Table.Td colSpan={sortableEnabled ? 3 : 2} valign="middle" align="center">
-                                    <Button
-                                        variant="light"
-                                        disabled={options.readOnly || options.disabled}
-                                        onClick={() => {
-                                            const insertOptions = editor.getArrayAddOptions(node);
-                                            if (insertOptions[0]) {
-                                                editor.appendItem(node, insertOptions[0]);
-                                            }
-                                        }}
-                                    >
-                                        <Icon>add</Icon>
-                                    </Button>
+                                    {addAction}
                                 </Table.Td>
                             </Table.Tr>
                         </Table.Tfoot>

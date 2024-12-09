@@ -73,6 +73,7 @@ const schema: JsonSchema = {
         'array',
         'arraySortable',
         'arrayTag',
+        'arrayOneOf',
         'oneOfType',
         // 'oneOfTag'
         'objectOptionals'
@@ -262,6 +263,35 @@ const schema: JsonSchema = {
             default: [],
             items: {
                 type: 'string'
+            }
+        },
+        arrayOneOf: {
+            title: 'array-oneOf',
+            type: 'array',
+            items: {
+                oneOf: [
+                    {
+                        title: 'header',
+                        type: 'object',
+                        required: ['title'],
+                        properties: {
+                            title: {
+                                type: 'string'
+                            }
+                        }
+                    },
+                    {
+                        title: 'paragraph',
+                        type: 'object',
+                        required: ['text'],
+                        properties: {
+                            text: {
+                                type: 'string',
+                                format: 'textarea'
+                            }
+                        }
+                    }
+                ]
             }
         },
         objectOptionals: {
