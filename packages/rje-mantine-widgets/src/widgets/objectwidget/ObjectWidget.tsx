@@ -171,7 +171,11 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     </Stack>
                     {options.showInlineAddAction !== false && node.missingProperties.length > 0 && (
                         <>
-                            <div className="rje-object__missing-properties" style={{ alignItems: 'center' }}>
+                            <Flex
+                                className="rje-object__missing-properties"
+                                style={{ alignItems: 'center' }}
+                                wrap={'wrap'}
+                            >
                                 {node.missingProperties.map((name) => (
                                     <Button
                                         key={name}
@@ -184,7 +188,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                                         {name}
                                     </Button>
                                 ))}
-                            </div>
+                            </Flex>
                         </>
                     )}
                 </Collapse>
