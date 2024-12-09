@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Flex, MantineProvider } from '@mantine/core';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
-import { useEditor } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor } from '@sagold/react-json-editor';
 import { widgets } from '../widgets';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
 
@@ -51,7 +51,7 @@ const meta: Meta<typeof JsonForm> = {
 export default meta;
 type Story = StoryObj<typeof JsonForm>;
 
-const schema = {
+const schema: JsonSchema = {
     title: 'Json Editor Mantine Widgets',
     type: 'object',
     required: [

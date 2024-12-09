@@ -16,6 +16,7 @@
         "noImplicitAny": false
     },
     "include": ["src/**/*"],
+    "exclude": ["src/**/*.stories.tsx", "src/**/*.stories.mdx"],
     "references": [
         {
             "path": "../headless-json-editor"

@@ -1,6 +1,6 @@
-import { JSONSchema } from 'headless-json-editor';
+import { JsonSchema } from 'headless-json-editor';
 
-export const schema: JSONSchema = {
+export const schema: JsonSchema = {
     title: 'Longform',
     type: 'object',
     required: ['header', 'intro', 'modules', 'furtherReading', 'seo', 'socialMedia', 'credits', 'dev'],
