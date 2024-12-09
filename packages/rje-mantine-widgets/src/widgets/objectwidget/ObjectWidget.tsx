@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Collapse, DividerProps, Flex, Group, Menu, Modal, Stack, TitleProps } from '@mantine/core';
+import { ActionIcon, Button, Collapse, DividerProps, Flex, Group, Modal, Stack, TitleProps } from '@mantine/core';
 import {
     DefaultNodeOptions,
     ObjectNode,
@@ -11,7 +11,7 @@ import {
 import { Icon } from '../../components/icon/Icon';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { useDisclosure } from '@mantine/hooks';
-import { ReactNode } from 'react';
+import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -34,6 +34,9 @@ export type ObjectOptions = DefaultNodeOptions<{
     dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
     /** Mantine Title Props */
     titleProps?: TitleProps;
+
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
@@ -49,40 +52,41 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
 
-    const headerMenuActions: ReactNode[] = [];
+    const widgetMenuItems: WidgetMenuItems = [];
     if (options.showEditJsonAction == true) {
-        headerMenuActions.push(
-            <Menu.Item leftSection={<Icon>edit</Icon>} onClick={jsonModal.open}>
-                edit Json
-            </Menu.Item>
-        );
+        widgetMenuItems.push({
+            icon: 'edit',
+            onClick: jsonModal.open,
+            label: 'Edit Json'
+        });
     }
-
     if (editor.optionalProperties && node.optionalProperties.length > 0) {
         const actions = node.optionalProperties.map((property) => {
             const isMissing = node.missingProperties.includes(property);
-            return (
-                <Menu.Item
-                    closeMenuOnClick={false}
-                    disabled={options.disabled || options.readOnly}
-                    leftSection={<Icon>{isMissing ? 'add' : 'close'}</Icon>}
-                    key={property}
-                    onClick={() => {
-                        if (isMissing) {
-                            editor.addValue(`${node.pointer}/${property}`);
-                        } else {
-                            editor.removeValue(`${node.pointer}/${property}`);
-                        }
-                    }}
-                >
-                    {property}
-                </Menu.Item>
-            );
+            return {
+                closeMenuOnClick: false,
+                disabled: options.disabled || options.readOnly,
+                icon: isMissing ? 'add' : 'close',
+                label: property,
+                onClick: () => {
+                    if (isMissing) {
+                        editor.addValue(`${node.pointer}/${property}`);
+                    } else {
+                        editor.removeValue(`${node.pointer}/${property}`);
+                    }
+                }
+            };
         });
-        if (headerMenuActions.length > 0) {
-            headerMenuActions.push(<Menu.Divider />);
+        if (widgetMenuItems.length > 0 && actions.length > 0) {
+            widgetMenuItems.push('divider');
         }
-        headerMenuActions.push(...actions);
+        widgetMenuItems.push(...actions);
+    }
+    if (Array.isArray(options.widgetMenuItems)) {
+        if (widgetMenuItems.length > 0) {
+            widgetMenuItems.push('divider');
+        }
+        widgetMenuItems.push(...options.widgetMenuItems);
     }
 
     const properties = node.children.map((child) => (
@@ -146,22 +150,15 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     )
                 }
                 rightSection={
-                    options.showHeaderMenu !== false &&
-                    headerMenuActions.length > 0 && (
-                        <Menu>
-                            <Menu.Target>
-                                <ActionIcon
-                                    variant="transparent"
-                                    aria-label="actions"
-                                    // @todo option
-                                    color={'gray'}
-                                    disabled={options.readOnly || options.disabled}
-                                >
-                                    <Icon>menu</Icon>
-                                </ActionIcon>
-                            </Menu.Target>
-                            <Menu.Dropdown>{headerMenuActions}</Menu.Dropdown>
-                        </Menu>
+                    options.showHeaderMenu !== false && (
+                        <WidgetMenu
+                            offset={0}
+                            position={'left-start'}
+                            transitionProps={{ transition: 'slide-left', duration: 100 }}
+                            icon={node.isArrayItem ? 'more_horiz' : 'menu'}
+                            disabled={options.readOnly || options.disabled}
+                            items={widgetMenuItems}
+                        />
                     )
                 }
             >

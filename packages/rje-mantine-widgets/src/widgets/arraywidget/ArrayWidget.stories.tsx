@@ -82,6 +82,7 @@ export const Options: Story = {
                             title: 'Header',
                             type: 'object',
                             required: ['title'],
+                            options: { showEditJsonAction: true },
                             properties: {
                                 title: { type: 'string' }
                             }
@@ -90,9 +91,14 @@ export const Options: Story = {
                             title: 'Paragraph',
                             type: 'object',
                             required: ['paragraph'],
+                            options: { showEditJsonAction: true },
                             properties: {
                                 paragraph: { type: 'string', format: 'textarea' }
                             }
+                        },
+                        {
+                            title: 'Quote',
+                            type: 'string'
                         }
                     ]
                 },
