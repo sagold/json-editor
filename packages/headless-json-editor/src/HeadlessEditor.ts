@@ -33,6 +33,8 @@ export type PluginInstance<Signature extends O = O> = {
      *  `onEvent` may return a new root-node along with a list of changes
      */
     onEvent: (root: Node, event: PluginEvent) => void | [Node, Change[]];
+    /** Called when Editor before Editor is going to be destroyed */
+    onDestroy?: () => void;
 } & Signature;
 
 export type Plugin<
@@ -387,6 +389,7 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     destroy() {
+        this.plugins.forEach((p) => p.onDestroy?.());
         // @ts-expect-error unresolved property
         ['root', 'draft', 'plugins', 'options'].forEach((property) => (this[property] = null));
     }
