@@ -78,7 +78,7 @@ const RadioGroupWidget = widget<StringNode<SelectOptions>, string | number>(({ n
                 value={node.value}
                 onChange={setValue}
             >
-                <Stack mt="xs">
+                <Stack mt={'xs'} gap={8}>
                     {enumValues.map((value, index) => (
                         <Radio key={value} value={value} label={titles[index] ?? value} disabled={options.disabled} />
                     ))}

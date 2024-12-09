@@ -1,4 +1,4 @@
-import { ActionIcon, Button, InputWrapper, Menu, Table } from '@mantine/core';
+import { ActionIcon, Button, InputWrapper, Menu, Table, Title } from '@mantine/core';
 import {
     widget,
     WidgetPlugin,
@@ -147,7 +147,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <InputWrapper
                 description={options.description}
-                label={options.title}
+                label={<Title order={node.pointer.split('/').length + 1}>{options.title}</Title>}
                 error={node.errors.map((e) => e.message).join('\n')}
             >
                 <Table striped withRowBorders={false}>

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Flex, InputWrapper } from '@mantine/core';
+import { ActionIcon, Button, Flex, InputWrapper, Title } from '@mantine/core';
 import {
     DefaultNodeOptions,
     ObjectNode,
@@ -82,7 +82,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
             <InputWrapper
                 description={options.description}
-                label={options.title}
+                label={<Title order={node.pointer.split('/').length + 1}>{options.title}</Title>}
                 error={node.errors.map((e) => e.message).join('\n')}
             >
                 <div className="rje-object__properties">{properties}</div>
