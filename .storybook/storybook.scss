@@ -29,7 +29,7 @@
         line-height: 1.4;
     }
 
-    h2 {
+    h2:mantine-title-root {
         font-weight: 200;
         text-transform: uppercase;
         border-bottom: 0;
@@ -40,11 +40,11 @@
         }
     }
 
-    h2 + p {
+    h2:mantine-title-root + p {
         margin-top: 0;
     }
 
-    h3 {
+    h3:mantine-title-root {
         font-size: 1em;
         padding-top: 1.25em;
 

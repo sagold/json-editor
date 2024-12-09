@@ -14,12 +14,7 @@ export type NullOptions = {
 
 export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }) => {
     return (
-        <WidgetField
-            widgetType="null"
-            node={node}
-            options={options}
-            showDescription={options.descriptionInline === true}
-        >
+        <WidgetField widgetType="null" node={node} options={options} showDescription={false}>
             <Divider
                 my="md"
                 labelPosition={options.titlePosition ?? 'left'}

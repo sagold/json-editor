@@ -23,8 +23,8 @@ export const widgets: WidgetPlugin[] = [
         use: (node) => node.options?.hidden,
         Widget: () => null
     },
-    SelectOneOfWidgetPlugin,
     SimpleJsonWidgetPlugin,
+    SelectOneOfWidgetPlugin,
     ColorWidgetPlugin,
     DateWidgetPlugin,
     MasterDetailWidgetPlugin,

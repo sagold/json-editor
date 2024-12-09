@@ -53,6 +53,7 @@ export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<
     title?: string;
     /** disable edit of form, but allow selection and copy of value */
     readOnly?: boolean;
+    /** flag data as required (visual only) */
     required?: boolean;
 } & Options;
 

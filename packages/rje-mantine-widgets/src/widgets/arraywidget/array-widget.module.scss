@@ -1,0 +1,19 @@
+label.label {
+    display: flex;
+    align-items: center;
+}
+
+table {
+    --input-margin-top: calc(var(--mantine-spacing-xs) / 2);
+    --input-margin-bottom: calc(var(--mantine-spacing-xs) / 2);
+    margin-top: var(--input-margin-top);
+    margin-bottom: var(--input-margin-bottom);
+}
+
+.asterisk {
+    font-weight: 500;
+    word-break: break-word;
+    cursor: default;
+    font-size: var(--input-label-size, var(--mantine-font-size-sm));
+    color: var(--input-asterisk-color, var(--mantine-color-error));
+}

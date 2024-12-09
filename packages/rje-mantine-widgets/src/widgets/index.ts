@@ -1,4 +1,4 @@
-import { ArrayWidgetPlugin } from './ArrayWidget';
+import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
 import { BooleanWidgetPlugin } from './BooleanWidget';
 import { MultiSelectWidgetPlugin } from './MultiSelect';
 import { NullWidgetPlugin } from './NullWidget';

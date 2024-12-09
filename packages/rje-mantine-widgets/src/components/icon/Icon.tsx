@@ -2,12 +2,6 @@ import classNames from 'classnames';
 import styles from './icon.module.scss';
 import { CSSProperties } from 'react';
 
-const MAP: Record<string, string> = {
-    pending: 'hourglass_empty',
-    accepted: 'check_circle',
-    declined: 'cancel'
-};
-
 export type IconProps = {
     solid?: boolean;
     children: string;
@@ -30,7 +24,7 @@ export function Icon({ onClick, className, children, style, solid }: IconProps) 
             style={style}
             onClick={onClick}
         >
-            {MAP[children] ?? children}
+            {children}
         </span>
     );
 }

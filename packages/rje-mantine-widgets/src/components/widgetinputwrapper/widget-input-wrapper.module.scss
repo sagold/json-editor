@@ -1,0 +1,12 @@
+label.label {
+    display: flex;
+    align-items: center;
+}
+
+.asterisk {
+    font-weight: 500;
+    word-break: break-word;
+    cursor: default;
+    font-size: var(--input-label-size, var(--mantine-font-size-sm));
+    color: var(--input-asterisk-color, var(--mantine-color-error));
+}

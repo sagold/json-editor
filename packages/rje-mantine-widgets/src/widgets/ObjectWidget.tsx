@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Flex, InputWrapper, Title } from '@mantine/core';
+import { ActionIcon, Button, Flex, InputWrapper, Title, TitleProps } from '@mantine/core';
 import {
     DefaultNodeOptions,
     ObjectNode,
@@ -9,6 +9,7 @@ import {
     widget
 } from '@sagold/react-json-editor';
 import { Icon } from '../components/icon/Icon';
+import { Description } from '../components/Description';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** additional classnames for object editor */
@@ -35,6 +36,9 @@ export type ObjectOptions = DefaultNodeOptions<{
     inlineDeletePropertyOption?: boolean;
     /* optional list of action components to add to object actions menu */
     menuActions?: React.ReactNode[];
+
+    /** Mantine Title Props */
+    titleProps?: TitleProps;
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
@@ -44,7 +48,10 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     // const showHeader = editJson.enabled || title || description || options.collapsed != null;
     // const withInlineDelete = options.inlineDeletePropertyOption ?? !showHeader;
 
-    const childOptions = {};
+    const childOptions = {
+        disabled: options.disabled,
+        readOnly: options.readOnly
+    };
     const properties = node.children.map((child) => (
         <Flex key={child.id} className="rje-object__property" style={{ position: 'relative' }}>
             <Widget
@@ -78,12 +85,24 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         </Flex>
     ));
 
+    const order = Math.min(node.pointer.split('/').length + 1, 6) as TitleOrder;
+
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
             <InputWrapper
-                description={options.description}
-                label={<Title order={node.pointer.split('/').length + 1}>{options.title}</Title>}
+                description={<Description text={options.description} />}
+                label={
+                    <Title style={{ flexGrow: 1 }} order={order} {...(options.titleProps ?? {})}>
+                        {options.title}
+                        {options.required && (
+                            <sup className={styles['asterisk']} aria-hidden>
+                                {' *'}
+                            </sup>
+                        )}
+                    </Title>
+                }
                 error={node.errors.map((e) => e.message).join('\n')}
+                withAsterisk={options.required}
             >
                 <div className="rje-object__properties">{properties}</div>
             </InputWrapper>
