@@ -13,6 +13,7 @@ import { SimpleJsonWidgetPlugin } from './SimpleJsonWidget';
 import { TagListWidgetPlugin } from './TagListWidget';
 import { UnknownWidgetPlugin } from './UnknownWidget';
 import { ColorWidgetPlugin } from './ColorWidget';
+import { DateWidgetPlugin } from './datewidget/DateWidget';
 
 export const widgets: WidgetPlugin[] = [
     {
@@ -27,6 +28,7 @@ export const widgets: WidgetPlugin[] = [
     ArrayWidgetPlugin,
     ObjectWidgetPlugin,
     SelectWidgetPlugin,
+    DateWidgetPlugin,
     ColorWidgetPlugin,
     TextWidgetPlugin,
     StringWidgetPlugin,

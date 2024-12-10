@@ -59,6 +59,9 @@ const schema: JsonSchema = {
         'string',
         'password',
         'text',
+        'time',
+        'date',
+        'datetime',
         'jsonText',
         'jsonObject',
         'color',
@@ -108,6 +111,32 @@ const schema: JsonSchema = {
                 tag: '👍'
             }
         },
+        time: {
+            title: 'time',
+            type: 'string',
+            format: 'time',
+            description: 'mantine time input',
+            minLength: 1
+        },
+        date: {
+            title: 'date',
+            type: 'string',
+            format: 'date',
+            description: 'mantine **DateInput**'
+        },
+        datetime: {
+            title: 'date',
+            type: 'string',
+            format: 'date-time',
+            description: 'mantine **DateInput** with time',
+            minLength: 1
+        },
+        color: {
+            title: 'hex color',
+            description: 'standard mantine ColorInput',
+            type: 'string',
+            format: 'hexColor'
+        },
         jsonText: {
             title: 'json to string',
             description: 'json-data stored as string',
@@ -130,12 +159,6 @@ const schema: JsonSchema = {
                 number: { type: 'number', default: 123 },
                 boolean: { type: 'boolean', default: true }
             }
-        },
-        color: {
-            title: 'hex color',
-            description: 'standard mantine ColorInput',
-            type: 'string',
-            format: 'hexColor'
         },
         number: {
             type: 'number',

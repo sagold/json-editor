@@ -7,9 +7,12 @@
     "main": "dist/rjeMantineWidgets.js",
     "dependencies": {
         "@mantine/core": "^7.14.3",
+        "@mantine/dates": "^7.15.0",
         "@mantine/hooks": "^7.14.3",
         "@sagold/react-json-editor": "^0.33.8",
         "classnames": "^2.5.1",
+        "dayjs": "^1.11.13",
+        "dayjs-plugin-utc": "^0.1.2",
         "sortablejs": "^1.15.6"
     }
 }

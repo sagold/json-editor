@@ -246,7 +246,7 @@ function getArrayHeaderMenu(
     }
     if (insertOptions.length === 1) {
         if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
+            widgetMenuItems.push('-');
         }
         widgetMenuItems.push({
             icon: 'add',
@@ -257,22 +257,21 @@ function getArrayHeaderMenu(
         });
     }
     if (insertOptions.length > 1) {
+        const items = insertOptions.map((item) => ({
+            disabled: !isAddEnabled,
+            icon: 'add',
+            closeMenuOnClick: false,
+            onClick: () => editor.appendItem(node, item),
+            label: item.title ?? ''
+        }));
         if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
+            widgetMenuItems.push('-');
         }
-        widgetMenuItems.push(
-            ...insertOptions.map((item) => ({
-                disabled: !isAddEnabled,
-                icon: 'add',
-                closeMenuOnClick: false,
-                onClick: () => editor.appendItem(node, item),
-                label: item.title ?? ''
-            }))
-        );
+        widgetMenuItems.push(...items);
     }
-    if (Array.isArray(options.widgetMenuItems)) {
+    if (Array.isArray(options.widgetMenuItems) && options.widgetMenuItems.length > 0) {
         if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
+            widgetMenuItems.push('-');
         }
         widgetMenuItems.push(...options.widgetMenuItems);
     }

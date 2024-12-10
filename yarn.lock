@@ -1630,6 +1630,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^7.15.0":
+  version: 7.15.0
+  resolution: "@mantine/dates@npm:7.15.0"
+  dependencies:
+    clsx: ^2.1.1
+  peerDependencies:
+    "@mantine/core": 7.15.0
+    "@mantine/hooks": 7.15.0
+    dayjs: ">=1.0.0"
+    react: ^18.x || ^19.x
+    react-dom: ^18.x || ^19.x
+  checksum: 5f27ae144a859978a9ab0447373158b0d921a01aa6e22fde944863c0591bb2c70fc005ddf59c8aee168b14f6299ac4e98ad1bde7721d56ad76ef7f0271f4cb2d
+  languageName: node
+  linkType: hard
+
 "@mantine/hooks@npm:^7.14.3":
   version: 7.14.3
   resolution: "@mantine/hooks@npm:7.14.3"
@@ -3433,9 +3448,12 @@ __metadata:
   resolution: "@sagold/rje-mantine-widgets@workspace:packages/rje-mantine-widgets"
   dependencies:
     "@mantine/core": ^7.14.3
+    "@mantine/dates": ^7.15.0
     "@mantine/hooks": ^7.14.3
     "@sagold/react-json-editor": ^0.33.8
     classnames: ^2.5.1
+    dayjs: ^1.11.13
+    dayjs-plugin-utc: ^0.1.2
     sortablejs: ^1.15.6
   languageName: unknown
   linkType: soft
@@ -6679,6 +6697,20 @@ __metadata:
     es-errors: ^1.3.0
     is-data-view: ^1.0.1
   checksum: 7f0bf8720b7414ca719eedf1846aeec392f2054d7af707c5dc9a753cc77eb8625f067fa901e0b5127e831f9da9056138d894b9c2be79c27a21f6db5824f009c2
+  languageName: node
+  linkType: hard
+
+"dayjs-plugin-utc@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "dayjs-plugin-utc@npm:0.1.2"
+  checksum: 80a3732407d7bcb0e2ca34a2964852a60c88540144ecca3fb0f4db03c1611f8198fea49fd8373972af7f8427789e591f42e32d0a5fa54d0f413c1b0921685dec
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: f388db88a6aa93956c1f6121644e783391c7b738b73dbc54485578736565c8931bdfba4bb94e9b1535c6e509c97d5deb918bbe1ae6b34358d994de735055cca9
   languageName: node
   linkType: hard
 
