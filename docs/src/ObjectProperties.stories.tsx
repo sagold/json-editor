@@ -114,9 +114,7 @@ export const EditJson: Story = {
             description:
                 'Using an object with a title will switch actions for optional properties to be placed in the actions-icon besides its title. Inline delete options are moved into their panel for a cleaner ui. Using EditJson action from the actions panel will allow the user to add additional data in json format.',
             options: {
-                editJson: {
-                    enabled: true
-                }
+                editJson: true
             },
             additionalProperties: {
                 type: 'string'
@@ -269,7 +267,7 @@ export const AllOf: Story = {
         data: { title: 'five!' },
         schema: {
             type: 'object',
-            options: { title: false },
+            options: { showHeader: false },
             required: ['title'],
             properties: {
                 title: { type: 'string' }
@@ -300,7 +298,7 @@ export const AllOfIfThen: Story = {
         liveUpdate: true,
         schema: {
             type: 'object',
-            options: { title: false },
+            options: { showHeader: false },
             properties: {
                 title: { type: 'string', default: 'four' }
             },
@@ -342,7 +340,7 @@ export const DependenciesList: Story = {
             dependencies: {
                 one: ['two']
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -363,7 +361,7 @@ export const DependenciesListActive: Story = {
             dependencies: {
                 one: ['two']
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -386,7 +384,7 @@ export const Dependencies: Story = {
                     }
                 }
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -410,7 +408,7 @@ export const DependenciesActive: Story = {
                     }
                 }
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -436,7 +434,7 @@ export const IfThenElse: Story = {
                     addition: { type: 'string' }
                 }
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -463,7 +461,7 @@ export const IfThenElseActive: Story = {
                     addition: { type: 'string' }
                 }
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as JsonSchema
     }
 };
@@ -500,7 +498,7 @@ export const IfThenElseSwitch: Story = {
                     number: { title: 'Value in Else', type: 'number', maximum: 4 }
                 }
             },
-            options: { title: false }
+            options: { showHeader: false }
         } as unknown as JsonSchema
     }
 };

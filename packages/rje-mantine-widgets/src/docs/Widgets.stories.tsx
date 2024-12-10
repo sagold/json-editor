@@ -7,6 +7,7 @@ import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonSchema, useEditor } from '@sagold/react-json-editor';
 import { widgets } from '../widgets';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
+import { ObjectOptions } from '../widgets/objectwidget/ObjectWidget';
 
 function WithTwoColumns(props) {
     const [node, editor] = useEditor({ ...props, widgets });
@@ -301,6 +302,7 @@ const schema: JsonSchema = {
             type: 'object',
             description: 'an object defined by a required field and three optional fields',
             required: ['required'],
+            options: { showInlineAddAction: true } as ObjectOptions,
             properties: {
                 required: { title: 'required', type: 'string' },
                 optional1: { title: 'optional1', type: 'string' },

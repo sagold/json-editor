@@ -68,6 +68,15 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
     const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
 
+    const isHeaderShown =
+        options.collapsed != null ||
+        options.showHeaderMenu !== false ||
+        (options.showHeader !== false && options.title !== '');
+    let showInlineAddAction = options.showInlineAddAction !== false && node.missingProperties.length > 0;
+    if (showInlineAddAction && isHeaderShown && options.showInlineAddAction == null) {
+        showInlineAddAction = false;
+    }
+
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
             <WidgetInputWrapper
@@ -111,7 +120,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                             />
                         ))}
                     </Stack>
-                    {options.showInlineAddAction !== false && node.missingProperties.length > 0 && (
+                    {showInlineAddAction && (
                         <Flex
                             className="rje-object__missing-properties"
                             style={{ alignItems: 'center', paddingTop: 'var(--rje-property-spacing, 0.5em)' }}

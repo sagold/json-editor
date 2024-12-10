@@ -331,8 +331,7 @@ export const Enum: Story = {
                 type: 'number'
             },
             minItems: 3,
-            maxItems: 3,
-            options: { title: true }
+            maxItems: 3
         }
     }
 };
