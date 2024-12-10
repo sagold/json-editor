@@ -160,7 +160,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             position={'left-start'}
                             transitionProps={{ transition: 'slide-left', duration: 100 }}
                             icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                            disabled={options.readOnly || options.disabled}
+                            disabled={options.disabled}
+                            readOnly={options.readOnly}
                             items={widgetMenuItems}
                         />
                     )
@@ -250,7 +251,6 @@ function getArrayHeaderMenu(
         }
         widgetMenuItems.push({
             icon: 'add',
-            closeMenuOnClick: false,
             disabled: !isAddEnabled,
             onClick: () => editor.appendItem(node, insertOptions[0]),
             label: 'Add Item'
@@ -260,7 +260,6 @@ function getArrayHeaderMenu(
         const items = insertOptions.map((item) => ({
             disabled: !isAddEnabled,
             icon: 'add',
-            closeMenuOnClick: false,
             onClick: () => editor.appendItem(node, item),
             label: item.title ?? ''
         }));
@@ -284,14 +283,12 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
         {
             label: 'move up',
             icon: 'keyboard_arrow_up',
-            closeMenuOnClick: false,
             disabled: options.readOnly || options.disabled || child.property === '0',
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) - 1)
         },
         {
             label: 'move down',
             icon: 'keyboard_arrow_down',
-            closeMenuOnClick: false,
             disabled: options.readOnly || options.disabled || child.property === `${parentNode.children.length - 1}`,
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) + 1)
         },

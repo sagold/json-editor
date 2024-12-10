@@ -72,6 +72,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         options.collapsed != null ||
         options.showHeaderMenu !== false ||
         (options.showHeader !== false && options.title !== '');
+
     let showInlineAddAction = options.showInlineAddAction !== false && node.missingProperties.length > 0;
     if (showInlineAddAction && isHeaderShown && options.showInlineAddAction == null) {
         showInlineAddAction = false;
@@ -101,7 +102,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                             position={'left-start'}
                             transitionProps={{ transition: 'slide-left', duration: 100 }}
                             icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                            disabled={options.readOnly || options.disabled}
+                            disabled={options.disabled}
+                            readOnly={options.readOnly}
                             items={widgetMenuItems}
                         />
                     )
@@ -167,7 +169,6 @@ function getHeaderMenu(editor: Editor, node: ObjectNode, options: ArrayOptions, 
         const actions = node.optionalProperties.map((property) => {
             const isMissing = node.missingProperties.includes(property);
             return {
-                closeMenuOnClick: false,
                 disabled: options.disabled || options.readOnly,
                 icon: isMissing ? 'add' : 'delete',
                 label: property,

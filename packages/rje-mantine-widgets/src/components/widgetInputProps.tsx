@@ -36,9 +36,9 @@ export function widgetInputProps(
                 <span style={{ flexGrow: 1 }}>
                     {showHeader !== false && title}
                     {showHeader !== false && required && (
-                        <sup className={styles['asterisk']} aria-hidden>
-                            {' *'}
-                        </sup>
+                        <span className={styles['asterisk']} aria-hidden>
+                            *
+                        </span>
                     )}
                 </span>
 

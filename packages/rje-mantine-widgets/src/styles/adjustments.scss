@@ -37,7 +37,7 @@
 .rje-form {
     // form layout
     --rje-property-spacing: 1em;
-    --rje-header-top-spacing: 1em;
+    // --rje-header-top-spacing: 1em;
     // header
     --mantine-h1-font-size: 2em;
     --mantine-h1-font-weight: 200;
@@ -58,6 +58,6 @@
     }
 
     .rje-object__property > .rje-field--parent > .rje-widget__header {
-        padding-top: var(--rje-header-top-spacing);
+        // padding-top: var(--rje-header-top-spacing);
     }
 }

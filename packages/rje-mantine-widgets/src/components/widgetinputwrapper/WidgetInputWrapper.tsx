@@ -56,9 +56,9 @@ export function WidgetInputWrapper({
                                 <Title order={order} {...(options.titleProps ?? {})}>
                                     {options.title}
                                     {options.required && (
-                                        <sup className={styles['asterisk']} aria-hidden>
-                                            {' *'}
-                                        </sup>
+                                        <span className={styles['asterisk']} aria-hidden>
+                                            *
+                                        </span>
                                     )}
                                     {options.description && options.descriptionInline && (
                                         <Popover position="top" withArrow shadow="md">

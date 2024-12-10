@@ -9,6 +9,8 @@ label.label {
     font-size: var(--input-label-size, var(--mantine-font-size-sm));
     font-weight: 500;
     line-height: 1;
+    position: relative;
+    top: -0.2em;
     word-break: break-word;
 }
 
