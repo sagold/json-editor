@@ -304,7 +304,12 @@ const schema: JsonSchema = {
             properties: {
                 required: { title: 'required', type: 'string' },
                 optional1: { title: 'optional1', type: 'string' },
-                optional2: { title: 'optional2', type: 'string' },
+                optional2: {
+                    title: 'optional2',
+                    options: { showHeader: false },
+                    type: 'string',
+                    default: 'optional 2 with showHeader = false'
+                },
                 optional3: { title: 'optional3', type: 'string' }
             }
         }

@@ -160,7 +160,7 @@ function getHeaderMenu(editor: Editor, node: ObjectNode, options: ArrayOptions, 
             return {
                 closeMenuOnClick: false,
                 disabled: options.disabled || options.readOnly,
-                icon: isMissing ? 'add' : 'close',
+                icon: isMissing ? 'add' : 'delete',
                 label: property,
                 onClick: () => {
                     if (isMissing) {
