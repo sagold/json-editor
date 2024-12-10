@@ -43,9 +43,15 @@
     --mantine-h2-font-size: 1.6em;
     --mantine-h2-font-weight: 200;
     --mantine-h3-font-size: var(--input-label-size, var(--mantine-font-size-sm));
+    //
+    --mantine-cursor-type: pointer;
 
     .rje-object__properties {
         gap: var(--rje-property-spacing);
+    }
+
+    .rje-object__missing-properties {
+        padding-top: var(--rje-property-spacing);
     }
 
     .rje-object__property > .rje-field--parent > .rje-widget__header {

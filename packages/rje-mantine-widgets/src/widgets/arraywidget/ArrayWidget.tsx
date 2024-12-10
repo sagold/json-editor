@@ -27,7 +27,6 @@ import { useDraggableItems, SortableOptions } from '../../useDraggableItems';
 import { useRef } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
-import { Description } from '../../components/Description';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
@@ -125,9 +124,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             leftSection={<Icon>add</Icon>}
                         >
                             {option.title}
-                            <Menu.Label>
-                                <Description text={option.description} />
-                            </Menu.Label>
+                            {/*<Menu.Label>{option.description}</Menu.Label>*/}
                         </Menu.Item>
                     ))}
                 </Menu.Dropdown>

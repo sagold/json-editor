@@ -120,7 +120,9 @@
         }
     }
     .docs-story > :last-child {
-        background-color: hsla(203, 50%, 30%, 0.05);
+        // background-color: hsla(203, 50%, 30%, 0.05);
+        background-color: #dee2e6;
+        border-top: 0.5px dashed #999;
     }
     /* -- preview box full width */
 

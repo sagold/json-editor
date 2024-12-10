@@ -2,7 +2,7 @@ import styles from './widgetinputwrapper/widget-input-wrapper.module.scss';
 import { Flex } from '@mantine/core';
 import { WidgetMenu, WidgetMenuItems } from './widgetmenu/WidgetMenu';
 import { Node } from '@sagold/react-json-editor';
-import { Description } from './Description';
+import { WidgetDescription } from './WidgetDescription';
 
 export type WidgetInputOptions = {
     description?: string;
@@ -46,7 +46,7 @@ export function widgetInputProps(
         );
     }
     if (description && description.length > 0) {
-        props.description = <Description text={description} />;
+        props.description = <WidgetDescription text={description} />;
     }
     return props;
 }

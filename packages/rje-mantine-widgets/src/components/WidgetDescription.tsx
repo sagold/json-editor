@@ -1,11 +1,11 @@
 import { Markdown } from '@sagold/react-json-editor';
 
-export type DescriptionProps = {
+export type WidgetDescriptionProps = {
     text?: string;
     hide?: boolean;
 };
 
-export function Description({ text, hide }: DescriptionProps) {
+export function WidgetDescription({ text, hide }: WidgetDescriptionProps) {
     if (hide || text == null || text.length === 0) {
         return null;
     }

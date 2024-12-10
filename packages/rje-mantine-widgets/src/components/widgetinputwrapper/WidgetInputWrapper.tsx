@@ -1,6 +1,6 @@
 import styles from './widget-input-wrapper.module.scss';
 import { ActionIcon, Divider, DividerProps, InputWrapper, Popover, Title, TitleOrder, TitleProps } from '@mantine/core';
-import { Description } from '../Description';
+import { WidgetDescription } from '../WidgetDescription';
 import { Icon } from '../icon/Icon';
 import { DefaultNodeOptions, JsonError } from '@sagold/react-json-editor';
 import { ReactNode } from 'react';
@@ -39,7 +39,7 @@ export function WidgetInputWrapper({
     return (
         <InputWrapper
             className="rje-widget__header"
-            description={withInlineDescription ? <Description text={options.description} /> : undefined}
+            description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
             label={
                 hasLabel && (
                     <>
@@ -68,7 +68,7 @@ export function WidgetInputWrapper({
                                                 </ActionIcon>
                                             </Popover.Target>
                                             <Popover.Dropdown style={{ maxWidth: '80%' }}>
-                                                <Description text={options.description} />
+                                                <WidgetDescription text={options.description} />
                                             </Popover.Dropdown>
                                         </Popover>
                                     )}

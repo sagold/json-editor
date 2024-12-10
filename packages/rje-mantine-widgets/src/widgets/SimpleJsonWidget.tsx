@@ -12,7 +12,6 @@ import {
     Node
 } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
-import { Description } from '../components/Description';
 import { widgetInputProps } from '../components/widgetInputProps';
 
 const invalidJsonError: JsonError = {
@@ -101,8 +100,6 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
             errors = `${error.message}${node.errors.length ? `\n${node.errors.map((e) => e.message).join('\n')}` : ''}`;
         }
 
-        const isValidConst = node.schema.const != null && node.errors.length === 0;
-
         return (
             <WidgetField
                 widgetType="simple-json"
@@ -114,21 +111,14 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
                 showError={false}
             >
                 <Textarea
-                    id={node.id}
+                    {...widgetInputProps(node, options)}
                     autosize
                     value={internalValue}
-                    description={<Description text={options.description} />}
-                    disabled={options.disabled || isValidConst}
                     error={errors}
-                    label={options.title}
                     maxLength={node.schema.maxLength}
                     minLength={node.schema.minLength}
-                    placeholder={options.placeholder}
-                    readOnly={options.readOnly === true}
-                    required={options.required}
                     rows={1}
                     maxRows={20}
-                    withAsterisk={options.required}
                     onChange={(e) => setInternalValue(e.currentTarget.value)}
                     onBlur={() => {
                         try {
