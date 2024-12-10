@@ -9,9 +9,12 @@ import {
     WidgetProps,
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
-import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
-export type SelectMultipleOptions = DefaultNodeOptions;
+export type SelectMultipleOptions = {
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
+} & DefaultNodeOptions;
 
 const MultiSelectWidget = (props: WidgetProps) => {
     const type = (props.node.options?.type || props?.options?.type) ?? 'select';
@@ -36,18 +39,10 @@ const SelectWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node,
             showDescription={false}
         >
             <MultiSelect
-                id={node.id}
+                {...widgetInputProps(node, options)}
                 data={data}
-                description={<Description text={options.description} />}
-                disabled={options.disabled}
-                readOnly={options.readOnly}
-                error={node.errors.map((e) => e.message).join('\n')}
-                label={options.title}
                 onChange={setValue}
-                placeholder={options.placeholder}
-                required={options.required}
                 value={getData(node) as string[]}
-                withAsterisk={options.required}
             />
         </WidgetField>
     );
@@ -62,13 +57,7 @@ const TagListWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
-            <InputWrapper
-                id={node.id}
-                label={options.title}
-                description={options.description}
-                required={options.required}
-                error={node.errors.map((e) => e.message).join('\n')}
-            >
+            <InputWrapper {...widgetInputProps(node, options)}>
                 <Chip.Group multiple={true} value={value} onChange={setValue}>
                     <Group
                         style={{

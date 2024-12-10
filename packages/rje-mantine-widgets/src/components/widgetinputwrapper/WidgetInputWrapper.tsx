@@ -15,6 +15,7 @@ export type WidgetInputWrapperProps = {
         showHeaderMenu?: boolean;
         dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
         titleProps?: TitleProps;
+        showHeader?: boolean;
     };
     leftSection?: ReactNode;
     rightSection?: ReactNode;
@@ -22,7 +23,7 @@ export type WidgetInputWrapperProps = {
 };
 
 export function WidgetInputWrapper({
-    order = 3,
+    order,
     leftSection,
     rightSection,
     children,
@@ -31,23 +32,26 @@ export function WidgetInputWrapper({
 }: WidgetInputWrapperProps) {
     const hasTitle = (options.title && options.title.length > 0) || options.descriptionInline;
     const hasSection = !!leftSection ?? !!rightSection ?? false;
-    const hasLabel = hasTitle || hasSection;
+    const hasLabel = (options.showHeader !== false && hasTitle) || hasSection;
 
     const withInlineDescription = options.description && options.description.length > 0 && !options.descriptionInline;
 
     return (
         <InputWrapper
+            className="rje-widget__header"
             description={withInlineDescription ? <Description text={options.description} /> : undefined}
             label={
                 hasLabel && (
                     <>
                         {leftSection}
                         <Divider
-                            my="md"
                             labelPosition="left"
                             color={options.showTitleDivider ? undefined : 'transparent'}
                             {...(options.dividerProps ?? {})}
-                            style={{ flexGrow: 1, '--mantine-color-dimmed': '#333' }}
+                            style={{
+                                flexGrow: 1,
+                                '--mantine-color-dimmed': 'var(--mantine-color-text)'
+                            }}
                             label={
                                 <Title order={order} {...(options.titleProps ?? {})}>
                                     {options.title}

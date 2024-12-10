@@ -11,6 +11,8 @@ export type StringOptions = DefaultNodeOptions<{
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
 }>;
 
 export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
@@ -33,7 +35,6 @@ export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, opt
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <Textarea
-                id={node.id}
                 {...widgetInputProps(node, options)}
                 autosize
                 classNames={{ section: styles['section__icon'] }}

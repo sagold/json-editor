@@ -2,18 +2,15 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } fro
 import { ColorInput } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
 
-export type ColorOptions = DefaultNodeOptions;
+export type ColorOptions = {
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
+} & DefaultNodeOptions;
 
 export const ColorWidget = widget<StringNode<ColorOptions>, string>(({ node, options, setValue }) => {
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
-            <ColorInput
-                id={node.id}
-                {...widgetInputProps(node, options)}
-                onChange={setValue}
-                value={node.value}
-                withAsterisk={options.required}
-            />
+            <ColorInput {...widgetInputProps(node, options)} onChange={setValue} value={node.value} />
         </WidgetField>
     );
 });

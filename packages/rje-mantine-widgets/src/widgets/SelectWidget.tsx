@@ -7,15 +7,18 @@ import {
     WidgetProps,
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
-import { Chip, Group, InputWrapper, Radio, Select, Stack } from '@mantine/core';
-import { Description } from '../components/Description';
+import { Chip, ChipProps, Group, InputWrapper, Radio, Select, Stack } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
 
 export type SelectOptions = {
     type?: 'select' | 'taglist';
+    /** chip variant for taglist */
+    variant?: ChipProps['variant'];
     /** set to true to render radiogroup in a single line */
     horizontal?: boolean;
     loading?: boolean;
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
 } & DefaultNodeOptions;
 
 export const selectDefaultOptions = {
@@ -36,10 +39,11 @@ export const SelectWidget = function (props: WidgetProps) {
 export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(({ node, options, setValue }) => {
     const enumValues = (node.schema.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
+    const hasError = node.errors.length > 0;
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
-            <InputWrapper id={node.id} {...widgetInputProps(node, options)}>
+            <InputWrapper {...widgetInputProps(node, options)}>
                 <Chip.Group multiple={false} value={node.value} onChange={setValue}>
                     <Group
                         style={{
@@ -47,7 +51,13 @@ export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(
                         }}
                     >
                         {enumValues.map((value, index) => (
-                            <Chip key={value} value={value} disabled={options.disabled}>
+                            <Chip
+                                key={value}
+                                className={hasError ? 'rje-chip--error' : undefined}
+                                value={value}
+                                disabled={options.disabled}
+                                variant={options.variant}
+                            >
                                 {titles[index] ?? value}
                             </Chip>
                         ))}
@@ -61,13 +71,20 @@ export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(
 const RadioGroupWidget = widget<StringNode<SelectOptions>, string | number>(({ node, options, setValue }) => {
     const enumValues = (node.schema.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
+    const hasError = node.errors.length > 0;
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <Radio.Group id={node.id} {...widgetInputProps(node, options)} value={node.value} onChange={setValue}>
                 <Stack mt={'xs'} gap={8}>
                     {enumValues.map((value, index) => (
-                        <Radio key={value} value={value} label={titles[index] ?? value} disabled={options.disabled} />
+                        <Radio
+                            key={value}
+                            value={value}
+                            label={titles[index] ?? value}
+                            disabled={options.disabled}
+                            error={hasError}
+                        />
                     ))}
                 </Stack>
             </Radio.Group>

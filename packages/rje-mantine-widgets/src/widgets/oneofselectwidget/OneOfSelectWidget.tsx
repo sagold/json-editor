@@ -9,6 +9,7 @@ import {
     WidgetField
 } from '@sagold/react-json-editor';
 import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/widgetinputwrapper/WidgetInputWrapper';
+import { widgetInputProps } from '../../components/widgetInputProps';
 
 export type OneOfSelectOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
 
@@ -45,16 +46,13 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
                 leftSection={
                     <Select
                         id={node.id}
+                        {...widgetInputProps(node, { ...options, title: undefined, description: undefined })}
+                        style={options.description ? { paddingBottom: '0.2em' } : undefined}
                         data={oneOf.map((schema, index) => ({
                             value: `${index}`,
                             label: schema.title ?? `${index}`
                         }))}
-                        // description={options.description}
-                        disabled={options.disabled}
-                        error={node.errors.map((e) => e.message).join('\n')}
                         onChange={onChange}
-                        placeholder={options.placeholder}
-                        required={options.required}
                         value={`${origin.index}`}
                     />
                 }

@@ -15,17 +15,24 @@ export type WidgetMenuItems = (WidgetMenuItem | '-' | string)[];
 export type WidgetMenuProps = {
     icon: string;
     disabled?: boolean;
+    inline?: boolean;
     items?: WidgetMenuItems;
 } & MenuProps;
 
-export function WidgetMenu({ icon, disabled, items, ...menuProps }: WidgetMenuProps) {
+export function WidgetMenu({ icon, disabled, inline = true, items, ...menuProps }: WidgetMenuProps) {
     if (items == null || items.length === 0) {
         return null;
     }
     return (
         <Menu {...menuProps}>
             <Menu.Target>
-                <ActionIcon variant="subtle" disabled={disabled}>
+                <ActionIcon
+                    variant="subtle"
+                    disabled={disabled}
+                    color="gray"
+                    // we use the menu-action within labels, ensure it respects the initial height
+                    style={inline ? { height: '100%', minHeight: 'inherit' } : {}}
+                >
                     <Icon>{icon}</Icon>
                 </ActionIcon>
             </Menu.Target>
@@ -39,7 +46,7 @@ export function WidgetMenu({ icon, disabled, items, ...menuProps }: WidgetMenuPr
                     }
                     const leftSection = item.icon ? <Icon>{item.icon}</Icon> : null;
                     return (
-                        <Menu.Item key={index} color="gray" {...item} leftSection={leftSection}>
+                        <Menu.Item key={index} {...item} leftSection={leftSection}>
                             {item.label}
                         </Menu.Item>
                     );

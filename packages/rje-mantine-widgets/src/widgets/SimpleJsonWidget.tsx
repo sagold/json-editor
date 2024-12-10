@@ -27,7 +27,10 @@ const invalidJsonError: JsonError = {
     }
 } as const;
 
-export type SimpleJsonOptions = DefaultNodeOptions;
+export type SimpleJsonOptions = {
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
+} & DefaultNodeOptions;
 
 export const SimpleJsonWidget = (props) => {
     const node = props!.node as Node;
@@ -58,7 +61,6 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
     return (
         <WidgetField widgetType="simple-json" node={node} options={options} showError={false} showDescription={false}>
             <Textarea
-                id={node.id}
                 {...widgetInputProps(node, options)}
                 autosize
                 error={errors}

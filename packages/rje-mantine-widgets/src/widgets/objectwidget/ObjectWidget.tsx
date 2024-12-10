@@ -48,13 +48,15 @@ export type ObjectOptions = DefaultNodeOptions<{
     /** Mantine Title Props */
     titleProps?: TitleProps;
 
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
     const depth = Math.min(6, node.pointer.split('/').length);
-    const order = options.titleProps?.order ?? ((depth === 1 ? 2 : depth) as TitleOrder);
+    const order = options.titleProps?.order ?? ((depth === 1 ? 1 : 2) as TitleOrder);
     const childOptions = {
         titleProps: {
             order: Math.min(6, order + 1)
@@ -97,7 +99,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 }
             >
                 <Collapse in={contentOpened}>
-                    <Stack gap={8} className="rje-object__properties">
+                    <Stack className="rje-object__properties">
                         {node.children.map((child) => (
                             <ObjectProperty
                                 key={child.id}
@@ -196,7 +198,7 @@ function ObjectProperty({ editor, node, options, optionalProperties, showItemCon
     const nodeHasTitle = (node.options.title?.length ?? 0) > 0;
 
     return (
-        <Flex key={node.id} className="rje-object__property" style={{ position: 'relative' }}>
+        <Flex key={node.id} className="rje-object__property">
             <Widget
                 key={node.id}
                 node={node}

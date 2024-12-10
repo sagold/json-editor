@@ -64,13 +64,15 @@ export type ArrayOptions = DefaultNodeOptions<{
     /** Mantine Title Props */
     titleProps?: TitleProps;
 
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
 }>;
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
     const depth = Math.min(6, node.pointer.split('/').length);
-    const order = options.titleProps?.order ?? ((depth === 1 ? 2 : depth) as TitleOrder);
+    const order = options.titleProps?.order ?? ((depth === 1 ? 1 : 2) as TitleOrder);
     const childOptions = {
         titleProps: {
             order: Math.min(6, order + 1)

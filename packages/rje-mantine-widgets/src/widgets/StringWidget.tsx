@@ -10,6 +10,8 @@ export type StringOptions = DefaultNodeOptions<{
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
 }>;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
@@ -35,7 +37,6 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <Input
-                id={node.id}
                 {...widgetInputProps(node, options)}
                 leftSection={leftSection}
                 onChange={(e) => setValue(e.currentTarget.value)}

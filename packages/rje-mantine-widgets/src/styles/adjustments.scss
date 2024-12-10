@@ -1,8 +1,54 @@
-.rje-form .mantine-Input-wrapper {
-    // array item padding for vertical centering - might cause trouble elsewhere
-    --input-margin-bottom: var(--input-margin-top);
-}
-
 .rje-field .mantine-InputWrapper-root label {
     width: 100%;
+}
+
+.rje-field--null,
+.rje-field--boolean {
+    padding-top: 0.5em; // compensate to match other fields where label is top
+}
+
+.rje-field--select > .mantine-InputWrapper-root[data-error='true'] > .mantine-InputWrapper-error {
+    padding-top: 0.4em; // select options cause missing margin line-height) in error-message
+}
+
+.rje-field {
+    width: 100%; // fix layout with custom elements in conjunction with mantine
+}
+
+.rje-object__properties,
+.rje-array__items {
+    margin-top: 0.5em;
+    margin-bottom: 0; // reset mantine table margin
+}
+
+.rje-object__property {
+    position: relative;
+}
+
+.rje-form label {
+    display: inline-flex;
+}
+
+.mantine-Chip-root.rje-chip--error label {
+    border-color: var(--mantine-color-error);
+}
+
+.rje-form {
+    // form layout
+    --rje-property-spacing: 1em;
+    --rje-header-top-spacing: 1em;
+    // header
+    --mantine-h1-font-size: 2em;
+    --mantine-h1-font-weight: 200;
+    --mantine-h2-font-size: 1.6em;
+    --mantine-h2-font-weight: 200;
+    --mantine-h3-font-size: var(--input-label-size, var(--mantine-font-size-sm));
+
+    .rje-object__properties {
+        gap: var(--rje-property-spacing);
+    }
+
+    .rje-object__property > .rje-field--parent > .rje-widget__header {
+        padding-top: var(--rje-header-top-spacing);
+    }
 }

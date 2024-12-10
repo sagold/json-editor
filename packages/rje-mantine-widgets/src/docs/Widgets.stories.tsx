@@ -245,6 +245,7 @@ const schema: JsonSchema = {
         },
         arraySortable: {
             type: 'array',
+            description: 'A sortable array of numbers, omitting number-title',
             options: {
                 sortable: { enabled: true }
             },
@@ -298,6 +299,7 @@ const schema: JsonSchema = {
         },
         objectOptionals: {
             type: 'object',
+            description: 'an object defined by a required field and three optional fields',
             required: ['required'],
             properties: {
                 required: { title: 'required', type: 'string' },
@@ -313,7 +315,12 @@ const data = {
     string: 'huhu',
     array: ['first', 'fourth'],
     objectOptionals: { optional1: 'input-value' },
-    arraySortable: [100, 200, 300, 400]
+    arraySortable: [100, 200, 300, 400],
+    arrayOneOf: [
+        {
+            title: 'content title'
+        }
+    ]
 };
 
 export const Default: Story = {

@@ -1,3 +1,4 @@
+import styles from './widgetinputwrapper/widget-input-wrapper.module.scss';
 import { Flex } from '@mantine/core';
 import { WidgetMenu, WidgetMenuItems } from './widgetmenu/WidgetMenu';
 import { Node } from '@sagold/react-json-editor';
@@ -20,17 +21,26 @@ export function widgetInputProps(
 ) {
     const isValidConst = node.schema.const != null && node.errors.length === 0;
     const props: Record<string, any> = {
+        id: node.id,
         disabled: disabled || isValidConst,
         error: node.errors.map((e) => e.message).join('\n'),
         readOnly: readOnly,
         required: required,
-        withAsterisk: required,
+        withAsterisk: false,
         placeholder: placeholder
     };
     if ((showHeader !== false && title && title.length > 0) || (widgetMenuItems && widgetMenuItems?.length > 0)) {
         props.label = (
-            <Flex>
-                <span style={{ flexGrow: 1 }}>{showHeader !== false && title}</span>
+            <Flex style={{ width: '100%' }}>
+                <span style={{ flexGrow: 1 }}>
+                    {showHeader !== false && title}
+                    {showHeader !== false && required && (
+                        <sup className={styles['asterisk']} aria-hidden>
+                            {' *'}
+                        </sup>
+                    )}
+                </span>
+
                 <WidgetMenu icon="more_horiz" items={widgetMenuItems} />
             </Flex>
         );

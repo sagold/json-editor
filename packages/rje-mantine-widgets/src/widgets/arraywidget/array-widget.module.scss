@@ -3,4 +3,8 @@ table {
     --input-margin-bottom: calc(var(--mantine-spacing-xs) / 2);
     margin-top: var(--input-margin-top);
     margin-bottom: var(--input-margin-bottom);
+
+    tr[data-striped]:nth-of-type(even) {
+        background-color: var(--mantine-color-gray-2);
+    }
 }

@@ -1,4 +1,3 @@
-import '@mantine/core/styles.css';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonSchema } from 'headless-json-editor';

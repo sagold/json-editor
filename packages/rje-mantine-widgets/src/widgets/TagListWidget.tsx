@@ -2,13 +2,15 @@ import { TagsInput } from '@mantine/core';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, WidgetField, getData } from '@sagold/react-json-editor';
 import { widgetInputProps } from '../components/widgetInputProps';
 
-export type TagListOptions = DefaultNodeOptions;
+export type TagListOptions = {
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
+} & DefaultNodeOptions;
 
 export const TagListWidget = widget<ArrayNode<TagListOptions>, string[]>(({ node, options, setValue }) => {
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <TagsInput
-                id={node.id}
                 {...widgetInputProps(node, options)}
                 onChange={setValue}
                 value={getData(node) as string[]}

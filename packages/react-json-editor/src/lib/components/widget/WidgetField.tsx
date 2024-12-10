@@ -45,7 +45,7 @@ export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function
             className={classNames(
                 'rje-field',
                 `rje-field--${parentNode ? 'parent' : 'value'}`,
-                `rje-field--${schemaType}`,
+                Array.isArray(schemaType) ? schemaType.map((type) => `rje-field--${type}`) : `rje-field--${schemaType}`,
                 `rje-field--${widgetType}`,
                 disabled ? 'rje-field--disabled' : 'rje-field--enabled',
                 hasError ? ' rje-field--error' : 'rje-field--valid',

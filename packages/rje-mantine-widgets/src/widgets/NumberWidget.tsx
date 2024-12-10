@@ -10,6 +10,8 @@ export type NumberOptions = DefaultNodeOptions<{
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;
+    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    showHeader?: boolean;
 }>;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
