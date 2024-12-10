@@ -1,4 +1,15 @@
-import { ActionIcon, Button, Collapse, DividerProps, Flex, Group, Modal, Stack, TitleProps } from '@mantine/core';
+import {
+    ActionIcon,
+    Button,
+    Collapse,
+    DividerProps,
+    Flex,
+    Group,
+    Modal,
+    Stack,
+    TitleOrder,
+    TitleProps
+} from '@mantine/core';
 import {
     DefaultNodeOptions,
     ObjectNode,
@@ -6,12 +17,14 @@ import {
     WidgetField,
     WidgetPlugin,
     Node,
-    widget
+    widget,
+    Editor
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
+import { ArrayOptions } from '../arraywidget/ArrayWidget';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -40,8 +53,8 @@ export type ObjectOptions = DefaultNodeOptions<{
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
-    const depth = node.pointer.split('/').length;
-    const order = depth === 1 ? 1 : 2;
+    const depth = Math.min(6, node.pointer.split('/').length);
+    const order = options.titleProps?.order ?? ((depth === 1 ? 2 : depth) as TitleOrder);
     const childOptions = {
         titleProps: {
             order: Math.min(6, order + 1)
@@ -51,86 +64,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     };
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
-
-    const widgetMenuItems: WidgetMenuItems = [];
-    if (options.showEditJsonAction == true) {
-        widgetMenuItems.push({
-            icon: 'edit',
-            onClick: jsonModal.open,
-            label: 'Edit Json'
-        });
-    }
-    if (editor.optionalProperties && node.optionalProperties.length > 0) {
-        const actions = node.optionalProperties.map((property) => {
-            const isMissing = node.missingProperties.includes(property);
-            return {
-                closeMenuOnClick: false,
-                disabled: options.disabled || options.readOnly,
-                icon: isMissing ? 'add' : 'close',
-                label: property,
-                onClick: () => {
-                    if (isMissing) {
-                        editor.addValue(`${node.pointer}/${property}`);
-                    } else {
-                        editor.removeValue(`${node.pointer}/${property}`);
-                    }
-                }
-            };
-        });
-        if (widgetMenuItems.length > 0 && actions.length > 0) {
-            widgetMenuItems.push('divider');
-        }
-        widgetMenuItems.push(...actions);
-    }
-    if (Array.isArray(options.widgetMenuItems)) {
-        if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
-        }
-        widgetMenuItems.push(...options.widgetMenuItems);
-    }
-
-    const properties = node.children.map((child) => (
-        <Flex key={child.id} className="rje-object__property" style={{ position: 'relative' }}>
-            <Widget
-                key={child.id}
-                node={child}
-                editor={editor}
-                options={{
-                    ...childOptions,
-                    isOptional: node.optionalProperties.includes(child.property)
-                }}
-            />
-            {options.showItemControls !== false &&
-                editor.optionalProperties &&
-                node.optionalProperties.includes(child.property) && (
-                    <div
-                        className="rje-object__actions"
-                        style={
-                            hasTitle(child)
-                                ? {
-                                      position: 'absolute',
-                                      // mantine td padding:
-                                      top: 'var(--table-vertical-spacing)',
-                                      right: 0
-                                  }
-                                : {}
-                        }
-                    >
-                        <ActionIcon variant="transparent" onClick={() => editor.removeValue(child.pointer)}>
-                            <Icon>close</Icon>
-                        </ActionIcon>
-                    </div>
-                )}
-            <Modal title={options.title} opened={isJsonModalOpen} onClose={jsonModal.close} size={'xl'}>
-                <Widget node={node} editor={editor} options={{ ...options, widget: 'json', title: '' }} />
-                <Group justify="flex-end" mt={'md'}>
-                    <Button variant="transparent" onClick={jsonModal.close}>
-                        close
-                    </Button>
-                </Group>
-            </Modal>
-        </Flex>
-    ));
+    const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
 
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
@@ -164,7 +98,16 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             >
                 <Collapse in={contentOpened}>
                     <Stack gap={8} className="rje-object__properties">
-                        {properties}
+                        {node.children.map((child) => (
+                            <ObjectProperty
+                                key={child.id}
+                                editor={editor}
+                                node={child}
+                                options={childOptions}
+                                optionalProperties={node.optionalProperties}
+                                showItemControls={options.showItemControls}
+                            />
+                        ))}
                     </Stack>
                     {options.showInlineAddAction !== false && node.missingProperties.length > 0 && (
                         <>
@@ -188,14 +131,102 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                             </Flex>
                         </>
                     )}
+                    <Modal title={options.title} opened={isJsonModalOpen} onClose={jsonModal.close} size={'xl'}>
+                        <Widget node={node} editor={editor} options={{ ...options, widget: 'json', title: '' }} />
+                        <Group justify="flex-end" mt={'md'}>
+                            <Button variant="transparent" onClick={jsonModal.close}>
+                                close
+                            </Button>
+                        </Group>
+                    </Modal>
                 </Collapse>
             </WidgetInputWrapper>
         </WidgetField>
     );
 });
 
-function hasTitle(child: Node) {
-    return (child.options.title?.length ?? 0) > 0;
+function getHeaderMenu(editor: Editor, node: ObjectNode, options: ArrayOptions, jsonModal: { open: () => void }) {
+    const widgetMenuItems: WidgetMenuItems = [];
+    if (options.showEditJsonAction == true) {
+        widgetMenuItems.push({
+            icon: 'edit',
+            onClick: jsonModal.open,
+            label: 'Edit Json'
+        });
+    }
+    if (editor.optionalProperties && node.optionalProperties.length > 0) {
+        const actions = node.optionalProperties.map((property) => {
+            const isMissing = node.missingProperties.includes(property);
+            return {
+                closeMenuOnClick: false,
+                disabled: options.disabled || options.readOnly,
+                icon: isMissing ? 'add' : 'close',
+                label: property,
+                onClick: () => {
+                    if (isMissing) {
+                        editor.addValue(`${node.pointer}/${property}`);
+                    } else {
+                        editor.removeValue(`${node.pointer}/${property}`);
+                    }
+                }
+            };
+        });
+        if (widgetMenuItems.length > 0 && actions.length > 0) {
+            widgetMenuItems.push('-');
+        }
+        widgetMenuItems.push(...actions);
+    }
+    if (Array.isArray(options.widgetMenuItems)) {
+        if (widgetMenuItems.length > 0) {
+            widgetMenuItems.push('-');
+        }
+        widgetMenuItems.push(...options.widgetMenuItems);
+    }
+    return widgetMenuItems;
+}
+
+type ObjectPropertyProps = {
+    editor: Editor;
+    node: Node;
+    options: Record<string, any>;
+    optionalProperties: string[];
+    showItemControls?: boolean;
+};
+function ObjectProperty({ editor, node, options, optionalProperties, showItemControls = true }: ObjectPropertyProps) {
+    const nodeHasTitle = (node.options.title?.length ?? 0) > 0;
+
+    return (
+        <Flex key={node.id} className="rje-object__property" style={{ position: 'relative' }}>
+            <Widget
+                key={node.id}
+                node={node}
+                editor={editor}
+                options={{
+                    ...options,
+                    isOptional: optionalProperties.includes(node.property)
+                }}
+            />
+            {showItemControls !== false && editor.optionalProperties && optionalProperties.includes(node.property) && (
+                <div
+                    className="rje-object__actions"
+                    style={
+                        nodeHasTitle
+                            ? {
+                                  position: 'absolute',
+                                  // mantine td padding:
+                                  top: 'var(--table-vertical-spacing)',
+                                  right: 0
+                              }
+                            : {}
+                    }
+                >
+                    <ActionIcon variant="transparent" onClick={() => editor.removeValue(node.pointer)}>
+                        <Icon>close</Icon>
+                    </ActionIcon>
+                </div>
+            )}
+        </Flex>
+    );
 }
 
 export const ObjectWidgetPlugin: WidgetPlugin = {

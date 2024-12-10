@@ -13,6 +13,7 @@ import {
 } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
 import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
 const invalidJsonError: JsonError = {
     type: 'error',
@@ -49,7 +50,6 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
         setInternalValue(value);
     }, [setInternalValue, node.value]);
 
-    const isValidConst = node.schema.const != null && node.errors.length === 0;
     let errors = node.errors.map((e) => e.message).join('\n');
     if (error) {
         errors = `${error.message}${node.errors.length ? `\n${node.errors.map((e) => e.message).join('\n')}` : ''}`;
@@ -59,23 +59,13 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
         <WidgetField widgetType="simple-json" node={node} options={options} showError={false} showDescription={false}>
             <Textarea
                 id={node.id}
-                // classNames={{ section: styles['section__icon'] }}
-                // leftSection={leftSection}
-                // rightSection={rightSection}
+                {...widgetInputProps(node, options)}
                 autosize
-                value={internalValue}
-                description={<Description text={options.description} />}
-                disabled={options.disabled || isValidConst}
                 error={errors}
-                label={options.title}
                 maxLength={node.schema.maxLength}
                 minLength={node.schema.minLength}
-                placeholder={options.placeholder}
-                readOnly={options.readOnly === true}
-                required={options.required}
                 rows={1}
                 maxRows={20}
-                withAsterisk={options.required}
                 onChange={(e) => setInternalValue(e.currentTarget.value)}
                 onBlur={() => {
                     let value = internalValue;

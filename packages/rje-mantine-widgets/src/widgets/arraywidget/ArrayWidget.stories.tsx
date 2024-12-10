@@ -99,6 +99,11 @@ export const Options: Story = {
                         {
                             title: 'Quote',
                             type: 'string'
+                        },
+                        {
+                            title: 'Number',
+                            options: { showHeader: false },
+                            type: 'number'
                         }
                     ]
                 },

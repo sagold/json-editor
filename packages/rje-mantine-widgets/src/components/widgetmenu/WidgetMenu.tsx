@@ -15,11 +15,11 @@ export type WidgetMenuItems = (WidgetMenuItem | '-' | string)[];
 export type WidgetMenuProps = {
     icon: string;
     disabled?: boolean;
-    items: WidgetMenuItems;
+    items?: WidgetMenuItems;
 } & MenuProps;
 
 export function WidgetMenu({ icon, disabled, items, ...menuProps }: WidgetMenuProps) {
-    if (items.length === 0) {
+    if (items == null || items.length === 0) {
         return null;
     }
     return (

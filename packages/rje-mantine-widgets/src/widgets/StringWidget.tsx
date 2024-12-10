@@ -2,7 +2,7 @@ import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } fro
 import { PasswordInput, TextInput } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
-import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -13,8 +13,6 @@ export type StringOptions = DefaultNodeOptions<{
 }>;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
-    const hasError = node.errors.length > 0;
-    const isValidConst = node.schema.const != null && !hasError;
     let leftSection: ReactNode;
     let rightSection;
     if (options.icon) {
@@ -38,19 +36,11 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <Input
                 id={node.id}
-                // emitOnChange={options.liveUpdate}
-                description={<Description text={options.description} />}
-                disabled={options.disabled || isValidConst}
-                error={node.errors.map((e) => e.message).join('\n')}
-                label={options.title}
+                {...widgetInputProps(node, options)}
                 leftSection={leftSection}
                 onChange={(e) => setValue(e.currentTarget.value)}
-                placeholder={options.placeholder}
-                readOnly={options.readOnly}
-                required={options.required}
                 rightSection={rightSection}
                 value={node.value}
-                withAsterisk={options.required}
             />
         </WidgetField>
     );

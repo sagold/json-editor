@@ -33,9 +33,11 @@ export function WidgetInputWrapper({
     const hasSection = !!leftSection ?? !!rightSection ?? false;
     const hasLabel = hasTitle || hasSection;
 
+    const withInlineDescription = options.description && options.description.length > 0 && !options.descriptionInline;
+
     return (
         <InputWrapper
-            description={<Description text={options.description} hide={options.descriptionInline} />}
+            description={withInlineDescription ? <Description text={options.description} /> : undefined}
             label={
                 hasLabel && (
                     <>

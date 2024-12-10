@@ -2,7 +2,7 @@ import { widget, WidgetPlugin, DefaultNodeOptions, WidgetField, NumberNode } fro
 import { NumberInput } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
-import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
 export type NumberOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -13,8 +13,6 @@ export type NumberOptions = DefaultNodeOptions<{
 }>;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
-    const hasError = node.errors.length > 0;
-    const isValidConst = node.schema.const != null && !hasError;
     const type = node.schema.format === 'password' ? 'password' : 'text';
     let leftSection: ReactNode;
     let rightSection: ReactNode;
@@ -37,20 +35,12 @@ export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, o
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <NumberInput
                 id={node.id}
-                // emitOnChange={options.liveUpdate}
-                description={<Description text={options.description} />}
-                disabled={options.disabled || isValidConst}
-                error={node.errors.map((e) => e.message).join('\n')}
-                label={options.title}
+                {...widgetInputProps(node, options)}
                 leftSection={leftSection}
                 onChange={(value) => setValue(+value)}
-                placeholder={options.placeholder}
-                readOnly={options.readOnly}
-                required={options.required}
                 rightSection={rightSection}
                 type={type}
                 value={node.value}
-                withAsterisk={options.required}
             />
         </WidgetField>
     );

@@ -1,5 +1,16 @@
 import styles from './array-widget.module.scss';
-import { ActionIcon, Button, Collapse, DividerProps, Group, Menu, Modal, Table, TitleProps } from '@mantine/core';
+import {
+    ActionIcon,
+    Button,
+    Collapse,
+    DividerProps,
+    Group,
+    Menu,
+    Modal,
+    Table,
+    TitleOrder,
+    TitleProps
+} from '@mantine/core';
 import {
     widget,
     WidgetPlugin,
@@ -8,7 +19,8 @@ import {
     Widget,
     WidgetField,
     Node,
-    isParentNode
+    Editor,
+    JsonSchema
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
 import { useDraggableItems, SortableOptions } from '../../useDraggableItems';
@@ -20,6 +32,12 @@ import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetM
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
+
+const DRAG_HANDLE_COLUMN = (
+    <Table.Td className="rje-drag__handle">
+        <Icon>drag_indicator</Icon>
+    </Table.Td>
+);
 
 export type ArrayOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -51,8 +69,8 @@ export type ArrayOptions = DefaultNodeOptions<{
 }>;
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
-    const depth = node.pointer.split('/').length;
-    const order = depth === 1 ? 1 : 2;
+    const depth = Math.min(6, node.pointer.split('/').length);
+    const order = options.titleProps?.order ?? ((depth === 1 ? 2 : depth) as TitleOrder);
     const childOptions = {
         titleProps: {
             order: Math.min(6, order + 1)
@@ -114,118 +132,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             </Menu>
         );
 
+    const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, isAddEnabled);
     const withActions = options.readOnly !== true && options.showItemControls !== false;
-    const items = node.children.map((child) => (
-        <Table.Tr key={child.id}>
-            {sortableEnabled && (
-                <Table.Td className="rje-drag__handle">
-                    <Icon>drag_indicator</Icon>
-                </Table.Td>
-            )}
-            {hasTitle(child) ? (
-                <Table.Td width={'100%'} style={{ position: 'relative' }}>
-                    <Widget
-                        key={child.id}
-                        node={child}
-                        editor={editor}
-                        options={{
-                            ...childOptions,
-                            widgetMenuItems:
-                                withActions && isParentNode(child)
-                                    ? getArrayMenuItems(editor, node, child, options)
-                                    : undefined
-                        }}
-                    />
-                    {withActions && !isParentNode(child) ? (
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: 'var(--table-vertical-spacing)',
-                                right: 'var(--table-horizontal-spacing, var(--mantine-spacing-xs))'
-                            }}
-                        >
-                            <WidgetMenu
-                                icon="more_horiz"
-                                position={'left-start'}
-                                offset={0}
-                                transitionProps={{ transition: 'slide-left', duration: 150 }}
-                                items={getArrayMenuItems(editor, node, child, options)}
-                            />
-                        </div>
-                    ) : null}
-                </Table.Td>
-            ) : (
-                <>
-                    <Table.Td width={'100%'}>
-                        <Widget
-                            key={child.id}
-                            node={child}
-                            editor={editor}
-                            options={{
-                                ...childOptions,
-                                widgetMenuItems:
-                                    withActions && isParentNode(child)
-                                        ? getArrayMenuItems(editor, node, child, options)
-                                        : undefined
-                            }}
-                        />
-                    </Table.Td>
-                    {withActions && !isParentNode(child) ? (
-                        <Table.Td>
-                            <WidgetMenu
-                                icon="more_horiz"
-                                position={'left-start'}
-                                offset={0}
-                                transitionProps={{ transition: 'slide-left', duration: 150 }}
-                                items={getArrayMenuItems(editor, node, child, options)}
-                            />
-                        </Table.Td>
-                    ) : null}
-                </>
-            )}
-        </Table.Tr>
-    ));
-
-    const widgetMenuItems: WidgetMenuItems = [];
-    if (options.showEditJsonAction === true) {
-        widgetMenuItems.push({
-            icon: 'edit',
-            onClick: jsonModal.open,
-            label: 'Edit Json'
-        });
-    }
-    if (insertOptions.length === 1) {
-        if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
-        }
-        widgetMenuItems.push({
-            icon: 'add',
-            closeMenuOnClick: false,
-            disabled: !isAddEnabled,
-            onClick: () => editor.appendItem(node, insertOptions[0]),
-            label: 'Add Item'
-        });
-    }
-    if (insertOptions.length > 1) {
-        if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
-        }
-        widgetMenuItems.push(
-            ...insertOptions.map((item) => ({
-                disabled: !isAddEnabled,
-                icon: 'add',
-                closeMenuOnClick: false,
-                onClick: () => editor.appendItem(node, item),
-                label: item.title
-            }))
-        );
-    }
-    if (Array.isArray(options.widgetMenuItems)) {
-        if (widgetMenuItems.length > 0) {
-            widgetMenuItems.push('divider');
-        }
-        widgetMenuItems.push(...options.widgetMenuItems);
-    }
 
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
@@ -265,7 +173,26 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         withRowBorders={false}
                         classNames={{ table: styles['table'] }}
                     >
-                        <Table.Tbody ref={ref}>{items}</Table.Tbody>
+                        <Table.Tbody ref={ref}>
+                            {node.children.map((child) => (
+                                <Table.Tr key={child.id}>
+                                    {sortableEnabled && DRAG_HANDLE_COLUMN}
+                                    <Table.Td width={'100%'} style={{ position: 'relative' }}>
+                                        <Widget
+                                            key={child.id}
+                                            node={child}
+                                            editor={editor}
+                                            options={{
+                                                ...childOptions,
+                                                widgetMenuItems: withActions
+                                                    ? getArrayItemMenu(editor, node, child, options)
+                                                    : undefined
+                                            }}
+                                        />
+                                    </Table.Td>
+                                </Table.Tr>
+                            ))}
+                        </Table.Tbody>
                         {isAddEnabled && options.readOnly !== true && (
                             <Table.Tfoot>
                                 <Table.Tr>
@@ -291,10 +218,6 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     );
 });
 
-function hasTitle(child: Node) {
-    return (child.options.title?.length ?? 0) > 0;
-}
-
 // copy of rje-aria-widgets -- maybe rje utility?
 function getActionStates(node: ArrayNode) {
     const minItems = node.schema.minItems || 0;
@@ -308,14 +231,64 @@ function getActionStates(node: ArrayNode) {
     return { isAddEnabled, isDeleteEnabled: minItems < node.children.length };
 }
 
-function getArrayMenuItems(editor, parentNode, child, options): WidgetMenuItems {
+function getArrayHeaderMenu(
+    editor: Editor,
+    node: ArrayNode,
+    options: ArrayOptions,
+    insertOptions: JsonSchema[],
+    jsonModal: { open: () => void },
+    isAddEnabled: boolean
+) {
+    const widgetMenuItems: WidgetMenuItems = [];
+    if (options.showEditJsonAction === true) {
+        widgetMenuItems.push({
+            icon: 'edit',
+            onClick: jsonModal.open,
+            label: 'Edit Json'
+        });
+    }
+    if (insertOptions.length === 1) {
+        if (widgetMenuItems.length > 0) {
+            widgetMenuItems.push('divider');
+        }
+        widgetMenuItems.push({
+            icon: 'add',
+            closeMenuOnClick: false,
+            disabled: !isAddEnabled,
+            onClick: () => editor.appendItem(node, insertOptions[0]),
+            label: 'Add Item'
+        });
+    }
+    if (insertOptions.length > 1) {
+        if (widgetMenuItems.length > 0) {
+            widgetMenuItems.push('divider');
+        }
+        widgetMenuItems.push(
+            ...insertOptions.map((item) => ({
+                disabled: !isAddEnabled,
+                icon: 'add',
+                closeMenuOnClick: false,
+                onClick: () => editor.appendItem(node, item),
+                label: item.title ?? ''
+            }))
+        );
+    }
+    if (Array.isArray(options.widgetMenuItems)) {
+        if (widgetMenuItems.length > 0) {
+            widgetMenuItems.push('divider');
+        }
+        widgetMenuItems.push(...options.widgetMenuItems);
+    }
+    return widgetMenuItems;
+}
+
+function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, options: ArrayOptions): WidgetMenuItems {
     const { isDeleteEnabled } = getActionStates(parentNode);
     return [
         {
             label: 'move up',
             icon: 'keyboard_arrow_up',
             closeMenuOnClick: false,
-            // asItem: false,
             disabled: options.readOnly || options.disabled || child.property === '0',
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) - 1)
         },
@@ -323,7 +296,6 @@ function getArrayMenuItems(editor, parentNode, child, options): WidgetMenuItems 
             label: 'move down',
             icon: 'keyboard_arrow_down',
             closeMenuOnClick: false,
-            // asItem: false,
             disabled: options.readOnly || options.disabled || child.property === `${parentNode.children.length - 1}`,
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) + 1)
         },
@@ -331,7 +303,6 @@ function getArrayMenuItems(editor, parentNode, child, options): WidgetMenuItems 
             label: 'delete item',
             icon: 'delete',
             color: 'red',
-            // asItem: false,
             disabled: !isDeleteEnabled || options.readOnly || options.disabled,
             onClick: () => editor.removeValue(child.pointer)
         }

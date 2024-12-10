@@ -9,6 +9,7 @@ import {
 } from '@sagold/react-json-editor';
 import { Chip, Group, InputWrapper, Radio, Select, Stack } from '@mantine/core';
 import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
 export type SelectOptions = {
     type?: 'select' | 'taglist';
@@ -38,13 +39,7 @@ export const TagListWidget = widget<StringNode<SelectOptions>, string | number>(
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
-            <InputWrapper
-                id={node.id}
-                label={options.title}
-                description={<Description text={options.description} />}
-                required={options.required}
-                error={node.errors.map((e) => e.message).join('\n')}
-            >
+            <InputWrapper id={node.id} {...widgetInputProps(node, options)}>
                 <Chip.Group multiple={false} value={node.value} onChange={setValue}>
                     <Group
                         style={{
@@ -69,15 +64,7 @@ const RadioGroupWidget = widget<StringNode<SelectOptions>, string | number>(({ n
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
-            <Radio.Group
-                id={node.id}
-                label={options.title}
-                description={<Description text={options.description} />}
-                required={options.required}
-                error={node.errors.map((e) => e.message).join('\n')}
-                value={node.value}
-                onChange={setValue}
-            >
+            <Radio.Group id={node.id} {...widgetInputProps(node, options)} value={node.value} onChange={setValue}>
                 <Stack mt={'xs'} gap={8}>
                     {enumValues.map((value, index) => (
                         <Radio key={value} value={value} label={titles[index] ?? value} disabled={options.disabled} />
@@ -96,14 +83,9 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <Select
                 id={node.id}
+                {...widgetInputProps(node, options)}
                 data={enumValues.map((value, index) => ({ value, label: titles[index] ?? value }))}
-                description={<Description text={options.description} />}
-                disabled={options.disabled}
-                error={node.errors.map((e) => e.message).join('\n')}
-                label={options.title}
                 onChange={(value) => value && setValue(value)}
-                placeholder={options.placeholder}
-                required={options.required}
                 value={node.value}
             ></Select>
         </WidgetField>

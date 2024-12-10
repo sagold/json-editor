@@ -1,6 +1,6 @@
 import { TagsInput } from '@mantine/core';
 import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, WidgetField, getData } from '@sagold/react-json-editor';
-import { Description } from '../components/Description';
+import { widgetInputProps } from '../components/widgetInputProps';
 
 export type TagListOptions = DefaultNodeOptions;
 
@@ -9,18 +9,11 @@ export const TagListWidget = widget<ArrayNode<TagListOptions>, string[]>(({ node
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <TagsInput
                 id={node.id}
-                description={<Description text={options.description} />}
-                disabled={options.disabled}
-                error={node.errors.map((e) => e.message).join('\n')}
-                label={options.title}
+                {...widgetInputProps(node, options)}
                 onChange={setValue}
-                placeholder={options.placeholder}
-                readOnly={options.readOnly}
-                required={options.required}
                 value={getData(node) as string[]}
                 allowDuplicates={node.schema.uniqueItems !== true}
                 maxTags={node.schema.maxItems}
-                withAsterisk={options.required}
             />
         </WidgetField>
     );
