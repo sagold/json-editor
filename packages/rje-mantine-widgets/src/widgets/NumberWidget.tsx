@@ -3,6 +3,7 @@ import { NumberInput } from '@mantine/core';
 import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
 import { widgetInputProps } from '../components/widgetInputProps';
+import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
 export type NumberOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -12,6 +13,8 @@ export type NumberOptions = DefaultNodeOptions<{
     swapIconPosition?: boolean;
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 }>;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {

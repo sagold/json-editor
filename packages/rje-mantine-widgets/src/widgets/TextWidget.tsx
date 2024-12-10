@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Icon } from '../components/icon/Icon';
 import styles from './text-widget.module.scss';
 import { widgetInputProps } from '../components/widgetInputProps';
+import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -11,8 +12,11 @@ export type StringOptions = DefaultNodeOptions<{
     icon?: string;
     tag?: string;
     swapIconPosition?: boolean;
+
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 }>;
 
 export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {

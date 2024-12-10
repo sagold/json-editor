@@ -9,6 +9,7 @@ import {
 } from '@sagold/react-json-editor';
 import { Chip, ChipProps, Group, InputWrapper, Radio, Select, Stack } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
+import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
 export type SelectOptions = {
     type?: 'select' | 'taglist';
@@ -17,8 +18,11 @@ export type SelectOptions = {
     /** set to true to render radiogroup in a single line */
     horizontal?: boolean;
     loading?: boolean;
+
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 } & DefaultNodeOptions;
 
 export const selectDefaultOptions = {

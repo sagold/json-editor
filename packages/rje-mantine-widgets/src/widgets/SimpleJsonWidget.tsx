@@ -13,6 +13,7 @@ import {
 } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
+import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
 const invalidJsonError: JsonError = {
     type: 'error',
@@ -29,6 +30,8 @@ const invalidJsonError: JsonError = {
 export type SimpleJsonOptions = {
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 } & DefaultNodeOptions;
 
 export const SimpleJsonWidget = (props) => {

@@ -1,10 +1,13 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { ColorInput } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
+import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
 export type ColorOptions = {
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
+    /** internal option for menu action items */
+    widgetMenuItems?: WidgetMenuItems;
 } & DefaultNodeOptions;
 
 export const ColorWidget = widget<StringNode<ColorOptions>, string>(({ node, options, setValue }) => {

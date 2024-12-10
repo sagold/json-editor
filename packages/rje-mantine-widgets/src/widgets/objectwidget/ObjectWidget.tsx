@@ -112,26 +112,24 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                         ))}
                     </Stack>
                     {options.showInlineAddAction !== false && node.missingProperties.length > 0 && (
-                        <>
-                            <Flex
-                                className="rje-object__missing-properties"
-                                style={{ alignItems: 'center' }}
-                                wrap={'wrap'}
-                            >
-                                {node.missingProperties.map((name) => (
-                                    <Button
-                                        key={name}
-                                        variant="subtle"
-                                        disabled={options.readOnly || options.disabled}
-                                        // color="gray"
-                                        leftSection={<Icon>add</Icon>}
-                                        onClick={() => editor.addValue(`${node.pointer}/${name}`)}
-                                    >
-                                        {name}
-                                    </Button>
-                                ))}
-                            </Flex>
-                        </>
+                        <Flex
+                            className="rje-object__missing-properties"
+                            style={{ alignItems: 'center', paddingTop: 'var(--rje-property-spacing, 0.5em)' }}
+                            wrap={'wrap'}
+                        >
+                            {node.missingProperties.map((name) => (
+                                <Button
+                                    key={name}
+                                    variant="subtle"
+                                    disabled={options.readOnly || options.disabled}
+                                    // color="gray"
+                                    leftSection={<Icon>add</Icon>}
+                                    onClick={() => editor.addValue(`${node.pointer}/${name}`)}
+                                >
+                                    {name}
+                                </Button>
+                            ))}
+                        </Flex>
                     )}
                     <Modal title={options.title} opened={isJsonModalOpen} onClose={jsonModal.close} size={'xl'}>
                         <Widget node={node} editor={editor} options={{ ...options, widget: 'json', title: '' }} />
@@ -195,39 +193,31 @@ type ObjectPropertyProps = {
     showItemControls?: boolean;
 };
 function ObjectProperty({ editor, node, options, optionalProperties, showItemControls = true }: ObjectPropertyProps) {
-    const nodeHasTitle = (node.options.title?.length ?? 0) > 0;
-
     return (
-        <Flex key={node.id} className="rje-object__property">
+        <div key={node.id} className="rje-object__property">
             <Widget
                 key={node.id}
                 node={node}
                 editor={editor}
                 options={{
                     ...options,
-                    isOptional: optionalProperties.includes(node.property)
+                    isOptional: optionalProperties.includes(node.property),
+                    widgetMenuItems:
+                        showItemControls !== false &&
+                        editor.optionalProperties &&
+                        optionalProperties.includes(node.property)
+                            ? [
+                                  {
+                                      icon: 'delete',
+                                      label: 'delete property',
+                                      color: 'red',
+                                      onClick: () => editor.removeValue(node.pointer)
+                                  }
+                              ]
+                            : []
                 }}
             />
-            {showItemControls !== false && editor.optionalProperties && optionalProperties.includes(node.property) && (
-                <div
-                    className="rje-object__actions"
-                    style={
-                        nodeHasTitle
-                            ? {
-                                  position: 'absolute',
-                                  // mantine td padding:
-                                  top: 'var(--table-vertical-spacing)',
-                                  right: 0
-                              }
-                            : {}
-                    }
-                >
-                    <ActionIcon variant="transparent" onClick={() => editor.removeValue(node.pointer)}>
-                        <Icon>close</Icon>
-                    </ActionIcon>
-                </div>
-            )}
-        </Flex>
+        </div>
     );
 }
 
