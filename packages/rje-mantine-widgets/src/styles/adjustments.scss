@@ -18,11 +18,12 @@
 .rje-object__properties,
 .rje-array__items {
     margin-top: 0.5em;
-    // margin-bottom: 0; // reset mantine table margin
 }
 
-.rje-object__property {
-    position: relative;
+.rje-oneOf__children {
+    // one-of selection controls the whole section. We show this by using the same horizontal
+    // indent the tables use (array-items)
+    padding-left: var(--table-horizontal-spacing, var(--mantine-spacing-xs));
 }
 
 .rje-form label {
@@ -53,7 +54,7 @@
 
     .rje-array__inline-add,
     .rje-object__missing-properties {
-        padding-top: var(--rje-property-spacing);
+        padding-top: calc(0.5 * var(--rje-property-spacing, 1em));
     }
 
     .rje-object__property > .rje-field--parent > .rje-widget__header {

@@ -57,7 +57,7 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
                     />
                 }
             >
-                <div className="rje-children">
+                <div className="rje-oneOf__children">
                     <Widget
                         node={node}
                         editor={editor}

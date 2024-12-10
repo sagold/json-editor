@@ -8,11 +8,6 @@
         format(woff2);
 }
 
-.rje-drag__handle {
-    cursor: pointer;
-    user-select: none;
-}
-
 .sortable-chosen {
     background: var(--mantine-primary-color-0) !important;
 }
@@ -20,4 +15,15 @@
 .sortable-ghost {
     background: var(--mantine-primary-color-0) !important;
     opacity: 0.05;
+}
+
+.rje-array__items {
+    .rje-drag__handle {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    > tbody td.rje-drag__handle + td {
+        padding-left: 0; // remove double padding with handlt
+    }
 }
