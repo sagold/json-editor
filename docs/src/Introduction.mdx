@@ -30,23 +30,17 @@ import logo from '../images/he-square-700x540.png';
 
 ## roadmap
 
+- [ ] deprecate react-aria in favor of mantine
 - [✓] update json-schema-library to v10
-
-_stability_
-
-- [✓] test weird/incorrect states (change of schema types, errors in dynamic schemas, wrong input data)
-- [✓] improve update flow (using diff to patch less nodes and ensure current input does not lose focus)
-- [✓] deploy docs in workflow only
-- add integration test setup
-- chip multiselect for array#string+enum
 
 _mantinw widgets_
 
-> catch up features
+> catch up
 
 - [✓] header menu (add, remove, editJson, optionals)
 - [✓] array oneOf selection
 - file widget
+- chip multiselect for array#string+enum
 - date widgets
 - navigation widget
 
@@ -56,14 +50,20 @@ _drag&rop features_
 - drag html-widget into array to add items
 - drag validation of wrong items while dragging
 
+_stability_
+
+- [✓] test weird/incorrect states (change of schema types, errors in dynamic schemas, wrong input data)
+- [✓] improve update flow (using diff to patch less nodes and ensure current input does not lose focus)
+- [✓] deploy docs in workflow only
+- add integration test setup
+
 _further topics_
 
-- [?] rework validation function & logic (errors and node assignments)
 - allow for error-message configuration in json-schema
 - async validation errors and update
 - i18n
-- wizard option (gathering as pages)
+- wizard option (split form to pages)
 - delegation editor support (portal for widget details)
 - can we have sortableJS as plugin?
 - logic to support un/collapse all option
-- fix overlay arrow placement inconsistent using react-aria usePopover
+- [?] rework validation function & logic (errors and node assignments)
