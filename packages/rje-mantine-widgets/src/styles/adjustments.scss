@@ -1,0 +1,8 @@
+.rje-form .mantine-Input-wrapper {
+    // array item padding for vertical centering - might cause trouble elsewhere
+    --input-margin-bottom: var(--input-margin-top);
+}
+
+.rje-field .mantine-InputWrapper-root label {
+    width: 100%;
+}

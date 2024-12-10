@@ -11,7 +11,6 @@ export function JsonForm<Data = unknown>({
     ...options
 }: UseEditorOptions<Data> & {
     editor?: (editor: Editor<Data>) => void;
-    theme?: 'dark' | 'light';
     /** custom styles applied for form element */
     style?: React.CSSProperties;
     /** custom css classNames to apply on root element */
@@ -25,7 +24,7 @@ export function JsonForm<Data = unknown>({
     useImperativeHandle(editor, () => instance);
     const Widget = instance.getWidget(root);
     return (
-        <div className={classNames('rje-form', theme && `rje-theme rje-theme--${theme}`, className)} style={style}>
+        <div className={classNames('rje-form', className)} style={style}>
             <Widget node={root} editor={instance} />
         </div>
     );

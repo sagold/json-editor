@@ -39,7 +39,7 @@ export function WidgetMenu({ icon, disabled, items, ...menuProps }: WidgetMenuPr
                     }
                     const leftSection = item.icon ? <Icon>{item.icon}</Icon> : null;
                     return (
-                        <Menu.Item key={index} {...item} leftSection={leftSection}>
+                        <Menu.Item key={index} color="gray" {...item} leftSection={leftSection}>
                             {item.label}
                         </Menu.Item>
                     );

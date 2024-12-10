@@ -1,3 +1,4 @@
+// import '@mantine/core/styles.css';
 import { StoryObj } from '@storybook/react';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { ObjectOptions } from './ObjectWidget';

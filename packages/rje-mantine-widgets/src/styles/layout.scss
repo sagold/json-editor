@@ -1,0 +1,12 @@
+/**
+ * fix layout with custom elements in conjunction with mantine
+ * - alternatively: use mantine layout components
+ */
+.rje-field {
+    width: 100%;
+}
+
+.rje-object__properties,
+.rje-object__missing-properties {
+    padding-top: 0.5em;
+}
