@@ -4,6 +4,7 @@ import {
     Button,
     Collapse,
     DividerProps,
+    Flex,
     Group,
     Menu,
     Modal,
@@ -192,27 +193,24 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>
-                        {isAddEnabled && options.readOnly !== true && (
-                            <Table.Tfoot>
-                                <Table.Tr>
-                                    <Table.Td colSpan={3} valign="middle" align="center">
-                                        {options.showInlineAddAction !== false && addAction}
-                                    </Table.Td>
-                                </Table.Tr>
-                            </Table.Tfoot>
-                        )}
                     </Table>
                 </Collapse>
-
-                <Modal title={options.title} opened={isJsonModalOpen} onClose={jsonModal.close} size={'xl'}>
-                    <Widget node={node} editor={editor} options={{ ...options, widget: 'json', title: '' }} />
-                    <Group justify="flex-end" mt={'md'}>
-                        <Button variant="transparent" onClick={jsonModal.close}>
-                            close
-                        </Button>
-                    </Group>
-                </Modal>
             </WidgetInputWrapper>
+
+            {contentOpened && isAddEnabled && options.readOnly !== true && (
+                <Flex className="rje-array__inline-add" justify={'center'} align={'center'}>
+                    {options.showInlineAddAction !== false && addAction}
+                </Flex>
+            )}
+
+            <Modal title={options.title} opened={isJsonModalOpen} onClose={jsonModal.close} size={'xl'}>
+                <Widget node={node} editor={editor} options={{ ...options, widget: 'json', title: '' }} />
+                <Group justify="flex-end" mt={'md'}>
+                    <Button variant="transparent" onClick={jsonModal.close}>
+                        close
+                    </Button>
+                </Group>
+            </Modal>
         </WidgetField>
     );
 });
@@ -254,7 +252,7 @@ function getArrayHeaderMenu(
             icon: 'add',
             closeMenuOnClick: false,
             disabled: !isAddEnabled,
-            onClick: () => editor.appendItem(node, insertOptions[0]),
+            onClick: () => editor.insertItem(node, insertOptions[0]),
             label: 'Add Item'
         });
     }

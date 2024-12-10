@@ -1,7 +1,7 @@
 import styles from './widgetinputwrapper/widget-input-wrapper.module.scss';
 import { Flex } from '@mantine/core';
 import { WidgetMenu, WidgetMenuItems } from './widgetmenu/WidgetMenu';
-import { Node } from '@sagold/react-json-editor';
+import { Node, isParentNode } from '@sagold/react-json-editor';
 import { WidgetDescription } from './WidgetDescription';
 
 export type WidgetInputOptions = {
@@ -26,9 +26,10 @@ export function widgetInputProps(
         error: node.errors.map((e) => e.message).join('\n'),
         readOnly: readOnly,
         required: required,
-        withAsterisk: false,
+        withAsterisk: required && false,
         placeholder: placeholder
     };
+
     if ((showHeader !== false && title && title.length > 0) || (widgetMenuItems && widgetMenuItems?.length > 0)) {
         props.label = (
             <Flex style={{ width: '100%' }}>
@@ -44,6 +45,18 @@ export function widgetInputProps(
                 <WidgetMenu icon="more_horiz" items={widgetMenuItems} />
             </Flex>
         );
+
+        // change layout of values-widgets to single line
+        const menuWithoutTitle =
+            showHeader === false ||
+            ((title == null || title.length === 0) && widgetMenuItems && widgetMenuItems?.length > 0);
+        if (menuWithoutTitle && !isParentNode(node)) {
+            props.classNames = {
+                root: styles['compact-root'],
+                label: styles['compact-label'],
+                wrapper: styles['compact-wrapper']
+            };
+        }
     }
     if (description && description.length > 0) {
         props.description = <WidgetDescription text={description} />;

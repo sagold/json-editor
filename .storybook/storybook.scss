@@ -112,16 +112,14 @@
         padding-bottom: 0.25em;
         padding-left: 1rem;
         padding-right: 1rem;
-        // background-color: hsla(203, 50%, 30%, 0.05);
-        background-color: #dee2e6;
+        background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
 
         .innerZoomElementWrapper > * {
             border: none;
         }
     }
     .docs-story > :last-child {
-        // background-color: hsla(203, 50%, 30%, 0.05);
-        background-color: #dee2e6;
+        background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
         border-top: 0.5px dashed #999;
     }
     /* -- preview box full width */
@@ -150,6 +148,10 @@
         border-bottom-left-radius: 0;
         background: transparent;
         color: #777;
+    }
+
+    .rje-form {
+        --mantine-h1-font-size: 1.5em;
     }
 }
 

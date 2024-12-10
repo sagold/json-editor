@@ -10,3 +10,19 @@ label.label {
     font-size: var(--input-label-size, var(--mantine-font-size-sm));
     color: var(--input-asterisk-color, var(--mantine-color-error));
 }
+
+.compact-root {
+    display: flex;
+    gap: 0.5em;
+}
+
+.compact-label {
+    display: inline;
+    width: auto !important;
+    order: 1;
+    flex-grow: 0;
+}
+
+.compact-wrapper {
+    width: 100%;
+}

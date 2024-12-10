@@ -18,7 +18,7 @@
 .rje-object__properties,
 .rje-array__items {
     margin-top: 0.5em;
-    margin-bottom: 0; // reset mantine table margin
+    // margin-bottom: 0; // reset mantine table margin
 }
 
 .rje-object__property {
@@ -45,11 +45,13 @@
     --mantine-h3-font-size: var(--input-label-size, var(--mantine-font-size-sm));
     //
     --mantine-cursor-type: pointer;
+    --mantine-heading-text-wrap: wrap;
 
     .rje-object__properties {
         gap: var(--rje-property-spacing);
     }
 
+    .rje-array__inline-add,
     .rje-object__missing-properties {
         padding-top: var(--rje-property-spacing);
     }
