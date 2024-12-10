@@ -252,7 +252,7 @@ function getArrayHeaderMenu(
             icon: 'add',
             closeMenuOnClick: false,
             disabled: !isAddEnabled,
-            onClick: () => editor.insertItem(node, insertOptions[0]),
+            onClick: () => editor.appendItem(node, insertOptions[0]),
             label: 'Add Item'
         });
     }
