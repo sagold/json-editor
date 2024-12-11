@@ -251,6 +251,7 @@ function getArrayHeaderMenu(
         }
         widgetMenuItems.push({
             icon: 'add',
+            color: 'blue',
             disabled: !isAddEnabled,
             onClick: () => editor.appendItem(node, insertOptions[0]),
             label: 'Add Item'
@@ -260,6 +261,7 @@ function getArrayHeaderMenu(
         const items = insertOptions.map((item) => ({
             disabled: !isAddEnabled,
             icon: 'add',
+            color: 'blue',
             onClick: () => editor.appendItem(node, item),
             label: item.title ?? ''
         }));

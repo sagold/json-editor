@@ -168,6 +168,7 @@ function getHeaderMenu(editor: Editor, node: ObjectNode, options: ArrayOptions, 
                 disabled: options.disabled || options.readOnly,
                 icon: isMissing ? 'add' : 'delete',
                 label: property,
+                color: isMissing ? 'blue' : 'red',
                 onClick: () => {
                     if (isMissing) {
                         editor.addValue(`${node.pointer}/${property}`);
