@@ -206,7 +206,7 @@ describe('createNode', () => {
             });
             const root = createNode(draft, { one: 'string', two: 123 }) as ObjectNode;
             assert(root.type === 'object');
-            assert.deepEqual(root.optionalProperties, ['one']);
+            assert.deepEqual(root.optionalProperties, ['one', 'two']);
         });
     });
 
