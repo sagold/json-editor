@@ -8,6 +8,7 @@ import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
 const schema = {
     type: 'object',
     required: ['title'],
+    options: { showEditJsonAction: true, showInlineAddAction: true },
     properties: {
         title: {
             title: 'text',

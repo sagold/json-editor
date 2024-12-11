@@ -33,7 +33,28 @@ export const Default: Story = {
             {
                 icon: 'delete',
                 color: 'red',
+                disabled: true,
                 label: 'delete item',
+                onClick: console.error
+            }
+        ]
+    }
+};
+
+export const AllItemsDisabled: Story = {
+    args: {
+        icon: 'menu',
+        items: [
+            {
+                icon: 'pin',
+                label: 'console log',
+                disabled: true,
+                onClick: console.log
+            },
+            {
+                icon: 'error',
+                label: 'console error',
+                disabled: true,
                 onClick: console.error
             }
         ]

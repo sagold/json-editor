@@ -24,12 +24,15 @@ export function WidgetMenu({ icon, disabled, inline = true, readOnly, items, ...
     if (items == null || items.length === 0 || readOnly) {
         return null;
     }
+
+    const allItemsDisabled = items.find((item) => typeof item !== 'string' && item.disabled !== true) == null;
+
     return (
         <Menu {...menuProps}>
             <Menu.Target>
                 <ActionIcon
                     variant="subtle"
-                    disabled={disabled}
+                    disabled={allItemsDisabled || disabled}
                     color="gray"
                     // we use the menu-action within labels, ensure it respects the initial height
                     style={inline ? { height: '100%', minHeight: 'inherit' } : {}}
