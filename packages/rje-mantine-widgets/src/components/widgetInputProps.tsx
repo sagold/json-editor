@@ -32,7 +32,7 @@ export function widgetInputProps(
 
     if ((showHeader !== false && title && title.length > 0) || (widgetMenuItems && widgetMenuItems?.length > 0)) {
         props.label = (
-            <Flex style={{ width: '100%' }}>
+            <Flex style={{ width: '100%', height: '100%' }}>
                 <span style={{ flexGrow: 1 }}>
                     {showHeader !== false && title}
                     {showHeader !== false && required && (
@@ -42,7 +42,7 @@ export function widgetInputProps(
                     )}
                 </span>
 
-                <WidgetMenu icon="more_horiz" items={widgetMenuItems} />
+                <WidgetMenu icon="more_horiz" readOnly={readOnly} items={widgetMenuItems} />
             </Flex>
         );
 

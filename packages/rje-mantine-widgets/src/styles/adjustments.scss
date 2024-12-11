@@ -14,8 +14,8 @@
     width: 100%; // fix layout with custom elements in conjunction with mantine
 }
 
-.rje-widget__header > label + div > .rje-object__properties,
-.rje-widget__header > label + div > .rje-array__items {
+.rje-widget__input-wrapper > label + div > .rje-object__properties,
+.rje-widget__input-wrapper > label + div > .rje-array__items {
     margin-top: 0.5em;
 }
 
@@ -47,6 +47,10 @@
     --mantine-cursor-type: pointer;
     --mantine-heading-text-wrap: wrap;
 
+    .rje-content--object.rje-content--with-header {
+        padding-top: var(--rje-property-spacing); // spacing object header to first property
+    }
+
     .rje-object__properties {
         gap: var(--rje-property-spacing);
     }
@@ -56,8 +60,8 @@
         padding-top: calc(0.5 * var(--rje-property-spacing, 1em));
     }
 
-    .rje-object__property + .rje-object__property > .rje-field--parent > .rje-widget__header > label,
-    .rje-object__property + .rje-object__property > .rje-field--null > .rje-widget__header > label {
+    .rje-object__property + .rje-object__property > .rje-field--parent > .rje-widget__input-wrapper > label,
+    .rje-object__property + .rje-object__property > .rje-field--null > .rje-widget__input-wrapper > label {
         padding-top: var(--rje-header-top-spacing);
     }
 }

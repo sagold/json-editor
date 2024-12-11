@@ -28,6 +28,7 @@ import { useRef } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
+import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -131,33 +132,30 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
         </ActionIcon>
     );
-
     const { isAddEnabled } = getActionStates(node);
     const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, isAddEnabled);
-    const rightSection = options.showHeaderMenu !== false &&
-        options.readOnly !== true &&
-        widgetMenuItems.length > 0 && (
-            <WidgetMenu
-                offset={0}
-                inline={false}
-                position={'left-start'}
-                transitionProps={{ transition: 'slide-left', duration: 100 }}
-                icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                disabled={options.disabled}
-                readOnly={options.readOnly}
-                items={widgetMenuItems}
-            />
-        );
+    // const rightSection = options.showHeaderMenu !== false
+    const widgetHeader = WidgetParentHeader.isEmpty(options, widgetMenuItems) ? undefined : (
+        <WidgetParentHeader
+            isArrayItem={node.isArrayItem}
+            title={options.title}
+            order={order}
+            titleProps={options.titleProps}
+            showHeaderMenu={options.showHeaderMenu}
+            description={options.descriptionInline ? options.description : undefined}
+            dividerProps={options.dividerProps}
+            required={options.required}
+            disabled={options.disabled}
+            readOnly={options.readOnly}
+            leftSection={leftSection}
+            showDivider={options.showTitleDivider}
+            widgetMenuItems={widgetMenuItems}
+        />
+    );
 
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
-            <WidgetInputWrapper
-                errors={node.errors}
-                order={order}
-                options={options}
-                leftSection={leftSection}
-                rightSection={rightSection}
-            >
+            <WidgetInputWrapper errors={node.errors} header={widgetHeader} options={options}>
                 <Collapse in={contentOpened}>
                     <Table
                         className="rje-array__items"

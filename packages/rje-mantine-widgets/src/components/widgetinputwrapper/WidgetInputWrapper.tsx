@@ -1,13 +1,15 @@
 import styles from './widget-input-wrapper.module.scss';
-import { ActionIcon, Divider, DividerProps, InputWrapper, Popover, Title, TitleOrder, TitleProps } from '@mantine/core';
+import { DividerProps, InputWrapper, TitleProps } from '@mantine/core';
 import { WidgetDescription } from '../WidgetDescription';
-import { Icon } from '../icon/Icon';
 import { DefaultNodeOptions, JsonError } from '@sagold/react-json-editor';
 import { ReactNode } from 'react';
+import { isStringWithContent } from '../../helper/isStringWithContent';
+import classNames from 'classnames';
 
 export type WidgetInputWrapperProps = {
+    header?: ReactNode;
     errors?: JsonError[];
-    order?: TitleOrder;
+    children?: ReactNode | ReactNode[];
     options: Pick<DefaultNodeOptions, 'required' | 'title' | 'description'> & {
         collapsed?: boolean;
         descriptionInline?: boolean;
@@ -17,69 +19,15 @@ export type WidgetInputWrapperProps = {
         titleProps?: TitleProps;
         showHeader?: boolean;
     };
-    leftSection?: ReactNode;
-    rightSection?: ReactNode;
-    children?: ReactNode | ReactNode[];
 };
 
-export function WidgetInputWrapper({
-    order,
-    leftSection,
-    rightSection,
-    children,
-    errors,
-    options
-}: WidgetInputWrapperProps) {
-    const hasTitle = !!options?.title || !!options.descriptionInline;
-    const hasSection = !!leftSection || !!rightSection || false;
-    const hasLabel = (options.showHeader !== false && hasTitle) || hasSection;
-
-    const withInlineDescription = options.description && options.description.length > 0 && !options.descriptionInline;
-    console.log('has label', rightSection);
-
+export function WidgetInputWrapper({ header, children, errors, options }: WidgetInputWrapperProps) {
+    const withInlineDescription = !options.descriptionInline && isStringWithContent(options.description);
     return (
         <InputWrapper
-            className="rje-widget__header"
+            className={classNames('rje-widget__input-wrapper', header && 'with-title')}
             description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
-            label={
-                hasLabel ? (
-                    <>
-                        {leftSection}
-                        <Divider
-                            labelPosition="left"
-                            color={options.showTitleDivider ? undefined : 'transparent'}
-                            {...(options.dividerProps ?? {})}
-                            style={{
-                                flexGrow: 1,
-                                '--mantine-color-dimmed': 'var(--mantine-color-text)'
-                            }}
-                            label={
-                                <Title order={order} {...(options.titleProps ?? {})}>
-                                    {options.title}
-                                    {options.required && (
-                                        <span className={styles['asterisk']} aria-hidden>
-                                            *
-                                        </span>
-                                    )}
-                                    {options.description && options.descriptionInline && (
-                                        <Popover position="top" withArrow shadow="md">
-                                            <Popover.Target>
-                                                <ActionIcon variant="transparent" color="gray">
-                                                    <Icon>info</Icon>
-                                                </ActionIcon>
-                                            </Popover.Target>
-                                            <Popover.Dropdown style={{ maxWidth: '80%' }}>
-                                                <WidgetDescription text={options.description} />
-                                            </Popover.Dropdown>
-                                        </Popover>
-                                    )}
-                                </Title>
-                            }
-                        />
-                        {rightSection}
-                    </>
-                ) : undefined
-            }
+            label={header}
             error={errors?.map((e) => e.message).join('\n')}
             classNames={{ label: styles['label'] }}
         >

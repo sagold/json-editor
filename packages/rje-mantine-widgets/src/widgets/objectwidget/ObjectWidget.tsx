@@ -25,6 +25,8 @@ import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetIn
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { ArrayOptions } from '../arraywidget/ArrayWidget';
+import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
+import classNames from 'classnames';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -67,43 +69,44 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     };
 
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
-    const leftSection = options.collapsed != null && (
+    const leftSection = options.collapsed != null && node.children.length > 0 && (
         <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
             <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
         </ActionIcon>
     );
 
     const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
-    const rightSection = options.showHeaderMenu !== false &&
-        widgetMenuItems.length > 0 &&
-        options.readOnly !== false && (
-            <WidgetMenu
-                inline={false}
-                offset={0}
-                position={'left-start'}
-                transitionProps={{ transition: 'slide-left', duration: 100 }}
-                icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                disabled={options.disabled}
-                readOnly={options.readOnly}
-                items={widgetMenuItems}
-            />
-        );
+    const widgetHeader = WidgetParentHeader.isEmpty(options, widgetMenuItems) ? undefined : (
+        <WidgetParentHeader
+            isArrayItem={node.isArrayItem}
+            title={options.title}
+            order={order}
+            titleProps={options.titleProps}
+            description={options.descriptionInline ? options.description : undefined}
+            dividerProps={options.dividerProps}
+            showHeaderMenu={options.showHeaderMenu}
+            required={options.required}
+            disabled={options.disabled}
+            readOnly={options.readOnly}
+            leftSection={leftSection}
+            showDivider={options.showTitleDivider}
+            widgetMenuItems={widgetMenuItems}
+        />
+    );
 
     // evaluate menu actions
-    const withHeaderMenu = options.readOnly !== true && !!rightSection;
+    const withHeaderMenu = options.readOnly !== true && widgetMenuItems.length > 0 && options.showHeaderMenu !== false;
     const withOptionalPropertiesInline =
         options.showInlineAddAction ??
         (!withHeaderMenu && options.readOnly !== true && node.missingProperties.length > 0);
 
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
-            <WidgetInputWrapper
-                options={options}
-                errors={node.errors}
-                leftSection={leftSection}
-                rightSection={rightSection}
-            >
-                <Collapse in={contentOpened}>
+            <WidgetInputWrapper options={options} errors={node.errors} header={widgetHeader}>
+                <Collapse
+                    in={contentOpened}
+                    className={classNames('rje-content--object', widgetHeader && 'rje-content--with-header')}
+                >
                     <Stack className="rje-object__properties">
                         {node.children.map((child) => (
                             <ObjectProperty
