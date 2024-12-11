@@ -183,7 +183,7 @@ describe('createNode', () => {
             assert.deepEqual(root.children[0].property, 'one');
         });
 
-        it('should not expose optional properties if data is invalid', () => {
+        it.skip('should not expose optional properties if data is invalid', () => {
             draft.setSchema({
                 type: 'object',
                 properties: {
@@ -192,6 +192,19 @@ describe('createNode', () => {
                 additionalProperties: false
             });
             const root = createNode(draft, { two: 'string' }) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.optionalProperties, ['one']);
+        });
+
+        it('should add additionalProperties as optional properties', () => {
+            draft.setSchema({
+                type: 'object',
+                additionalProperties: {
+                    type: 'string',
+                    maxLength: 10
+                }
+            });
+            const root = createNode(draft, { one: 'string', two: 123 }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one']);
         });

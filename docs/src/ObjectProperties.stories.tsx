@@ -66,7 +66,8 @@ export const AdditionalProperties: Story = {
     args: {
         data: { additionalProperty: 'property without schema' },
         schema: {
-            type: 'object'
+            type: 'object',
+            options: { showHeaderMenu: false }
         }
     }
 };
@@ -77,6 +78,7 @@ export const AdditionalPropertiesFalse: Story = {
         schema: {
             title: 'additionalProperties: false',
             type: 'object',
+            options: { showEditJsonAction: true },
             additionalProperties: false
         } as JsonSchema
     }

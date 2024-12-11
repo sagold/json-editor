@@ -89,13 +89,20 @@ function isHidden(properties: Record<string, any>, property: string) {
 }
 
 export function updateOptionalPropertyList(draft: Draft, node: ObjectNode, data: Record<string, unknown>) {
-    // @todo do cleanup initially?
-    data = draft.getTemplate(data, node.sourceSchema, { removeInvalidData: true });
     const schemaProperties = node.schema.properties ?? {};
 
     const propertiesInSchema = Object.keys(schemaProperties);
     const requiredProperties = node.schema.required ?? [];
-    const propertiesInData = Object.keys(data ?? {});
+
+    // @attention we remove any node  here that was not create as child
+    // cleaning up items by the following removes additional items that do not pass e.g. maxLength
+    // which we want to keep:
+    // data = draft.getTemplate(data, node.sourceSchema, { removeInvalidData: true });
+    // @todo why is the node not created?
+    // test case: http://localhost:6006/?path=/story/docs-objectproperties--additional-properties-false
+    const propertiesInData = Object.keys(data ?? {}).filter((key) =>
+        node.children.find((child) => child.property === key)
+    );
 
     // defined or set, but not required properties
     // - add all defined properties that are not required
