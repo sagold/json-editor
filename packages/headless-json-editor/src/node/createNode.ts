@@ -24,6 +24,7 @@ import {
     NullNode,
     JsonSchema
 } from '../types';
+import { getData } from './getData';
 
 function propertySortResult(aIndex: number, bIndex: number) {
     if (aIndex === -1 && bIndex === -1) {
@@ -88,21 +89,11 @@ function isHidden(properties: Record<string, any>, property: string) {
     return properties[property]?.options?.hidden === true;
 }
 
-export function updateOptionalPropertyList(draft: Draft, node: ObjectNode, data: Record<string, unknown>) {
+export function updateOptionalPropertyList(node: ObjectNode) {
     const schemaProperties = node.schema.properties ?? {};
-
     const propertiesInSchema = Object.keys(schemaProperties);
     const requiredProperties = node.schema.required ?? [];
-
-    // @attention we remove any node  here that was not create as child
-    // cleaning up items by the following removes additional items that do not pass e.g. maxLength
-    // which we want to keep:
-    // data = draft.getTemplate(data, node.sourceSchema, { removeInvalidData: true });
-    // @todo why is the node not created?
-    // test case: http://localhost:6006/?path=/story/docs-objectproperties--additional-properties-false
-    const propertiesInData = Object.keys(data ?? {}).filter((key) =>
-        node.children.find((child) => child.property === key)
-    );
+    const propertiesInData = node.children.map((child) => child.property);
 
     // defined or set, but not required properties
     // - add all defined properties that are not required
@@ -233,22 +224,19 @@ export const NODES: Record<NodeType, CreateNode> = {
             errors: []
         };
 
-        // console.log('[create object]', node.pointer, node.schema, node.sourceSchema);
-
         // CREATE CHILD NODES
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
-            // @attention this resolves the schema and omits the source-schema
+            // @attention this resolves the schema and omits the source-schema (now stored in path)
             const nextSchemaNode = draft.step(objectSchemaNode.next(resolvedSchema), key, resolvedData);
             if (isSchemaNode(nextSchemaNode)) {
-                // @todo store sourceSchema on property node
+                // @note if !isSchemaNode the property in data is ignored, we cleanup later
                 const propertyNode = _createNode(nextSchemaNode, resolvedData[key]);
                 node.children.push(propertyNode);
             }
         });
-
         // track optional properties (duplicate of this is in remove)
-        updateOptionalPropertyList(draft, node, resolvedData);
+        updateOptionalPropertyList(node);
 
         // simplified solution to maintain order as is given by json-schema
         // should probably use combination of additionalProperties, dependencies, etc

@@ -59,7 +59,7 @@ export function removeNode<T extends Node = Node>(
         parentNode.schema = staticSchema.schema as JsonSchema;
 
         // update required and missing properties
-        updateOptionalPropertyList(draft, parentNode, nextData);
+        updateOptionalPropertyList(parentNode);
     }
 
     return [nextRoot, changes];
