@@ -88,15 +88,14 @@ function isHidden(properties: Record<string, any>, property: string) {
     return properties[property]?.options?.hidden === true;
 }
 
-export function updateOptionalPropertyList(node: ObjectNode, data: Record<string, unknown>) {
+export function updateOptionalPropertyList(draft: Draft, node: ObjectNode, data: Record<string, unknown>) {
+    // @todo do cleanup initially?
+    data = draft.getTemplate(data, node.sourceSchema, { removeInvalidData: true });
     const schemaProperties = node.schema.properties ?? {};
 
     const propertiesInSchema = Object.keys(schemaProperties);
     const requiredProperties = node.schema.required ?? [];
     const propertiesInData = Object.keys(data ?? {});
-
-    // console.log('properties in schema', propertiesInSchema);
-    // console.log('requiredProperties', requiredProperties);
 
     // defined or set, but not required properties
     // - add all defined properties that are not required
@@ -242,7 +241,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         });
 
         // track optional properties (duplicate of this is in remove)
-        updateOptionalPropertyList(node, resolvedData);
+        updateOptionalPropertyList(draft, node, resolvedData);
 
         // simplified solution to maintain order as is given by json-schema
         // should probably use combination of additionalProperties, dependencies, etc

@@ -14,7 +14,6 @@ type Story = StoryObj<typeof JsonForm>;
 
 export const ItemsArray: Story = {
     args: {
-        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
@@ -34,9 +33,38 @@ export const ItemsArray: Story = {
     }
 };
 
+export const ItemsArrayUnique: Story = {
+    args: {
+        validate: true,
+        data: [{ title: 'a title' }, { subtitle: 'a subtitle' }],
+        schema: {
+            title: 'items: [schema, schema]',
+            type: 'array',
+            options: { showEditJsonAction: true },
+            items: [
+                {
+                    title: 'Title',
+                    type: 'object',
+                    required: ['title'],
+                    properties: {
+                        title: { type: 'string' }
+                    }
+                },
+                {
+                    title: 'Subtitle',
+                    type: 'object',
+                    required: ['subtitle'],
+                    properties: {
+                        subtitle: { type: 'string' }
+                    }
+                }
+            ]
+        }
+    }
+};
+
 export const AdditionalItemsUndefined: Story = {
     args: {
-        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
@@ -58,7 +86,6 @@ export const AdditionalItemsUndefined: Story = {
 
 export const AdditionalItemsTrue: Story = {
     args: {
-        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -81,7 +108,6 @@ export const AdditionalItemsTrue: Story = {
 
 export const AdditionalItemsFalse: Story = {
     args: {
-        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -104,7 +130,6 @@ export const AdditionalItemsFalse: Story = {
 
 export const AdditionalItemsSchema: Story = {
     args: {
-        theme: 'light',
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
@@ -130,7 +155,6 @@ export const AdditionalItemsSchema: Story = {
 
 export const ItemsObject: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2023],
@@ -164,7 +188,6 @@ export const ItemsObject: Story = {
 
 export const OneOf: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [{ type: 'header' }],
@@ -225,7 +248,6 @@ export const OneOf: Story = {
 
 export const Length: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2023],
@@ -245,7 +267,6 @@ export const Length: Story = {
 
 export const LengthTemplate: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -265,7 +286,6 @@ export const LengthTemplate: Story = {
 
 export const LengthDefaultOverride: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -286,7 +306,6 @@ export const LengthDefaultOverride: Story = {
 
 export const IfThenElse: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -316,7 +335,6 @@ export const IfThenElse: Story = {
 
 export const Enum: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [],
@@ -338,7 +356,6 @@ export const Enum: Story = {
 
 export const Not: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [123],
@@ -363,7 +380,6 @@ export const Not: Story = {
 
 export const UniqueItems: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [1, 2, 2],
@@ -382,7 +398,6 @@ export const UniqueItems: Story = {
 
 export const Contains: Story = {
     args: {
-        theme: 'light',
         validate: true,
         addOptionalProps: false,
         data: [2, 3],

@@ -13,7 +13,6 @@ type Story = StoryObj<typeof JsonForm>;
 
 export const OptionalProperties: Story = {
     args: {
-        theme: 'light',
         schema: {
             type: 'object',
 
@@ -26,7 +25,6 @@ export const OptionalProperties: Story = {
 
 export const InitialOptionalProperty: Story = {
     args: {
-        theme: 'light',
         data: { optionalProperty: 'input data' },
         schema: {
             type: 'object',
@@ -39,7 +37,6 @@ export const InitialOptionalProperty: Story = {
 
 export const AddOptionalProps: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: true,
         schema: {
             title: 'addOptionalProps: true',
@@ -53,7 +50,6 @@ export const AddOptionalProps: Story = {
 
 export const RequiredProperties: Story = {
     args: {
-        theme: 'light',
         schema: {
             title: 'required: [ property ]',
             type: 'object',
@@ -68,7 +64,6 @@ export const RequiredProperties: Story = {
 
 export const AdditionalProperties: Story = {
     args: {
-        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             type: 'object'
@@ -78,7 +73,6 @@ export const AdditionalProperties: Story = {
 
 export const AdditionalPropertiesFalse: Story = {
     args: {
-        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             title: 'additionalProperties: false',
@@ -90,7 +84,6 @@ export const AdditionalPropertiesFalse: Story = {
 
 export const AdditionalPropertiesSchema: Story = {
     args: {
-        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         validate: true,
         schema: {
@@ -106,15 +99,14 @@ export const AdditionalPropertiesSchema: Story = {
 
 export const EditJson: Story = {
     args: {
-        theme: 'light',
         data: { additionalProperty: 'property without schema' },
         schema: {
             type: 'object',
-            title: 'options: { editJson: { enabled: true } }',
+            title: 'options: { showEditJsonAction: true }',
             description:
                 'Using an object with a title will switch actions for optional properties to be placed in the actions-icon besides its title. Inline delete options are moved into their panel for a cleaner ui. Using EditJson action from the actions panel will allow the user to add additional data in json format.',
             options: {
-                editJson: true
+                showEditJsonAction: true
             },
             additionalProperties: {
                 type: 'string'
@@ -125,7 +117,6 @@ export const EditJson: Story = {
 
 export const OneOfObject: Story = {
     args: {
-        theme: 'light',
         schema: {
             oneOf: [
                 {
@@ -157,7 +148,6 @@ export const OneOfObject: Story = {
 
 export const InvalidOneOfObject: Story = {
     args: {
-        theme: 'light',
         data: { one: 'input data' },
         schema: {
             oneOf: [
@@ -190,7 +180,6 @@ export const InvalidOneOfObject: Story = {
 
 export const TypedOneOfObject: Story = {
     args: {
-        theme: 'light',
         schema: {
             oneOf: [
                 {
@@ -224,7 +213,6 @@ export const TypedOneOfObject: Story = {
 
 export const OneOfProperty: Story = {
     args: {
-        theme: 'light',
         data: { id: 'B', one: 'B' },
         schema: {
             oneOfProperty: 'id',
@@ -261,13 +249,11 @@ export const OneOfProperty: Story = {
 
 export const AllOf: Story = {
     args: {
-        theme: 'light',
         validate: true,
         liveUpdate: true,
         data: { title: 'five!' },
         schema: {
             type: 'object',
-            options: { showHeaderMenu: false },
             required: ['title'],
             properties: {
                 title: { type: 'string' }
@@ -293,12 +279,10 @@ export const AllOf: Story = {
 
 export const AllOfIfThen: Story = {
     args: {
-        theme: 'light',
         validate: true,
         liveUpdate: true,
         schema: {
             type: 'object',
-            options: { showHeaderMenu: false },
             properties: {
                 title: { type: 'string', default: 'four' }
             },
@@ -329,7 +313,6 @@ export const AllOfIfThen: Story = {
 
 export const DependenciesList: Story = {
     args: {
-        theme: 'light',
         schema: {
             title: 'dependencies: { prop: ["prop"] }',
             type: 'object',
@@ -347,7 +330,6 @@ export const DependenciesList: Story = {
 
 export const DependenciesListActive: Story = {
     args: {
-        theme: 'light',
         data: { one: 'input value' },
         addOptionalProps: false,
         schema: {
@@ -360,15 +342,13 @@ export const DependenciesListActive: Story = {
             },
             dependencies: {
                 one: ['two']
-            },
-            options: { showHeaderMenu: false }
+            }
         } as JsonSchema
     }
 };
 
 export const Dependencies: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: false,
         schema: {
             title: 'dependencies: { prop: { schema } }',
@@ -391,7 +371,6 @@ export const Dependencies: Story = {
 
 export const DependenciesActive: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: false,
         schema: {
             title: 'dependencies: { prop: { schema } }',
@@ -415,7 +394,6 @@ export const DependenciesActive: Story = {
 
 export const IfThenElse: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: false,
         schema: {
             type: 'object',
@@ -441,7 +419,6 @@ export const IfThenElse: Story = {
 
 export const IfThenElseActive: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: false,
         schema: {
             type: 'object',
@@ -468,7 +445,6 @@ export const IfThenElseActive: Story = {
 
 export const IfThenElseSwitch: Story = {
     args: {
-        theme: 'light',
         addOptionalProps: false,
         validate: true,
         schema: {

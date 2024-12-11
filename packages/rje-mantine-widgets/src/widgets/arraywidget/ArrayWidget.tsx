@@ -277,9 +277,15 @@ function getArrayHeaderMenu(
     return widgetMenuItems;
 }
 
-function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, options: ArrayOptions): WidgetMenuItems {
+function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, options: ArrayOptions) {
+    const schema = parentNode.schema;
+    const isInfixedArray = Array.isArray(schema.items) && schema.items.length > parseInt(child.property);
+    if (isInfixedArray) {
+        return [];
+    }
+
     const { isDeleteEnabled } = getActionStates(parentNode);
-    return [
+    const menuItems: WidgetMenuItems = [
         {
             label: 'move up',
             icon: 'keyboard_arrow_up',
@@ -300,6 +306,7 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
             onClick: () => editor.removeValue(child.pointer)
         }
     ];
+    return menuItems;
 }
 
 export const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {

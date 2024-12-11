@@ -85,16 +85,12 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         />
     );
 
-    // @todo this is duplicate logic from WidgetInputWrapper
-    const isHeaderShown =
-        (options.showHeader !== false && (options.title ?? '').length > 0) || !!leftSection || !!rightSection;
-
     let showInlineAddAction = node.missingProperties.length > 0;
     if (showInlineAddAction && options.showInlineAddAction !== true) {
         // if we have inline actions and inline actions are not explicitely deactivated
         if (options.showInlineAddAction == null) {
-            // show inline actions if the header is not visible
-            showInlineAddAction = !isHeaderShown;
+            // show inline actions if the header-menu is not visible
+            showInlineAddAction = !rightSection;
         } else {
             // if explicitely enabled, show inline actions
             showInlineAddAction = false;

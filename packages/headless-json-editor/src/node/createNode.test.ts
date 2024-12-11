@@ -170,7 +170,7 @@ describe('createNode', () => {
             assert.deepEqual(root.missingProperties, ['one', 'two']);
         });
 
-        it('should sort unknown additional as last itms', () => {
+        it('should sort unknown additional as last items', () => {
             draft.setSchema({
                 type: 'object',
                 properties: {
@@ -181,6 +181,19 @@ describe('createNode', () => {
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.children[0].property, 'one');
+        });
+
+        it('should not expose optional properties if data is invalid', () => {
+            draft.setSchema({
+                type: 'object',
+                properties: {
+                    one: { type: 'string' }
+                },
+                additionalProperties: false
+            });
+            const root = createNode(draft, { two: 'string' }) as ObjectNode;
+            assert(root.type === 'object');
+            assert.deepEqual(root.optionalProperties, ['one']);
         });
     });
 
