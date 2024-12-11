@@ -7,10 +7,26 @@ import * as ObjectActions from './ObjectActions.stories';
 
 # Object Actions
 
-Objects with `additionalProps=false` do not show an object action menu if no properties are missing
+Using the editor with `addOptionalProps=true` will set all optional properties as required and with this disable all actions for optional properties
 
 <Canvas className="inline" of={ObjectActions.AllPropertiesRequired} />
 
-Objects with `additionalProps=true` always object action menu even if no properties are missing so they can be removed again
+Using the editor with `addOptionalProps=false` (default) will always object action menu even if no properties are missing so they can be removed again
 
 <Canvas className="inline" of={ObjectActions.OptionalProperties} />
+
+Setting option `showHeaderMenu: false` in object-options, will hide the main menu and show the add property actions inline:
+
+<Canvas className="inline" of={ObjectActions.OptionalPropertiesInline} />
+
+Setting option `showHeaderMenu: false` and `showInlineAddAction: false` in object-options, will hide both options completely and optional properties cannot be added.
+
+<Canvas className="inline" of={ObjectActions.OptionalPropertiesOff} />
+
+Setting option `showInlineAddAction: true` in object-options, will show both the menu and the inline add actions
+
+<Canvas className="inline" of={ObjectActions.OptionalPropertiesBoth} />
+
+> **Note** that you can also disable the actions on the property by setting `showItemControls: false` in object-options
+
+<Canvas className="inline" of={ObjectActions.OptionalPropertiesDisableDelete} />
