@@ -9,7 +9,7 @@ import { DefaultNodeOptions } from '@sagold/react-json-editor';
 
 export type WidgetParentHeaderProps = {
     isArrayItem?: boolean;
-    title?: string;
+    title?: string | ReactNode;
     order?: TitleOrder;
     titleProps?: TitleProps;
     description?: string;

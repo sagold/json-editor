@@ -47,6 +47,7 @@
     --mantine-cursor-type: pointer;
     --mantine-heading-text-wrap: wrap;
 
+    .rje-oneOf__children,
     .rje-content--object.rje-content--with-header {
         padding-top: var(--rje-property-spacing); // spacing object header to first property
     }

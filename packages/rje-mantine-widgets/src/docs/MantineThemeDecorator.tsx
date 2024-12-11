@@ -3,7 +3,9 @@ import { MantineProvider } from '@mantine/core';
 export function MantineThemeDecorator(Story) {
     return (
         <MantineProvider>
-            <Story />
+            <div className="rje-form">
+                <Story />
+            </div>
         </MantineProvider>
     );
 }
