@@ -291,12 +291,14 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
         {
             label: 'move up',
             icon: 'keyboard_arrow_up',
+            closeMenuOnClick: false,
             disabled: options.readOnly || options.disabled || child.property === '0',
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) - 1)
         },
         {
             label: 'move down',
             icon: 'keyboard_arrow_down',
+            closeMenuOnClick: false,
             disabled: options.readOnly || options.disabled || child.property === `${parentNode.children.length - 1}`,
             onClick: () => editor.moveItem(child.pointer, parseInt(child.property) + 1)
         },

@@ -2,7 +2,6 @@
     width: 100%;
 }
 
-.rje-field--null,
 .rje-field--boolean {
     padding-top: 0.5em; // compensate to match other fields where label is top
 }
@@ -31,13 +30,13 @@
 }
 
 .mantine-Chip-root.rje-chip--error label {
-    border-color: var(--mantine-color-error);
+    background-color: var(--mantine-color-red-2);
 }
 
 .rje-form {
     // form layout
     --rje-property-spacing: 1em;
-    // --rje-header-top-spacing: 1em;
+    --rje-header-top-spacing: 0.5em;
     // header
     --mantine-h1-font-size: 2em;
     --mantine-h1-font-weight: 200;
@@ -57,7 +56,7 @@
         padding-top: calc(0.5 * var(--rje-property-spacing, 1em));
     }
 
-    .rje-object__property > .rje-field--parent > .rje-widget__header {
-        // padding-top: var(--rje-header-top-spacing);
+    .rje-object__property + .rje-object__property > .rje-field--parent > .rje-widget__header > label {
+        padding-top: var(--rje-header-top-spacing);
     }
 }
