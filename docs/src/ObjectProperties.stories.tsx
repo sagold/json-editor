@@ -15,7 +15,7 @@ export const OptionalProperties: Story = {
     args: {
         schema: {
             type: 'object',
-
+            options: { showHeaderMenu: false },
             properties: {
                 optionalProperty: { title: 'Optional property', type: 'string' }
             }
@@ -28,6 +28,7 @@ export const InitialOptionalProperty: Story = {
         data: { optionalProperty: 'input data' },
         schema: {
             type: 'object',
+            options: { showHeaderMenu: false },
             properties: {
                 optionalProperty: { title: 'Optional property', type: 'string' }
             }
@@ -41,6 +42,7 @@ export const AddOptionalProps: Story = {
         schema: {
             title: 'addOptionalProps: true',
             type: 'object',
+            options: { showHeaderMenu: false },
             properties: {
                 optionalProperty: { title: 'Optional property', type: 'string' }
             }
@@ -54,6 +56,7 @@ export const RequiredProperties: Story = {
             title: 'required: [ property ]',
             type: 'object',
             required: ['requiredProperty'],
+            options: { showHeaderMenu: false },
             properties: {
                 requiredProperty: { title: 'Required Property', type: 'string' },
                 optionalProperty: { title: 'Optional Property', type: 'string' }
@@ -77,8 +80,8 @@ export const AdditionalPropertiesFalse: Story = {
         data: { additionalProperty: 'property without schema' },
         schema: {
             title: 'additionalProperties: false',
-            type: 'object',
             options: { showEditJsonAction: true },
+            type: 'object',
             additionalProperties: false
         } as JsonSchema
     }
@@ -90,6 +93,7 @@ export const AdditionalPropertiesSchema: Story = {
         validate: true,
         schema: {
             title: 'additionalProperties: { maxLength }',
+            options: { showHeaderMenu: false },
             type: 'object',
             additionalProperties: {
                 type: 'string',
@@ -104,12 +108,10 @@ export const EditJson: Story = {
         data: { additionalProperty: 'property without schema' },
         schema: {
             type: 'object',
+            options: { showEditJsonAction: true },
             title: 'options: { showEditJsonAction: true }',
             description:
                 'Using an object with a title will switch actions for optional properties to be placed in the actions-icon besides its title. Inline delete options are moved into their panel for a cleaner ui. Using EditJson action from the actions panel will allow the user to add additional data in json format.',
-            options: {
-                showEditJsonAction: true
-            },
             additionalProperties: {
                 type: 'string'
             }
@@ -285,6 +287,7 @@ export const AllOfIfThen: Story = {
         liveUpdate: true,
         schema: {
             type: 'object',
+            options: { showHeaderMenu: false },
             properties: {
                 title: { type: 'string', default: 'four' }
             },
