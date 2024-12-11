@@ -30,18 +30,19 @@ export function WidgetInputWrapper({
     errors,
     options
 }: WidgetInputWrapperProps) {
-    const hasTitle = (options.title && options.title.length > 0) || options.descriptionInline;
+    const hasTitle = !!options?.title || !!options.descriptionInline;
     const hasSection = !!leftSection || !!rightSection || false;
     const hasLabel = (options.showHeader !== false && hasTitle) || hasSection;
 
     const withInlineDescription = options.description && options.description.length > 0 && !options.descriptionInline;
+    console.log('has label', rightSection);
 
     return (
         <InputWrapper
             className="rje-widget__header"
             description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
             label={
-                hasLabel && (
+                hasLabel ? (
                     <>
                         {leftSection}
                         <Divider
@@ -77,7 +78,7 @@ export function WidgetInputWrapper({
                         />
                         {rightSection}
                     </>
-                )
+                ) : undefined
             }
             error={errors?.map((e) => e.message).join('\n')}
             classNames={{ label: styles['label'] }}

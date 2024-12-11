@@ -24,6 +24,10 @@ export const Options: Story = {
         collapsed: {
             control: 'radio',
             options: [null, true, false]
+        },
+        showInlineAddAction: {
+            control: 'radio',
+            options: [null, true, false]
         }
     },
     args: {

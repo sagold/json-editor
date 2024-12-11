@@ -24,7 +24,6 @@ import {
     NullNode,
     JsonSchema
 } from '../types';
-import { getData } from './getData';
 
 function propertySortResult(aIndex: number, bIndex: number) {
     if (aIndex === -1 && bIndex === -1) {

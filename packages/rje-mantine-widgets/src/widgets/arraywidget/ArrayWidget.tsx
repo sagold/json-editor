@@ -71,6 +71,7 @@ export type ArrayOptions = DefaultNodeOptions<{
 }>;
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
+    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
     const depth = Math.min(6, node.pointer.split('/').length);
     const order = options.titleProps?.order ?? ((depth === 1 ? 1 : 2) as TitleOrder);
     const childOptions = {
@@ -80,7 +81,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         disabled: options.disabled,
         readOnly: options.readOnly
     };
-    const { isAddEnabled } = getActionStates(node);
+
     const ref = useRef<HTMLTableSectionElement>(null);
     const { sortableEnabled } = useDraggableItems(
         editor,
@@ -92,8 +93,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         },
         ref
     );
-    const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
-    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
+
+    const withActions = options.readOnly !== true && options.showItemControls !== false;
 
     const insertOptions = editor.getArrayAddOptions(node);
     const addAction =
@@ -111,29 +112,41 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 <Icon>add</Icon>
             </ActionIcon>
         ) : (
-            <Menu position="top">
-                <Menu.Target>
-                    <ActionIcon variant="subtle" disabled={options.readOnly || options.disabled}>
-                        <Icon>add</Icon>
-                    </ActionIcon>
-                </Menu.Target>
-                <Menu.Dropdown>
-                    {insertOptions.map((option, index) => (
-                        <Menu.Item
-                            key={index}
-                            onClick={() => editor.appendItem(node, option)}
-                            leftSection={<Icon>add</Icon>}
-                        >
-                            {option.title}
-                            {/*<Menu.Label>{option.description}</Menu.Label>*/}
-                        </Menu.Item>
-                    ))}
-                </Menu.Dropdown>
-            </Menu>
+            <WidgetMenu
+                icon="add"
+                position="top"
+                disabled={options.disabled}
+                readOnly={options.readOnly}
+                items={insertOptions.map((option) => ({
+                    icon: 'add',
+                    label: option.title,
+                    onClick: () => editor.appendItem(node, option)
+                }))}
+            />
         );
 
+    const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
+    const leftSection = options.collapsed != null && (
+        <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
+            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
+        </ActionIcon>
+    );
+
+    const { isAddEnabled } = getActionStates(node);
     const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, isAddEnabled);
-    const withActions = options.readOnly !== true && options.showItemControls !== false;
+    const rightSection = options.showHeaderMenu !== false &&
+        options.readOnly !== true &&
+        widgetMenuItems.length > 0 && (
+            <WidgetMenu
+                offset={0}
+                position={'left-start'}
+                transitionProps={{ transition: 'slide-left', duration: 100 }}
+                icon={node.isArrayItem ? 'more_horiz' : 'menu'}
+                disabled={options.disabled}
+                readOnly={options.readOnly}
+                items={widgetMenuItems}
+            />
+        );
 
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
@@ -141,31 +154,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 errors={node.errors}
                 order={order}
                 options={options}
-                leftSection={
-                    options.collapsed != null && (
-                        <ActionIcon
-                            variant="transparent"
-                            aria-label="actions"
-                            color={'gray'}
-                            onClick={() => contentToggle.toggle()}
-                        >
-                            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
-                        </ActionIcon>
-                    )
-                }
-                rightSection={
-                    options.showHeaderMenu !== false && (
-                        <WidgetMenu
-                            offset={0}
-                            position={'left-start'}
-                            transitionProps={{ transition: 'slide-left', duration: 100 }}
-                            icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                            disabled={options.disabled}
-                            readOnly={options.readOnly}
-                            items={widgetMenuItems}
-                        />
-                    )
-                }
+                leftSection={leftSection}
+                rightSection={rightSection}
             >
                 <Collapse in={contentOpened}>
                     <Table

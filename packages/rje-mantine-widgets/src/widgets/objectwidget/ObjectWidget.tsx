@@ -55,6 +55,7 @@ export type ObjectOptions = DefaultNodeOptions<{
 }>;
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
+    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
     const depth = Math.min(6, node.pointer.split('/').length);
     const order = options.titleProps?.order ?? ((depth === 1 ? 1 : 2) as TitleOrder);
     const childOptions = {
@@ -64,38 +65,34 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         disabled: options.disabled,
         readOnly: options.readOnly
     };
-    const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
-    const [isJsonModalOpen, jsonModal] = useDisclosure(false);
-    const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
 
+    const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const leftSection = options.collapsed != null && (
         <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
             <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
         </ActionIcon>
     );
-    const rightSection = options.showHeaderMenu !== false && (
-        <WidgetMenu
-            offset={0}
-            position={'left-start'}
-            transitionProps={{ transition: 'slide-left', duration: 100 }}
-            icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-            disabled={options.disabled}
-            readOnly={options.readOnly}
-            items={widgetMenuItems}
-        />
-    );
 
-    let showInlineAddAction = node.missingProperties.length > 0;
-    if (showInlineAddAction && options.showInlineAddAction !== true) {
-        // if we have inline actions and inline actions are not explicitely deactivated
-        if (options.showInlineAddAction == null) {
-            // show inline actions if the header-menu is not visible
-            showInlineAddAction = !rightSection;
-        } else {
-            // if explicitely enabled, show inline actions
-            showInlineAddAction = false;
-        }
-    }
+    const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
+    const rightSection = options.showHeaderMenu !== false &&
+        widgetMenuItems.length > 0 &&
+        options.readOnly !== false && (
+            <WidgetMenu
+                offset={0}
+                position={'left-start'}
+                transitionProps={{ transition: 'slide-left', duration: 100 }}
+                icon={node.isArrayItem ? 'more_horiz' : 'menu'}
+                disabled={options.disabled}
+                readOnly={options.readOnly}
+                items={widgetMenuItems}
+            />
+        );
+
+    // evaluate menu actions
+    const withHeaderMenu = options.readOnly !== true && !!rightSection;
+    const withOptionalPropertiesInline =
+        options.showInlineAddAction ??
+        (!withHeaderMenu && options.readOnly !== true && node.missingProperties.length > 0);
 
     return (
         <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
@@ -118,7 +115,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                             />
                         ))}
                     </Stack>
-                    {showInlineAddAction && (
+                    {withOptionalPropertiesInline && (
                         <Flex
                             className="rje-object__missing-properties"
                             style={{ alignItems: 'center', paddingTop: 'var(--rje-property-spacing, 0.5em)' }}
