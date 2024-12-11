@@ -267,7 +267,7 @@ export const AllOf: Story = {
         data: { title: 'five!' },
         schema: {
             type: 'object',
-            options: { showHeader: false },
+            options: { showHeaderMenu: false },
             required: ['title'],
             properties: {
                 title: { type: 'string' }
@@ -298,7 +298,7 @@ export const AllOfIfThen: Story = {
         liveUpdate: true,
         schema: {
             type: 'object',
-            options: { showHeader: false },
+            options: { showHeaderMenu: false },
             properties: {
                 title: { type: 'string', default: 'four' }
             },
@@ -340,7 +340,7 @@ export const DependenciesList: Story = {
             dependencies: {
                 one: ['two']
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as JsonSchema
     }
 };
@@ -361,7 +361,7 @@ export const DependenciesListActive: Story = {
             dependencies: {
                 one: ['two']
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as JsonSchema
     }
 };
@@ -384,7 +384,7 @@ export const Dependencies: Story = {
                     }
                 }
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as JsonSchema
     }
 };
@@ -408,7 +408,7 @@ export const DependenciesActive: Story = {
                     }
                 }
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as JsonSchema
     }
 };
@@ -420,6 +420,7 @@ export const IfThenElse: Story = {
         schema: {
             type: 'object',
             required: ['trigger'],
+            options: { showHeaderMenu: false },
             properties: {
                 trigger: { title: 'Trigger', type: 'boolean', default: false }
             },
@@ -433,8 +434,7 @@ export const IfThenElse: Story = {
                 properties: {
                     addition: { type: 'string' }
                 }
-            },
-            options: { showHeader: false }
+            }
         } as JsonSchema
     }
 };
@@ -461,7 +461,7 @@ export const IfThenElseActive: Story = {
                     addition: { type: 'string' }
                 }
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as JsonSchema
     }
 };
@@ -498,7 +498,7 @@ export const IfThenElseSwitch: Story = {
                     number: { title: 'Value in Else', type: 'number', maximum: 4 }
                 }
             },
-            options: { showHeader: false }
+            options: { showHeaderMenu: false }
         } as unknown as JsonSchema
     }
 };

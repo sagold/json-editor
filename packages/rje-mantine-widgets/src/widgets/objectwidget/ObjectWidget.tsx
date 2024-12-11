@@ -68,14 +68,37 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
     const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
 
-    const isHeaderShown =
-        options.collapsed != null ||
-        options.showHeaderMenu !== false ||
-        (options.showHeader !== false && options.title !== '');
+    const leftSection = options.collapsed != null && (
+        <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
+            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
+        </ActionIcon>
+    );
+    const rightSection = options.showHeaderMenu !== false && (
+        <WidgetMenu
+            offset={0}
+            position={'left-start'}
+            transitionProps={{ transition: 'slide-left', duration: 100 }}
+            icon={node.isArrayItem ? 'more_horiz' : 'menu'}
+            disabled={options.disabled}
+            readOnly={options.readOnly}
+            items={widgetMenuItems}
+        />
+    );
 
-    let showInlineAddAction = options.showInlineAddAction !== false && node.missingProperties.length > 0;
-    if (showInlineAddAction && isHeaderShown && options.showInlineAddAction == null) {
-        showInlineAddAction = false;
+    // @todo this is duplicate logic from WidgetInputWrapper
+    const isHeaderShown =
+        (options.showHeader !== false && (options.title ?? '').length > 0) || !!leftSection || !!rightSection;
+
+    let showInlineAddAction = node.missingProperties.length > 0;
+    if (showInlineAddAction && options.showInlineAddAction !== true) {
+        // if we have inline actions and inline actions are not explicitely deactivated
+        if (options.showInlineAddAction == null) {
+            // show inline actions if the header is not visible
+            showInlineAddAction = !isHeaderShown;
+        } else {
+            // if explicitely enabled, show inline actions
+            showInlineAddAction = false;
+        }
     }
 
     return (
@@ -83,31 +106,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
             <WidgetInputWrapper
                 options={options}
                 errors={node.errors}
-                leftSection={
-                    options.collapsed != null && (
-                        <ActionIcon
-                            variant="transparent"
-                            aria-label="actions"
-                            color={'gray'}
-                            onClick={() => contentToggle.toggle()}
-                        >
-                            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
-                        </ActionIcon>
-                    )
-                }
-                rightSection={
-                    options.showHeaderMenu !== false && (
-                        <WidgetMenu
-                            offset={0}
-                            position={'left-start'}
-                            transitionProps={{ transition: 'slide-left', duration: 100 }}
-                            icon={node.isArrayItem ? 'more_horiz' : 'menu'}
-                            disabled={options.disabled}
-                            readOnly={options.readOnly}
-                            items={widgetMenuItems}
-                        />
-                    )
-                }
+                leftSection={leftSection}
+                rightSection={rightSection}
             >
                 <Collapse in={contentOpened}>
                     <Stack className="rje-object__properties">

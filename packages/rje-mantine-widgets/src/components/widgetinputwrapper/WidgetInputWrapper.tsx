@@ -31,7 +31,7 @@ export function WidgetInputWrapper({
     options
 }: WidgetInputWrapperProps) {
     const hasTitle = (options.title && options.title.length > 0) || options.descriptionInline;
-    const hasSection = !!leftSection ?? !!rightSection ?? false;
+    const hasSection = !!leftSection || !!rightSection || false;
     const hasLabel = (options.showHeader !== false && hasTitle) || hasSection;
 
     const withInlineDescription = options.description && options.description.length > 0 && !options.descriptionInline;
