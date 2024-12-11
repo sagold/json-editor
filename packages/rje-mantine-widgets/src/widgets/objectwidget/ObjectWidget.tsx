@@ -78,6 +78,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         widgetMenuItems.length > 0 &&
         options.readOnly !== false && (
             <WidgetMenu
+                inline={false}
                 offset={0}
                 position={'left-start'}
                 transitionProps={{ transition: 'slide-left', duration: 100 }}

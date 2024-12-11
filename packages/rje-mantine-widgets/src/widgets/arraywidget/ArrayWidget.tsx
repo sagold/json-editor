@@ -6,7 +6,6 @@ import {
     DividerProps,
     Flex,
     Group,
-    Menu,
     Modal,
     Table,
     TitleOrder,
@@ -119,6 +118,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 readOnly={options.readOnly}
                 items={insertOptions.map((option) => ({
                     icon: 'add',
+                    color: 'blue',
                     label: option.title,
                     onClick: () => editor.appendItem(node, option)
                 }))}
@@ -139,6 +139,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         widgetMenuItems.length > 0 && (
             <WidgetMenu
                 offset={0}
+                inline={false}
                 position={'left-start'}
                 transitionProps={{ transition: 'slide-left', duration: 100 }}
                 icon={node.isArrayItem ? 'more_horiz' : 'menu'}

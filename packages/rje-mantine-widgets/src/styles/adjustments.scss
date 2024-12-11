@@ -56,7 +56,8 @@
         padding-top: calc(0.5 * var(--rje-property-spacing, 1em));
     }
 
-    .rje-object__property + .rje-object__property > .rje-field--parent > .rje-widget__header > label {
+    .rje-object__property + .rje-object__property > .rje-field--parent > .rje-widget__header > label,
+    .rje-object__property + .rje-object__property > .rje-field--null > .rje-widget__header > label {
         padding-top: var(--rje-header-top-spacing);
     }
 }
