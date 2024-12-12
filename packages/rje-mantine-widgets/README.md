@@ -31,8 +31,4 @@ function MyForm({ schema, data }) {
 }
 ```
 
-TODO
-
-- [ ] array oneOf selection support
-- [ ] drag element to create array-item
-- [ ] datetime forms
+- [Documentation and Examples](https://sagold.github.io/json-editor/?path=/docs/packages-rje-mantine-widgets-overview--docs)
