@@ -16,7 +16,7 @@ export type ColorOptions = {
 
 export const ColorWidget = widget<StringNode<ColorOptions>, string>(({ node, options, setValue }) => {
     const getValueFromEvent = useCallback((v: string) => v, []);
-    const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, options.liveUpdate, getValueFromEvent);
+    const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <ColorInput {...widgetInputProps(node, options)} {...onUpdateProps} />

@@ -94,8 +94,6 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         />
     );
 
-    console.log('render', node.children);
-
     // evaluate menu actions
     const withHeaderMenu = options.readOnly !== true && widgetMenuItems.length > 0 && options.showHeaderMenu !== false;
     const withOptionalPropertiesInline =

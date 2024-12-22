@@ -4,8 +4,8 @@ import { deepEqual } from '@sagold/react-json-editor';
 export function useLiveUpdate<T = unknown>(
     currentValue: T,
     setValue: (value: T) => void,
-    liveUpdate?: boolean,
-    retrieveValue?: (event: any) => T
+    retrieveValue: (event: any) => T,
+    liveUpdate?: boolean
 ) {
     /* --------------------------------
      * update onBlur
@@ -14,8 +14,7 @@ export function useLiveUpdate<T = unknown>(
     const [state, setState] = useState(currentValue);
     const onChange = useCallback(
         (event) => {
-            const value = retrieveValue ? retrieveValue(event) : (event.currentTarget.value as T);
-            setState(value);
+            setState(retrieveValue(event) as T);
         },
         [setState, retrieveValue]
     );
@@ -32,8 +31,7 @@ export function useLiveUpdate<T = unknown>(
      * ------------------------------*/
     const onLiveChange = useCallback(
         (event) => {
-            const value = retrieveValue ? retrieveValue(event) : (event.currentTarget.value as T);
-            setValue(value);
+            setValue(retrieveValue(event) as T);
         },
         [setValue, retrieveValue]
     );
@@ -42,5 +40,9 @@ export function useLiveUpdate<T = unknown>(
     }
     /* ---------------- */
 
-    return { value: state, onChange, onBlur: () => setValue(state) };
+    return {
+        value: state,
+        onChange,
+        onBlur: () => setValue(state)
+    };
 }

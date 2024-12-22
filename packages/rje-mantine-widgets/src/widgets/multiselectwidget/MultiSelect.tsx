@@ -12,7 +12,6 @@ import {
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { useLiveUpdate } from '../useLiveUpdate';
-import { useCallback } from 'react';
 
 export type MultiSelectOptions = {
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -31,17 +30,18 @@ const MultiSelectWidget = (props: WidgetProps) => {
     return <SelectWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;
 };
 
+const getValueFromEvent = (value: string[]) => value;
+
 const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
     // @ts-expect-error unknown schema
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
     const data = enumValues.map((id) => ({ value: id, label: titles[id] ?? id }));
-    const getValueFromEvent = useCallback((value: string[]) => value, []);
     const onUpdateProps = useLiveUpdate<string[]>(
         getData(node) as string[],
         setValue,
-        options.liveUpdate,
-        getValueFromEvent
+        getValueFromEvent,
+        options.liveUpdate
     );
 
     return (
@@ -52,7 +52,12 @@ const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, op
             showError={false}
             showDescription={false}
         >
-            <MultiSelect {...widgetInputProps(node, options)} data={data} {...onUpdateProps} />
+            <MultiSelect
+                {...widgetInputProps(node, options)}
+                data={data}
+                {...onUpdateProps}
+                onRemove={(id) => setValue(onUpdateProps.value.filter((v) => v !== id))}
+            />
         </WidgetField>
     );
 });
@@ -62,17 +67,11 @@ const TagListWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, o
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
     const data = enumValues.map((id) => ({ value: id, label: titles[id] ?? id }));
-    const onUpdateProps = useLiveUpdate<string[]>(
-        getData(node) as string[],
-        setValue,
-        options.liveUpdate,
-        (value: string[]) => value
-    );
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <InputWrapper {...widgetInputProps(node, options)}>
-                <Chip.Group multiple={true} {...onUpdateProps}>
+                <Chip.Group multiple={true} value={getData(node) as string[]} onChange={setValue}>
                     <Group
                         style={{
                             paddingTop: 'calc(var(--mantine-spacing-xs) / 2)'

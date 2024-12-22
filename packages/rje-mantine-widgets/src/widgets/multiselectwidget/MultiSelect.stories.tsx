@@ -20,6 +20,7 @@ export default {
             onChange: (v) => console.log('change:', v),
             schema: {
                 type: 'array',
+                format: 'select',
                 uniqueItems: true,
                 items: {
                     type: 'string',
@@ -35,5 +36,23 @@ type Story = StoryObj<WidgetProps>;
 export const Default: Story = {
     args: {
         liveUpdate: false
+    }
+};
+
+export const Taglist: Story = {
+    args: {
+        liveUpdate: false,
+        editorProps: {
+            onChange: (v) => console.log('change:', v),
+            schema: {
+                type: 'array',
+                format: 'taglist',
+                uniqueItems: true,
+                items: {
+                    type: 'string',
+                    enum: ['first', 'second', 'third']
+                }
+            }
+        }
     }
 };
