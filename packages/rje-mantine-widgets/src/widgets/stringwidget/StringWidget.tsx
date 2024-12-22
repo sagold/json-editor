@@ -4,7 +4,7 @@ import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { getSections } from '../getSections';
 import { useLiveUpdate } from '../useLiveUpdate';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { Icon } from '../../components/icon/Icon';
 
 export type StringOptions = DefaultNodeOptions<{
@@ -28,13 +28,13 @@ const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.curren
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const Input = node.schema.format === 'password' ? PasswordInput : TextInput;
+    const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
+    const clearValue = useCallback(() => setValue(''), [setValue]);
     // eslint-disable-next-line prefer-const
     let [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
-    const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
-
-    if (options.clearable) {
+    if (options.clearable && onUpdateProps.value !== '') {
         rightSection = (
-            <ActionIcon variant="subtle" disabled={options.disabled} color="gray" onClick={() => setValue('')}>
+            <ActionIcon variant="subtle" disabled={options.disabled} color="gray" onClick={clearValue}>
                 <Icon>clear</Icon>
             </ActionIcon>
         );
