@@ -80,7 +80,7 @@ const RadioGroupWidget = widget<StringNode<SelectOptions>, string | number>(({ n
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>
             <Radio.Group id={node.id} {...widgetInputProps(node, options)} value={node.value} onChange={setValue}>
-                <Stack mt={'xs'} gap={8}>
+                <Stack gap={8} pt={'calc(var(--mantine-spacing-xs) / 2)'}>
                     {enumValues.map((value, index) => (
                         <Radio
                             key={value}
