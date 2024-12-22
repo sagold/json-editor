@@ -1,5 +1,4 @@
-import { dirname, join } from 'path';
-const path = require('path');
+import path, { dirname, join } from 'path';
 
 module.exports = {
     stories: [
