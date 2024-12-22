@@ -14,11 +14,20 @@ export default {
     title: 'packages/rje-mantine-widgets/widgets/StringWidget',
     component: Widget,
     decorators: [MantineThemeDecorator],
+    argTypes: {
+        showHeader: { control: 'boolean' },
+        icon: { control: 'text' },
+        tag: { control: 'text' },
+        swapIconPosition: { control: 'boolean' },
+        clearable: { control: 'boolean' }
+    },
     args: {
         editorProps: {
             data: null,
             onChange: (v) => console.log(`change:`, v),
             schema: {
+                title: 'A string value',
+                description: 'Simple single-line text input',
                 type: 'string'
             }
         }

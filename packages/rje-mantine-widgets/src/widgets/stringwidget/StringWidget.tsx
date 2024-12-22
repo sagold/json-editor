@@ -1,16 +1,22 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
-import { PasswordInput, TextInput } from '@mantine/core';
+import { ActionIcon, PasswordInput, TextInput } from '@mantine/core';
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { getSections } from '../getSections';
 import { useLiveUpdate } from '../useLiveUpdate';
 import { ChangeEvent } from 'react';
+import { Icon } from '../../components/icon/Icon';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
+    /** if true, shows a clear input action */
+    clearable?: boolean;
+    /** icon to display on left side of input field */
     icon?: string;
+    /** short string to display on right side of input field */
     tag?: string;
+    /** swap placement of icon and label */
     swapIconPosition?: boolean;
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
@@ -22,8 +28,17 @@ const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.curren
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
     const Input = node.schema.format === 'password' ? PasswordInput : TextInput;
-    const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
+    // eslint-disable-next-line prefer-const
+    let [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
     const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
+
+    if (options.clearable) {
+        rightSection = (
+            <ActionIcon variant="subtle" disabled={options.disabled} color="gray" onClick={() => setValue('')}>
+                <Icon>clear</Icon>
+            </ActionIcon>
+        );
+    }
 
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
