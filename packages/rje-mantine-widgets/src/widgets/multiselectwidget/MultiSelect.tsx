@@ -9,12 +9,12 @@ import {
     WidgetProps,
     DecoratedWidgetProps
 } from '@sagold/react-json-editor';
-import { widgetInputProps } from '../components/widgetInputProps';
-import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
-import { useLiveUpdate } from './useLiveUpdate';
+import { widgetInputProps } from '../../components/widgetInputProps';
+import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
+import { useLiveUpdate } from '../useLiveUpdate';
 import { useCallback } from 'react';
 
-export type SelectMultipleOptions = {
+export type MultiSelectOptions = {
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
@@ -31,7 +31,7 @@ const MultiSelectWidget = (props: WidgetProps) => {
     return <SelectWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;
 };
 
-const SelectWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node, options, setValue }) => {
+const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
     // @ts-expect-error unknown schema
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
@@ -57,7 +57,7 @@ const SelectWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node,
     );
 });
 
-const TagListWidget = widget<ArrayNode<SelectMultipleOptions>, string[]>(({ node, options, setValue }) => {
+const TagListWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
     // @ts-expect-error unknown schema
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];

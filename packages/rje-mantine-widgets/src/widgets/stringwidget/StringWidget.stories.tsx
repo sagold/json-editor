@@ -16,8 +16,8 @@ export default {
     decorators: [MantineThemeDecorator],
     args: {
         editorProps: {
-            data: '',
-            onChange: (v) => console.log(`change: '${v}'`, typeof v),
+            data: null,
+            onChange: (v) => console.log(`change:`, v),
             schema: {
                 type: 'string'
             }

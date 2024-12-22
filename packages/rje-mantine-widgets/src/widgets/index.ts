@@ -1,6 +1,6 @@
 import { ArrayWidgetPlugin } from './arraywidget/ArrayWidget';
 import { BooleanWidgetPlugin } from './BooleanWidget';
-import { MultiSelectWidgetPlugin } from './MultiSelect';
+import { MultiSelectWidgetPlugin } from './multiselectwidget/MultiSelect';
 import { NullWidgetPlugin } from './nullwidget/NullWidget';
 import { NumberWidgetPlugin } from './NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
