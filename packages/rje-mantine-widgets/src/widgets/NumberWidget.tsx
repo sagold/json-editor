@@ -1,9 +1,10 @@
 import { widget, WidgetPlugin, DefaultNodeOptions, WidgetField, NumberNode } from '@sagold/react-json-editor';
 import { NumberInput } from '@mantine/core';
-import { ReactNode } from 'react';
-import { Icon } from '../components/icon/Icon';
 import { widgetInputProps } from '../components/widgetInputProps';
 import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
+import { useLiveUpdate } from './useLiveUpdate';
+import { getSections } from './getSections';
+import { useCallback } from 'react';
 
 export type NumberOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -18,34 +19,17 @@ export type NumberOptions = DefaultNodeOptions<{
 }>;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
-    const type = node.schema.format === 'password' ? 'password' : 'text';
-    let leftSection: ReactNode;
-    let rightSection: ReactNode;
-    if (options.icon) {
-        if (options.swapIconPosition) {
-            rightSection = <Icon>{options.icon}</Icon>;
-        } else {
-            leftSection = <Icon>{options.icon}</Icon>;
-        }
-    }
-    if (options.tag) {
-        if (!options.swapIconPosition) {
-            rightSection = <span>{options.tag}</span>;
-        } else {
-            leftSection = <span>{options.tag}</span>;
-        }
-    }
-
+    const getValueFromEvent = useCallback((v: string) => +v, []);
+    const onUpdateProps = useLiveUpdate<number>(node.value ?? 0, setValue, options.liveUpdate, getValueFromEvent);
+    const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <NumberInput
                 id={node.id}
                 {...widgetInputProps(node, options)}
+                {...onUpdateProps}
                 leftSection={leftSection}
-                onChange={(value) => setValue(+value)}
                 rightSection={rightSection}
-                type={type}
-                value={node.value}
             />
         </WidgetField>
     );

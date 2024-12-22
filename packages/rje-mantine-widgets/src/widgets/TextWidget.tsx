@@ -1,10 +1,10 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
-import { ReactNode } from 'react';
-import { Icon } from '../components/icon/Icon';
 import styles from './text-widget.module.scss';
 import { widgetInputProps } from '../components/widgetInputProps';
 import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
+import { getSections } from './getSections';
+import { useLiveUpdate } from './useLiveUpdate';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -20,34 +20,20 @@ export type StringOptions = DefaultNodeOptions<{
 }>;
 
 export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
-    let leftSection: ReactNode;
-    let rightSection;
-    if (options.icon) {
-        if (options.swapIconPosition) {
-            rightSection = <Icon>{options.icon}</Icon>;
-        } else {
-            leftSection = <Icon>{options.icon}</Icon>;
-        }
-    }
-    if (options.tag) {
-        if (!options.swapIconPosition) {
-            rightSection = <span>{options.tag}</span>;
-        } else {
-            leftSection = <span>{options.tag}</span>;
-        }
-    }
+    const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
+    const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, options.liveUpdate);
+
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
             <Textarea
                 {...widgetInputProps(node, options)}
+                {...onUpdateProps}
                 autosize
                 classNames={{ section: styles['section__icon'] }}
                 leftSection={leftSection}
-                onChange={(e) => setValue(e.currentTarget.value)}
                 rows={1}
                 maxRows={20}
                 rightSection={rightSection}
-                value={node.value}
             />
         </WidgetField>
     );
