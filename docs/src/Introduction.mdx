@@ -24,27 +24,33 @@ import logo from '../images/he-square-700x540.png';
 
 <h1 style={{ textAlign: 'center' }}>json-editor documentation</h1>
 
-> Documentation around [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor), an implementation of [headless-json-editor](https://github.com/sagold/json-editor/tree/main/packages/headless-json-editor). This project is currently in an early state, but the package is published, used in production and being tested regularly.
+> Documentation around [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor), an implementation of [headless-json-editor](https://github.com/sagold/json-editor/tree/main/packages/headless-json-editor).
 
 <NpmPackageName name="@sagold/react-json-editor" />
 
-The focus of this documentation mostly lies on user interface features, its configuration options and packes. For an understanding of the general behaviour of `headless-json-editor` you can refer to the sections in the main root, mainly:
+<div style={{ textAlign: 'center' }}>
+  [Overview](#overview) | [Roadmap](#roadmap) | [Changelog](?path=/docs/changelog--docs)
+</div>
+
+## Overview
+
+The focus of this documentation mostly lies on user interface features, its configuration options and packages. For an understanding of the general behaviour of `headless-json-editor` you can refer to the sections on root, mainly:
 
 - [ObjectProperties](?path=/docs/objectproperties--docs)
 - [ArrayItems](?path=/docs/arrayitems--docs)
 - [DateFormat](?path=/docs/dateformats--docs)
 
-The main section focusses on overall json-schema behaviour and feature support. In addition
+The main section focusses on overall json-schema behaviour, feature support and configration options. In addition
 
 - [**COOKBOOK**](?path=/docs/cookbook-conditionalforms--docs) lists a small set of usage examples
 - **PACKAGES** lists examples and showcases widgets and their options. The main package to get started is [rje-mantine-widgets](?path=/docs/packages-rje-mantine-widgets-overview--docs)
-- [**DOCS**](/?path=/story/docs-arrayitems--items-array) section mainly contains stories used in documentation pages, but is still helpful as an overview and to play with features in isolation.
+- [**DOCS**](/?path=/story/docs-arrayitems--items-array) section mainly contains stories used in documentation pages, but is still helpful as an overview and to play with features and widget options in isolation.
 
-For a **quick setup** of `react-json-editor` with default widgets you need the following packages installed
+For a **quick setup** of `react-json-editor` and its default widgets you need the following packages installed
 
-- @sagold/react-json-editor
-- @sagold/rje-mantine-widgets
-- @mantine/core, @mantine/hooks, @mantine/dates
+```sh
+yarn add @sagold/react-json-editor @sagold/rje-mantine-widgets @mantine/core @mantine/hooks @mantine/dates
+```
 
 ```tsx
 import { MantineProvider } from '@mantine/core';
@@ -81,7 +87,7 @@ Working with your another framework or non at all, you start with the following 
 
 > This documentation and react-implementation serves as an example and a reference for your own headless-json-editor integration and widgets. Still, the packages used here may be used directly.
 
-## roadmap
+## Roadmap
 
 - [ ] deprecate react-aria in favor of mantine
   - [ ] file widget
