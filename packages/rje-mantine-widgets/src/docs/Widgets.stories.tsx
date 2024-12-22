@@ -347,7 +347,9 @@ const schema: JsonSchema = {
 
 const data = {
     string: 'huhu',
+    selectTag: 'yes',
     array: ['first', 'fourth'],
+    arrayTag: ['free-text tag'],
     objectOptionals: { optional1: 'input-value' },
     arraySortable: [100, 200, 300, 400],
     arrayOneOf: [
