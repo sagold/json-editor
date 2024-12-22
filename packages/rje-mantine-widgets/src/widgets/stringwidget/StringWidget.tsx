@@ -1,8 +1,8 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { PasswordInput, TextInput } from '@mantine/core';
-import { widgetInputProps } from '../components/widgetInputProps';
-import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
-import { getSections } from './getSections';
+import { widgetInputProps } from '../../components/widgetInputProps';
+import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
+import { getSections } from '../getSections';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */

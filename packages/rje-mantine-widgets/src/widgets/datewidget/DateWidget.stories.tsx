@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { JsonSchema, useEditor, StringNode } from '@sagold/react-json-editor';
+import { useEditor, StringNode, UseEditorOptions } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { DateWidget, type DateOptions } from './DateWidget';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 
-type DateWidgetStoryProps = {
-    data: string;
-    schema: JsonSchema;
-} & DateOptions;
+type DateWidgetStoryProps = UseEditorOptions & DateOptions & { data: string };
 
 function DateWidgetStory({ data = '', schema, ...options }: DateWidgetStoryProps) {
     const s = { ...schema };

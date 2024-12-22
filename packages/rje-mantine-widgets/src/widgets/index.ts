@@ -6,7 +6,7 @@ import { NumberWidgetPlugin } from './NumberWidget';
 import { ObjectWidgetPlugin } from './objectwidget/ObjectWidget';
 import { OneOfSelectWidgetPlugin } from './oneofselectwidget/OneOfSelectWidget';
 import { SelectWidgetPlugin } from './SelectWidget';
-import { StringWidgetPlugin } from './StringWidget';
+import { StringWidgetPlugin } from './stringwidget/StringWidget';
 import { WidgetPlugin } from '@sagold/react-json-editor';
 import { TextWidgetPlugin } from './TextWidget';
 import { SimpleJsonWidgetPlugin } from './SimpleJsonWidget';

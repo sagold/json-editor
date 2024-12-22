@@ -135,7 +135,6 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
     );
 });
 
-// const isHHmmsss = /^(?:[0-2]\d:[0-5]\d:[0-5]\d|23:59:60)(?:\.\d+)$/;
 export const DateWidgetPlugin: WidgetPlugin = {
     id: 'date-widget',
     use: (node) => {
@@ -143,9 +142,7 @@ export const DateWidgetPlugin: WidgetPlugin = {
             return false;
         }
 
-        // @ts-expect-error since we are not checking node type here (because we test the value)
-        // const value = node.value;
-        if (node.schema.format === 'time' /*&& (value === '' || isHHmmsss.test(value))*/) {
+        if (node.schema.format === 'time') {
             return true;
         }
 
