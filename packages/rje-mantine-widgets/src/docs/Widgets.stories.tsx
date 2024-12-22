@@ -86,9 +86,10 @@ const schema: JsonSchema = {
         string: {
             type: 'string',
             title: 'string',
-            description: 'standard mantine **TextInput**',
+            description: 'standard mantine text **Input**',
             maxLength: 10,
             options: {
+                clearable: true,
                 icon: 'gesture',
                 tag: '👍'
             }
@@ -115,7 +116,7 @@ const schema: JsonSchema = {
             title: 'time',
             type: 'string',
             format: 'time',
-            description: 'mantine time input',
+            description: 'mantine **TimeInput**',
             minLength: 1
         },
         date: {
@@ -212,6 +213,9 @@ const schema: JsonSchema = {
             description: 'standard mantine multi-select',
             type: 'array',
             uniqueItems: true,
+            options: {
+                liveUpdate: true
+            },
             items: {
                 type: 'string',
                 enum: ['yes', 'maybe', 'no']
