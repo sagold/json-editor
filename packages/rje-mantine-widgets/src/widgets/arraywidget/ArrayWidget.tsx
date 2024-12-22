@@ -164,24 +164,26 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         classNames={{ table: styles['table'] }}
                     >
                         <Table.Tbody ref={ref}>
-                            {node.children.map((child) => (
-                                <Table.Tr key={child.id}>
-                                    {sortableEnabled && DRAG_HANDLE_COLUMN}
-                                    <Table.Td width={'100%'} style={{ position: 'relative' }}>
-                                        <Widget
-                                            key={child.id}
-                                            node={child}
-                                            editor={editor}
-                                            options={{
-                                                ...childOptions,
-                                                widgetMenuItems: withActions
-                                                    ? getArrayItemMenu(editor, node, child, options)
-                                                    : undefined
-                                            }}
-                                        />
-                                    </Table.Td>
-                                </Table.Tr>
-                            ))}
+                            {node.children
+                                .filter((child) => !child.options.hidden)
+                                .map((child) => (
+                                    <Table.Tr key={child.id}>
+                                        {sortableEnabled && DRAG_HANDLE_COLUMN}
+                                        <Table.Td width={'100%'} style={{ position: 'relative' }}>
+                                            <Widget
+                                                key={child.id}
+                                                node={child}
+                                                editor={editor}
+                                                options={{
+                                                    ...childOptions,
+                                                    widgetMenuItems: withActions
+                                                        ? getArrayItemMenu(editor, node, child, options)
+                                                        : undefined
+                                                }}
+                                            />
+                                        </Table.Td>
+                                    </Table.Tr>
+                                ))}
                         </Table.Tbody>
                     </Table>
                 </Collapse>

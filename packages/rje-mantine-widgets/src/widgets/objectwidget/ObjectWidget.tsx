@@ -94,6 +94,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         />
     );
 
+    console.log('render', node.children);
+
     // evaluate menu actions
     const withHeaderMenu = options.readOnly !== true && widgetMenuItems.length > 0 && options.showHeaderMenu !== false;
     const withOptionalPropertiesInline =
@@ -108,16 +110,18 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                     className={classNames('rje-content--object', widgetHeader && 'rje-content--with-header')}
                 >
                     <Stack className="rje-object__properties">
-                        {node.children.map((child) => (
-                            <ObjectProperty
-                                key={child.id}
-                                editor={editor}
-                                node={child}
-                                options={childOptions}
-                                optionalProperties={node.optionalProperties}
-                                showItemControls={options.showItemControls}
-                            />
-                        ))}
+                        {node.children
+                            .filter((child) => !child.options.hidden)
+                            .map((child) => (
+                                <ObjectProperty
+                                    key={child.id}
+                                    editor={editor}
+                                    node={child}
+                                    options={childOptions}
+                                    optionalProperties={node.optionalProperties}
+                                    showItemControls={options.showItemControls}
+                                />
+                            ))}
                     </Stack>
                     {withOptionalPropertiesInline && (
                         <Flex

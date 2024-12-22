@@ -34,8 +34,6 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
         editor.setValue(node.pointer, data);
     };
 
-    console.log('dividerProps', options.dividerProps);
-
     const widgetHeader = (
         <WidgetParentHeader
             isArrayItem={node.isArrayItem}
