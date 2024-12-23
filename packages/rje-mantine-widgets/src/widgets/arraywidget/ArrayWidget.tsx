@@ -1,16 +1,5 @@
 import styles from './array-widget.module.scss';
-import {
-    ActionIcon,
-    Button,
-    Collapse,
-    DividerProps,
-    Flex,
-    Group,
-    Modal,
-    Table,
-    TitleOrder,
-    TitleProps
-} from '@mantine/core';
+import { Button, Collapse, DividerProps, Flex, Group, Modal, Table, TitleOrder, TitleProps } from '@mantine/core';
 import {
     widget,
     WidgetPlugin,
@@ -29,12 +18,13 @@ import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
+import { ActionButton } from '../../components/actionbutton/ActionButton';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
 
 const DRAG_HANDLE_COLUMN = (
-    <Table.Td className="rje-drag__handle">
+    <Table.Td className="rje-drag__handle" style={{ color: 'var(--rje-action-color)' }}>
         <Icon>drag_indicator</Icon>
     </Table.Td>
 );
@@ -99,8 +89,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const insertOptions = editor.getArrayAddOptions(node);
     const addAction =
         insertOptions.length === 1 ? (
-            <ActionIcon
-                variant="subtle"
+            <ActionButton
+                icon={'add'}
                 disabled={options.readOnly || options.disabled}
                 onClick={() => {
                     const insertOptions = editor.getArrayAddOptions(node);
@@ -108,9 +98,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         editor.appendItem(node, insertOptions[0]);
                     }
                 }}
-            >
-                <Icon>add</Icon>
-            </ActionIcon>
+            />
         ) : (
             <WidgetMenu
                 icon="add"
@@ -128,9 +116,11 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
 
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const leftSection = options.collapsed != null && (
-        <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
-            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
-        </ActionIcon>
+        <ActionButton
+            icon={contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            aria-label="actions"
+            onClick={() => contentToggle.toggle()}
+        />
     );
     const { isAddEnabled } = getActionStates(node);
     const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, isAddEnabled);

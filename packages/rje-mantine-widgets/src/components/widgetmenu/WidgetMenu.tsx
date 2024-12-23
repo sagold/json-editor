@@ -1,5 +1,6 @@
-import { ActionIcon, DefaultMantineColor, Menu, MenuItemProps, MenuProps } from '@mantine/core';
+import { DefaultMantineColor, Menu, MenuItemProps, MenuProps } from '@mantine/core';
 import { Icon } from '../icon/Icon';
+import { ActionButton } from '../actionbutton/ActionButton';
 
 export type WidgetMenuItem = {
     icon?: string;
@@ -30,15 +31,12 @@ export function WidgetMenu({ icon, disabled, inline = true, readOnly, items, ...
     return (
         <Menu {...menuProps}>
             <Menu.Target>
-                <ActionIcon
-                    variant="subtle"
+                <ActionButton
+                    icon={icon}
                     disabled={allItemsDisabled || disabled}
-                    color="gray"
                     // we use the menu-action within labels, ensure it respects the initial height
                     style={inline ? { height: '100%', minHeight: 'inherit' } : {}}
-                >
-                    <Icon>{icon}</Icon>
-                </ActionIcon>
+                />
             </Menu.Target>
             <Menu.Dropdown>
                 {items.map((item, index) => {

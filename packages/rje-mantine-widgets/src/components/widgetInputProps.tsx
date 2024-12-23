@@ -42,7 +42,7 @@ export function widgetInputProps(
                     )}
                 </span>
 
-                <WidgetMenu icon="more_horiz" readOnly={readOnly} items={widgetMenuItems} />
+                <WidgetMenu icon="more_horiz" readOnly={readOnly} items={widgetMenuItems} position="left" />
             </Flex>
         );
 

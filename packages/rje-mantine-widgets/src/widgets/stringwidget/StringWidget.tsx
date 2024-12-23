@@ -1,11 +1,11 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
-import { ActionIcon, PasswordInput, TextInput } from '@mantine/core';
+import { PasswordInput, TextInput } from '@mantine/core';
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { getSections } from '../getSections';
 import { useLiveUpdate } from '../useLiveUpdate';
 import { ChangeEvent, useCallback } from 'react';
-import { Icon } from '../../components/icon/Icon';
+import { ActionButton } from '../../components/actionbutton/ActionButton';
 
 export type StringOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
@@ -33,11 +33,7 @@ export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, o
     // eslint-disable-next-line prefer-const
     let [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
     if (options.clearable && onUpdateProps.value !== '') {
-        rightSection = (
-            <ActionIcon variant="subtle" disabled={options.disabled} color="gray" onClick={clearValue}>
-                <Icon>clear</Icon>
-            </ActionIcon>
-        );
+        rightSection = <ActionButton icon="clear" disabled={options.disabled} onClick={clearValue} />;
     }
 
     return (

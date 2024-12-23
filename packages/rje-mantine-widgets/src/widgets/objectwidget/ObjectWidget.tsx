@@ -1,15 +1,4 @@
-import {
-    ActionIcon,
-    Button,
-    Collapse,
-    DividerProps,
-    Flex,
-    Group,
-    Modal,
-    Stack,
-    TitleOrder,
-    TitleProps
-} from '@mantine/core';
+import { Button, Collapse, DividerProps, Flex, Group, Modal, Stack, TitleOrder, TitleProps } from '@mantine/core';
 import {
     DefaultNodeOptions,
     ObjectNode,
@@ -23,10 +12,11 @@ import {
 import { Icon } from '../../components/icon/Icon';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { useDisclosure } from '@mantine/hooks';
-import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
+import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { ArrayOptions } from '../arraywidget/ArrayWidget';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 import classNames from 'classnames';
+import { ActionButton } from '../../components/actionbutton/ActionButton';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -70,9 +60,11 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
 
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const leftSection = options.collapsed != null && node.children.length > 0 && (
-        <ActionIcon variant="transparent" aria-label="actions" color={'gray'} onClick={() => contentToggle.toggle()}>
-            <Icon>{contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</Icon>
-        </ActionIcon>
+        <ActionButton
+            label="actions"
+            icon={contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+            onClick={() => contentToggle.toggle()}
+        />
     );
 
     const widgetMenuItems = getHeaderMenu(editor, node, options, jsonModal);
@@ -132,7 +124,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                                     key={name}
                                     variant="subtle"
                                     disabled={options.readOnly || options.disabled}
-                                    // color="gray"
+                                    color={'var(--rje-action-color)'}
                                     leftSection={<Icon>add</Icon>}
                                     onClick={() => editor.addValue(`${node.pointer}/${name}`)}
                                 >
