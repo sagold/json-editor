@@ -29,7 +29,7 @@ export function WidgetMenu({ icon, disabled, inline = true, readOnly, items, ...
     const allItemsDisabled = items.find((item) => typeof item !== 'string' && item.disabled !== true) == null;
 
     return (
-        <Menu {...menuProps}>
+        <Menu withArrow shadow="xs" {...menuProps}>
             <Menu.Target>
                 <ActionButton
                     icon={icon}
