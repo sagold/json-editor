@@ -4,6 +4,7 @@ import { strict as assert } from 'assert';
 import { useEditor, UseEditorOptions } from './useEditor';
 import { Editor } from './Editor';
 import { WidgetPlugin } from './decorators';
+import { StrictMode } from 'react';
 
 describe('useEditor', () => {
     it('should return state and editor instance', () => {
@@ -161,27 +162,69 @@ describe('useEditor', () => {
         assert.equal(result.current[1].getErrors().length, 1);
     });
 
-    it('should destroy editor on demount', () => {
-        let currentEditor: undefined | Editor = undefined;
-        function Form() {
-            const [root, editor] = useEditor({
-                schema: { type: 'object' },
-                widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
-            });
+    describe.only('destroy', () => {
+        it('should destroy editor on unmount', () => {
+            let currentEditor: undefined | Editor = undefined;
+            function Form() {
+                const [root, editor] = useEditor({
+                    schema: { type: 'object' },
+                    widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
+                });
 
-            const Widget = editor.getWidget(root);
-            currentEditor = editor;
-            return <Widget node={root} editor={editor} />;
-        }
-        const { rerender } = render(<Form />);
-        assert(currentEditor != null);
-        currentEditor = currentEditor as Editor;
+                const Widget = editor.getWidget(root);
+                currentEditor = editor;
+                return <Widget node={root} editor={editor} />;
+            }
+            const { rerender } = render(<Form />);
+            assert(currentEditor != null);
+            currentEditor = currentEditor as Editor;
 
-        rerender(<div />);
+            rerender(<div />);
 
-        assert(currentEditor != null);
-        assert(currentEditor.plugins == null);
-        assert(currentEditor.root == null);
+            assert(currentEditor != null);
+            assert(currentEditor.plugins == null);
+            assert(currentEditor.root == null);
+        });
+
+        it.only('should call destroy for each created instance in StrictMode', () => {
+            const createCalls: Date[] = [];
+            const destroyCalls: Date[] = [];
+            function Form() {
+                const [root, editor] = useEditor({
+                    schema: { type: 'object' },
+                    plugins: [
+                        () => {
+                            createCalls.push(new Date());
+                            return {
+                                id: 'spy',
+                                onEvent() {},
+                                onDestroy() {
+                                    destroyCalls.push(new Date());
+                                }
+                            };
+                        }
+                    ],
+                    widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
+                });
+
+                const Widget = editor.getWidget(root);
+                return <Widget node={root} editor={editor} />;
+            }
+
+            const { rerender } = render(
+                <StrictMode>
+                    <Form />
+                </StrictMode>
+            );
+            rerender(
+                <StrictMode>
+                    <div />
+                </StrictMode>
+            );
+
+            console.log(createCalls, destroyCalls);
+            assert.equal(createCalls.length, destroyCalls.length);
+        });
     });
 
     describe('options: extendDefaults', () => {

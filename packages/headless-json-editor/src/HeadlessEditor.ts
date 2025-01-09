@@ -389,6 +389,9 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     destroy() {
+        if (this.plugins == null) {
+            return;
+        }
         this.plugins.forEach((p) => p.onDestroy?.());
         // @ts-expect-error unresolved property
         ['root', 'draft', 'plugins', 'options'].forEach((property) => (this[property] = null));
