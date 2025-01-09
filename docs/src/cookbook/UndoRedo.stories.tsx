@@ -45,10 +45,10 @@ function UndoRedoExample() {
         <>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
                 <Button onClick={() => history?.undo()} disabled={!isUndoEnabled}>
-                    undo
+                    undo ({history?.getUndoCount()})
                 </Button>
                 <Button onClick={() => history?.redo()} disabled={!isRedoEnabled}>
-                    redo
+                    redo ({history?.getRedoCount()})
                 </Button>
             </div>
             <div className="rje-form">
