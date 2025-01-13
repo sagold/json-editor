@@ -16,7 +16,7 @@ type ComponentStoryProps = {
 };
 
 const Template: ComponentStory<any> = ({ data, schema }: ComponentStoryProps) => {
-    const [node, editor] = useEditor({
+    const editor = useEditor({
         schema,
         data,
         widgets: [JsonWidgetPlugin, ...defaultWidgets],
@@ -41,7 +41,7 @@ const Template: ComponentStory<any> = ({ data, schema }: ComponentStoryProps) =>
                     disabled={historyPlugin?.getRedoCount() === 0}
                 />
             </div>
-            <Widget editor={editor} node={node} />
+            <Widget editor={editor} />
         </div>
     );
 };
