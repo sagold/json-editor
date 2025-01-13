@@ -16,11 +16,7 @@ export function useEditorPlugin<T extends Plugin, E extends HeadlessEditor>(
         () => {
             if (editor && plugin) {
                 ref.current = options;
-                const instance = editor.addPlugin(plugin, options);
-                if (instance) {
-                    editor.plugins = editor.plugins.filter((p) => p === instance || p.id !== instance.id);
-                    return instance;
-                }
+                return editor.addPlugin(plugin, options);
             }
             return undefined;
         },
