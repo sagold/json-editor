@@ -6,11 +6,11 @@ import { useMemo, useRef } from 'react';
  * Note: plugins having a state will be reset
  */
 export function useEditorPlugin<T extends Plugin, E extends HeadlessEditor>(
-    editor?: E,
+    editor?: E | null,
     plugin?: T,
     options?: Parameters<T>[1]
 ) {
-    const ref = useRef<Parameters<T>[0]>();
+    const ref = useRef<Parameters<T>[1]>(options);
     const optionsChanged = options !== ref.current && !deepEqual(options, ref.current);
     return useMemo(
         () => {

@@ -11,9 +11,11 @@ export default {
 };
 
 export const LargeForm = () => {
-    const [node, editor] = useEditor({ data, schema, widgets, plugins: [] });
-    const WidgetComponent = editor.getWidget(node);
-
+    const editor = useEditor({ data, schema, widgets, plugins: [] });
+    if (editor == null) {
+        return null;
+    }
+    const WidgetComponent = editor.getWidget(editor.getNode());
     return (
         <Theme>
             <div

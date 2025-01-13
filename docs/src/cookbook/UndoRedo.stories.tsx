@@ -33,14 +33,15 @@ const schema = {
 } as JsonSchema;
 
 function UndoRedoExample() {
-    const [node, editor] = useEditor({ data: {}, schema, widgets });
-
+    const editor = useEditor({ data: {}, schema, widgets });
     const history = useEditorPlugin(editor, HistoryPlugin);
+    if (editor == null) {
+        return null;
+    }
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
-
+    const node = editor.getNode();
     const Widget = editor.getWidget(node);
-
     return (
         <>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>

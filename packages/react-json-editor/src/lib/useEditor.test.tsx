@@ -1,4 +1,4 @@
-import { isJsonError, JsonSchema, ObjectNode, StringNode, getNode } from 'headless-json-editor';
+import { isJsonError, JsonSchema, isParentNode, isValueNode } from 'headless-json-editor';
 import { renderHook, act, render } from '@testing-library/react';
 import { strict as assert } from 'assert';
 import { useEditor, UseEditorOptions } from './useEditor';
@@ -8,17 +8,17 @@ import { StrictMode } from 'react';
 
 describe('useEditor', () => {
     it('should return state and editor instance', () => {
+        const options: UseEditorOptions = {
+            schema: { type: 'object', properties: { title: { type: 'string' } } },
+            data: { title: 'test-title' }
+        };
+
         const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
-            initialProps: {
-                schema: { type: 'object', properties: { title: { type: 'string' } } },
-                data: { title: 'test-title' }
-            }
+            initialProps: options
         });
 
-        const [state, editor] = result.current;
-
-        assert.equal(state.type, 'object');
-        assert.equal(typeof editor.draft.getSchema, 'function');
+        assert(result.current != null, 'should have returned instance on final render');
+        assert.equal(typeof result.current.draft.getSchema, 'function');
     });
 
     it('should update state when input data changes', () => {
@@ -28,16 +28,21 @@ describe('useEditor', () => {
             initialProps: { schema, data }
         });
 
-        const [state, editor] = result.current;
-        const titleNode = getNode<StringNode>(state, '/title');
+        const editor = result.current;
+        assert(editor != null);
+        const state = editor.getNode();
+        const titleNode = editor.getNode('/title');
         rerender({ schema, data: { title: 'updated title' } });
 
-        const [stateAfter, editorAfter] = result.current;
-        const titleNodeAfter = getNode<StringNode>(stateAfter, '/title');
+        const editorAfter = result.current;
+        assert(editorAfter != null);
+        const stateAfter = editorAfter.getNode();
+        const titleNodeAfter = editor.getNode('/title');
 
         assert(!isJsonError(titleNode) && !isJsonError(titleNodeAfter));
         assert.equal(editor, editorAfter, 'should not recreate editor when data has changed');
         assert(state !== stateAfter);
+        assert(isValueNode(titleNode) && isValueNode(titleNodeAfter));
         assert.equal(titleNode.value, 'test-title');
         assert.equal(titleNodeAfter.value, 'updated title');
     });
@@ -45,14 +50,14 @@ describe('useEditor', () => {
     it('should update state when input schema changes', () => {
         const data = { title: 'test-title' };
         const schema: JsonSchema = { type: 'object', properties: { title: { type: 'string' } } };
-        const { result, rerender } = renderHook(
-            (settings: UseEditorOptions<object>) => useEditor<object, ObjectNode>(settings),
-            {
-                initialProps: { schema, data }
-            }
-        );
-        const [state, editor] = result.current;
-        const titleNode = getNode<StringNode>(state, '/title');
+        const { result, rerender } = renderHook((settings: UseEditorOptions<object>) => useEditor<object>(settings), {
+            initialProps: { schema, data }
+        });
+        const editor = result.current;
+        assert(editor);
+        const state = editor.getNode();
+        assert(isParentNode(state));
+        const titleNode = editor.getNode('/title');
 
         rerender({
             schema: {
@@ -66,12 +71,14 @@ describe('useEditor', () => {
             data
         });
 
-        const [stateAfter, editorAfter] = result.current;
-        const titleNodeAfter = getNode<StringNode>(stateAfter, '/title');
+        const editorAfter = result.current;
+        assert(editorAfter);
+        const stateAfter = editor.getNode();
+        assert(isParentNode(stateAfter));
+        const titleNodeAfter = editor.getNode('/title');
 
         assert(!isJsonError(titleNode) && !isJsonError(titleNodeAfter));
         assert.equal(editor, editorAfter, 'should not recreate editor when schema has changed');
-        // assert(state !== stateAfter);
         assert.equal(state.children.length, 1);
         assert.equal(stateAfter.children.length, 2, 'should have updated data after schema change');
         assert.equal(titleNode.schema.minLength, undefined);
@@ -86,11 +93,14 @@ describe('useEditor', () => {
         const { result, rerender } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
             initialProps: props
         });
+        const editor = result.current;
 
-        const editor = result.current[1];
         rerender({ ...props, cacheKey: 123 });
-        const editorAfter = result.current[1];
+
+        const editorAfter = result.current;
+        assert(editor && editorAfter);
         assert.notEqual(editor, editorAfter);
+        assert.notEqual(editor.id, editorAfter.id);
     });
 
     it('should add internal onChangePlugin', () => {
@@ -101,7 +111,8 @@ describe('useEditor', () => {
             }
         });
 
-        const editor = result.current[1];
+        const editor = result.current;
+        assert(editor);
         assert(editor.plugins.find((p) => p.id === 'InternalOnChange'));
     });
 
@@ -112,15 +123,17 @@ describe('useEditor', () => {
                 schema: { type: 'object', properties: { title: { type: 'string', minLength: 2 } } }
             }
         });
-        assert.equal(result.current[1].getErrors().length, 0);
+        const editor = result.current;
+        assert(editor);
+        assert.equal(editor.getErrors().length, 0);
 
         act(() => {
-            const editor = result.current[1];
             editor.setValue('#/title', 'X');
         });
 
-        const [root, editor] = result.current;
-        const titleNode = getNode(root, '#/title');
+        const editorAfter = result.current;
+        assert(editorAfter);
+        const titleNode = editorAfter.getNode('#/title');
         assert.equal(titleNode.type, 'string');
         assert.equal(titleNode.value, 'X');
         assert.equal(editor.getErrors().length, 1);
@@ -133,46 +146,62 @@ describe('useEditor', () => {
                 schema: { type: 'object', properties: { title: { type: 'string', minLength: 2 } } }
             }
         });
-        const editorBefore = result.current[1];
+        const editorBefore = result.current;
+        assert(editorBefore);
 
         act(() => {
             editorBefore.setValue('#/title', 'X');
         });
 
-        const editorAfter = result.current[1];
+        const editorAfter = result.current;
+        assert(editorAfter);
         assert.equal(editorAfter.getData().title, 'X');
         assert.equal(editorBefore.getErrors().length, 1);
         assert(editorBefore === editorAfter);
     });
 
     it('should rerender after validation', () => {
-        const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
-            initialProps: {
-                data: { title: '' },
-                schema: { type: 'object', properties: { title: { type: 'string', minLength: 2 } } },
-                validate: false
-            }
-        });
-        assert.equal(result.current[1].getErrors().length, 0);
+        const renderCalls: (Editor | null)[] = [];
+        const options: UseEditorOptions = {
+            data: { title: '' },
+            schema: { type: 'object', properties: { title: { type: 'string', minLength: 2 } } },
+            validate: false
+        };
+        function Form() {
+            const editor = useEditor(options);
+            renderCalls.push(editor);
+            return <div>{editor?.id}</div>;
+        }
+
+        render(<Form />);
+        const editor = renderCalls[renderCalls.length - 1];
+        assert(editor);
+        assert.equal(editor.getErrors().length, 0);
+        renderCalls.length = 0;
 
         act(() => {
-            result.current[1].validate();
+            editor.validate();
         });
 
-        assert.equal(result.current[1].getErrors().length, 1);
+        assert.equal(renderCalls.length, 1);
+        const editorAfter = renderCalls[renderCalls.length - 1];
+        assert.equal(editorAfter?.getErrors().length, 1);
     });
 
-    describe.only('destroy', () => {
+    describe('destroy', () => {
         it('should destroy editor on unmount', () => {
-            let currentEditor: undefined | Editor = undefined;
+            let currentEditor: null | Editor = null;
             function Form() {
-                const [root, editor] = useEditor({
+                const editor = useEditor({
                     schema: { type: 'object' },
                     widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
                 });
-
-                const Widget = editor.getWidget(root);
                 currentEditor = editor;
+                if (editor == null) {
+                    return null;
+                }
+                const root = editor.getNode();
+                const Widget = editor.getWidget(root);
                 return <Widget node={root} editor={editor} />;
             }
             const { rerender } = render(<Form />);
@@ -186,11 +215,11 @@ describe('useEditor', () => {
             assert(currentEditor.root == null);
         });
 
-        it.only('should call destroy for each created instance in StrictMode', () => {
+        it('should call destroy for each created instance in StrictMode', () => {
             const createCalls: Date[] = [];
             const destroyCalls: Date[] = [];
             function Form() {
-                const [root, editor] = useEditor({
+                const editor = useEditor({
                     schema: { type: 'object' },
                     plugins: [
                         () => {
@@ -206,7 +235,10 @@ describe('useEditor', () => {
                     ],
                     widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
                 });
-
+                if (editor == null) {
+                    return null;
+                }
+                const root = editor.getNode();
                 const Widget = editor.getWidget(root);
                 return <Widget node={root} editor={editor} />;
             }
@@ -222,7 +254,7 @@ describe('useEditor', () => {
                 </StrictMode>
             );
 
-            console.log(createCalls, destroyCalls);
+            // console.log(createCalls, destroyCalls);
             assert.equal(createCalls.length, destroyCalls.length);
         });
     });
@@ -235,8 +267,8 @@ describe('useEditor', () => {
                     schema: { type: 'array' }
                 }
             });
-            const [state, editor] = result.current;
-            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+            const editor = result.current;
+            assert.equal(editor?.draft.config.templateDefaultOptions?.extendDefaults, false);
         });
 
         it('should set `extendDefault` in draft to true', () => {
@@ -246,8 +278,9 @@ describe('useEditor', () => {
                     schema: { type: 'array' }
                 }
             });
-            const [state, editor] = result.current;
-            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, true);
+
+            const editor = result.current;
+            assert.equal(editor?.draft.config.templateDefaultOptions?.extendDefaults, true);
         });
 
         it('should not add minimum required array items if default-value is []', () => {
@@ -257,9 +290,8 @@ describe('useEditor', () => {
                 }
             });
 
-            const [state] = result.current;
-
-            assert.equal(state.type, 'array');
+            const state = result.current?.getNode();
+            assert.equal(state?.type, 'array');
             assert.equal(state.children.length, 0);
         });
 
@@ -281,10 +313,8 @@ describe('useEditor', () => {
                 }
             });
 
-            const [state] = result.current;
-            const list = getNode(state, '/list');
-
-            assert.equal(list.type, 'array');
+            const list = result.current?.getNode('/list');
+            assert.equal(list?.type, 'array');
             assert.equal(list.children.length, 0);
         });
     });

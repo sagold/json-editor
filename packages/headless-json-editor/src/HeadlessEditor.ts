@@ -22,6 +22,7 @@ import { removeNode } from './transform/removeNode';
 import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateErrors } from './validate/updateErrors';
+import { uuid } from './utils/uuid';
 
 export type O = Record<string, unknown>;
 
@@ -60,6 +61,7 @@ export type HeadlessEditorOptions<Data = unknown> = {
 // @todo test setSchema
 // @todo difference between setValue and setData (root?)?
 export class HeadlessEditor<Data = unknown> {
+    id: string = uuid();
     /** Editor root node */
     root: Node;
     /** Json-Schema API */
@@ -219,10 +221,17 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]) {
-        const p = plugin(this, pluginOptions);
-        if (p && p.id) {
-            this.plugins.push(p);
-            return p as ReturnType<T>;
+        const instance = plugin(this, pluginOptions);
+        if (instance && instance.id) {
+            this.plugins = this.plugins.filter((plugin) => {
+                if (plugin.id === instance.id) {
+                    plugin.onDestroy?.();
+                    return false;
+                }
+                return true;
+            });
+            this.plugins.push(instance);
+            return instance as ReturnType<T>;
         }
         return undefined;
     }

@@ -1,10 +1,11 @@
-import { useState, useMemo, useEffect } from 'react';
-import { HeadlessEditorOptions, Node, OnChangePlugin, deepEqual, OnChangeListener } from 'headless-json-editor';
+import { useState, useEffect } from 'react';
+import { HeadlessEditorOptions, OnChangePlugin, deepEqual, OnChangeListener } from 'headless-json-editor';
 import { Editor } from './Editor';
 import { WidgetPlugin } from './decorators';
 import { useEditorPlugin } from './useEditorPlugin';
 
 export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
+    // editor?: Editor<Data> | null;
     onChange?: OnChangeListener<Data>;
     widgets?: WidgetPlugin[];
     /** optional cacheKey. Change cacheKey to recreate json-editor */
@@ -16,28 +17,24 @@ export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
 };
 
 // prevent required tooltip in browsers
-document.addEventListener('invalid', (e) => e.preventDefault(), true);
+document?.addEventListener?.('invalid', (e) => e.preventDefault(), true);
 
 /**
  * add json editor widget capabilities to your functional component
  */
-export function useEditor<Data = unknown, T extends Node = Node>(settings: UseEditorOptions<Data>): [T, Editor<Data>] {
+export function useEditor<Data = unknown>(settings: UseEditorOptions<Data>) {
     const { schema, data, cacheKey } = settings;
-    const setCurrentData = useState<Data | undefined>(data)[1];
-
+    // track instance
+    const [editor, setEditor] = useState<Editor<Data> | null>(null);
+    // track current data
+    const setCurrentData = useState<Data | null>(data ?? null)[1];
     // track previous inputs - set data to editor if input values have changed
     const [previousData, setPreviousData] = useState<Data | undefined>(data);
     const [previousSchema, setPreviousSchema] = useState(schema);
 
-    let editorWasCreatedNow = false;
-    const editor = useMemo(
+    useEffect(
         () => {
-            // store last used input data - prevents an additional rerender where
-            // last change is lost. this is required in update loops where input
-            // data has changed
-            setPreviousData(data);
-            setPreviousSchema(schema);
-            const editor = new Editor<Data>({
+            const instance = new Editor<Data>({
                 ...settings,
                 schema,
                 data,
@@ -49,16 +46,21 @@ export function useEditor<Data = unknown, T extends Node = Node>(settings: UseEd
                 extendDefaults: settings.extendDefaults,
                 draftConfig: settings.draftConfig
             });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            editorWasCreatedNow = true;
-            return editor;
+            // console.log('create editor', instance.id);
+            // store last used input data - prevents an additional rerender where
+            // last change is lost. this is required in update loops where input
+            // data has changed
+            setEditor(instance);
+            setPreviousData(data);
+            setPreviousSchema(schema);
+            return () => {
+                instance?.destroy();
+                setEditor(null);
+            };
         },
-        // a change of cacheKey completely recreates editor - resetting any changes made
-        [cacheKey]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [cacheKey, setEditor]
     );
-
-    // cleanup editor instance on destroy
-    useEffect(() => () => editor?.destroy(), [editor]);
 
     useEditorPlugin(editor, OnChangePlugin, {
         pluginId: 'InternalOnChange',
@@ -70,10 +72,11 @@ export function useEditor<Data = unknown, T extends Node = Node>(settings: UseEd
         }
     });
 
-    if (editorWasCreatedNow) {
-        return [editor.getNode() as T, editor];
+    if (editor == null) {
+        return editor;
     }
 
+    // @todo move data comparisson to editor method
     if (data !== previousData && !deepEqual(data, previousData)) {
         editor.setData(data);
         setPreviousData(data);
@@ -84,5 +87,5 @@ export function useEditor<Data = unknown, T extends Node = Node>(settings: UseEd
         setPreviousSchema(schema);
     }
 
-    return [editor.getNode() as T, editor];
+    return editor;
 }

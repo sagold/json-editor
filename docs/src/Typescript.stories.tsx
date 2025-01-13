@@ -28,19 +28,21 @@ type MyData = {
 
 function TypedUseJsonEditor() {
     // [Node, JsonEditor<MyData>]
-    const [node, editor] = useEditor<MyData>({
+    const editor = useEditor<MyData>({
         schema: jsonSchema,
         // (data: MyData) => void
         onChange(data) {}
     });
+    if (editor == null) {
+        return null;
+    }
     // data: MyData
     const data = editor.getData();
-
     return <div />;
 }
 
 function TypedJsonForm() {
-    const [editor, setEditor] = useState<Editor<MyData>>();
+    const [editor, setEditor] = useState<Editor<MyData> | null>(null);
     // data: MyData
     const data = editor?.getData();
 

@@ -11,7 +11,11 @@ export default {
 
 type Story = StoryObj<UseEditorOptions>;
 function Form({ data, schema }: UseEditorOptions) {
-    const [node, editor] = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
+    const editor = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
+    if (editor == null) {
+        return null;
+    }
+    const node = editor.getNode();
     const WidgetComponent = editor.getWidget(node);
     return <WidgetComponent node={node} editor={editor} />;
 }

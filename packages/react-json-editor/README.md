@@ -35,6 +35,9 @@ function MyForm({ schema, data }) {
       console.log('data', data, 'root', state);
     }
   });
+  if (editor == null) {
+    return null;
+  }
   const Widget = editor.getWidget(root);
   return (
     <div className="rje rje-form rje-theme rje-theme--light">

@@ -1,7 +1,4 @@
-// import { v4 as uuid } from 'uuid';
-import ShortUniqueId from 'short-unique-id';
-const uid = new ShortUniqueId({ length: 12 });
-const uuid = () => uid.rnd();
+import { uuid } from '../utils/uuid';
 
 import {
     getTypeOf,

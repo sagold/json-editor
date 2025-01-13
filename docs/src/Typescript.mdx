@@ -15,11 +15,14 @@ type MyData = {
 
 function MyForm({ schema }: { schema: JsonSchema }) {
   // [Node, JsonEditor<MyData>]
-  const [root, editor] = useEditor<MyData>({
+  const editor = useEditor<MyData>({
     schema,
     // (data: MyData) => void
     onChange(data) {}
   });
+  if (editor == null) {
+    return null;
+  }
   // data: MyData
   const data = editor.getData();
   const Widget = editor.getWidget(root);
