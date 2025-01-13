@@ -8,10 +8,13 @@ type DateWidgetStoryProps = UseEditorOptions & DateOptions & { data: string };
 
 function DateWidgetStory({ data = '', schema, ...options }: DateWidgetStoryProps) {
     const s = { ...schema };
-    const [node, editor] = useEditor<string, StringNode>({ schema: s, widgets, data, validate: true });
+    const editor = useEditor<string, StringNode>({ schema: s, widgets, data, validate: true });
+    if (editor == null) {
+        return null;
+    }
     return (
         <>
-            <DateWidget node={node} editor={editor} options={options} />
+            <DateWidget node={editor.getNode()} editor={editor} options={options} />
             <code style={{ paddingTop: 8, display: 'block' }}>{editor.getData()}</code>
         </>
     );

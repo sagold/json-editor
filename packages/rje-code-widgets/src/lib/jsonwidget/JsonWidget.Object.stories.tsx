@@ -1,8 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import defaultWidgets, { JsonForm } from '@sagold/rje-aria-widgets';
+import defaultWidgets, { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './JsonWidget';
-import { ThemeDecorator } from '../../../../rje-aria-widgets/src/lib/components/ThemeDecorator';
+import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import '../rje-code-widgets.scss';
 
 type Story = StoryObj<typeof JsonWidget>;
@@ -15,7 +15,7 @@ const meta: Meta<typeof JsonWidget> = {
             options: ['light', 'dark']
         }
     },
-    decorators: [ThemeDecorator],
+    decorators: [MantineThemeDecorator],
     render({ schema, data, theme }) {
         const s = {
             ...schema,

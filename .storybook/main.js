@@ -40,7 +40,6 @@ module.exports = {
             ...(config.resolve.alias ?? {}),
             '@sagold/react-json-editor': getPackagePath('react-json-editor', 'src'),
             'headless-json-editor': getPackagePath('headless-json-editor', 'src'),
-            '@sagold/rje-aria-widgets': getPackagePath('rje-aria-widgets', 'src'),
             '@sagold/rje-code-widgets': getPackagePath('rje-code-widgets', 'src'),
             '@sagold/rje-mantine-widgets': getPackagePath('rje-mantine-widgets', 'src')
         };

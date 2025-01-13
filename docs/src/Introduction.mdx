@@ -1,5 +1,4 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
-import { widgets, JsonForm } from '@sagold/rje-aria-widgets';
 import { NpmPackageName } from './NpmPackageName';
 import logo from '../images/he-square-700x540.png';
 
@@ -89,11 +88,8 @@ Working with your another framework or non at all, you start with the following 
 
 ## Roadmap
 
-- [ ] deprecate react-aria in favor of mantine
-  - [ ] file widget
-  - [ ] navigation widget
-  - [✓] date widgets
-  - [✓] live update option
+- [ ] introduce file widget
+- [✓] deprecate react-aria in favor of mantine
 - [✓] update json-schema-library to v10
 
 _drag&rop features_
@@ -107,6 +103,7 @@ _stability_
 - [✓] test weird/incorrect states (change of schema types, errors in dynamic schemas, wrong input data)
 - [✓] improve update flow (using diff to patch less nodes and ensure current input does not lose focus)
 - [✓] deploy docs in workflow only
+- [✓] support react strict mode
 - [ ] add integration test setup
   - [ ] test action menu item & visibility
 

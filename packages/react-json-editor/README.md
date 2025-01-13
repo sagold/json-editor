@@ -63,7 +63,7 @@ Only required property is a valid json-schema passed to `schema`.
 
 # overview
 
-> react implementation of [headless-json-editor](../headless-json-editor) using [react-aria](https://react-spectrum.adobe.com/react-aria/)
+> react implementation of [headless-json-editor](../headless-json-editor)
 
 ## widgets
 

@@ -60,17 +60,3 @@ yarn add @sagold/rje-code-widgets
 
 - read more in package [rje-code-widgets](./packages/rje-code-widgets)
 - [demo page](https://sagold.github.io/json-editor/?path=/story/packages-rje-code-widgets-overview--page)
-
-## [rje-aria-widgets](./packages/rje-aria-widgets)
-
-[![Npm package version](https://badgen.net/npm/v/@sagold/rje-aria-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-aria-widgets)
-![Types](https://badgen.net/npm/types/@sagold/rje-aria-widgets)
-
-Set of default widgets for _react-json-editor_ using _react-aria_ that render a user form for all basic json datatypes.
-
-```sh
-yarn add @sagold/rje-aria-widgets
-```
-
-- read more in package [react-json-editor](./packages/rje-aria-widgets)
-- [demo page](https://sagold.github.io/json-editor)

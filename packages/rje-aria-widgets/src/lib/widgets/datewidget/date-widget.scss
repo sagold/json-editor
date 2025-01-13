@@ -1,5 +1,0 @@
-@use '../../components/datepicker/date-picker' as date;
-
-.rje-field--date {
-    @include date.date-picker-component();
-}

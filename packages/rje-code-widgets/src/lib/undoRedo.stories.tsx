@@ -1,21 +1,11 @@
-import { ComponentStory } from '@storybook/react';
-import { Widget, JsonSchema, useEditor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
-import theme from '../../../rje-aria-widgets/src/lib/theme';
-import defaultWidgets, { Button } from '@sagold/rje-aria-widgets';
+import defaultWidgets, { Icon } from '@sagold/rje-mantine-widgets';
+import { Button } from '@mantine/core';
+import type { Meta, StoryObj } from '@storybook/react';
 import { JsonWidget, JsonWidgetOptions, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
+import { MantineThemeDecorator } from '../docs/MantineThemeDecorator';
+import { Widget, JsonSchema, useEditor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 
-export default {
-    title: 'packages/rje-code-widgets/UndoRedo',
-    component: JsonWidget
-};
-
-type ComponentStoryProps = {
-    schema: JsonSchema;
-    data?: any;
-    options?: Partial<JsonWidgetOptions>;
-};
-
-const Template: ComponentStory<any> = ({ data, schema }: ComponentStoryProps) => {
+const Template = ({ data, schema }: { schema: JsonSchema; data?: any; options?: Partial<JsonWidgetOptions> }) => {
     const editor = useEditor({
         schema,
         data,
@@ -28,36 +18,47 @@ const Template: ComponentStory<any> = ({ data, schema }: ComponentStoryProps) =>
     const historyPlugin = useEditorPlugin(editor, HistoryPlugin);
 
     return (
-        <div className="rje-form rje-theme--light" style={theme}>
+        <div className="rje-form rje-theme--light">
             <div style={{ display: 'flex', gap: 8 }}>
-                <Button
-                    icon="undo"
-                    onPress={() => historyPlugin?.undo()}
-                    disabled={historyPlugin?.getUndoCount() === 0}
-                />
-                <Button
-                    icon="redo"
-                    onPress={() => historyPlugin?.redo()}
-                    disabled={historyPlugin?.getRedoCount() === 0}
-                />
+                <Button onClick={() => historyPlugin?.undo()} disabled={historyPlugin?.getUndoCount() === 0}>
+                    <Icon>undo</Icon>
+                </Button>
+                <Button onClick={() => historyPlugin?.redo()} disabled={historyPlugin?.getRedoCount() === 0}>
+                    <Icon>redo</Icon>
+                </Button>
             </div>
             <Widget editor={editor} />
         </div>
     );
 };
 
-export const ObjectJson = Template.bind({});
-ObjectJson.args = {
-    data: {},
-    schema: {
-        type: 'object',
-        format: 'json',
-        title: 'Content',
-        required: ['title'],
-        properties: {
-            title: { type: 'string', minLength: 1 },
-            subtitle: { type: 'string' },
-            text: { type: 'string', format: 'html' }
+type Story = StoryObj<{
+    schema: JsonSchema;
+    data?: any;
+    options?: Partial<JsonWidgetOptions>;
+}>;
+
+const meta: Meta<typeof JsonWidget> = {
+    title: 'packages/rje-code-widgets/UndoRedo',
+    component: JsonWidget,
+    decorators: [MantineThemeDecorator],
+    render: Template
+};
+export default meta;
+
+export const ObjectJson: Story = {
+    args: {
+        data: {},
+        schema: {
+            type: 'object',
+            format: 'json',
+            title: 'Content',
+            required: ['title'],
+            properties: {
+                title: { type: 'string', minLength: 1 },
+                subtitle: { type: 'string' },
+                text: { type: 'string', format: 'html' }
+            }
         }
     }
 };

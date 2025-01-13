@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
-import defaultWidgets, { Button, Theme, JsonForm } from '@sagold/rje-aria-widgets';
+import defaultWidgets, { JsonForm, Icon } from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import theme from '../../../rje-aria-widgets/src/lib/theme';
+import { MantineThemeDecorator } from '../docs/MantineThemeDecorator';
+import { Button } from '@mantine/core';
 import './rje-code-widgets.scss';
 
 function CodeWidgetComponent(args) {
@@ -11,32 +12,26 @@ function CodeWidgetComponent(args) {
     const [data, setData] = useState<unknown>(null);
     const history = useEditorPlugin(editor, HistoryPlugin);
     return (
-        <Theme>
-            <div className="rje-form rje-theme rje-theme--light" style={theme}>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    <Button
-                        icon="undo"
-                        onPress={() => history?.undo()}
-                        disabled={history?.getUndoCount() === 0}
-                    ></Button>
-                    <Button
-                        icon="redo"
-                        onPress={() => history?.redo()}
-                        disabled={history?.getRedoCount() === 0}
-                    ></Button>
-                </div>
-                <JsonForm
-                    style={{ maxWidth: 680 }}
-                    addOptionalProps={false}
-                    schema={args.schema}
-                    onChange={setData}
-                    data={args.data}
-                    editor={setEditor}
-                    plugins={[HistoryPlugin]}
-                    widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-                />
+        <div className="rje-form rje-theme rje-theme--light">
+            <div style={{ display: 'flex', gap: 8 }}>
+                <Button onClick={() => history?.undo()} disabled={history?.getUndoCount() === 0}>
+                    <Icon>undo</Icon>
+                </Button>
+                <Button onClick={() => history?.redo()} disabled={history?.getRedoCount() === 0}>
+                    <Icon>redo</Icon>
+                </Button>
             </div>
-        </Theme>
+            <JsonForm
+                style={{ maxWidth: 680 }}
+                addOptionalProps={false}
+                schema={args.schema}
+                onChange={setData}
+                data={args.data}
+                editor={setEditor}
+                plugins={[HistoryPlugin]}
+                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
+            />
+        </div>
     );
 }
 
@@ -44,6 +39,7 @@ type Story = StoryObj<typeof JsonWidget>;
 const meta: Meta<typeof JsonWidget> = {
     title: 'packages/rje-code-widgets/JsonWidget',
     component: JsonWidget,
+    decorators: [MantineThemeDecorator],
     argTypes: {
         // data: {
         //     control: { type: 'text' }
