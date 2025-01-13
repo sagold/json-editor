@@ -1,4 +1,4 @@
-import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
+import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-mantine-widgets';
 import { StoryObj } from '@storybook/react';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
@@ -11,11 +11,10 @@ export default {
 
 type Story = StoryObj<UseEditorOptions>;
 function Form({ data, schema }: UseEditorOptions) {
-    const [node, editor] = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
-    const WidgetComponent = editor.getWidget(node);
+    const editor = useEditor({ data, schema, widgets, plugins: [], onChange: console.log });
     return (
         <div className="rje-form">
-            <WidgetComponent node={node} editor={editor} />
+            <Widget editor={editor} />
         </div>
     );
 }

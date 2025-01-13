@@ -4,16 +4,15 @@ import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Flex, MantineProvider } from '@mantine/core';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
-import { JsonSchema, useEditor } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor, Widget } from '@sagold/react-json-editor';
 import { widgets } from '../widgets';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
 import { ObjectOptions } from '../widgets/objectwidget/ObjectWidget';
 
 function WithTwoColumns(props) {
-    const [node, editor] = useEditor({ ...props, widgets });
+    const editor = useEditor({ ...props, widgets });
     // @ts-ignore
     window.getEditor = () => editor;
-    const ChildWidget = editor.getWidget(node);
     return (
         <MantineProvider>
             <Flex
@@ -23,10 +22,10 @@ function WithTwoColumns(props) {
                 gap={'2em'}
             >
                 <div>
-                    <ChildWidget node={node} editor={editor} />
+                    <Widget editor={editor} />
                 </div>
                 <div>
-                    <ChildWidget node={node} editor={editor} />
+                    <Widget editor={editor} />
                 </div>
             </Flex>
         </MantineProvider>

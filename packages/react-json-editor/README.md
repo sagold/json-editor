@@ -22,12 +22,12 @@ install
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)
 
 ```tsx
-import { useEditor } from '@sagold/react-json-editor';
-import defaultWidgets from '@sagold/rje-aria-widgets';
-import '@sagold/rje-aria-widgets/dist/styles.css';
+import { useEditor, Widget } from '@sagold/react-json-editor';
+import defaultWidgets from '@sagold/rje-mantine-widgets';
+import '@sagold/rje-mantine-widgets/dist/styles.css';
 
 function MyForm({ schema, data }) {
-  const [root, editor] = useEditor({
+  const editor = useEditor({
     schema,
     data,
     widgets: defaultWidgets,
@@ -35,13 +35,9 @@ function MyForm({ schema, data }) {
       console.log('data', data, 'root', state);
     }
   });
-  if (editor == null) {
-    return null;
-  }
-  const Widget = editor.getWidget(root);
   return (
     <div className="rje rje-form rje-theme rje-theme--light">
-      <Widget node={root} editor={editor} />
+      <Widget editor={editor} />
     </div>
   );
 }
@@ -185,8 +181,8 @@ The `Jsonform` component add the defaultWidgets per default. If you are using `u
 import { defaultWidgets, useEditor, Widget } from '@sagold/react-json-editor';
 
 function MyForm({ schema }) {
-  const [rootNode, editor] = useEditor({ schema, widgets: defaultWidgets });
-  return <Widget node={rootNode} editor={editor} />;
+  const editor = useEditor({ schema, widgets: defaultWidgets });
+  return <Widget editor={editor} />;
 }
 ```
 
@@ -238,14 +234,13 @@ For more details check [any default widget](https://github.com/sagold/json-edito
 ### adding plugins
 
 ```tsx
-import { useEditor, HistoryPlugin } from '@sagold/react-json-editor';
+import { useEditor, Widget, HistoryPlugin } from '@sagold/react-json-editor';
 
 export function Myform({ schema }) {
-  const [root, editor] = useEditor({
+  const editor = useEditor({
     schema,
     plugins: [HistoryPlugin]
   });
-  const Widget = editor.getWidget(root);
   return <Widget node={root} editor={editor} />;
 }
 ```
@@ -253,13 +248,12 @@ export function Myform({ schema }) {
 or with `useEditorPlugin` hook
 
 ```tsx
-import { useEditor, useEditorPlugin, HistoryPlugin } from '@sagold/react-json-editor';
+import { useEditor, useEditorPlugin, Widget, HistoryPlugin } from '@sagold/react-json-editor';
 
 export function Myform({ schema }) {
-  const [root, editor] = useEditor({ schema });
+  const editor = useEditor({ schema });
   const history = useEditorPlugin(editor, HistoryPlugin);
-  const Widget = editor.getWidget(root);
-  return <Widget node={root} editor={editor} />;
+  return <Widget editor={editor} />;
 }
 ```
 
@@ -274,16 +268,15 @@ export function Myform({ schema }) {
 > undo, redo support
 
 ```tsx
-import { useEditor, useEditorPlugin, HistoryPlugin } from '@sagold/react-json-editor';
+import { useEditor, useEditorPlugin, Widget, HistoryPlugin } from '@sagold/react-json-editor';
 
 export function Myform({ schema }) {
-  const [root, editor] = useEditor({ schema });
+  const editor = useEditor({ schema });
   const history = useEditorPlugin(editor, HistoryPlugin);
   // history?.undo();
   // history?.redo();
   // history?.history.getUndoCount();
   // history?.history.getRedoCount();
-  const Widget = editor.getWidget(root);
   return <Widget node={root} editor={editor} />;
 }
 ```
@@ -293,20 +286,21 @@ export function Myform({ schema }) {
 > callback for data changes
 
 ```tsx
-import { useEditorPlugin, OnChangePlugin } from '@sagold/react-json-editor';
+import { useEditorPlugin, Widget, OnChangePlugin } from '@sagold/react-json-editor';
 
 function MyForm({ schema }) {
-  const [root, editor] = useEditor({ schema });
+  const editor = useEditor({ schema });
   useEditorPlugin(editor, OnChangePlugin, {
     onChange(ast, event, editor) {
       // do something
     }
   });
-  const Widget = editor.getWidget(root);
-  return <Widget node={root} editor={editor} />;
+  return <Widget editor={editor} />;
 }
 ```
 
 Note that an onChangePlugin is added per default.
 
 ### create custom plugin
+
+@todo

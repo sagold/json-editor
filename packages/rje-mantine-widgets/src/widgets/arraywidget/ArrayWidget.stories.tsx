@@ -1,18 +1,17 @@
 import { StoryObj } from '@storybook/react';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { ArrayOptions } from './ArrayWidget';
-import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
+import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';
 
 type WidgetProps = ArrayOptions & { editorProps: UseEditorOptions };
-function Widget({ editorProps, ...props }: WidgetProps) {
-    const [root, editor] = useEditor(editorProps);
-    const ChildWidget = editor.getWidget(root);
-    return <ChildWidget editor={editor} node={root} options={props} />;
+function WidgetForm({ editorProps, ...props }: WidgetProps) {
+    const editor = useEditor(editorProps);
+    return <Widget editor={editor} options={props} />;
 }
 
 export default {
     title: 'packages/rje-mantine-widgets/widgets/ArrayWidget',
-    component: Widget,
+    component: WidgetForm,
     decorators: [MantineThemeDecorator]
 };
 

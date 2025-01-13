@@ -9,14 +9,18 @@ Widget.Description = WidgetDescription;
 Widget.Error = WidgetError;
 
 export type WidgetProps<T extends Node = Node> = {
-    editor: Editor;
-    node: Node;
+    editor: Editor | null;
+    node?: Node;
     options?: Partial<T['options']>;
 };
 
 export function Widget<T extends Node = Node>({ editor, node, options }: WidgetProps<T>) {
-    const ChildEditor = editor.getWidget(node, options);
-    return <ChildEditor editor={editor} node={node} options={options} />;
+    if (editor == null) {
+        return null;
+    }
+    const state = node ?? editor.getNode();
+    const ChildEditor = editor.getWidget(state, options);
+    return <ChildEditor editor={editor} node={state} options={options} />;
 }
 
 export type { WidgetFieldProps, WidgetDescriptionProps, WidgetErrorProps };
