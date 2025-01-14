@@ -18,11 +18,7 @@ import { unlinkAll } from './transform/unlinkAll';
 import { unlinkPath } from './transform/unlinkPath';
 import { updateNode, updateSchema, updateOptions } from './transform/updateNode';
 // hje
-import {
-    HeadlessEditor,
-    HeadlessEditorOptions,
-    Plugin, PluginInstance,
-} from './HeadlessEditor';
+import { HeadlessEditor, HeadlessEditorOptions, Plugin, PluginInstance } from './HeadlessEditor';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
@@ -36,6 +32,7 @@ import { validateNode, splitErrors } from './validate/validateNode';
 import { isJsonError, JsonError } from 'json-schema-library';
 // bundled tools
 export { deepEqual } from 'fast-equals';
+export { uuid } from './utils/uuid';
 // types and type guards
 import {
     ArrayNode,
@@ -60,7 +57,7 @@ import {
     ParentNode,
     PluginEvent,
     StringNode,
-    ValueNode,
+    ValueNode
 } from './types';
 
 export {
@@ -100,7 +97,7 @@ export {
     updateNode,
     updateOptions,
     updateSchema,
-    validateNode,
+    validateNode
 };
 
 export type {

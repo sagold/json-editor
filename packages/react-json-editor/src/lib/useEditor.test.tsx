@@ -204,11 +204,11 @@ describe('useEditor', () => {
                 const Widget = editor.getWidget(root);
                 return <Widget node={root} editor={editor} />;
             }
-            const { rerender } = render(<Form />);
+            const { unmount } = render(<Form />);
             assert(currentEditor != null);
             currentEditor = currentEditor as Editor;
 
-            rerender(<div />);
+            unmount();
 
             assert(currentEditor != null);
             assert(currentEditor.plugins == null);
@@ -254,7 +254,6 @@ describe('useEditor', () => {
                 </StrictMode>
             );
 
-            // console.log(createCalls, destroyCalls);
             assert.equal(createCalls.length, destroyCalls.length);
         });
     });
