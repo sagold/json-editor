@@ -14,16 +14,12 @@ type MyData = {
 };
 
 function MyForm({ schema }: { schema: JsonSchema }) {
-  // [Node, JsonEditor<MyData>]
+  // JsonEditor<MyData>
   const editor = useEditor<MyData>({
     schema,
     // (data: MyData) => void
     onChange(data) {}
   });
-  if (editor == null) {
-    return null;
-  }
-  // data: MyData
   return <Widget editor={editor} node={editor?.getNode()} />;
 }
 ```

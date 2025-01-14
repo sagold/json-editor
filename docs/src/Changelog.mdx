@@ -2,6 +2,53 @@ import { Meta, Canvas } from '@storybook/addon-docs';
 
 <Meta title="Changelog" />
 
+# v0.35.0
+
+- Breaking: removed package rje-aria-widgets in favor of rje-mantine-widgets
+- Breaking: changed return type of useEditor to `Editor|null` (previously `[Node, Editor]`)
+- Breaking: Following best practuces, useEditor initially returns `null`
+- add: support for onDestroy calls using strict mode
+- add: Component Widget supports an optional editor and node property. Default node is RootNode (given by editor?.getNode())
+
+## Upgrade to v0.35.0
+
+Previously `useEditor` was used by
+
+```ts
+const [node, editor] = useEditor(settings);
+const WidgetComponent = editor.getWidget(node);
+return <WidgetComponent editor={editor} node={node} />
+```
+
+as of `v0.35.0` you will change usage to
+
+```ts
+const editor = useEditor(settings);
+if (editor == null) {
+  return null;
+}
+const node = editor.getNode();
+const WidgetComponent = editor.getWidget(node);
+return <WidgetComponent editor={editor} node={node} />
+```
+
+for convinience you may use the `Widget` component simplifying the example to
+
+```ts
+import { Widget } from "react-json-editor";
+const editor = useEditor(settings);
+return <Widget editor={editor} />
+```
+
+**Note** `useEditorPlugin` works well with this change so you can keep the current usage, e.g.
+
+```ts
+import { Widget } from "react-json-editor";
+const editor = useEditor(settings);
+usePlugin(editor, myPlugin)
+return <Widget editor={editor} />
+```
+
 # v0.34.0
 
 - added package `rje-mantine-widgets`
