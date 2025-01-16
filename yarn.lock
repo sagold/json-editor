@@ -1882,11 +1882,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/react-json-editor@^0.34.0, @sagold/react-json-editor@workspace:packages/react-json-editor":
+"@sagold/react-json-editor@^0.35.0, @sagold/react-json-editor@workspace:packages/react-json-editor":
   version: 0.0.0-use.local
   resolution: "@sagold/react-json-editor@workspace:packages/react-json-editor"
   dependencies:
-    headless-json-editor: ^0.34.0
+    headless-json-editor: ^0.35.0
     markdown-to-jsx: ^7.7.1
   languageName: unknown
   linkType: soft
@@ -1900,7 +1900,7 @@ __metadata:
     "@uiw/react-codemirror": ^4.21.24
     markdown-to-jsx: ^7.7.1
   peerDependencies:
-    "@sagold/react-json-editor": ^0.34.0
+    "@sagold/react-json-editor": ^0.35.0
   languageName: unknown
   linkType: soft
 
@@ -1911,7 +1911,7 @@ __metadata:
     "@mantine/core": ^7.14.3
     "@mantine/dates": ^7.15.0
     "@mantine/hooks": ^7.14.3
-    "@sagold/react-json-editor": ^0.34.0
+    "@sagold/react-json-editor": ^0.35.0
     classnames: ^2.5.1
     dayjs: ^1.11.13
     dayjs-plugin-utc: ^0.1.2
@@ -7241,7 +7241,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"headless-json-editor@^0.34.0, headless-json-editor@workspace:packages/headless-json-editor":
+"headless-json-editor@^0.35.0, headless-json-editor@workspace:packages/headless-json-editor":
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
