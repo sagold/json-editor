@@ -338,12 +338,10 @@ export function _createNode<T extends Node = Node>(schemaNode: SchemaNode, data:
     // - this ensures the form is generated
     // - @attention this drops invalid data
     const schemaType = schemaNode.schema.type as keyof typeof NODES;
-    let resolvedType: keyof typeof NODES = schemaType ?? dataType;
+    let resolvedType: keyof typeof NODES = NODES[schemaType] ? schemaType : dataType;
     if (Array.isArray(schemaType)) {
         resolvedType = (schemaType.includes(dataType) ? dataType : schemaType[0]) as keyof typeof NODES;
     }
-    // const resolvedType = dataType;
-
     if (NODES[resolvedType]) {
         if (data instanceof File) {
             return NODES.file(schemaNode, data, isArrayItem) as T;

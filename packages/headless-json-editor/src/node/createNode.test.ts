@@ -15,10 +15,16 @@ describe('createNode', () => {
         assert(root.type === 'string');
     });
 
-    it('should support null properties', () => {
+    it('should support `null` properties', () => {
         draft.setSchema({ type: 'null' });
         const root = createNode(draft, null);
         assert(root.type === 'null');
+    });
+
+    it('should support `integer` properties', () => {
+        draft.setSchema({ type: 'integer' });
+        const root = createNode(draft, 42);
+        assert(root.type === 'number');
     });
 
     it('should create a node tree with additionalProperties set', () => {
