@@ -23,8 +23,8 @@ export type MultiSelectOptions = {
 } & DefaultNodeOptions;
 
 const MultiSelectWidget = (props: WidgetProps) => {
-    const type = (props.node.options?.type || props?.options?.type) ?? 'select';
-    if (props.node.schema.format === 'taglist' || type === 'taglist') {
+    const type = (props.node?.options?.type || props?.options?.type) ?? 'select';
+    if (props.node?.schema.format === 'taglist' || type === 'taglist') {
         return <TagListWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;
     }
     return <SelectWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;

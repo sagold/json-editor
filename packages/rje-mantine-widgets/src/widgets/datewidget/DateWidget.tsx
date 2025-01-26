@@ -35,7 +35,7 @@ export type DateOptions = DefaultNodeOptions<{
 }>;
 
 export const DateWidget = function (props: WidgetProps) {
-    const format = props.node.schema.format;
+    const format = props.node?.schema.format;
     if (format === 'time') {
         return <TimeWidget {...(props as DecoratedWidgetProps<StringNode, string>)} />;
     }

@@ -1,5 +1,5 @@
-import { Node, isParentNode } from "../../types";
-import { JsonSchema } from "../../jsonSchema";
+import { Node, isParentNode } from '../../types';
+import { JsonSchema } from '../../jsonSchema';
 
 function isSimilarSchema(a: JsonSchema, b: JsonSchema) {
     return a.type === b.type;
@@ -11,7 +11,6 @@ export function syncNodes(from: Node, to: Node) {
     }
     if (isSimilarSchema(from.schema, to.schema)) {
         to.id = from.id;
-    } else {
     }
     if (from.type === to.type) {
         if (isParentNode(to) && isParentNode(from)) {

@@ -86,7 +86,7 @@ describe('setValue', () => {
 
     it('should update existing object on root', () => {
         const before = createNode(core, core.getTemplate({})) as ObjectNode;
-        const [after, changes] = setValue(core, before, '#', { title: 'new', size: {}, list: ['99'] });
+        const [after] = setValue(core, before, '#', { title: 'new', size: {}, list: ['99'] });
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { title: 'new', size: {}, list: ['99'] });
@@ -97,7 +97,7 @@ describe('setValue', () => {
         const before = createNode(core, {}) as ObjectNode;
         const beforeString = JSON.stringify(before);
 
-        const [after, changes] = setValue(core, before, '/title', 'latest headline');
+        const [after] = setValue(core, before, '/title', 'latest headline');
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { title: 'latest headline', list: [], size: {} });

@@ -95,7 +95,7 @@ describe('removeNode', () => {
             // precondition: title is required, size is set, but list is optional
             assert.deepEqual(before.missingProperties, ['list']);
 
-            const [after, changes] = removeNode(core, before, '/size');
+            const [after] = removeNode(core, before, '/size');
 
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['size', 'list']);
@@ -124,7 +124,7 @@ describe('removeNode', () => {
                 draft.getTemplate({ one: 'triggers two' }, draft.getSchema(), { addOptionalProps: false })
             ) as ObjectNode;
 
-            const [after, changes] = removeNode(draft, before, '/one');
+            const [after] = removeNode(draft, before, '/one');
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['one']);
             assert.deepEqual(after.optionalProperties, ['one', 'two']);
