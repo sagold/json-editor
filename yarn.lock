@@ -1865,10 +1865,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/json-pointer@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "@sagold/json-pointer@npm:6.0.1"
-  checksum: 9d248268e580cb388987598e460c788412347ebeb980318be25c05463ae76f9c0a34cc8dbd9bbc9f4cfc1775622a2b4d113a905494558f8484cf2e16eedb23bd
+"@sagold/json-pointer@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@sagold/json-pointer@npm:7.0.0"
+  checksum: d615d09c5b21a32609c4c7ec5749e7a6c5016c3238dfa4901fc95fb9a0d69903937e6eee64f029db0bc5b025a3b42bd653e8e0cacdd8757f7e74aa48dc7aec3c
   languageName: node
   linkType: hard
 
@@ -7245,10 +7245,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
-    "@sagold/json-pointer": ^6.0.1
+    "@sagold/json-pointer": ^7.0.0
     "@types/uuid": ^9.0.8
     fast-equals: ^5.0.1
-    json-schema-library: ^10.0.0-rc6
+    json-schema-library: ^10.0.0-rc8
     short-unique-id: ^5.2.0
   languageName: unknown
   linkType: soft
@@ -8874,18 +8874,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^10.0.0-rc6":
-  version: 10.0.0-rc6
-  resolution: "json-schema-library@npm:10.0.0-rc6"
+"json-schema-library@npm:^10.0.0-rc8":
+  version: 10.0.0-rc8
+  resolution: "json-schema-library@npm:10.0.0-rc8"
   dependencies:
-    "@sagold/json-pointer": ^6.0.1
+    "@sagold/json-pointer": ^7.0.0
     "@sagold/json-query": ^6.2.0
     deepmerge: ^4.3.1
     fast-copy: ^3.0.2
     fast-deep-equal: ^3.1.3
     smtp-address-parser: 1.0.10
     valid-url: ^1.0.9
-  checksum: 0957404204832de2e2c41c26304bd3162249d61f03b89cf46b8fbfdc253425b8e979eca6bc5d166bffe788bf4b16a97dc9d821ddfa3eec2b69d67d0742e29fa7
+  checksum: 59f8c2649e3704a592faab316749d07cbe18b22d0b6e679a0f54f9f443568cb328e5d7e67da5fd9f24b2555c4ada3d41c6a26dfbe5151306a607f323493515bb
   languageName: node
   linkType: hard
 
