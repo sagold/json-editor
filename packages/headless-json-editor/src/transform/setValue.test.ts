@@ -1020,4 +1020,140 @@ describe('setValue', () => {
             assert.equal(updatedList.children.length, 3);
         });
     });
+
+    describe('extendDefaults', () => {
+        it('should not extend defaults', () => {
+            const draft = new JsonEditor(
+                { type: 'array', minItems: 2, items: { type: 'string' }, default: [] },
+                { templateDefaultOptions: { extendDefaults: false } }
+            );
+            const state: any = createNode(draft, draft.getTemplate());
+            assert.deepEqual(getData(state), []);
+
+            const [updatedState] = setValue(draft, state, '#', ['test']);
+            assert.deepEqual(getData(updatedState), ['test']);
+        });
+
+        it('should extend defaults', () => {
+            const draft = new JsonEditor(
+                { type: 'array', minItems: 2, items: { type: 'string' } },
+                { templateDefaultOptions: { extendDefaults: true } }
+            );
+            const state: any = createNode(draft, draft.getTemplate());
+            assert.deepEqual(getData(state), ['', '']);
+
+            const [updatedState] = setValue(draft, state, '#', ['test']);
+            assert.deepEqual(getData(updatedState), ['test']);
+        });
+
+        it('should not extend defaults of triggered dependency', () => {
+            const draft = new JsonEditor(
+                {
+                    type: 'object',
+                    dependencies: { trigger: ['dynamic'] },
+                    properties: {
+                        trigger: { type: 'boolean' },
+                        dynamic: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                    }
+                },
+                { templateDefaultOptions: { extendDefaults: false } }
+            );
+            const state: any = createNode(draft, draft.getTemplate({}));
+            assert.deepEqual(getData(state), {});
+
+            const [updatedState] = setValue(draft, state, '#/trigger', true);
+            assert.deepEqual(getData(updatedState), { trigger: true, dynamic: [] });
+        });
+
+        it('should extend defaults of triggered dependency', () => {
+            const draft = new JsonEditor(
+                {
+                    type: 'object',
+                    dependencies: { trigger: ['dynamic'] },
+                    properties: {
+                        trigger: { type: 'boolean' },
+                        dynamic: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                    }
+                },
+                { templateDefaultOptions: { extendDefaults: true } }
+            );
+            const state: any = createNode(draft, draft.getTemplate({}));
+            assert.deepEqual(getData(state), {});
+
+            const [updatedState] = setValue(draft, state, '#/trigger', true);
+            assert.deepEqual(getData(updatedState), { trigger: true, dynamic: [''] });
+        });
+
+        it('should not extend defaults of oneOf item', () => {
+            const draft = new JsonEditor(
+                {
+                    type: 'array',
+                    minItems: 1,
+                    items: {
+                        oneOfProperty: 'id',
+                        oneOf: [
+                            {
+                                type: 'object',
+                                required: ['id', 'alist'],
+                                properties: {
+                                    id: { const: 1 },
+                                    alist: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                                }
+                            },
+                            {
+                                type: 'object',
+                                required: ['id', 'blist'],
+                                properties: {
+                                    id: { const: 2 },
+                                    blist: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                                }
+                            }
+                        ]
+                    }
+                },
+                { templateDefaultOptions: { extendDefaults: false } }
+            );
+            const state: any = createNode(draft, draft.getTemplate([]));
+            assert.deepEqual(getData(state), [{ id: 1, alist: [] }]);
+
+            const [updatedState] = setValue(draft, state, '#/0', { id: 2 });
+            assert.deepEqual(getData(updatedState), [{ id: 2, blist: [] }]);
+        });
+
+        it('should extend defaults of oneOf item', () => {
+            const draft = new JsonEditor(
+                {
+                    type: 'array',
+                    minItems: 1,
+                    items: {
+                        oneOfProperty: 'id',
+                        oneOf: [
+                            {
+                                type: 'object',
+                                required: ['id', 'alist'],
+                                properties: {
+                                    id: { const: 1 },
+                                    alist: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                                }
+                            },
+                            {
+                                type: 'object',
+                                required: ['id', 'blist'],
+                                properties: {
+                                    id: { const: 2 },
+                                    blist: { type: 'array', minItems: 1, items: { type: 'string' }, default: [] }
+                                }
+                            }
+                        ]
+                    }
+                },
+                { templateDefaultOptions: { extendDefaults: true } }
+            );
+            const state: any = createNode(draft, draft.getTemplate([]));
+            assert.deepEqual(getData(state), [{ id: 1, alist: [''] }]);
+
+            const [updatedState] = setValue(draft, state, '#/0', { id: 2 });
+            assert.deepEqual(getData(updatedState), [{ id: 2, blist: [''] }]);
+        });
+    });
 });
