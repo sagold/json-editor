@@ -47,7 +47,7 @@ export function setValue<T extends Node = Node>(
         const nextSchema = resolveDynamicSchema(schemaNode, nextData);
 
         if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
-            const fullNextData = draft.getTemplate(nextData, draft.rootSchema, { addOptionalProps: false });
+            const fullNextData = draft.getTemplate(nextData, draft.rootSchema);
             const newAst = createNode<T>(draft, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
             changeSet.push({ type: 'create', node: newAst });
