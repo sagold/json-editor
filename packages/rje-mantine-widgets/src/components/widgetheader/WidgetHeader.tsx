@@ -1,4 +1,3 @@
-import styles from '../widgetinputwrapper/widget-input-wrapper.module.scss';
 import { ActionIcon, Divider, DividerProps, Popover, Title, TitleOrder, TitleProps } from '@mantine/core';
 import { Icon } from '../icon/Icon';
 import { isStringWithContent } from '../../helper/isStringWithContent';
@@ -89,7 +88,7 @@ export function WidgetParentHeader({
                     <Title order={order} {...titleProps}>
                         {title}
                         {required && (
-                            <span className={styles['asterisk']} aria-hidden>
+                            <span className={'rje-widget__asterisk'} aria-hidden>
                                 *
                             </span>
                         )}

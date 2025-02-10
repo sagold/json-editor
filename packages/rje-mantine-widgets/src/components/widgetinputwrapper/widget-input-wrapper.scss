@@ -1,10 +1,10 @@
-label.label {
+.rje-widget__label {
     width: 100%;
     display: inline-flex;
     align-items: center;
 }
 
-.asterisk {
+.rje-widget__asterisk {
     color: var(--input-asterisk-color, var(--mantine-color-error));
     cursor: default;
     font-size: var(--input-label-size, var(--mantine-font-size-sm));
@@ -15,18 +15,18 @@ label.label {
     word-break: break-word;
 }
 
-.compact-root {
+.rje-widget-menu {
     display: flex;
     gap: 0.5em;
 }
 
-.compact-label {
+.rje-widget-menu__label {
     display: inline;
     width: auto !important;
     order: 1;
     flex-grow: 0;
 }
 
-.compact-wrapper {
+.rje-widget-menu__wrapper {
     width: 100%;
 }

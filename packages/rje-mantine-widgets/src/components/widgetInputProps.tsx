@@ -1,4 +1,3 @@
-import styles from './widgetinputwrapper/widget-input-wrapper.module.scss';
 import { Flex } from '@mantine/core';
 import { WidgetMenu, WidgetMenuItems } from './widgetmenu/WidgetMenu';
 import { Node, isParentNode } from '@sagold/react-json-editor';
@@ -36,7 +35,7 @@ export function widgetInputProps(
                 <span style={{ flexGrow: 1 }}>
                     {showHeader !== false && title}
                     {showHeader !== false && required && (
-                        <span className={styles['asterisk']} aria-hidden>
+                        <span className={'rje-widget__asterisk'} aria-hidden>
                             *
                         </span>
                     )}
@@ -52,9 +51,9 @@ export function widgetInputProps(
             ((title == null || title.length === 0) && widgetMenuItems && widgetMenuItems?.length > 0);
         if (menuWithoutTitle && !isParentNode(node)) {
             props.classNames = {
-                root: styles['compact-root'],
-                label: styles['compact-label'],
-                wrapper: styles['compact-wrapper']
+                root: 'rje-widget-menu',
+                label: 'rje-widget-menu__label',
+                wrapper: 'rje-widget-menu__wrapper'
             };
         }
     }

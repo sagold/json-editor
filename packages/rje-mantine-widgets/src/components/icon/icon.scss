@@ -1,4 +1,4 @@
-.icon {
+.rje-icon {
     font-family: 'Icon';
     user-select: none;
     max-width: 2em;
@@ -15,7 +15,7 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon--solid {
+.rje-icon--solid {
     font-variation-settings:
         'FILL' 1,
         'wght' 400,
@@ -23,7 +23,7 @@
         'opsz' 24;
 }
 
-.icon--clickable {
+.rje-icon--clickable {
     &:hover {
         cursor: pointer;
     }

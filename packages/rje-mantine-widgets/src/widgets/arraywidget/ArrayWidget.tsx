@@ -1,4 +1,3 @@
-import styles from './array-widget.module.scss';
 import { Button, Collapse, DividerProps, Flex, Group, Modal, Table, TitleOrder, TitleProps } from '@mantine/core';
 import {
     widget,
@@ -151,7 +150,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                         className="rje-array__items"
                         striped
                         withRowBorders={false}
-                        classNames={{ table: styles['table'] }}
+                        classNames={{ table: 'rje-array__table' }}
                     >
                         <Table.Tbody ref={ref}>
                             {node.children

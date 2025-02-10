@@ -1,6 +1,5 @@
 import { widget, WidgetPlugin, StringNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
-import styles from './text-widget.module.scss';
 import { widgetInputProps } from '../components/widgetInputProps';
 import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 import { getSections } from './getSections';
@@ -32,7 +31,7 @@ export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, opt
                 {...widgetInputProps(node, options)}
                 {...onUpdateProps}
                 autosize
-                classNames={{ section: styles['section__icon'] }}
+                classNames={{ section: 'rje-textarea__icon' }}
                 leftSection={leftSection}
                 rows={1}
                 maxRows={20}

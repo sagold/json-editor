@@ -1,4 +1,3 @@
-import styles from './widget-input-wrapper.module.scss';
 import { DividerProps, InputWrapper, TitleProps } from '@mantine/core';
 import { WidgetDescription } from '../WidgetDescription';
 import { DefaultNodeOptions, JsonError } from '@sagold/react-json-editor';
@@ -29,7 +28,7 @@ export function WidgetInputWrapper({ header, children, errors, options }: Widget
             description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
             label={header}
             error={errors?.map((e) => e.message).join('\n')}
-            classNames={{ label: styles['label'] }}
+            classNames={{ label: 'rje-widget__label' }}
         >
             {children}
         </InputWrapper>
