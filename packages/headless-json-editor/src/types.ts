@@ -150,6 +150,8 @@ export const isFileNode = (node: unknown): node is FileNode => isObject(node) &&
 const ValueTypes = ['string', 'number', 'null', 'boolean'];
 export const isValueNode = (node: unknown): node is StringNode | NumberNode | NullNode | BooleanNode =>
     isObject(node) && ValueTypes.includes(node.type);
+export const isArrayNode = (node: unknown): node is ArrayNode => isObject(node) && node.type === 'array';
+export const isObjectNode = (node: unknown): node is ObjectNode => isObject(node) && node.type === 'object';
 export const isNumberNode = (node: unknown): node is NumberNode => isObject(node) && node.type === 'number';
 export const isStringNode = (node: unknown): node is StringNode => isObject(node) && node.type === 'string';
 export const isBooleanNode = (node: unknown): node is BooleanNode => isObject(node) && node.type === 'boolean';
