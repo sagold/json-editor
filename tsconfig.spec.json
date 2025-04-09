@@ -12,5 +12,5 @@
         "noImplicitAny": true,
         "types": ["node", "jest"]
     },
-    "include": ["packages/*/src", "packages/*/test"]
+    "include": ["packages/*/src", "packages/*/test", "node_modules/json-schema-library"]
 }

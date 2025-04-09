@@ -1,4 +1,4 @@
-import { JsonError, getTypeOf } from 'json-schema-library';
+import { JsonError, SchemaNode, getTypeOf } from 'json-schema-library';
 import type { JsonSchema } from './jsonSchema';
 import { DefaultNodeOptions } from './node/createNode';
 
@@ -38,6 +38,8 @@ export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     /** final, reduced json-schema ob this array */
     schema: JsonSchema;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     /** list of validation errors on this array */
     errors: JsonError[];
 };
@@ -60,6 +62,8 @@ export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     schema: JsonSchema;
     /** original json-schema at this location */
     sourceSchema: JsonSchema;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     /** list of validation errors on this object */
     errors: JsonError[];
 };
@@ -75,6 +79,8 @@ export type StringNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     schema: JsonSchema;
     value?: string;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     errors: JsonError[];
 };
 
@@ -89,6 +95,8 @@ export type FileNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     schema: JsonSchema;
     value?: File;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     errors: JsonError[];
 };
 
@@ -103,6 +111,8 @@ export type NumberNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     schema: JsonSchema;
     value?: number;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     errors: JsonError[];
 };
 
@@ -117,6 +127,8 @@ export type BooleanNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     schema: JsonSchema;
     value?: boolean;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     errors: JsonError[];
 };
 
@@ -131,6 +143,8 @@ export type NullNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     schema: JsonSchema;
     value?: null;
+    /** unreduced schemaNode for this schema */
+    schemaNode: SchemaNode;
     errors: JsonError[];
 };
 

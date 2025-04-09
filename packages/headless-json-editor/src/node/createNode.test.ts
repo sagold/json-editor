@@ -1,35 +1,35 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { CompileOptions, compileSchema as _compileSchema, draftEditor } from 'json-schema-library';
 import { createNode } from './createNode';
 import { getData } from './getData';
 import { strict as assert } from 'assert';
 import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../types';
 
+function compileSchema(schema: JsonSchema, options: Partial<CompileOptions> = {}) {
+    return _compileSchema(schema, { ...options, drafts: [draftEditor] });
+}
+
 describe('createNode', () => {
-    let draft: Draft;
-
-    beforeEach(() => (draft = new Draft07()));
-
     it('should create a node', () => {
-        draft.setSchema({ type: 'string' });
-        const root = createNode(draft, '');
+        const node = compileSchema({ type: 'string' });
+        const root = createNode(node, '');
         assert(root.type === 'string');
     });
 
     it('should support `null` properties', () => {
-        draft.setSchema({ type: 'null' });
-        const root = createNode(draft, null);
+        const node = compileSchema({ type: 'null' });
+        const root = createNode(node, null);
         assert(root.type === 'null');
     });
 
     it('should support `integer` properties', () => {
-        draft.setSchema({ type: 'integer' });
-        const root = createNode(draft, 42);
+        const node = compileSchema({ type: 'integer' });
+        const root = createNode(node, 42);
         assert(root.type === 'number');
     });
 
     it('should create a node tree with additionalProperties set', () => {
-        draft.setSchema({ type: 'object', additionalProperties: true });
-        const root = createNode(draft, { list: ['test-item'] });
+        const node = compileSchema({ type: 'object', additionalProperties: true });
+        const root = createNode(node, { list: ['test-item'] });
 
         assert(root.type === 'object');
         assert(root.children.length === 1);
@@ -41,7 +41,7 @@ describe('createNode', () => {
     });
 
     it('should maintain property order of json-schema', () => {
-        draft.setSchema({
+        const node = compileSchema({
             type: 'object',
             properties: {
                 first: { type: 'string', default: 'first' },
@@ -49,7 +49,7 @@ describe('createNode', () => {
             }
         });
 
-        const root = createNode(draft, {
+        const root = createNode(node, {
             second: 'second',
             first: 'first'
         }) as ObjectNode;
@@ -61,43 +61,44 @@ describe('createNode', () => {
     });
 
     it('should add any node with `additionalProperty=true`', () => {
-        draft.setSchema({ type: 'object', additionalProperties: true });
-        const root = createNode(draft, { item: 'keep-me' });
+        const node = compileSchema({ type: 'object', additionalProperties: true });
+        const root = createNode(node, { item: 'keep-me' });
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
     });
 
     it('should treat `additionalProperty=true` per default', () => {
-        draft.setSchema({ type: 'object' });
-        const root = createNode(draft, { item: 'keep-me' });
+        const node = compileSchema({ type: 'object' });
+        const root = createNode(node, { item: 'keep-me' });
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
     });
 
     describe('object errors', () => {
         it.skip('should return an error node for undefined and invalid data', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 properties: {},
                 additionalProperties: false
             });
 
-            const root = createNode(draft, {
+            const root = createNode(node, {
                 unknownInvalid: 'property'
             }) as ObjectNode;
+
             assert.equal(root.children[0].type, 'string');
             assert(isJsonError(root.children[0].schema));
             assert.deepEqual(getData(root), { unknownInvalid: 'property' });
         });
 
         it('should not return schema as error for undefined but valid data', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 properties: {},
                 additionalProperties: true
             });
 
-            const root = createNode(draft, {
+            const root = createNode(node, {
                 unknownValid: 'property'
             }) as ObjectNode;
             assert.equal(root.children[0].type, 'string');
@@ -109,7 +110,7 @@ describe('createNode', () => {
 
     describe('optional properties', () => {
         it('should expose missing optional properties', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['two'],
                 properties: {
@@ -118,13 +119,13 @@ describe('createNode', () => {
                 }
             });
 
-            const root = createNode(draft, {}) as ObjectNode;
+            const root = createNode(node, {}) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.missingProperties, ['one']);
         });
 
         it('should not expose existing optional properties', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['two'],
                 properties: {
@@ -133,13 +134,13 @@ describe('createNode', () => {
                 }
             });
 
-            const root = createNode(draft, { one: 'optional value added' }) as ObjectNode;
+            const root = createNode(node, { one: 'optional value added' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.missingProperties, []);
         });
 
         it('should remove matching dependencies from optional properties', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: [],
                 properties: {
@@ -151,14 +152,14 @@ describe('createNode', () => {
                 }
             });
 
-            const root = createNode(draft, { one: 'optional value added' }) as ObjectNode;
+            const root = createNode(node, { one: 'optional value added' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one']);
             assert.deepEqual(root.missingProperties, []);
         });
 
         it('should keep non-matching dependencies in optional properties', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: [],
                 properties: {
@@ -170,178 +171,102 @@ describe('createNode', () => {
                 }
             });
 
-            const root = createNode(draft, {}) as ObjectNode;
+            const root = createNode(node, {}) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.missingProperties, ['one', 'two']);
         });
 
         it('should sort unknown additional as last items', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 properties: {
                     one: { type: 'string' }
                 }
             });
-            const root = createNode(draft, { one: 'string', two: 'string' }) as ObjectNode;
+            const root = createNode(node, { one: 'string', two: 'string' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
             assert.deepEqual(root.children[0].property, 'one');
         });
 
-        it.skip('should not expose optional properties if data is invalid', () => {
-            draft.setSchema({
+        it('should not expose optional properties if data is invalid', () => {
+            const node = compileSchema({
                 type: 'object',
                 properties: {
                     one: { type: 'string' }
                 },
                 additionalProperties: false
             });
-            const root = createNode(draft, { two: 'string' }) as ObjectNode;
+            const root = createNode(node, { two: 'string' }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one']);
         });
 
         it('should add additionalProperties as optional properties', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 additionalProperties: {
                     type: 'string',
                     maxLength: 10
                 }
             });
-            const root = createNode(draft, { one: 'string', two: 123 }) as ObjectNode;
+            const root = createNode(node, { one: 'string', two: 123 }) as ObjectNode;
             assert(root.type === 'object');
             assert.deepEqual(root.optionalProperties, ['one', 'two']);
         });
     });
 
-    describe('dynamic', () => {
-        describe('dependencies', () => {
-            it('should return value of dependency', () => {
-                draft.setSchema({
-                    type: 'object',
-                    properties: {
-                        test: { type: 'string' }
-                    },
-                    dependencies: {
-                        test: {
-                            properties: {
-                                additionalValue: { description: 'added', type: 'string' }
-                            }
+    describe('dependencies', () => {
+        it('should return value of dependency', () => {
+            const node = compileSchema({
+                type: 'object',
+                properties: {
+                    test: { type: 'string' }
+                },
+                dependencies: {
+                    test: {
+                        properties: {
+                            additionalValue: { description: 'added', type: 'string' }
                         }
                     }
-                });
-
-                const root = createNode<ObjectNode>(draft, { test: 'with value', additionalValue: 'additional' });
-                assert.equal(root.children.length, 2);
-                assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'additional' });
+                }
             });
 
-            it('should add required missing dependency', () => {
-                draft.setSchema({
-                    type: 'object',
-                    properties: {
-                        test: { type: 'string' },
-                        additionalValue: { type: 'string' }
-                    },
-                    dependencies: {
-                        test: ['additionalValue']
-                    }
-                });
-                const root = createNode<ObjectNode>(draft, { test: 'with value' });
-                assert.equal(root.children.length, 2);
-                assert.deepEqual(getData(root), { test: 'with value', additionalValue: '' });
-            });
+            const root = createNode<ObjectNode>(node, { test: 'with value', additionalValue: 'additional' });
+            assert.equal(root.children.length, 2);
+            assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'additional' });
         });
 
-        describe('if-then-else', () => {
-            let conditionalSchema: JsonSchema;
-            beforeEach(
-                () =>
-                    (conditionalSchema = {
-                        type: 'object',
-                        required: ['test'],
-                        properties: {
-                            test: { type: 'string' }
-                        },
-                        if: {
-                            required: ['test'],
-                            properties: {
-                                test: {
-                                    type: 'string',
-                                    minLength: 10
-                                }
-                            }
-                        },
-                        then: {
-                            required: ['additionalValue'],
-                            properties: {
-                                additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
-                            }
-                        },
-                        else: {
-                            required: ['additionalValue'],
-                            properties: {
-                                additionalValue: { description: 'else', type: 'string', default: 'dynamic else' }
-                            }
-                        }
-                    })
-            );
-
-            it('should add then-schema for valid if-schema', () => {
-                draft.setSchema(conditionalSchema);
-
-                const root = createNode<ObjectNode>(draft, { test: 'with value' });
-                assert.equal(root.children.length, 2);
-                assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'dynamic then' });
+        it('should add required missing dependency', () => {
+            const node = compileSchema({
+                type: 'object',
+                properties: {
+                    test: { type: 'string' },
+                    additionalValue: { type: 'string' }
+                },
+                dependencies: {
+                    test: ['additionalValue']
+                }
             });
+            const root = createNode<ObjectNode>(node, { test: 'with value' });
+            assert.equal(root.children.length, 2);
+            assert.deepEqual(getData(root), { test: 'with value', additionalValue: '' });
+        });
+    });
 
-            it('should add else-schema for invalid if-schema', () => {
-                draft.setSchema(conditionalSchema);
-
-                const root = createNode<ObjectNode>(draft, { test: '' });
-                assert.equal(root.children.length, 2);
-                assert.equal(root.children[1].schema.description, 'else');
-                assert.deepEqual(getData(root), { test: '', additionalValue: 'dynamic else' });
-            });
-
-            it('should not add then-schema for invalid if-schema', () => {
-                draft.setSchema({
-                    type: 'object',
-                    required: ['test'],
-                    properties: {
-                        test: { type: 'string', default: 'with-value' }
-                    },
-                    if: {
-                        properties: {
-                            test: {
-                                type: 'string',
-                                minLength: 100
-                            }
-                        }
-                    },
-                    then: {
-                        required: ['additionalValue'],
-                        properties: {
-                            additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
-                        }
-                    }
-                });
-
-                const root = createNode<ObjectNode>(draft, { test: 'with-value' });
-                assert.equal(root.children.length, 1);
-                assert.deepEqual(getData(root), { test: 'with-value' });
-            });
-
-            it('should not create a node for non-matching else case', () => {
-                draft.setSchema({
+    describe('if-then-else', () => {
+        let conditionalSchema: JsonSchema;
+        beforeEach(
+            () =>
+                (conditionalSchema = {
                     type: 'object',
                     required: ['test'],
                     properties: {
                         test: { type: 'string' }
                     },
                     if: {
+                        required: ['test'],
                         properties: {
                             test: {
                                 type: 'string',
@@ -352,32 +277,106 @@ describe('createNode', () => {
                     then: {
                         required: ['additionalValue'],
                         properties: {
-                            thenValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                            additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
                         }
                     },
                     else: {
                         required: ['additionalValue'],
                         properties: {
-                            elseValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                            additionalValue: { description: 'else', type: 'string', default: 'dynamic else' }
                         }
-                    },
-                    additionalProperties: false
-                });
+                    }
+                })
+        );
 
-                const root = createNode<ObjectNode>(draft, {
-                    test: 'triggers then',
-                    thenValue: 'input then',
-                    elseValue: 'input else'
-                });
-                assert.equal(root.children.length, 2);
-                assert.deepEqual(getData(root), { test: 'triggers then', thenValue: 'input then' });
+        it('should add then-schema for valid if-schema', () => {
+            const node = compileSchema(conditionalSchema);
+
+            const root = createNode<ObjectNode>(node, { test: 'with value' });
+            assert.equal(root.children.length, 2);
+            assert.deepEqual(getData(root), { test: 'with value', additionalValue: 'dynamic then' });
+        });
+
+        it('should add else-schema for invalid if-schema', () => {
+            const node = compileSchema(conditionalSchema);
+
+            const root = createNode<ObjectNode>(node, { test: '' });
+            assert.equal(root.children.length, 2);
+            assert.equal(root.children[1].schema.description, 'else');
+            assert.deepEqual(getData(root), { test: '', additionalValue: 'dynamic else' });
+        });
+
+        it('should not add then-schema for invalid if-schema', () => {
+            const node = compileSchema({
+                type: 'object',
+                required: ['test'],
+                properties: {
+                    test: { type: 'string', default: 'with-value' }
+                },
+                if: {
+                    properties: {
+                        test: {
+                            type: 'string',
+                            minLength: 100
+                        }
+                    }
+                },
+                then: {
+                    required: ['additionalValue'],
+                    properties: {
+                        additionalValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                    }
+                }
             });
+
+            const root = createNode<ObjectNode>(node, { test: 'with-value' });
+            assert.equal(root.children.length, 1);
+            assert.deepEqual(getData(root), { test: 'with-value' });
+        });
+
+        it('should not create a node for non-matching else case', () => {
+            const node = compileSchema({
+                type: 'object',
+                required: ['test'],
+                properties: {
+                    test: { type: 'string' }
+                },
+                if: {
+                    properties: {
+                        test: {
+                            type: 'string',
+                            minLength: 10
+                        }
+                    }
+                },
+                then: {
+                    required: ['additionalValue'],
+                    properties: {
+                        thenValue: { description: 'then', type: 'string', default: 'dynamic then' }
+                    }
+                },
+                else: {
+                    required: ['additionalValue'],
+                    properties: {
+                        elseValue: { description: 'else', type: 'string', default: 'dynamic else' }
+                    }
+                },
+                additionalProperties: false
+            });
+
+            const root = createNode<ObjectNode>(node, {
+                test: 'triggers then',
+                thenValue: 'input then',
+                elseValue: 'input else'
+            });
+            assert.equal(root.children.length, 2);
+            assert.deepEqual(getData(root), { test: 'triggers then', thenValue: 'input then' });
         });
     });
 
     describe('oneOf', () => {
         it('should create root node with first schema', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOf: [
                     {
@@ -394,14 +393,14 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, {});
+            const root = createNode(node, {});
             assert(root.type === 'object');
             assert.equal(root.children.length, 1);
             assert.equal(root.children[0].schema.$id, 'one');
         });
 
         it('should create root node with second schema', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOf: [
                     {
@@ -418,14 +417,14 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, { two: 2 });
+            const root = createNode(node, { two: 2 });
             assert(root.type === 'object');
             assert.equal(root.children.length, 1);
             assert.equal(root.children[0].schema.$id, 'two');
         });
 
         it('should create node from correct oneOf schema', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 properties: {
                     switch: {
@@ -452,12 +451,11 @@ describe('createNode', () => {
                 }
             });
 
-            const root = createNode(draft, { switch: { type: 'header', text: 'test' } });
+            const root = createNode(node, { switch: { type: 'header', text: 'test' } });
             assert(root.type === 'object');
             assert.deepEqual(getData(root), { switch: { type: 'header', text: 'test' } });
             const switchNode = root.children[0];
             assert.deepEqual(switchNode.schema, {
-                __oneOfIndex: 0,
                 id: 'header',
                 // @todo check if this is a problem - schema is merged
                 type: 'object',
@@ -470,7 +468,7 @@ describe('createNode', () => {
         });
 
         it('should expose oneOf origin from root node schema', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOfProperty: 'type',
                 oneOf: [
@@ -492,14 +490,16 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, { type: 'section', title: '' });
+            const root = createNode(node, { type: 'section', title: '' });
             assert(root.type === 'object');
 
             // console.log(JSON.stringify(root.sourceSchema, null, 2), JSON.stringify(root.schema, null, 2));
 
             // @todo 2: getOneOfOrigin is no longer exposed by jlib
             // assert.equal(root.schema.getOneOfOrigin?.().index, 1);
-            assert.equal(root.schema.__oneOfIndex, 1);
+
+            // @ts-expect-error yet untyped
+            assert.equal(root.oneOfIndex, 1);
         });
 
         /*+
@@ -507,7 +507,7 @@ describe('createNode', () => {
          * documentation we encourage the use of `oneOfProperty` for this case.
          */
         it('should return first matching schema in case of one-of-error', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOf: [
                     {
@@ -533,10 +533,9 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, { title: 'ambigious object' });
+            const root = createNode(node, { title: 'ambigious object' });
             assert(root.type === 'object');
             assert.deepEqual(root.schema, {
-                __oneOfIndex: 1,
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -550,7 +549,7 @@ describe('createNode', () => {
          * documentation we encourage the use of `oneOfProperty` for this case.
          */
         it('should return first schema in case of one-of-error', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOf: [
                     {
@@ -569,10 +568,9 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, { other: 'property' });
+            const root = createNode(node, { other: 'property' });
             assert(root.type === 'object');
             assert.deepEqual(root.schema, {
-                __oneOfIndex: 0,
                 type: 'object',
                 required: ['number'],
                 properties: {
@@ -591,7 +589,7 @@ describe('createNode', () => {
          * another input value
          */
         it('should return schema for invalid data and an error', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 oneOf: [
                     {
@@ -610,10 +608,9 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, 123);
+            const root = createNode(node, 123);
             assert(root.type === 'object');
             assert.deepEqual(root.schema, {
-                __oneOfIndex: 0,
                 type: 'object',
                 required: ['number'],
                 properties: {
@@ -629,7 +626,7 @@ describe('createNode', () => {
          * should not merge schemas, but validate them individually. In case of an abstract tree,
          * we somehow need to merge those schemas */
         it('should create a node from schema in allOf', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -644,7 +641,7 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, {});
+            const root = createNode(node, {});
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[0].schema.$id === 'title');
@@ -652,7 +649,7 @@ describe('createNode', () => {
         });
 
         it('should merge schemas before creating nodes', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -673,7 +670,7 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, {});
+            const root = createNode(node, {});
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[0].schema.$id === 'title');
@@ -683,7 +680,7 @@ describe('createNode', () => {
         });
 
         it('should add schema and create node if if-schema matches', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -705,14 +702,14 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, { title: 'main topic' });
+            const root = createNode(node, { title: 'main topic' });
             assert(root.type === 'object');
             assert(root.children.length === 2);
             assert(root.children[1].schema.$id === 'date');
         });
 
         it('should not create node for non-matching if-schema', () => {
-            draft.setSchema({
+            const node = compileSchema({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -736,7 +733,7 @@ describe('createNode', () => {
                     }
                 ]
             });
-            const root = createNode(draft, {});
+            const root = createNode(node, {});
             assert(root.type === 'object');
             assert(root.children.length === 1);
             assert(root.children[0].schema.$id === 'title');
@@ -744,13 +741,10 @@ describe('createNode', () => {
     });
 
     describe('file', () => {
-        let draft: Draft;
-        beforeEach(() => (draft = new Draft07()));
-
         it('should create a node', () => {
             const file = new File([], 'testfile.pdf');
-            draft.setSchema({ type: ['string', 'object'], format: 'file' });
-            const root = createNode(draft, file);
+            const node = compileSchema({ type: ['string', 'object'], format: 'file' });
+            const root = createNode(node, file);
             assert.equal(root.type, 'file');
             assert.equal(root.value, file);
         });
