@@ -1,6 +1,5 @@
 import gp from '@sagold/json-pointer';
-import { invalidPathError, JsonError } from '../errors';
-import { Node } from '../types';
+import { Node, JsonError } from '../types';
 import { getChildNode } from './getChildNode';
 import { getData } from './getData';
 
@@ -22,5 +21,10 @@ function step(node: Node, frags: string[], pointer: string[]): Node | JsonError 
     if (nextNode) {
         return step(nextNode, frags, pointer);
     }
-    return invalidPathError({ pointer: gp.join(pointer), schema: node.schema, value: getData(node) });
+
+    return node.schemaNode.createError('invalid-path-error', {
+        pointer: gp.join(pointer),
+        schema: node.schema,
+        value: getData(node)
+    });
 }

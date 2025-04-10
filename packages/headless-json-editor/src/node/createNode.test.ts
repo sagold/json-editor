@@ -1,12 +1,8 @@
-import { CompileOptions, compileSchema as _compileSchema, draftEditor } from 'json-schema-library';
 import { createNode } from './createNode';
 import { getData } from './getData';
 import { strict as assert } from 'assert';
 import { ObjectNode, StringNode, isJsonError, JsonSchema } from '../types';
-
-function compileSchema(schema: JsonSchema, options: Partial<CompileOptions> = {}) {
-    return _compileSchema(schema, { ...options, drafts: [draftEditor] });
-}
+import { compileSchema } from '../compileSchema';
 
 describe('createNode', () => {
     it('should create a node', () => {

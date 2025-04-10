@@ -1,6 +1,6 @@
 import { createNode } from './createNode';
 import { getNode } from './getNode';
-import { Draft07 } from 'json-schema-library';
+import { compileSchema, draftEditor } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { Node } from '../types';
 
@@ -9,10 +9,13 @@ describe('getNode', () => {
     beforeEach(
         () =>
             (node = createNode(
-                new Draft07({
-                    type: 'object',
-                    additionalProperties: true
-                }),
+                compileSchema(
+                    {
+                        type: 'object',
+                        additionalProperties: true
+                    },
+                    { drafts: [draftEditor] }
+                ),
                 {
                     title: 'my-title',
                     main: true,

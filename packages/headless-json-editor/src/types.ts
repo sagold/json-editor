@@ -2,7 +2,7 @@ import { JsonError, SchemaNode, getTypeOf } from 'json-schema-library';
 import type { JsonSchema } from './jsonSchema';
 import { DefaultNodeOptions } from './node/createNode';
 
-export type { JsonSchema };
+export type { JsonSchema, JsonError };
 
 const isObject = (v: unknown): v is Record<string, any> => getTypeOf(v) === 'object';
 

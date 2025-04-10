@@ -1,15 +1,15 @@
 import { createNode } from './createNode';
 import { getNodeTrace } from './getNodeTrace';
-import { Draft07 } from 'json-schema-library';
 import { strict as assert } from 'assert';
 import { Node } from '../types';
+import { compileSchema } from '../compileSchema';
 
 describe('getNodeTrace', () => {
     let node: Node;
     beforeEach(
         () =>
             (node = createNode(
-                new Draft07({
+                compileSchema({
                     type: 'object',
                     additionalProperties: true
                 }),
