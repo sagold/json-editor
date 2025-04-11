@@ -2,11 +2,10 @@ import gp, { split, join } from '@sagold/json-pointer';
 import { createChildNode } from './set/createChildNode';
 import { createNode } from '../node/createNode';
 import { deepEqual } from 'fast-equals';
-import { Draft, JsonPointer, JsonError, isDynamicSchema, resolveDynamicSchema } from 'json-schema-library';
+import { JsonPointer, JsonError, isReduceable } from 'json-schema-library';
 import { getChildIndex } from '../node/getChildNode';
 import { getData } from '../node/getData';
-import { invalidPathError } from '../errors';
-import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, JsonSchema, isFileNode } from '../types';
+import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
 import { replaceChildNode } from './set/replaceChildNode';
 import { syncNodes } from './set/syncNodes';
 import { updateValueNode } from './set/updateValueNode';
@@ -15,12 +14,7 @@ import { updateValueNode } from './set/updateValueNode';
  * sets given value of the specified node and returns a new (shallow) node-tree
  * @returns error or new node-tree with a list of changes applied
  */
-export function setValue<T extends Node = Node>(
-    draft: Draft,
-    ast: T,
-    pointer: JsonPointer,
-    value: any
-): [JsonError] | [T, Change[]] {
+export function setValue<T extends Node = Node>(ast: T, pointer: JsonPointer, value: any): [JsonError] | [T, Change[]] {
     /** steps to value */
     const frags = split(pointer);
     /** list of changes on nodes while performing set operation */
@@ -28,27 +22,29 @@ export function setValue<T extends Node = Node>(
 
     // if change on root, replace all, but reuse root-id
     if (frags.length === 0 || !isParentNode(ast)) {
-        const newAst = createNode<T>(draft, value);
+        const newAst = createNode<T>(ast.schemaNode.getNodeRoot(), value);
         changeSet.push({ type: 'delete', node: ast });
         changeSet.push({ type: 'create', node: newAst });
         newAst.id = ast.id;
         return [newAst, changeSet];
     }
 
-    const currentRootSchema = draft.getSchema();
-    if (isDynamicSchema(currentRootSchema)) {
-        const schemaNode = draft.createNode(currentRootSchema as JsonSchema, pointer);
-
-        // root node has a dynamic schema which may change based in new value,
+    const currentRootNode = ast.schemaNode;
+    if (isReduceable(currentRootNode)) {
+        // root node has a dynamic schema which may change based on our new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(ast);
-        const currentSchema = resolveDynamicSchema(schemaNode, currentData);
-        const nextData = gp.set(getData(ast), pointer, value);
-        const nextSchema = resolveDynamicSchema(schemaNode, nextData);
 
-        if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
-            const fullNextData = draft.getTemplate(nextData, draft.rootSchema, { addOptionalProps: false });
-            const newAst = createNode<T>(draft, fullNextData);
+        // @todo @10 this is already saved in ast (?)
+        const { node: currentNode } = currentRootNode.reduceNode(currentData);
+
+        const nextData = gp.set(getData(ast), pointer, value);
+        const { node: nextNode } = currentRootNode.reduceNode(nextData);
+
+        // @todo @10 we should be able to compare this by schemaNode.dynamicId
+        if (!deepEqual(currentNode?.schema, nextNode?.schema)) {
+            const fullNextData = currentRootNode.getData(nextData, { addOptionalProps: false });
+            const newAst = createNode<T>(currentRootNode, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
             changeSet.push({ type: 'create', node: newAst });
             newAst.id = ast.id;
@@ -59,7 +55,7 @@ export function setValue<T extends Node = Node>(
 
     // unlink tree and follow path to value
     const newAst = { ...ast };
-    const error = setNext(draft, newAst, frags, frags.shift() as string, value, changeSet);
+    const error = setNext(newAst, frags, frags.shift() as string, value, changeSet);
     if (error) {
         return [error];
     }
@@ -71,7 +67,6 @@ export function setValue<T extends Node = Node>(
  * @param parentNode - unlinked parent node which will be modified
  */
 function setNext(
-    draft: Draft,
     parentNode: ParentNode,
     frags: string[],
     property: string,
@@ -82,11 +77,13 @@ function setNext(
         throw new Error(`Invalid property: '${property}'`);
     }
 
+    console.log('set', property, value);
+
     // get next child node at 'property'
     const childNodeIndex = getChildIndex(parentNode, property);
     if (childNodeIndex === -1 && frags.length > 0) {
         // given path is invalid
-        return invalidPathError({
+        parentNode.schemaNode.createError('invalid-path-error', {
             pointer: join(parentNode.pointer, property, ...frags),
             value,
             schema: parentNode?.schema,
@@ -100,7 +97,7 @@ function setNext(
 
     if (childNodeIndex === -1) {
         // new child -> create & insert
-        const result = createChildNode(draft, parentNode, property, value);
+        const result = createChildNode(parentNode, property, value);
         if (isJsonError(result)) {
             return result;
         }
@@ -112,7 +109,7 @@ function setNext(
     if (frags.length === 0) {
         // update target node's value
         if (isValueNode(childNode) || isFileNode(childNode)) {
-            const changesOrError = updateValueNode(draft, parentNode, childNode, value);
+            const changesOrError = updateValueNode(parentNode, childNode, value);
             if (isJsonError(changesOrError)) {
                 return changesOrError;
             }
@@ -123,7 +120,7 @@ function setNext(
         // replace node, creating new object or array tree
         if (isParentNode(childNode)) {
             // @todo further diff schema and check for specific changes (sync)
-            const changesOrError = replaceChildNode(draft, parentNode, childNode, value);
+            const changesOrError = replaceChildNode(parentNode, childNode, value);
             if (isJsonError(changesOrError)) {
                 return changesOrError;
             }
@@ -136,7 +133,7 @@ function setNext(
 
     if (!isParentNode(childNode)) {
         // given path is invalid
-        return invalidPathError({
+        parentNode.schemaNode.createError('invalid-path-error', {
             pointer: join(parentNode.pointer, property, ...frags),
             value: getData(childNode),
             schema: childNode.schema,
@@ -146,20 +143,21 @@ function setNext(
     }
 
     // @ts-ignore @todo type helper properties set by create
-    const childSchema = childNode.sourceSchema ?? childNode.schema;
-    if (isDynamicSchema(childSchema)) {
-        const schemaNode = draft.createNode(childSchema, childNode.pointer);
-
+    const childSchemaNode = childNode.schemaNode;
+    if (isReduceable(childSchemaNode)) {
+        console.log('child reduceable', childSchemaNode.schema);
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(childNode);
-        const currentSchema = resolveDynamicSchema(schemaNode, currentData);
+        // @todo @10 this should be stored as childSchemaNode.schemaNode
+        const { node: currentSchemaNode } = childSchemaNode.reduceNode(currentData);
         const nextData = gp.set(getData(childNode), join(frags), value);
-        const nextSchema = resolveDynamicSchema(schemaNode, nextData);
+        const { node: nextSchemaNode } = childSchemaNode.reduceNode(nextData);
 
-        if (!deepEqual(currentSchema?.schema, nextSchema?.schema)) {
+        // @todo @10 dynamicId
+        if (!deepEqual(currentSchemaNode?.schema, nextSchemaNode?.schema)) {
             // @todo further diff schema and check for specific changes (sync)
-            const newChild = createNode(draft, nextData, childSchema, childNode.pointer, parentNode.type === 'array');
+            const newChild = createNode(childSchemaNode, nextData, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });
             changeSet.push({ type: 'create', node: newChild });
             newChild.id = childNode.id;
@@ -167,9 +165,11 @@ function setNext(
             syncNodes(childNode, newChild);
             return;
         }
+    } else {
+        console.log('not reduceable', childSchemaNode.schema);
     }
 
-    const nextParentNode = { ...childNode };
+    const nextParentNode = { ...childNode } as ParentNode;
     parentNode.children[childNodeIndex] = nextParentNode;
-    return setNext(draft, nextParentNode, frags, frags.shift() as string, value, changeSet);
+    return setNext(nextParentNode, frags, frags.shift() as string, value, changeSet);
 }

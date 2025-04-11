@@ -1,6 +1,6 @@
 import gp from '@sagold/json-pointer';
 import { DefaultNodeOptions, createNode } from '../node/createNode';
-import { Draft, JsonError, JsonPointer } from 'json-schema-library';
+import { JsonError, JsonPointer, NodeOrError } from 'json-schema-library';
 import { getNode } from '../node/getNode';
 import { getData } from '../node/getData';
 import { Node, isJsonError, Change, ParentNode, JsonSchema } from '../types';
@@ -15,11 +15,7 @@ import { unlinkPath } from './unlinkPath';
  * @param targetNode - node to be recreated
  * @return [newRootNode, listOfChanges]
  */
-export function updateNode<T extends Node = Node>(
-    draft: Draft,
-    ast: T,
-    pointer: JsonPointer
-): [JsonError | T, Change[]?] {
+export function updateNode<T extends Node = Node>(ast: T, pointer: JsonPointer): [JsonError | T, Change[]?] {
     const targetNode = getNode(ast, pointer);
     if (isJsonError(targetNode)) {
         return [targetNode];
@@ -30,17 +26,18 @@ export function updateNode<T extends Node = Node>(
         return [result];
     }
     // get the uptodate json-schema of this node
-    const schema = draft.getSchema({
-        pointer,
-        data: getData(ast)
-    });
-    if (isJsonError(schema)) {
-        return [schema];
+    const { node: childSchemaNode, error } = ast.schemaNode
+        .getNodeRoot()
+        // @todo should not return type undefined with createSchema:true for node
+        .getNode(pointer, getData(ast), { createSchema: true }) as NodeOrError;
+
+    if (error) {
+        return [error];
     }
 
     const [newRootNode] = result;
     // create new node and replace the old one with it
-    const newNode = createNode(draft, getData(targetNode), schema, pointer);
+    const newNode = createNode(childSchemaNode, getData(targetNode), pointer);
     const [pointerToParent] = gp.splitLast(pointer);
     const parentNode = getNode(newRootNode, pointerToParent) as ParentNode;
     parentNode.children = parentNode.children.map((node) => (node.pointer === targetNode.pointer ? newNode : node));

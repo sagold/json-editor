@@ -1,10 +1,11 @@
-import { Draft07, Draft, isJsonError } from 'json-schema-library';
+import { isJsonError, JsonSchema, mergeSchema, SchemaNode } from 'json-schema-library';
 import { updateNode } from './updateNode';
 import { getNode } from '../node/getNode';
 import { Node, NumberNode } from '../types';
 import { strict as assert } from 'assert';
 import { createNode } from '../node/createNode';
 import { getNodeTrace } from '../node/getNodeTrace';
+import { compileSchema } from '../compileSchema';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -18,11 +19,11 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 }
 
 describe('updateNode', () => {
-    let core: Draft;
+    let schemaNode: SchemaNode;
     let ast: Node;
 
     beforeEach(() => {
-        core = new Draft07({
+        schemaNode = compileSchema({
             type: 'object',
             additionalProperties: false,
             required: ['title', 'size', 'list'],
@@ -42,13 +43,13 @@ describe('updateNode', () => {
                 height: { type: 'number', default: 360 }
             }
         });
-        ast = createNode(core, core.getTemplate({ size: { width: 11, height: 22 }, list: ['item'] }));
+        ast = createNode(schemaNode, schemaNode.getData({ size: { width: 11, height: 22 }, list: ['item'] }));
     });
 
     it('should recreate node at pointer location', () => {
         const before = getNode<NumberNode>(ast, '/size/width');
 
-        const [newAst] = updateNode(core, ast, '/size/width');
+        const [newAst] = updateNode(ast, '/size/width');
         assert(!isJsonError(newAst));
         const after = getNode<NumberNode>(newAst, '/size/width');
 
@@ -65,8 +66,12 @@ describe('updateNode', () => {
         assert(!isJsonError(before));
         assert.equal(before.schema.default, 480);
 
-        core.getSchema()!.$defs.width = { type: 'number', default: 800 };
-        const [newAst] = updateNode(core, ast, '/size/width');
+        schemaNode.getNodeRoot().schema.$defs.width = { type: 'number', default: 800 };
+        ast.schemaNode = compileSchema(
+            mergeSchema(schemaNode.getNodeRoot(), { $defs: { width: { type: 'number', default: 800 } } } as JsonSchema)
+        );
+
+        const [newAst] = updateNode(ast, '/size/width');
         assert(!isJsonError(newAst));
         const after = getNode<NumberNode>(newAst, '/size/width');
 
@@ -79,7 +84,7 @@ describe('updateNode', () => {
     it('should return a list of changes', () => {
         const before = getNode<NumberNode>(ast, '/size/width');
 
-        const [newAst, changes] = updateNode(core, ast, '/size/width');
+        const [newAst, changes] = updateNode(ast, '/size/width');
         assert(!isJsonError(newAst) && !isJsonError(before));
         const after = getNode<NumberNode>(newAst, '/size/width');
         assert(!isJsonError(after));
@@ -91,7 +96,7 @@ describe('updateNode', () => {
     });
 
     it('should return a json-error if the target does not exist', () => {
-        const [newAst] = updateNode(core, ast, '/size/unknown');
+        const [newAst] = updateNode(ast, '/size/unknown');
         assert(isJsonError(newAst));
     });
 });

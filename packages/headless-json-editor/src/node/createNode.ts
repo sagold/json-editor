@@ -139,7 +139,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         data.forEach((next, key) => {
             // Create a new node for each child, storing the reduced schema as schema and
             // the unreduced schema in sourceNode
-            const { node: itemSN } = arraySchemaNode.getChild(key, data, { pointer, path, createSchema: true });
+            const { node: itemSN } = arraySchemaNode.getNodeChild(key, data, { pointer, path, createSchema: true });
             // note: schema node is not undefined with `createSchema: true`
             if (itemSN) {
                 // note: parent node got reduced, not itemSchemaNode
@@ -156,7 +156,7 @@ export const NODES: Record<NodeType, CreateNode> = {
      */
     object: (objectSN, data: Record<string, unknown>, pointer, isArrayItem): ObjectNode => {
         const path: ValidationPath = [];
-        const reduceResult = objectSN.reduceSchema(data, { pointer });
+        const reduceResult = objectSN.reduceNode(data, { pointer });
 
         // @todo reduceSchema now returns an error if a oneOf statement cannot be resolved
         // per default the initial schema was returned, which we restore here...
@@ -168,7 +168,7 @@ export const NODES: Record<NodeType, CreateNode> = {
                 resolvedObjectSN = objectSN.oneOf?.[0] ?? objectSN;
             } else if (reduceResult.error) {
                 const validData = objectSN.getData(data);
-                const secondSN = objectSN.reduceSchema(validData);
+                const secondSN = objectSN.reduceNode(validData);
                 console.log(
                     'createNode FAILED reducing objectSN:',
                     reduceResult.error,
@@ -191,7 +191,9 @@ export const NODES: Record<NodeType, CreateNode> = {
             schema: resolvedObjectSN.schema,
             // @ts-ignore
             oneOfIndex: resolvedObjectSN?.oneOfIndex,
-            sourceNode: objectSN,
+            // @todo duplicate property, remove sourceNode
+            // sourceNode: objectSN,
+            schemaNode: objectSN,
             optionalProperties: [],
             missingProperties: [],
             options: getOptions(resolvedObjectSN.schema, property),
@@ -203,7 +205,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
             const childPointer = `${pointer}/${key}`;
-            const { node: nextSN, error } = objectSN.getChild(key, resolvedData, {
+            const { node: nextSN, error } = objectSN.getNodeChild(key, resolvedData, {
                 createSchema: true,
                 pointer: childPointer,
                 path
@@ -232,7 +234,12 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     string: (schemaNode, value: string, pointer, isArrayItem): StringNode => {
-        const { schema } = schemaNode;
+        const { node: rSN, error } = schemaNode.reduceNode(value);
+        if (rSN == null) {
+            console.log(error);
+            throw new Error('Failed reducing node ' + pointer);
+        }
+        const schema = rSN.schema;
         const property = getPropertyName(pointer);
         const node: StringNode = {
             id: uuid(),
@@ -272,7 +279,12 @@ export const NODES: Record<NodeType, CreateNode> = {
         return node;
     },
     number: (schemaNode, value: number, pointer, isArrayItem): NumberNode => {
-        const { schema } = schemaNode;
+        const { node: rSN, error } = schemaNode.reduceNode(value);
+        if (rSN == null) {
+            console.log(error);
+            throw new Error('Failed reducing node ' + pointer);
+        }
+        const schema = rSN.schema;
         const property = getPropertyName(pointer);
         const node: NumberNode = {
             id: uuid(),

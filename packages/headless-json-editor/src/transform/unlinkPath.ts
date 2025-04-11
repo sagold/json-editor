@@ -1,6 +1,5 @@
 import { JsonPointer, JsonError } from 'json-schema-library';
 import { isParentNode, Node } from '../types';
-import { invalidPathError, invalidNodeTypeError } from '../errors';
 import { getChildIndex } from '../node/getChildNode';
 import { split, join } from '@sagold/json-pointer';
 import { getData } from '../node/getData';
@@ -42,7 +41,7 @@ export function unlinkPath<T extends Node = Node>(
 ): JsonError | [T, Node] {
     pointer = join(pointer as JsonPointer);
     if (!isParentNode(previousRoot)) {
-        return invalidNodeTypeError({
+        return previousRoot.schemaNode.createError('invalid-node-type-error', {
             pointer,
             schema: previousRoot.schema,
             value: getData(previousRoot),
@@ -63,7 +62,7 @@ export function unlinkPath<T extends Node = Node>(
         childProperty = frags.shift() as string;
         childIndex = getChildIndex(targetNode, childProperty);
         if (!isParentNode(targetNode) || childIndex < 0) {
-            return invalidPathError({
+            return previousRoot.schemaNode.createError('invalid-path-error', {
                 pointer,
                 schema: targetNode.schema,
                 value: getData(targetNode),

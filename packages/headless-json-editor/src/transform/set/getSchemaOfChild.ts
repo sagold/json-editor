@@ -1,5 +1,4 @@
-import { Draft } from 'json-schema-library';
-import { ParentNode, isJsonError } from '../../types';
+import { ParentNode } from '../../types';
 import { getData } from '../../node/getData';
 
 type UnknownObject = Record<string, unknown>;
@@ -9,17 +8,25 @@ type UnknownObject = Record<string, unknown>;
  *
  * @returns json-schema for a child at property of node
  */
-export function getSchemaOfChild(draft: Draft, node: ParentNode, property: string, value: unknown) {
+export function getSchemaOfChild(node: ParentNode, property: string, value: unknown) {
     const data = getData(node) as UnknownObject;
     data[property] = value;
-    const schemaNode = draft.step(draft.createNode(node.schema, node.pointer), property, data);
+    const { node: schemaNode, error } = node.schemaNode.getNodeChild(property, data, { createSchema: true });
     // unknown property in schema
-    if (isJsonError(schemaNode)) {
-        if (schemaNode.code !== 'unknown-property-error') {
-            console.log(`failed retrieving schema for '${node.pointer}/${property}'`, schemaNode);
-            return schemaNode;
+    if (error) {
+        if (error.code !== 'unknown-property-error') {
+            console.log(`failed retrieving schema for '${node.pointer}/${property}'`, error);
+            return error;
         }
-        return draft.createNode(draft.createSchemaOf(value), `${node.pointer}/${property}`);
+        return node.schemaNode.compileSchema(node.schemaNode.createSchema(value));
+    }
+    if (schemaNode == null) {
+        // @todo not happening because of createSchema: true
+        return node.schemaNode.createError('schema-warning', {
+            pointer: `${node.pointer}/${property}`,
+            schema: node.schema,
+            value
+        });
     }
     return schemaNode;
 }
