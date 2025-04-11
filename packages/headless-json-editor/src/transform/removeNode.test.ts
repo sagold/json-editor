@@ -1,4 +1,4 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { SchemaNode } from 'json-schema-library';
 import { createNode } from '../node/createNode';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
@@ -6,6 +6,7 @@ import { getNodeTrace } from '../node/getNodeTrace';
 import { Node, ObjectNode } from '../types';
 import { strict as assert } from 'assert';
 import { removeNode } from './removeNode';
+import { compileSchema } from '../compileSchema';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -19,10 +20,10 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 }
 
 describe('removeNode', () => {
-    let core: Draft;
+    let root: SchemaNode;
 
     beforeEach(() => {
-        core = new Draft07({
+        root = compileSchema({
             type: 'object',
             properties: {
                 list: {
@@ -35,10 +36,10 @@ describe('removeNode', () => {
 
     describe('array', () => {
         it('should remove item in list', () => {
-            const before = createNode(core, { list: ['1', '2', '3', '4'] });
+            const before = createNode(root, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = removeNode(core, before, '/list/2');
+            const [after] = removeNode(before, '/list/2');
 
             assert(after.type !== 'error');
             const data = getData(after);
@@ -54,10 +55,10 @@ describe('removeNode', () => {
 
     describe('object', () => {
         it('should remove property from object', () => {
-            const before = createNode(core, { list: ['1', '2', '3', '4'] });
+            const before = createNode(root, { list: ['1', '2', '3', '4'] });
             const beforeString = JSON.stringify(before);
 
-            const [after] = removeNode(core, before, '/list');
+            const [after] = removeNode(before, '/list');
 
             assert(after.type !== 'error');
             const data = getData(after);
@@ -68,9 +69,9 @@ describe('removeNode', () => {
     });
 
     describe('object optional properties', () => {
-        let core: Draft;
+        let root: SchemaNode;
         beforeEach(() => {
-            core = new Draft07({
+            root = compileSchema({
                 type: 'object',
                 required: ['title'],
                 properties: {
@@ -88,21 +89,18 @@ describe('removeNode', () => {
         });
 
         it('should reduce list of optional properties for added properties', () => {
-            const before = createNode(
-                core,
-                core.getTemplate({ size: {} }, core.getSchema(), { addOptionalProps: false })
-            ) as ObjectNode;
+            const before = createNode(root, root.getData({ size: {} }, { addOptionalProps: false })) as ObjectNode;
             // precondition: title is required, size is set, but list is optional
             assert.deepEqual(before.missingProperties, ['list']);
 
-            const [after] = removeNode(core, before, '/size');
+            const [after] = removeNode(before, '/size');
 
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['size', 'list']);
         });
 
         it('should set dependency as optional if it is no longer required', () => {
-            const draft = new Draft07({
+            const root = compileSchema({
                 type: 'object',
                 properties: {
                     one: {
@@ -120,11 +118,11 @@ describe('removeNode', () => {
                 }
             });
             const before = createNode(
-                draft,
-                draft.getTemplate({ one: 'triggers two' }, draft.getSchema(), { addOptionalProps: false })
+                root,
+                root.getData({ one: 'triggers two' }, { addOptionalProps: false })
             ) as ObjectNode;
 
-            const [after] = removeNode(draft, before, '/one');
+            const [after] = removeNode(before, '/one');
             assert(after.type !== 'error');
             assert.deepEqual(after.missingProperties, ['one']);
             assert.deepEqual(after.optionalProperties, ['one', 'two']);

@@ -1,6 +1,5 @@
-import { JsonPointer, JsonError, Draft, reduceSchema, JsonSchema } from 'json-schema-library';
+import { JsonPointer, JsonError } from 'json-schema-library';
 import { isParentNode, Node, isJsonError, Change } from '../types';
-import { invalidPathError } from '../errors';
 import { getChildIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
 import { split } from '@sagold/json-pointer';
@@ -8,11 +7,7 @@ import { unlinkPath } from './unlinkPath';
 import { getData } from '../node/getData';
 import { updateOptionalPropertyList } from '../node/createNode';
 
-export function removeNode<T extends Node = Node>(
-    draft: Draft,
-    previousRoot: T,
-    pointer: JsonPointer
-): [JsonError] | [T, Change[]] {
+export function removeNode<T extends Node = Node>(previousRoot: T, pointer: JsonPointer): [JsonError] | [T, Change[]] {
     const frags = split(pointer);
     const property = frags.pop() as string;
 
@@ -25,7 +20,7 @@ export function removeNode<T extends Node = Node>(
     const removeNodeIndex = getChildIndex(parentNode, property);
     if (!isParentNode(parentNode)) {
         return [
-            invalidPathError({
+            previousRoot.schemaNode.createError('invalid-path-error', {
                 pointer: parentNode.pointer,
                 schema: parentNode.schema,
                 value: getData(parentNode),
@@ -54,12 +49,28 @@ export function removeNode<T extends Node = Node>(
     // dynamic schema might change
     if (parentNode.type === 'object') {
         const nextData = getData(parentNode) as Record<string, unknown>;
-        const staticSchema = reduceSchema(draft.createNode(parentNode.sourceSchema, parentNode.pointer), nextData);
-        // @todo recreate node instead of patching to take care for changes in children
-        parentNode.schema = staticSchema.schema as JsonSchema;
 
-        // update required and missing properties
-        updateOptionalPropertyList(parentNode);
+        console.log('parent schema', parentNode.schemaNode.schema, nextData);
+
+        const { node: nextSchemaNode, error } = parentNode.schemaNode.reduceNode(
+            { nextData },
+            {
+                pointer: parentNode.pointer
+            }
+        );
+
+        console.log('parent schema reduced', nextSchemaNode?.schema);
+
+        if (error) {
+            console.log('error', error);
+        }
+        if (nextSchemaNode) {
+            // @todo recreate node instead of patching to take care for changes in children
+            parentNode.schema = nextSchemaNode.schema;
+            parentNode.schemaNode = nextSchemaNode;
+            // update required and missing properties
+            updateOptionalPropertyList(parentNode);
+        }
     }
 
     return [nextRoot, changes];
