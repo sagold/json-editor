@@ -1,7 +1,6 @@
-import { Draft, JsonPointer, JsonError } from 'json-schema-library';
+import { JsonPointer, JsonError } from 'json-schema-library';
 import { Node, isJsonError, Change } from '../types';
 import gp from '@sagold/json-pointer';
-import { invalidPathError } from '../errors';
 import { updatePath } from './updatePath';
 import { unlinkPath } from './unlinkPath';
 import { getData } from '../node/getData';
@@ -12,7 +11,6 @@ import { getData } from '../node/getData';
  * @return new tree containing changed array
  */
 export function moveNode(
-    core: Draft,
     rootNode: Node,
     pointerToArray: JsonPointer,
     from: number,
@@ -25,7 +23,7 @@ export function moveNode(
     const [newRoot, arrayNode] = result;
     if (arrayNode.type !== 'array') {
         return [
-            invalidPathError({
+            rootNode.schemaNode.createError('invalid-path-error', {
                 pointer: pointerToArray,
                 schema: arrayNode.schema,
                 value: getData(arrayNode),

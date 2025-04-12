@@ -1,4 +1,4 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { SchemaNode } from 'json-schema-library';
 import { createNode } from '../node/createNode';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
@@ -6,6 +6,7 @@ import { getNodeTrace } from '../node/getNodeTrace';
 import { Node, ArrayNode } from '../types';
 import { strict as assert } from 'assert';
 import { moveNode } from './moveNode';
+import { compileSchema } from '../compileSchema';
 
 function assertUnlinkedNodes(before: Node, after: Node, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
@@ -19,10 +20,10 @@ function assertUnlinkedNodes(before: Node, after: Node, path: string) {
 }
 
 describe('moveNode', () => {
-    let core: Draft;
+    let root: SchemaNode;
 
     beforeEach(() => {
-        core = new Draft07({
+        root = compileSchema({
             type: 'object',
             properties: {
                 list: {
@@ -34,10 +35,10 @@ describe('moveNode', () => {
     });
 
     it('should move item to given array index', () => {
-        const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
+        const before = createNode(root, { list: ['1', '2', '3', '4', '5'] });
         const beforeString = JSON.stringify(before);
 
-        const [after] = moveNode(core, before, '/list', 3, 1);
+        const [after] = moveNode(before, '/list', 3, 1);
 
         assert(after.type !== 'error');
         const data = getData(after);
@@ -61,19 +62,19 @@ describe('moveNode', () => {
     });
 
     it('should move item in root array', () => {
-        core.setSchema({ type: 'array', items: { type: 'string' } });
-        const before = createNode(core, ['1', '2', '3', '4', '5']);
+        root = compileSchema({ type: 'array', items: { type: 'string' } });
+        const before = createNode(root, ['1', '2', '3', '4', '5']);
 
-        const [after] = moveNode(core, before, '#', 3, 1);
+        const [after] = moveNode(before, '#', 3, 1);
 
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), ['1', '4', '2', '3', '5']);
     });
 
     it('should append item if target index is too large', () => {
-        const before = createNode(core, { list: ['1', '2', '3', '4', '5'] });
+        const before = createNode(root, { list: ['1', '2', '3', '4', '5'] });
 
-        const [after] = moveNode(core, before, '/list', 1, 90);
+        const [after] = moveNode(before, '/list', 1, 90);
         assert(after.type !== 'error');
         assert.deepEqual(getData(after), { list: ['1', '3', '4', '5', '2'] });
     });
