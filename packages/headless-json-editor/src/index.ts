@@ -1,5 +1,3 @@
-// settings
-import { setErrorMessages } from './settings';
 // create
 import { createNode, getOptions, DefaultNodeOptions } from './node/createNode';
 import { getData } from './node/getData';
@@ -30,6 +28,7 @@ import { updateErrors } from './validate/updateErrors';
 import { validateNode, splitErrors } from './validate/validateNode';
 // jlib export
 import { isJsonError, JsonError } from 'json-schema-library';
+export { compileSchema } from './compileSchema';
 // bundled tools
 export { deepEqual } from 'fast-equals';
 export { uuid } from './utils/uuid';
@@ -91,7 +90,6 @@ export {
     OnChangePlugin,
     RemoteEnumOptionsPlugin,
     removeNode,
-    setErrorMessages,
     SetOptionTitleToPlugin,
     setValue,
     splitErrors,

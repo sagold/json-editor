@@ -72,7 +72,6 @@ describe('validate', () => {
         let async: SchemaNode;
         // @ts-ignore
         const validator: JsonSchemaValidator = ({ node, value, pointer }) => {
-            console.log('return error');
             const error: JsonError = {
                 type: 'error',
                 code: 'async-error',

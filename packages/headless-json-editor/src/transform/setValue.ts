@@ -77,8 +77,6 @@ function setNext(
         throw new Error(`Invalid property: '${property}'`);
     }
 
-    console.log('set', property, value);
-
     // get next child node at 'property'
     const childNodeIndex = getChildIndex(parentNode, property);
     if (childNodeIndex === -1 && frags.length > 0) {
@@ -145,7 +143,6 @@ function setNext(
     // @ts-ignore @todo type helper properties set by create
     const childSchemaNode = childNode.schemaNode;
     if (isReduceable(childSchemaNode)) {
-        console.log('child reduceable', childSchemaNode.schema);
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(childNode);
@@ -165,8 +162,6 @@ function setNext(
             syncNodes(childNode, newChild);
             return;
         }
-    } else {
-        console.log('not reduceable', childSchemaNode.schema);
     }
 
     const nextParentNode = { ...childNode } as ParentNode;
