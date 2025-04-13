@@ -50,16 +50,12 @@ export function removeNode<T extends Node = Node>(previousRoot: T, pointer: Json
     if (parentNode.type === 'object') {
         const nextData = getData(parentNode) as Record<string, unknown>;
 
-        console.log('parent schema', parentNode.schemaNode.schema, nextData);
-
         const { node: nextSchemaNode, error } = parentNode.schemaNode.reduceNode(
             { nextData },
             {
                 pointer: parentNode.pointer
             }
         );
-
-        console.log('parent schema reduced', nextSchemaNode?.schema);
 
         if (error) {
             console.log('error', error);

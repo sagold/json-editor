@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
     preset: 'ts-jest',
@@ -11,5 +13,8 @@ module.exports = {
         ]
     },
     modulePathIgnorePatterns: ['dist'],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'html']
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'html'],
+    moduleNameMapper: {
+        'headless-json-editor': path.resolve('./packages/headless-json-editor/src/index.ts')
+    }
 };
