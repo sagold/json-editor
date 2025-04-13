@@ -1,4 +1,5 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { SchemaNode } from 'json-schema-library';
+import { compileSchema } from 'headless-json-editor';
 import { createNode } from '../../../src/node/createNode';
 import { getNode } from '../../../src/node/getNode';
 import { strict as assert } from 'assert';
@@ -6,14 +7,14 @@ import { isJsonError } from '../../../src/types';
 import { setValue } from '../../../src/transform/setValue';
 
 describe('issues createNode', () => {
-    let draft: Draft;
+    let schemaNode: SchemaNode;
 
     beforeEach(() => {
-        draft = new Draft07(createSchema());
+        schemaNode = compileSchema(createSchema());
     });
 
     it('should create TotalAmount with options readonly=true', () => {
-        const root = createNode(draft, {
+        const root = createNode(schemaNode, {
             useDetails: true,
             ID: 'Fund A',
             Type: 'A',
@@ -29,7 +30,7 @@ describe('issues createNode', () => {
     });
 
     it('should change TotalAmount to options readonly=undefined', () => {
-        const root = createNode(draft, {
+        const root = createNode(schemaNode, {
             useDetails: true,
             ID: 'Fund A',
             Type: 'A',
@@ -40,7 +41,7 @@ describe('issues createNode', () => {
             ]
         });
 
-        const [nextRoot] = setValue(draft, root, '/details/0/sumTotal', false);
+        const [nextRoot] = setValue(root, '/details/0/sumTotal', false);
 
         assert(!isJsonError(nextRoot));
         const targetNode = getNode(nextRoot, '/details/0/TotalAmount');
@@ -49,7 +50,7 @@ describe('issues createNode', () => {
     });
 
     it('should create TotalAmount as without option readonly', () => {
-        const root = createNode(draft, {
+        const root = createNode(schemaNode, {
             useDetails: true,
             ID: 'Fund A',
             Type: 'A',
@@ -65,7 +66,7 @@ describe('issues createNode', () => {
     });
 
     it('should change TotalAmount to options readonly=true', () => {
-        const root = createNode(draft, {
+        const root = createNode(schemaNode, {
             useDetails: true,
             ID: 'Fund A',
             Type: 'A',
@@ -76,7 +77,7 @@ describe('issues createNode', () => {
             ]
         });
 
-        const [nextRoot] = setValue(draft, root, '/details/0/sumTotal', true);
+        const [nextRoot] = setValue(root, '/details/0/sumTotal', true);
 
         assert(!isJsonError(nextRoot));
         const targetNode = getNode(nextRoot, '/details/0/TotalAmount');

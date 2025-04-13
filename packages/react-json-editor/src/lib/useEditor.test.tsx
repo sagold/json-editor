@@ -18,7 +18,7 @@ describe('useEditor', () => {
         });
 
         assert(result.current != null, 'should have returned instance on final render');
-        assert.equal(typeof result.current.draft.getSchema, 'function');
+        assert.equal(typeof result.current.schemaNode.getNodeChild, 'function');
     });
 
     it('should update state when input data changes', () => {
@@ -267,7 +267,7 @@ describe('useEditor', () => {
                 }
             });
             const editor = result.current;
-            assert.equal(editor?.draft.config.templateDefaultOptions?.extendDefaults, false);
+            assert.equal(editor?.schemaNode.context.getDataDefaultOptions?.extendDefaults, false);
         });
 
         it('should set `extendDefault` in draft to true', () => {
@@ -279,7 +279,7 @@ describe('useEditor', () => {
             });
 
             const editor = result.current;
-            assert.equal(editor?.draft.config.templateDefaultOptions?.extendDefaults, true);
+            assert.equal(editor?.schemaNode.context.getDataDefaultOptions?.extendDefaults, true);
         });
 
         it('should not add minimum required array items if default-value is []', () => {

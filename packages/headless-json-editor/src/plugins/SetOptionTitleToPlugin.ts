@@ -1,25 +1,25 @@
-import { Node, StringNode, isChangeEvent, isJsonError } from "../types";
+import { Node, StringNode, isChangeEvent, isJsonError } from '../types';
 import { Plugin } from '../HeadlessEditor';
-import { setValue } from "../transform/setValue";
+import { setValue } from '../transform/setValue';
 
 type StringEnumNode = StringNode & {
     schema: {
         enum: string[];
         options?: {
             enum?: string[];
-        }
-    }
-}
+        };
+    };
+};
 
 function isStringNode(node: Node): node is StringNode {
-    return node.schema.type === "string";
+    return node.schema.type === 'string';
 }
 
 function isStringEnumNode(node: Node): node is StringEnumNode {
     return isStringNode(node) && Array.isArray(node?.schema?.enum);
 }
 
-const SCHEMA_KEY = "setOptionTitleTo";
+const SCHEMA_KEY = 'setOptionTitleTo';
 
 /**
  * Add support to save selected option-title as value to another string-property.
@@ -45,8 +45,8 @@ const SCHEMA_KEY = "setOptionTitleTo";
  *  }
  * ```
  */
-export const SetOptionTitleToPlugin: Plugin = ({ draft }) => ({
-    id: "set-option-title-to",
+export const SetOptionTitleToPlugin: Plugin = () => ({
+    id: 'set-option-title-to',
     onEvent(root, event) {
         if (!isChangeEvent(event) || event.node.schema[SCHEMA_KEY] == null || !isStringEnumNode(event.node)) {
             return undefined;
@@ -58,9 +58,9 @@ export const SetOptionTitleToPlugin: Plugin = ({ draft }) => ({
             return undefined;
         }
         const value = node.schema.options?.enum?.[index];
-        const [newAST, changes] = setValue(draft, root, target, value);
+        const [newAST, changes] = setValue(root, target, value);
         if (isJsonError(newAST)) {
-            console.log("SetOptionTitleToPlugin error:", newAST);
+            console.log('SetOptionTitleToPlugin error:', newAST);
             return undefined;
         }
         return [newAST, changes ?? []];

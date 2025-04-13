@@ -1,4 +1,5 @@
-import { Draft07, Draft } from 'json-schema-library';
+import { SchemaNode } from 'json-schema-library';
+import { compileSchema } from 'headless-json-editor';
 import { createNode } from '../../../src/node/createNode';
 import { setValue } from '../../../src/transform/setValue';
 import { strict as assert } from 'assert';
@@ -11,47 +12,47 @@ import { strict as assert } from 'assert';
  * 4. validated when active
  */
 describe('feature: toggle form', () => {
-    let draft: Draft;
+    let schemaNode: SchemaNode;
     beforeEach(
         () =>
-        (draft = new Draft07({
-            type: 'object',
-            required: ['trigger'],
-            properties: {
-                trigger: { type: 'boolean', $id: 'trigger', default: false },
-                addition: {
-                    options: { hidden: true },
-                    type: 'object'
-                }
-            },
-            allOf: [
-                {
-                    if: {
-                        required: ['trigger'],
-                        properties: {
-                            trigger: { const: true }
-                        }
-                    },
-                    then: {
-                        required: ['addition'],
-                        properties: {
-                            addition: {
-                                options: { hidden: false },
-                                type: 'object',
-                                required: ['title'],
-                                properties: {
-                                    title: { type: 'string' }
+            (schemaNode = compileSchema({
+                type: 'object',
+                required: ['trigger'],
+                properties: {
+                    trigger: { type: 'boolean', $id: 'trigger', default: false },
+                    addition: {
+                        options: { hidden: true },
+                        type: 'object'
+                    }
+                },
+                allOf: [
+                    {
+                        if: {
+                            required: ['trigger'],
+                            properties: {
+                                trigger: { const: true }
+                            }
+                        },
+                        then: {
+                            required: ['addition'],
+                            properties: {
+                                addition: {
+                                    options: { hidden: false },
+                                    type: 'object',
+                                    required: ['title'],
+                                    properties: {
+                                        title: { type: 'string' }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            ]
-        }))
+                ]
+            }))
     );
 
     it('should not show inactive node', () => {
-        const root = createNode(draft, { trigger: false });
+        const root = createNode(schemaNode, { trigger: false });
 
         assert(root.type === 'object');
         assert.equal(root.children.length, 1);
@@ -60,23 +61,23 @@ describe('feature: toggle form', () => {
 
     it('should not return errors for invalid hidden property', () => {
         const data = { trigger: false, addition: { title: 4 } };
-        const root = createNode(draft, data);
+        const root = createNode(schemaNode, data);
 
-        const errs = draft.validate(data);
+        const errs = root.schemaNode.validate(data).errors;
         assert.equal(errs.length, 0);
     });
 
     it('should return errors for invalid property', () => {
         const data = { trigger: true, addition: { title: 4 } };
-        const root = createNode(draft, data);
+        const root = createNode(schemaNode, data);
 
-        const errs = draft.validate(data);
+        const errs = root.schemaNode.validate(data).errors;
         // @todo error is duplicated - check in json-schema-library
         assert(errs.length > 0);
     });
 
     it('should show active node', () => {
-        const root = createNode(draft, { trigger: true });
+        const root = createNode(schemaNode, { trigger: true });
 
         assert(root.type === 'object');
         assert.equal(root.children.length, 2);
@@ -85,9 +86,9 @@ describe('feature: toggle form', () => {
     });
 
     it('should switch node to active', () => {
-        const root = createNode(draft, { trigger: false });
+        const root = createNode(schemaNode, { trigger: false });
 
-        const [update] = setValue(draft, root, '/trigger', true);
+        const [update] = setValue(root, '/trigger', true);
 
         assert(update.type === 'object');
         assert.equal(update.children.length, 2);
@@ -96,9 +97,9 @@ describe('feature: toggle form', () => {
     });
 
     it('should switch node to inactive', () => {
-        const root = createNode(draft, { trigger: true });
+        const root = createNode(schemaNode, { trigger: true });
 
-        const [update] = setValue(draft, root, '/trigger', false);
+        const [update] = setValue(root, '/trigger', false);
 
         assert(update.type === 'object');
         assert.equal(update.children.length, 2);
