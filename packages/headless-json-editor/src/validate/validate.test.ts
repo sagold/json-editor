@@ -70,8 +70,7 @@ describe('validate', () => {
 
     describe('async validation', () => {
         let async: SchemaNode;
-        // @ts-ignore
-        const validator: JsonSchemaValidator = ({ node, value, pointer }) => {
+        const validator: JsonSchemaValidator = async ({ node, data, pointer }) => {
             const error: JsonError = {
                 type: 'error',
                 code: 'async-error',
@@ -80,10 +79,10 @@ describe('validate', () => {
                 data: {
                     pointer: pointer ?? '',
                     schema: node.schema,
-                    value
+                    value: data
                 }
             };
-            return Promise.resolve(error);
+            return error;
         };
 
         beforeEach(() => {

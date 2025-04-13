@@ -22,7 +22,7 @@ export async function updateErrors(node: Node) {
     });
 
     // retrieve errors
-    const { errors, asyncErrors } = node.schemaNode.validate(getData(node), node.pointer);
+    const { errors, errorsAsync } = node.schemaNode.validate(getData(node), node.pointer);
 
     // assign errors
     errors.forEach((err: JsonError) => {
@@ -35,15 +35,19 @@ export async function updateErrors(node: Node) {
         pointerToErrors[pointer].push(err);
     });
 
-    // await and assign async errors
-    return asyncErrors
-        ? asyncErrors.then((errors) => {
-              errors.forEach((err: JsonError) => {
-                  const pointer = err.data?.pointer ?? '#';
-                  // schema may change
-                  pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
-                  pointerToErrors[pointer].push(err);
-              });
-          })
-        : undefined;
+    if (errorsAsync.length > 0) {
+        const errors = await Promise.all(errorsAsync);
+        return errors.filter((err) => {
+            if (err) {
+                const pointer = err.data?.pointer ?? '#';
+                // schema may change
+                pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
+                pointerToErrors[pointer].push(err);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    return undefined;
 }
