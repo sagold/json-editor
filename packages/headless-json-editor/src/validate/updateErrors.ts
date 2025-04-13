@@ -1,8 +1,7 @@
-import { Draft, JsonError } from 'json-schema-library';
+import { JsonError } from 'json-schema-library';
 import { Node, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
-import { splitErrors } from './validateNode';
 
 function each(node: Node, cb: (node: Node) => void) {
     cb(node);
@@ -14,7 +13,7 @@ function each(node: Node, cb: (node: Node) => void) {
 /**
  * Perform json-schema validation and assign errors to corresponding nodes
  */
-export async function updateErrors(draft: Draft, node: Node) {
+export async function updateErrors(node: Node) {
     const pointerToErrors: Record<string, JsonError[]> = {};
     // reset errors
     each(node, (n) => {
@@ -23,11 +22,10 @@ export async function updateErrors(draft: Draft, node: Node) {
     });
 
     // retrieve errors
-    const errors = draft.validate(getData(node), node.schema, node.pointer).flat(Infinity);
-    const [syncErrors, asyncErrors] = splitErrors(errors);
+    const { errors, asyncErrors } = node.schemaNode.validate(getData(node), node.pointer);
 
     // assign errors
-    syncErrors.forEach((err: JsonError) => {
+    errors.forEach((err: JsonError) => {
         const pointer = err.data?.pointer ?? '#';
         if (pointerToErrors[pointer] == null) {
             // retrieve new (dynamic) node
@@ -38,17 +36,14 @@ export async function updateErrors(draft: Draft, node: Node) {
     });
 
     // await and assign async errors
-    asyncErrors.forEach((validation: Promise<JsonError | undefined>) =>
-        validation.then((err) => {
-            if (err == null) {
-                return;
-            }
-            const pointer = err.data?.pointer ?? '#';
-            // schema may change
-            pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
-            pointerToErrors[pointer].push(err);
-        })
-    );
-
-    return Promise.all(asyncErrors);
+    return asyncErrors
+        ? asyncErrors.then((errors) => {
+              errors.forEach((err: JsonError) => {
+                  const pointer = err.data?.pointer ?? '#';
+                  // schema may change
+                  pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
+                  pointerToErrors[pointer].push(err);
+              });
+          })
+        : undefined;
 }

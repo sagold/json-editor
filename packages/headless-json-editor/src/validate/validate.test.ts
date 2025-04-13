@@ -1,16 +1,17 @@
 import { createNode } from '../node/createNode';
-import { Draft07, Draft, JsonValidator, JsonError, isJsonError } from 'json-schema-library';
+import { JsonError, isJsonError, SchemaNode, extendDraft, JsonSchemaValidator } from 'json-schema-library';
 import { getNode } from '../node/getNode';
-import { Node } from 'headless-json-editor';
 import { setValue } from '../transform/setValue';
 import { strict as assert } from 'assert';
 import { updateErrors as validate } from '../validate/updateErrors';
+import { compileSchema, jsonEditorDraft } from '../compileSchema';
+import { Node } from '../types';
 
 describe('validate', () => {
-    let core: Draft;
+    let schemaNode: SchemaNode;
 
     beforeEach(() => {
-        core = new Draft07({
+        schemaNode = compileSchema({
             type: 'object',
             properties: {
                 title: {
@@ -26,9 +27,9 @@ describe('validate', () => {
     });
 
     it('should add property errors', () => {
-        const root = createNode(core, { title: '', caption: 'c' });
+        const root = createNode(schemaNode, { title: '', caption: 'c' });
 
-        validate(core, root);
+        validate(root);
 
         const titleNode = getNode(root, '/title');
 
@@ -37,15 +38,15 @@ describe('validate', () => {
     });
 
     it('should update property errors', () => {
-        const root = createNode(core, { title: '', caption: 'c' });
+        const root = createNode(schemaNode, { title: '', caption: 'c' });
 
-        validate(core, root);
+        validate(root);
 
         assert(root.type === 'array' || root.type === 'object');
-        const [after] = setValue(core, root, '/title', 'minlength');
+        const [after] = setValue(root, '/title', 'minlength');
         assert(after.type !== 'error');
 
-        validate(core, after);
+        validate(after);
 
         const titleNode = getNode(after, '/title');
 
@@ -54,9 +55,9 @@ describe('validate', () => {
     });
 
     it('should validate from pointer only', () => {
-        const root = createNode(core, { title: '', caption: '' });
+        const root = createNode(schemaNode, { title: '', caption: '' });
 
-        validate(core, getNode(root, '/caption') as Node);
+        validate(getNode(root, '/caption') as Node);
 
         const caption = getNode(root, '/caption');
         assert(!isJsonError(caption));
@@ -68,21 +69,26 @@ describe('validate', () => {
     });
 
     describe('async validation', () => {
-        let async: Draft;
+        let async: SchemaNode;
         // @ts-ignore
-        const validator: JsonValidator = (node: SchemaNode, value: unknown) => {
+        const validator: JsonSchemaValidator = ({ node, value, pointer }) => {
+            console.log('return error');
             const error: JsonError = {
                 type: 'error',
                 code: 'async-error',
                 message: 'an async error',
                 name: 'AsyncError',
-                data: { pointer: node.pointer, schema: node.schema, value }
+                data: {
+                    pointer: pointer ?? '',
+                    schema: node.schema,
+                    value
+                }
             };
             return Promise.resolve(error);
         };
 
         beforeEach(() => {
-            async = new Draft07(
+            async = compileSchema(
                 {
                     type: 'object',
                     properties: {
@@ -96,17 +102,26 @@ describe('validate', () => {
                     }
                 },
                 {
-                    validateFormat: {
-                        async: validator
-                    }
+                    drafts: [
+                        extendDraft(jsonEditorDraft, {
+                            formats: {
+                                async: validator
+                            }
+                        })
+                    ]
                 }
             );
+        });
+
+        it('should have async format validator registered', () => {
+            const root = createNode(async, { title: '', caption: '' });
+            assert(root.schemaNode.context.formats.async);
         });
 
         it('should perform async validation', async () => {
             const root = createNode(async, { title: '', caption: '' });
 
-            await validate(async, root);
+            await validate(root);
 
             const title = getNode(root, '/title');
             assert(!isJsonError(title));
@@ -116,8 +131,8 @@ describe('validate', () => {
         it('should assign validation error once only', async () => {
             const root = createNode(async, { title: '', caption: '' });
 
-            validate(async, root);
-            await validate(async, root);
+            validate(root);
+            await validate(root);
 
             const title = getNode(root, '/title');
             assert(!isJsonError(title));

@@ -13,27 +13,27 @@ describe('HeadlessEditor', () => {
         const editor = new HeadlessEditor({ schema, extendDefaults: false });
         assert.notEqual(editor.root, null);
         assert.notEqual(editor.plugins, null);
-        assert.notEqual(editor.draft, null);
+        assert.notEqual(editor.schemaNode, null);
         assert.notEqual(editor.options, null);
 
         editor.destroy();
 
         assert.equal(editor.root, null);
         assert.equal(editor.plugins, null);
-        assert.equal(editor.draft, null);
+        assert.equal(editor.schemaNode, null);
         assert.equal(editor.options, null);
     });
 
     describe('options', () => {
         it('should set `extendDefault` in draft', () => {
             let editor = new HeadlessEditor({ schema, extendDefaults: false });
-            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+            assert.equal(editor.schemaNode.context.getDataDefaultOptions?.extendDefaults, false);
 
             editor = new HeadlessEditor({ schema, extendDefaults: true });
-            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, true);
+            assert.equal(editor.schemaNode.context.getDataDefaultOptions?.extendDefaults, true);
 
             editor = new HeadlessEditor({ schema, extendDefaults: false, draftConfig: {} });
-            assert.equal(editor.draft.config.templateDefaultOptions?.extendDefaults, false);
+            assert.equal(editor.schemaNode.context.getDataDefaultOptions?.extendDefaults, false);
         });
     });
 
@@ -108,11 +108,11 @@ describe('HeadlessEditor', () => {
         });
 
         it('should validate changes made by plugin', () => {
-            const change: Plugin = ({ draft }) => ({
+            const change: Plugin = () => ({
                 id: 'change',
                 onEvent: (root, event) => {
                     if (event.type === 'update') {
-                        const result = setValue(draft, root, '#/title', 'X');
+                        const result = setValue(root, '#/title', 'X');
                         if (result.length === 2) {
                             return result;
                         }

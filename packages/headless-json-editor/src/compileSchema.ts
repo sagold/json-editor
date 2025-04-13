@@ -6,7 +6,7 @@ import {
     JsonSchema
 } from 'json-schema-library';
 
-export const draft = extendDraft(draftEditor, {
+export const jsonEditorDraft = extendDraft(draftEditor, {
     errors: {
         'invalid-path-error': "Path '{{pointer}}' does not exist in data",
         'invalid-node-type-error': 'Invalid not type {{ type }} given'
@@ -14,5 +14,5 @@ export const draft = extendDraft(draftEditor, {
 });
 
 export function compileSchema(schema: JsonSchema, options: Partial<CompileOptions> = {}) {
-    return _compileSchema(schema, { ...options, drafts: [draft] });
+    return _compileSchema(schema, { drafts: [jsonEditorDraft], ...options });
 }

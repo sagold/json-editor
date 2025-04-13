@@ -1,7 +1,6 @@
-import { Draft, JsonError } from 'json-schema-library';
+import { JsonError } from 'json-schema-library';
 import { Node, isJsonError } from '../types';
 import { getData } from '../node/getData';
-
 
 function validationError(item: JsonError) {
     return item instanceof Promise || isJsonError(item);
@@ -13,10 +12,10 @@ function validationError(item: JsonError) {
  *
  * @return list of validation errors
  */
-export function validateNode(draft: Draft, node: Node) {
-    const errors: (JsonError | Promise<JsonError | undefined>)[] = draft
-        .validate(getData(node), node.schema, node.pointer)
-        .flat(Infinity)
+export function validateNode(node: Node) {
+    const errors: (JsonError | Promise<JsonError | undefined>)[] = node.schemaNode
+        .validate(getData(node), node.pointer)
+        .errors.flat(Infinity)
         .filter(validationError);
 
     return errors;
@@ -27,9 +26,9 @@ export function validateNode(draft: Draft, node: Node) {
  */
 export function splitErrors(
     errors: (JsonError | Promise<JsonError | undefined>)[]
-): [JsonError[], Promise<(JsonError | undefined)>[]] {
+): [JsonError[], Promise<JsonError | undefined>[]] {
     const syncErrors: JsonError[] = [];
-    const asyncErrors: Promise<(JsonError | undefined)>[] = [];
+    const asyncErrors: Promise<JsonError | undefined>[] = [];
     for (let i = 0, l = errors.length; i < l; i += 1) {
         const error = errors[i];
         if (isJsonError(error)) {

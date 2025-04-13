@@ -1,7 +1,7 @@
 import gp from '@sagold/json-pointer';
 import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
-import { Draft, DraftConfig, JsonEditor, JsonError } from 'json-schema-library';
+import { CompileOptions, Draft, JsonError, SchemaNode, compileSchema } from 'json-schema-library';
 import { getErrors } from './node/getErrors';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
@@ -23,6 +23,7 @@ import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateErrors } from './validate/updateErrors';
 import { uuid } from './utils/uuid';
+import { jsonEditorDraft } from './compileSchema';
 
 export type O = Record<string, unknown>;
 
@@ -47,7 +48,7 @@ export type Plugin<
 export type HeadlessEditorOptions<Data = unknown> = {
     schema: JsonSchema;
     data?: Data;
-    draftConfig?: Partial<DraftConfig>;
+    drafts?: Draft[];
     plugins?: Plugin[];
     /** if data should be initially validated */
     validate?: boolean;
@@ -67,7 +68,8 @@ export class HeadlessEditor<Data = unknown> {
     /** Editor root node */
     root: Node;
     /** Json-Schema API */
-    draft: Draft;
+    schemaNode: SchemaNode;
+    schemaNodeConfig: CompileOptions;
     /** list of active plugins */
     plugins: PluginInstance[] = [];
     /** input options for this editor instance */
@@ -78,28 +80,31 @@ export class HeadlessEditor<Data = unknown> {
             schema,
             data = {},
             plugins = [],
-            draftConfig,
+            drafts,
             addOptionalProps = false,
             extendDefaults = false,
             removeInvalidData = false
         } = options;
         this.options = options;
         // setup getTemplate options for json-schema-library so that options are used by createNode and others
-        const config = draftConfig ?? {};
-        config.templateDefaultOptions = {
-            ...(config.templateDefaultOptions ?? {}),
-            addOptionalProps,
-            extendDefaults,
-            removeInvalidData
+        this.schemaNodeConfig = {
+            drafts: drafts ?? [jsonEditorDraft],
+            formatAssertion: true,
+            getDataDefaultOptions: {
+                addOptionalProps,
+                extendDefaults,
+                removeInvalidData
+            }
         };
-        this.draft = new JsonEditor(schema, config);
-        this.root = createNode<ParentNode>(this.draft, this.draft.getTemplate(data, this.draft.getSchema()));
+
+        this.schemaNode = compileSchema(schema, this.schemaNodeConfig);
+        this.root = createNode<ParentNode>(this.schemaNode, this.schemaNode.getData(data));
         plugins.forEach((p) => this.addPlugin(p));
         options.validate && this.validate();
     }
 
     get optionalProperties() {
-        return this.draft.config.templateDefaultOptions?.addOptionalProps === false;
+        return this.schemaNode.context.getDataDefaultOptions?.addOptionalProps === false;
     }
 
     /**
@@ -116,11 +121,11 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     setData(data?: Data): Node {
-        const { draft } = this;
+        const { schemaNode } = this;
         const previousState = this.root;
         this.root = createNode<ParentNode>(
-            draft,
-            draft.getTemplate(data, draft.getSchema(), {
+            schemaNode,
+            schemaNode.getData(data, {
                 addOptionalProps: false
             })
         );
@@ -137,14 +142,15 @@ export class HeadlessEditor<Data = unknown> {
      * @return default data confirming to json-schema
      */
     getTemplateData(schema: JsonSchema, data = null) {
-        return this.draft.getTemplate(data, schema);
+        const node = this.schemaNode.compileSchema(schema);
+        return node.getData(data);
     }
 
     /**
      * @return current json-schema
      */
     getSchema() {
-        return this.draft.getSchema();
+        return this.schemaNode.schema;
     }
 
     /**
@@ -153,7 +159,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     setSchema(schema: JsonSchema) {
-        this.draft.setSchema(schema);
+        this.schemaNode = compileSchema(schema, this.schemaNodeConfig);
         return this.setData(getData(this.root) as Data);
     }
 
@@ -166,7 +172,7 @@ export class HeadlessEditor<Data = unknown> {
             return [];
         }
         const state = unlinkAll(this.root);
-        validateState(this.draft, state);
+        validateState(state);
         const validationErrors = getErrors(this.root);
         const event: ValidationEvent = {
             type: 'validation',
@@ -247,7 +253,7 @@ export class HeadlessEditor<Data = unknown> {
                     currentRoot = modifiedState;
                     if (newChanges && newChanges.length > 0) {
                         changes.push(...newChanges);
-                        validateState(this.draft, currentRoot, getRootChange(newChanges));
+                        validateState(currentRoot, getRootChange(newChanges));
                     }
                 }
             });
@@ -274,7 +280,7 @@ export class HeadlessEditor<Data = unknown> {
             }
         }
 
-        const [state, changes] = setValue(this.draft, this.root, pointer, value);
+        const [state, changes] = setValue(this.root, pointer, value);
         if (isJsonError(state)) {
             console.error(`error setting '${pointer}' = ${JSON.stringify(value)}`);
             console.log(state);
@@ -287,7 +293,7 @@ export class HeadlessEditor<Data = unknown> {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validateState(this.draft, state, getRootChange(changes));
+        validateState(state, getRootChange(changes));
 
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
@@ -298,9 +304,17 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     addValue(pointer: string) {
-        const schema = this.draft.getSchema({ pointer, data: getData(this.root) });
-        const value = this.draft.getTemplate(undefined, schema);
-        return this.setValue(pointer, value);
+        const { node, error } = this.schemaNode.getNodeChild(pointer, getData(this.root));
+        if (node) {
+            const value = node.getData();
+            return this.setValue(pointer, value);
+        }
+        if (error) {
+            console.error(`addValue: Invalid path '${pointer}' given`);
+        } else {
+            console.log(`addValue: no schema found at '${pointer}'`);
+        }
+        return this.root;
     }
 
     /**
@@ -308,7 +322,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return new root node
      */
     removeValue(pointer: string) {
-        const [state, changes] = removeNode(this.draft, this.root, pointer);
+        const [state, changes] = removeNode(this.root, pointer);
         if (isJsonError(state)) {
             console.error(`error removing '${pointer}'`);
             console.log(state);
@@ -323,7 +337,7 @@ export class HeadlessEditor<Data = unknown> {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using remove
-        validateState(this.draft, state, parent);
+        validateState(state, parent);
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
     }
@@ -334,7 +348,7 @@ export class HeadlessEditor<Data = unknown> {
     moveItem(pointer: string, to: number) {
         const [parent, from] = gp.splitLast(pointer);
         // console.log('move', parent, from, to);
-        const [state, changes] = moveNode(this.draft, this.root, parent, parseInt(`${from}`), to);
+        const [state, changes] = moveNode(this.root, parent, parseInt(`${from}`), to);
         if (isJsonError(state)) {
             console.error(`error moving nodes in '${pointer}'`);
             console.log(state);
@@ -347,7 +361,7 @@ export class HeadlessEditor<Data = unknown> {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validateState(this.draft, state, pointer);
+        validateState(state, pointer);
         this.root = this.runPlugins(this.root, state, changes);
         return this.root;
     }
@@ -356,9 +370,10 @@ export class HeadlessEditor<Data = unknown> {
      * Append an item defined by a json-schema to the target array
      */
     appendItem(node: ArrayNode, itemSchema: JsonSchema) {
-        const value = this.draft.getTemplate(null, itemSchema);
+        const itemSchemaNode = this.schemaNode.compileSchema(itemSchema);
+        const value = itemSchemaNode.getData();
         const pointer = `${node.pointer}/${node.children.length}`;
-        const [state, changes] = setValue(this.draft, this.root, pointer, value);
+        const [state, changes] = setValue(this.root, pointer, value);
         if (isJsonError(state)) {
             console.error(`error apending item from schema '${node.pointer}'`);
             console.log(state);
@@ -371,7 +386,7 @@ export class HeadlessEditor<Data = unknown> {
 
         // validate assigns errors directly no node, which is okay here,
         // since we already cloned this location using set
-        validateState(this.draft, state, node.pointer);
+        validateState(state, node.pointer);
         const oldState = this.root;
         let newState = state;
         this.root = newState;
@@ -389,8 +404,7 @@ export class HeadlessEditor<Data = unknown> {
      * @return a list of available json subschemas to insert
      */
     getArrayAddOptions(node: ArrayNode) {
-        const schema = this.draft.getSchema({ pointer: node.pointer, data: getData(this.root) });
-        const selections = this.draft.getChildSchemaSelection(node.children.length, schema);
+        const selections = node.schemaNode.getChildSelection(node.children.length);
         if (isJsonError(selections) || selections.length === 0) {
             return [{ type: 'string' }];
         }
@@ -403,7 +417,7 @@ export class HeadlessEditor<Data = unknown> {
         }
         this.plugins.forEach((p) => p.onDestroy?.());
         // @ts-expect-error unresolved property
-        ['root', 'draft', 'plugins', 'options'].forEach((property) => (this[property] = null));
+        ['root', 'schemaNode', 'plugins', 'options'].forEach((property) => (this[property] = null));
     }
 }
 
@@ -420,7 +434,7 @@ function getRootChange(changes: Change[]) {
     return lowestPointer;
 }
 
-function validateState(draft: Draft, root: Node, pointer = '#') {
+function validateState(root: Node, pointer = '#') {
     // always evaluate parent as it can be that children are referenced in parent
     const validationTarget = gp.join(pointer, '..');
     let startNode = getNode(root, validationTarget);
@@ -428,5 +442,5 @@ function validateState(draft: Draft, root: Node, pointer = '#') {
         // if the node no longer exists, fallback to validate all
         startNode = root;
     }
-    updateErrors(draft, startNode);
+    updateErrors(startNode);
 }
