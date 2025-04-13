@@ -7,8 +7,7 @@ import {
     Widget,
     WidgetField,
     Node,
-    Editor,
-    JsonSchema
+    Editor
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
 import { useDraggableItems, SortableOptions } from '../../useDraggableItems';
@@ -18,6 +17,7 @@ import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetIn
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 import { ActionButton } from '../../components/actionbutton/ActionButton';
+import { SchemaNode } from 'json-schema-library';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -94,7 +94,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 onClick={() => {
                     const insertOptions = editor.getArrayAddOptions(node);
                     if (insertOptions[0]) {
-                        editor.appendItem(node, insertOptions[0]);
+                        editor.appendItem(node, insertOptions[0].schema);
                     }
                 }}
             />
@@ -104,11 +104,11 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 position="top"
                 disabled={options.disabled}
                 readOnly={options.readOnly}
-                items={insertOptions.map((option) => ({
+                items={insertOptions.map((snode) => ({
                     icon: 'add',
                     color: 'blue',
-                    label: option.title,
-                    onClick: () => editor.appendItem(node, option)
+                    label: snode.schema.title,
+                    onClick: () => editor.appendItem(node, snode.schema)
                 }))}
             />
         );
@@ -213,7 +213,7 @@ function getArrayHeaderMenu(
     editor: Editor,
     node: ArrayNode,
     options: ArrayOptions,
-    insertOptions: JsonSchema[],
+    insertOptions: SchemaNode[],
     jsonModal: { open: () => void },
     isAddEnabled: boolean
 ) {
@@ -233,17 +233,17 @@ function getArrayHeaderMenu(
             icon: 'add',
             color: 'blue',
             disabled: !isAddEnabled,
-            onClick: () => editor.appendItem(node, insertOptions[0]),
+            onClick: () => editor.appendItem(node, insertOptions[0].schema),
             label: 'Add Item'
         });
     }
     if (insertOptions.length > 1) {
-        const items = insertOptions.map((item) => ({
+        const items = insertOptions.map((snode) => ({
             disabled: !isAddEnabled,
             icon: 'add',
             color: 'blue',
-            onClick: () => editor.appendItem(node, item),
-            label: item.title ?? ''
+            onClick: () => editor.appendItem(node, snode.schema),
+            label: snode.schema.title ?? ''
         }));
         if (widgetMenuItems.length > 0) {
             widgetMenuItems.push('-');

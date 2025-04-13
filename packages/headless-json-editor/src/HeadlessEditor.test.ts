@@ -37,6 +37,19 @@ describe('HeadlessEditor', () => {
         });
     });
 
+    describe('addValue', () => {
+        it('should add missing optional property from pointer only ', () => {
+            const editor = new HeadlessEditor({
+                data: { image: {} },
+                schema: { properties: { image: { properties: { title: { type: 'string' } } } } }
+            });
+            assert.deepEqual(editor.getData(), { image: {} });
+
+            editor.addValue('#/image/title');
+            assert.deepEqual(editor.getData(), { image: { title: '' } });
+        });
+    });
+
     describe('file', () => {
         let schema: JsonSchema;
         let file: File;

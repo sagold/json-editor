@@ -1,5 +1,5 @@
 import { HeadlessEditor } from '../HeadlessEditor';
-import { JsonSchema } from 'headless-json-editor';
+import { JsonSchema } from '../types';
 import { SetOptionTitleToPlugin } from './SetOptionTitleToPlugin';
 import { strict as assert } from 'assert';
 

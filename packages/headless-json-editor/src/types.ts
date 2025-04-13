@@ -60,9 +60,7 @@ export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     isArrayItem: boolean;
     /** final, reduced json-schema ob this object */
     schema: JsonSchema;
-    /** original json-schema at this location */
-    sourceSchema: JsonSchema;
-    /** unreduced schemaNode for this schema */
+    /** unreduced (original) schemaNode for this schema */
     schemaNode: SchemaNode;
     /** list of validation errors on this object */
     errors: JsonError[];

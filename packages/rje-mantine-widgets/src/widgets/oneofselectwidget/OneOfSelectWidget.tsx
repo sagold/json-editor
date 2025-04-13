@@ -1,13 +1,5 @@
 import { Select } from '@mantine/core';
-import {
-    widget,
-    WidgetPlugin,
-    Widget,
-    JsonSchema,
-    ValueNode,
-    DefaultNodeOptions,
-    WidgetField
-} from '@sagold/react-json-editor';
+import { widget, WidgetPlugin, Widget, ValueNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
 import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
@@ -15,22 +7,22 @@ import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 export type OneOfSelectOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
 
 export function useOneOfSelectWidget(node, { skipSelectOneOf = false } = {}) {
-    const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.sourceSchema?.oneOf);
+    const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.schemaNode?.oneOf);
     return chooseThisWidget;
 }
 
 export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor, node, options }) => {
     // @ts-expect-error inconsitent types or logic?
-    const origin = { schema: node.sourceSchema, index: node.oneOfIndex ?? 0 };
-    const oneOf = origin.schema.oneOf as JsonSchema[];
+    const origin = { schemaNode: node.schemaNode, index: node.oneOfIndex ?? 0 };
+    const oneOf = origin.schemaNode.oneOf;
     if (!Array.isArray(oneOf)) {
         console.error('Error in SelectOneOfWidget: Expected oneOfOrigin to contain schema');
         return null;
     }
 
     const onChange = (value) => {
-        const oneOfSchema = oneOf[`${value}`];
-        const data = editor.getTemplateData(oneOfSchema);
+        const oneOfSchemaNode = oneOf[`${value}`];
+        const data = editor.getTemplateData(oneOfSchemaNode.schema);
         editor.setValue(node.pointer, data);
     };
 
@@ -48,9 +40,9 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
                     id={node.id}
                     {...widgetInputProps(node, { ...options, title: undefined, description: undefined })}
                     style={options.description ? { paddingBottom: '0.2em' } : undefined}
-                    data={oneOf.map((schema, index) => ({
+                    data={oneOf.map((snode, index) => ({
                         value: `${index}`,
-                        label: schema.title ?? `${index}`
+                        label: snode.schema.title ?? `${index}`
                     }))}
                     onChange={onChange}
                     value={`${origin.index}`}

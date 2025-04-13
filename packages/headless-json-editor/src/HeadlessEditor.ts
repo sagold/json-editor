@@ -300,11 +300,13 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
+     * @todo add Value only supports setting property, either change api or add iteratively
      * Shortcut to add a value at a given location. This usually is used to add array-items
+     *
      * @return new root node
      */
     addValue(pointer: string) {
-        const { node, error } = this.schemaNode.getNodeChild(pointer, getData(this.root));
+        const { node, error } = this.schemaNode.getNode(pointer, getData(this.root));
         if (node) {
             const value = node.getData();
             return this.setValue(pointer, value);
@@ -403,10 +405,10 @@ export class HeadlessEditor<Data = unknown> {
     /**
      * @return a list of available json subschemas to insert
      */
-    getArrayAddOptions(node: ArrayNode) {
+    getArrayAddOptions(node: ArrayNode): SchemaNode[] {
         const selections = node.schemaNode.getChildSelection(node.children.length);
         if (isJsonError(selections) || selections.length === 0) {
-            return [{ type: 'string' }];
+            return [node.schemaNode.compileSchema({ type: 'string' })];
         }
         return selections;
     }
