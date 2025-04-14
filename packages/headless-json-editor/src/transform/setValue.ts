@@ -41,8 +41,11 @@ export function setValue<T extends Node = Node>(ast: T, pointer: JsonPointer, va
         const nextData = gp.set(getData(ast), pointer, value);
         const { node: nextNode } = currentRootNode.reduceNode(nextData);
 
+        // if (!deepEqual(currentNode?.schema, nextNode?.schema)) {
         // @todo @10 we should be able to compare this by schemaNode.dynamicId
-        if (!deepEqual(currentNode?.schema, nextNode?.schema)) {
+        const sameSchemaNodes =
+            (currentNode?.dynamicId ?? currentNode?.spointer) === (nextNode?.dynamicId ?? nextNode?.spointer);
+        if (!sameSchemaNodes) {
             const fullNextData = currentRootNode.getData(nextData, { addOptionalProps: false });
             const newAst = createNode<T>(currentRootNode, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
@@ -151,8 +154,12 @@ function setNext(
         const nextData = gp.set(getData(childNode), join(frags), value);
         const { node: nextSchemaNode } = childSchemaNode.reduceNode(nextData);
 
-        // @todo @10 dynamicId
-        if (!deepEqual(currentSchemaNode?.schema, nextSchemaNode?.schema)) {
+        // if (!deepEqual(currentSchemaNode?.schema, nextSchemaNode?.schema)) {
+        // @todo @10 we should be able to compare this by schemaNode.dynamicId
+        const sameSchemaNodes =
+            (currentSchemaNode?.dynamicId ?? currentSchemaNode?.spointer) ===
+            (nextSchemaNode?.dynamicId ?? nextSchemaNode?.spointer);
+        if (!sameSchemaNodes) {
             // @todo further diff schema and check for specific changes (sync)
             const newChild = createNode(childSchemaNode, nextData, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });
