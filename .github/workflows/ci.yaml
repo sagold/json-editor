@@ -2,7 +2,7 @@ name: CI
 
 on:
     push:
-        branches: [main]
+        branches: [main, next]
     pull_request:
         branches: [main]
 
@@ -38,6 +38,7 @@ jobs:
 
     # publish docs
     docs_publish:
+        if: github.ref_name == github.event.repository.default_branch
         needs: ci
         name: Publish Docs
         runs-on: ubuntu-latest
