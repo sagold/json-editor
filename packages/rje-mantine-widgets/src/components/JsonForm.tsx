@@ -19,7 +19,6 @@ export function JsonForm<Data = unknown>({
     const widgets = Array.isArray(options.widgets) ? options.widgets : defaultWidgets;
     const instance = useEditor<Data>({ ...options, widgets });
     useImperativeHandle<Editor<Data> | null, Editor<Data> | null>(editor, () => instance, [instance]);
-    console.log('editor instance', instance);
     if (instance == null) {
         return <div className={classNames('rje-form', className)} style={style} />;
     }

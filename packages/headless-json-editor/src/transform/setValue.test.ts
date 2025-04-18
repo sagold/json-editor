@@ -797,6 +797,67 @@ describe('setValue', () => {
             assert.equal(after.children.length, 2);
             assert.deepEqual(getData(after), { test: 'added', additionalValue: '' });
         });
+
+        it('should add optional property only with not required dependency', () => {
+            const requiredDependency = compileSchema({
+                type: 'object',
+                properties: {
+                    one: {
+                        title: 'Property One',
+                        type: 'string'
+                    }
+                },
+                dependencies: {
+                    one: {
+                        properties: {
+                            two: {
+                                title: 'dependency',
+                                type: 'string'
+                            }
+                        }
+                    }
+                }
+            });
+            const before = createNode<ObjectNode>(requiredDependency, {});
+            assert.equal(before.children.length, 0);
+
+            const [after] = setValue<ObjectNode>(before, '#', { one: 'triggers optional two' });
+            assert(after.type === 'object');
+            assert.equal(after.children.length, 1);
+            assert.deepEqual(getData(after), { one: 'triggers optional two' });
+            assert.deepEqual(after.missingProperties, ['two']);
+        });
+
+        it('should add optional property and value with required dependency', () => {
+            const requiredDependency = compileSchema({
+                type: 'object',
+                properties: {
+                    one: {
+                        title: 'Property One',
+                        type: 'string'
+                    }
+                },
+                dependencies: {
+                    one: {
+                        properties: {
+                            two: {
+                                title: 'dependency',
+                                type: 'string'
+                            }
+                        },
+                        required: ['two']
+                    }
+                }
+            });
+            const before = createNode<ObjectNode>(requiredDependency, {});
+            assert.equal(before.children.length, 0);
+
+            const [after] = setValue<ObjectNode>(before, '#', { one: 'triggers optional two' });
+            assert(after.type === 'object');
+            assert.equal(after.children.length, 2);
+            assert.deepEqual(getData(after), { one: 'triggers optional two', two: '' });
+            assert.deepEqual(after.missingProperties, []);
+        });
     });
 
     describe('object if-then-else', () => {

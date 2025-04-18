@@ -127,5 +127,35 @@ describe('removeNode', () => {
             assert.deepEqual(after.missingProperties, ['one']);
             assert.deepEqual(after.optionalProperties, ['one', 'two']);
         });
+
+        it.skip('should set dependency as missing', () => {
+            // @todo two may not be removed when one is present as two is required
+            const root = compileSchema({
+                type: 'object',
+                properties: {
+                    one: {
+                        title: 'Property One',
+                        type: 'string'
+                    }
+                },
+                dependencies: {
+                    one: {
+                        required: ['two'],
+                        properties: {
+                            two: { type: 'string' }
+                        }
+                    }
+                }
+            });
+            const before = createNode(
+                root,
+                root.getData({ one: 'triggers two', two: 'will be removed' })
+            ) as ObjectNode;
+
+            const [after] = removeNode(before, '/two');
+            assert(after.type !== 'error');
+            assert.deepEqual(after.missingProperties, ['two']);
+            assert.deepEqual(after.optionalProperties, ['one', 'two']);
+        });
     });
 });
