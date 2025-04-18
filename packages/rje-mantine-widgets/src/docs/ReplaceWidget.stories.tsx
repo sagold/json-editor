@@ -26,7 +26,7 @@ export const SameType: Story = {
             options: {
                 descriptionInline: true
             },
-            required: ['text'],
+            required: ['text', 'textarea'],
             properties: {
                 textarea: {
                     type: 'boolean'
@@ -36,10 +36,10 @@ export const SameType: Story = {
                 properties: { textarea: { const: true } }
             },
             then: {
-                properties: { text: { type: 'string', format: 'textarea' } }
+                properties: { text: { title: 'textarea', type: 'string', format: 'textarea' } }
             },
             else: {
-                properties: { text: { type: 'string' } }
+                properties: { text: { title: 'text', type: 'string' } }
             }
         }
     }
