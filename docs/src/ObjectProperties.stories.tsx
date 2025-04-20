@@ -455,7 +455,6 @@ export const IfThenElseSwitch: Story = {
         schema: {
             type: 'object',
             required: ['switch'],
-            additionalProperties: false,
             properties: {
                 switch: { title: 'Switch', type: 'boolean', default: false }
             },
@@ -466,15 +465,19 @@ export const IfThenElseSwitch: Story = {
                 }
             },
             then: {
+                additionalProperties: false,
                 required: ['then', 'number'],
                 properties: {
+                    switch: { type: 'boolean' },
                     then: { title: 'Then statement', type: 'string' },
                     number: { title: 'Value in Then', type: 'number', minimum: 4 }
                 }
             },
             else: {
+                additionalProperties: false,
                 required: ['else', 'number'],
                 properties: {
+                    switch: { type: 'boolean' },
                     else: { title: 'Else statement', type: 'string', enum: ['option a', 'option b'] },
                     number: { title: 'Value in Else', type: 'number', maximum: 4 }
                 }
