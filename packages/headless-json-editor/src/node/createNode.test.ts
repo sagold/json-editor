@@ -70,6 +70,18 @@ describe('createNode', () => {
         assert.equal(root.children.length, 1);
     });
 
+    it('should correctly return an object node for missing type but correct data', () => {
+        const node = compileSchema({ properties: {} });
+        const root = createNode(node, { prop: 123 });
+        assert.equal(root.type, 'object');
+    });
+
+    it.skip('should correctly return an object node for missing type and wrong data', () => {
+        const node = compileSchema({ properties: {} });
+        const root = createNode(node, 123);
+        assert.equal(root.type, 'object');
+    });
+
     describe('object errors', () => {
         it.skip('should return an error node for undefined and invalid data', () => {
             const node = compileSchema({
