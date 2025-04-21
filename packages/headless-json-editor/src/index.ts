@@ -17,6 +17,7 @@ import { unlinkPath } from './transform/unlinkPath';
 import { updateNode, updateSchema, updateOptions } from './transform/updateNode';
 // hje
 import { HeadlessEditor, HeadlessEditorOptions, Plugin, PluginInstance } from './HeadlessEditor';
+export { compileSchema } from './compileSchema';
 // plugins
 import { EventLoggerPlugin } from './plugins/EventLoggerPlugin';
 import { RemoteEnumOptionsPlugin } from './plugins/RemoteEnumOptionsPlugin';
@@ -27,8 +28,50 @@ import { SetOptionTitleToPlugin } from './plugins/SetOptionTitleToPlugin';
 import { updateErrors } from './validate/updateErrors';
 import { validateNode, splitErrors } from './validate/validateNode';
 // jlib export
-import { isJsonError, JsonError } from 'json-schema-library';
-export { compileSchema } from './compileSchema';
+export type {
+    CompileOptions,
+    Context,
+    DataNode,
+    Draft,
+    DraftVersion,
+    ErrorConfig,
+    ErrorData,
+    GetNodeOptions,
+    JsonError,
+    JsonSchemaReducer,
+    JsonSchemaReducerParams,
+    JsonSchemaResolver,
+    JsonSchemaResolverParams,
+    JsonSchemaValidator,
+    JsonSchemaValidatorParams,
+    Keyword,
+    NodeOrError,
+    OptionalNodeOrError,
+    SchemaNode,
+    ValidateReturnType,
+    ValidationPath
+} from 'json-schema-library';
+export {
+    addKeywords,
+    draft04,
+    draft06,
+    draft07,
+    draft2019,
+    draft2020,
+    draftEditor,
+    extendDraft,
+    getSchemaType,
+    getTypeOf,
+    isJsonError,
+    isReduceable,
+    isSchemaNode,
+    mergeNode,
+    mergeSchema,
+    oneOfFuzzyKeyword,
+    oneOfKeyword,
+    remotes,
+    render
+} from 'json-schema-library';
 // bundled tools
 export { deepEqual } from 'fast-equals';
 export { uuid } from './utils/uuid';
@@ -77,7 +120,6 @@ export {
     isBooleanNode,
     isChangeEvent,
     isFileNode,
-    isJsonError,
     isNode,
     isNullNode,
     isNumberNode,
@@ -110,7 +152,6 @@ export type {
     FileNode,
     HeadlessEditorOptions,
     JsonSchema,
-    JsonError,
     Plugin,
     PluginInstance,
     PluginEvent,
