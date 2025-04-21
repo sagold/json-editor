@@ -91,6 +91,7 @@ function getValueNodeProps<T extends NodeType, V>(
         property,
         isArrayItem,
         options: getOptions(schema, property),
+        oneOfIndex: sN.oneOfIndex,
         schema,
         schemaNode,
         value,
