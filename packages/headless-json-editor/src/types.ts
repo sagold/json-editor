@@ -31,12 +31,13 @@ export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ArrayType;
     children: Node[];
+    oneOfIndex?: number;
     options: T;
     pointer: string;
     property: string;
     /** true, if this array is an array item */
     isArrayItem: boolean;
-    /** final, reduced json-schema ob this array */
+    /** final, reduced JSON Schema ob this array */
     schema: JsonSchema;
     /** unreduced schemaNode for this schema */
     schemaNode: SchemaNode;
@@ -50,6 +51,7 @@ export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     type: ObjectType;
     children: Node[];
     options: T;
+    oneOfIndex?: number;
     /** list of all optional properties, present or missing */
     optionalProperties: string[];
     /** list of all missing optional properties */
@@ -58,7 +60,7 @@ export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     property: string;
     /** true, if this object is an array item */
     isArrayItem: boolean;
-    /** final, reduced json-schema ob this object */
+    /** final, reduced JSON Schema of this object */
     schema: JsonSchema;
     /** unreduced (original) schemaNode for this schema */
     schemaNode: SchemaNode;
@@ -71,10 +73,12 @@ export type StringNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: StringType;
     options: T;
+    oneOfIndex?: number;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
     isArrayItem: boolean;
+    /** final, reduced JSON Schema of this node */
     schema: JsonSchema;
     value?: string;
     /** unreduced schemaNode for this schema */
@@ -87,10 +91,12 @@ export type FileNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: FileType;
     options: T;
+    oneOfIndex?: number;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
     isArrayItem: boolean;
+    /** final, reduced JSON Schema of this node */
     schema: JsonSchema;
     value?: File;
     /** unreduced schemaNode for this schema */
@@ -103,10 +109,12 @@ export type NumberNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: NumberType;
     options: T;
+    oneOfIndex?: number;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
     isArrayItem: boolean;
+    /** final, reduced JSON Schema of this node */
     schema: JsonSchema;
     value?: number;
     /** unreduced schemaNode for this schema */
@@ -119,10 +127,12 @@ export type BooleanNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: BooleanType;
     options: T;
+    oneOfIndex?: number;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
     isArrayItem: boolean;
+    /** final, reduced JSON Schema of this node */
     schema: JsonSchema;
     value?: boolean;
     /** unreduced schemaNode for this schema */
@@ -135,10 +145,12 @@ export type NullNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: NullType;
     options: T;
+    oneOfIndex?: number;
     pointer: string;
     /** do we store parent property here or on parent node? */
     property: string;
     isArrayItem: boolean;
+    /** final, reduced JSON Schema of this node */
     schema: JsonSchema;
     value?: null;
     /** unreduced schemaNode for this schema */

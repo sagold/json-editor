@@ -2,13 +2,20 @@ import gp, { split, join } from '@sagold/json-pointer';
 import { createChildNode } from './set/createChildNode';
 import { createNode } from '../node/createNode';
 import { deepEqual } from 'fast-equals';
-import { JsonPointer, JsonError, isReduceable } from 'json-schema-library';
+import { JsonPointer, JsonError, isReduceable, SchemaNode } from 'json-schema-library';
 import { getChildIndex } from '../node/getChildNode';
 import { getData } from '../node/getData';
 import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
 import { replaceChildNode } from './set/replaceChildNode';
 import { syncNodes } from './set/syncNodes';
 import { updateValueNode } from './set/updateValueNode';
+
+function schemaHasChanged(a?: SchemaNode, b?: SchemaNode) {
+    return (
+        // @todo @10 we should be able to rely on dynamicId only, omitting deepEqual
+        (a?.dynamicId ?? a?.schemaLocation) !== (b?.dynamicId ?? b?.schemaLocation) || !deepEqual(a?.schema, b?.schema)
+    );
+}
 
 /**
  * sets given value of the specified node and returns a new (shallow) node-tree
@@ -34,17 +41,12 @@ export function setValue<T extends Node = Node>(ast: T, pointer: JsonPointer, va
         // root node has a dynamic schema which may change based on our new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(ast);
-
-        // @todo @10 this is already saved in ast (?)
         const { node: currentNode } = currentRootNode.reduceNode(currentData);
 
-        const nextData = gp.set(getData(ast), pointer, value);
+        const nextData = gp.set(currentData, pointer, value);
         const { node: nextNode } = currentRootNode.reduceNode(nextData);
 
-        // @todo @10 we should be able to compare this by schemaNode.dynamicId
-        // const sameSchemaNodes =
-        //     (currentNode?.dynamicId ?? currentNode?.spointer) === (nextNode?.dynamicId ?? nextNode?.spointer);
-        if (!deepEqual(currentNode?.schema, nextNode?.schema)) {
+        if (schemaHasChanged(currentNode, nextNode)) {
             const fullNextData = currentRootNode.getData(nextData, { addOptionalProps: false });
             const newAst = createNode<T>(currentRootNode, fullNextData);
             changeSet.push({ type: 'delete', node: ast });
@@ -148,17 +150,12 @@ function setNext(
         // child node has a dynamic schema which may change based in new value,
         // thus we must test recreate sub tree if schema differs
         const currentData = getData(childNode);
-        // @todo @10 this should be stored as childSchemaNode.schemaNode
         const { node: currentSchemaNode } = childSchemaNode.reduceNode(currentData);
+
         const nextData = gp.set(getData(childNode), join(frags), value);
         const { node: nextSchemaNode } = childSchemaNode.reduceNode(nextData);
 
-        // @todo @10 we should be able to compare this by schemaNode.dynamicId
-        // const sameSchemaNodes =
-        //     (currentSchemaNode?.dynamicId ?? currentSchemaNode?.spointer) ===
-        //     (nextSchemaNode?.dynamicId ?? nextSchemaNode?.spointer);
-        // if (!sameSchemaNodes) {
-        if (!deepEqual(currentSchemaNode?.schema, nextSchemaNode?.schema)) {
+        if (schemaHasChanged(currentSchemaNode, nextSchemaNode)) {
             // @todo further diff schema and check for specific changes (sync)
             const newChild = createNode(childSchemaNode, nextData, childNode.pointer, parentNode.type === 'array');
             changeSet.push({ type: 'delete', node: childNode });

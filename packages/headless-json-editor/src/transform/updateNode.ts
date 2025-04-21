@@ -1,6 +1,6 @@
 import gp from '@sagold/json-pointer';
 import { DefaultNodeOptions, createNode } from '../node/createNode';
-import { JsonError, JsonPointer, NodeOrError } from 'json-schema-library';
+import { JsonError, JsonPointer } from 'json-schema-library';
 import { getNode } from '../node/getNode';
 import { getData } from '../node/getData';
 import { Node, isJsonError, Change, ParentNode, JsonSchema } from '../types';
@@ -28,8 +28,7 @@ export function updateNode<T extends Node = Node>(ast: T, pointer: JsonPointer):
     // get the uptodate json-schema of this node
     const { node: childSchemaNode, error } = ast.schemaNode
         .getNodeRoot()
-        // @todo should not return type undefined with createSchema:true for node
-        .getNode(pointer, getData(ast), { createSchema: true }) as NodeOrError;
+        .getNode(pointer, getData(ast), { createSchema: true });
 
     if (error) {
         return [error];

@@ -506,7 +506,6 @@ describe('createNode', () => {
             // @todo 2: getOneOfOrigin is no longer exposed by jlib
             // assert.equal(root.schema.getOneOfOrigin?.().index, 1);
 
-            // @ts-expect-error yet untyped
             assert.equal(root.oneOfIndex, 1);
         });
 

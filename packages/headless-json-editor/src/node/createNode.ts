@@ -58,6 +58,7 @@ export function getOptions(schema: JsonSchema, property: string) {
         description: uiOptions.showDescription === false ? undefined : schema.description,
         disabled: false,
         hidden: false,
+        required: schema.minLength != null && schema.minLength > 0,
         ...uiOptions
     };
 
@@ -69,13 +70,36 @@ export function getOptions(schema: JsonSchema, property: string) {
     return options;
 }
 
-function getPropertyName(pointer: string) {
-    return pointer.split('/').pop() as string;
+function getValueNodeProps<T extends NodeType, V>(
+    type: T,
+    schemaNode: SchemaNode,
+    pointer: string,
+    value: V,
+    isArrayItem = false
+) {
+    const { node: sN, error } = schemaNode.reduceNode(value);
+    if (sN == null) {
+        console.log(error);
+        throw new Error(`Failed reducing schema of (${type}) at '${pointer}'`);
+    }
+    const { schema } = sN;
+    const property = getPropertyName(pointer);
+    return {
+        id: uuid(),
+        type,
+        pointer,
+        property,
+        isArrayItem,
+        options: getOptions(schema, property),
+        schema,
+        schemaNode,
+        value,
+        errors: []
+    };
 }
 
-function isHidden(properties: Record<string, any>, property: string) {
-    return properties[property]?.options?.hidden === true;
-}
+const getPropertyName = (pointer: string) => pointer.split('/').pop() as string;
+const isHidden = (properties: Record<string, any>, property: string) => properties[property]?.options?.hidden === true;
 
 export function updateOptionalPropertyList(node: ObjectNode) {
     const schemaProperties = node.schema.properties ?? {};
@@ -137,10 +161,8 @@ export const NODES: Record<NodeType, CreateNode> = {
         };
 
         data.forEach((next, key) => {
-            // Create a new node for each child, storing the reduced schema as schema and
-            // the unreduced schema in sourceNode
+            // Create a new node for each child, storing the reduced schema as schema and the unreduced schema in sourceNode
             const { node: itemSN } = arraySchemaNode.getNodeChild(key, data, { pointer, path, createSchema: true });
-            // note: schema node is not undefined with `createSchema: true`
             if (itemSN) {
                 // note: parent node got reduced, not itemSchemaNode
                 // note: maybe tracking sourceSchema is no longer necessary (jlib = 10)
@@ -177,8 +199,6 @@ export const NODES: Record<NodeType, CreateNode> = {
             }
         }
 
-        // @todo getTemplate should not require type-setting in this case
-        // final data complemented with missing data from resolved static schema
         const resolvedData = resolvedObjectSN.getData(data);
         const property = getPropertyName(pointer);
 
@@ -189,10 +209,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             property,
             isArrayItem,
             schema: resolvedObjectSN.schema,
-            // @ts-ignore
             oneOfIndex: resolvedObjectSN?.oneOfIndex,
-            // @todo duplicate property, remove sourceNode
-            // sourceNode: objectSN,
             schemaNode: objectSN,
             optionalProperties: [],
             missingProperties: [],
@@ -232,107 +249,16 @@ export const NODES: Record<NodeType, CreateNode> = {
 
         return node;
     },
-    string: (schemaNode, value: string, pointer, isArrayItem): StringNode => {
-        const { node: rSN, error } = schemaNode.reduceNode(value);
-        if (rSN == null) {
-            console.log(error);
-            throw new Error('Failed reducing node ' + pointer);
-        }
-        const schema = rSN.schema;
-        const property = getPropertyName(pointer);
-        const node: StringNode = {
-            id: uuid(),
-            type: 'string',
-            pointer,
-            property,
-            isArrayItem,
-            options: {
-                ...getOptions(schema, property),
-                required: schema.minLength != null && schema.minLength > 0
-            },
-            schema,
-            schemaNode,
-            value,
-            errors: []
-        };
-        return node;
-    },
-    file: (schemaNode, value: File, pointer, isArrayItem): FileNode => {
-        const { schema } = schemaNode;
-        const property = getPropertyName(pointer);
-        const node: FileNode = {
-            id: uuid(),
-            type: 'file',
-            pointer,
-            property,
-            isArrayItem,
-            options: {
-                ...getOptions(schema, property),
-                required: schema.minLength != null && schema.minLength > 0
-            },
-            schema,
-            schemaNode,
-            value,
-            errors: []
-        };
-        return node;
-    },
-    number: (schemaNode, value: number, pointer, isArrayItem): NumberNode => {
-        const { node: rSN, error } = schemaNode.reduceNode(value);
-        if (rSN == null) {
-            console.log(error);
-            throw new Error('Failed reducing node ' + pointer);
-        }
-        const schema = rSN.schema;
-        const property = getPropertyName(pointer);
-        const node: NumberNode = {
-            id: uuid(),
-            type: 'number',
-            pointer,
-            property,
-            isArrayItem,
-            options: getOptions(schema, property),
-            schema,
-            schemaNode,
-            value,
-            errors: []
-        };
-        return node;
-    },
-    boolean: (schemaNode, value: boolean, pointer, isArrayItem): BooleanNode => {
-        const { schema } = schemaNode;
-        const property = getPropertyName(pointer);
-        const node: BooleanNode = {
-            id: uuid(),
-            type: 'boolean',
-            pointer,
-            property,
-            isArrayItem,
-            options: getOptions(schema, property),
-            schema,
-            schemaNode,
-            value,
-            errors: []
-        };
-        return node;
-    },
-    null: (schemaNode, value: null, pointer, isArrayItem): NullNode => {
-        const { schema } = schemaNode;
-        const property = getPropertyName(pointer);
-        const node: NullNode = {
-            id: uuid(),
-            type: 'null',
-            pointer,
-            property,
-            isArrayItem,
-            options: getOptions(schema, property),
-            schema,
-            schemaNode,
-            value,
-            errors: []
-        };
-        return node;
-    }
+    string: (schemaNode, value: string, pointer, isArrayItem): StringNode =>
+        getValueNodeProps('string', schemaNode, pointer, value, isArrayItem),
+    file: (schemaNode, value: File, pointer, isArrayItem): FileNode =>
+        getValueNodeProps('file', schemaNode, pointer, value, isArrayItem),
+    number: (schemaNode, value: number, pointer, isArrayItem): NumberNode =>
+        getValueNodeProps('number', schemaNode, pointer, value, isArrayItem),
+    boolean: (schemaNode, value: boolean, pointer, isArrayItem): BooleanNode =>
+        getValueNodeProps('boolean', schemaNode, pointer, value, isArrayItem),
+    null: (schemaNode, value: null, pointer, isArrayItem): NullNode =>
+        getValueNodeProps('null', schemaNode, pointer, value, isArrayItem)
 };
 
 export function _createNode<T extends Node = Node>(
