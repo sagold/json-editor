@@ -5,6 +5,9 @@
 
 **[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor)
 
+- if you want create user interfaces based on JSON Schema, follow the **quickstart** in [rje-mantine-widgets](./packages/rje-mantine-widgets)
+- to **build your own json-editor** or work on a tree-data structure containing data and its JSON Schema refer to [headless-json-editor](./packages/headless-json-editor)
+
 ## [headless-json-editor](./packages/headless-json-editor)
 
 [![CI](https://github.com/sagold/json-editor/actions/workflows/ci.yaml/badge.svg)](https://github.com/sagold/json-editor/actions/workflows/ci.yaml)
@@ -44,7 +47,7 @@ Set of default widgets for _react-json-editor_ using _mantine_ that render a use
 yarn add @sagold/rje-mantine-widgets
 ```
 
-- read more in package [react-json-editor](./packages/rje-mantine-widgets)
+- read more in package [rje-mantine-widgets](./packages/rje-mantine-widgets)
 - [demo page](https://sagold.github.io/json-editor/?path=/docs/packages-rje-mantine-widgets-overview--docs)
 
 ## [rje-code-widgets](./packages/rje-code-widgets)

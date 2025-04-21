@@ -11,7 +11,7 @@
     <a href="#plugins">plugins</a> |
     <a href="#functional-api">functional api</a> |
     <a href="#exposed-utilities">exposed utilities</a>
-</p> 
+</p>
 
 install
 
@@ -101,16 +101,13 @@ rootNode = he.setValue('#/1', 124);
 }
 ```
 
-
-</details>    
-
+</details>
 
 ## introduction
 
 From your input data and json-schema, `headless-json-editor` creates a tree data-structure that reflects your input-data. Each node within this tree is a data-point containing its json-schema and either children (_object_ or _array_ «» _parent node_) or the property value (_leaf node_ «» _value node_). Thus, each tree also contains your state of data. You can retrieve the data of a tree or node anytime using `getData(node)`.
 
 You may work on a node-tree using the functional api. Functions that modify a tree will always return a new tree to support immutable data. Just be aware that new trees are generated shallow so you should not edit nodes directly unless this is on purpose.
-
 
 ## node
 
@@ -156,7 +153,6 @@ get json-schema of value
 const schema: JsonSchema = node.schema;
 ```
 
-
 ## api
 
 [plugins](#plugins) | [how to write plugins](#how-to-write-plugins)
@@ -176,7 +172,6 @@ render(rootNode);
 
 > functional helpers exposed with instance that change state
 
-
 create a new node tree from the passed data
 
 ```ts
@@ -186,22 +181,22 @@ const newRootNode = he.create(data);
 change value at a specific location in data
 
 ```ts
-const newRootNode = he.setValue("#/pages/0/title", data);
+const newRootNode = he.setValue('#/pages/0/title', data);
 ```
 
 remove value at specific location in data
 
 ```ts
-const newRootNode = he.removeValue("#/pages/3");
+const newRootNode = he.removeValue('#/pages/3');
 ```
 
 move an array item to another index
 
 ```ts
-const newRootNode = he.moveItem("#/pages/2", 0);
+const newRootNode = he.moveItem('#/pages/2', 0);
 ```
 
-create and append  an new item to an array using the passed json schema 
+create and append an new item to an array using the passed json schema
 
 ```ts
 const newRootNode = he.appendItem(arrayNode, schema);
@@ -219,7 +214,6 @@ create data that validates against the current json-schema
 const data = he.getTemplateData();
 ```
 
-
 ### plugins
 
 > plugin-api is supported by stateful-api. Internally, each plugin may use the functional api to modify the current state, passing back a new state and the changes made to stateful-api.
@@ -233,9 +227,9 @@ const jsonSchema = { type: 'array', items: { type: 'string' } };
 const he = new HeadlessEditor({ schema: jsonSchema, data: ['first item'] });
 he.addPlugin(OnChangePlugin, {
   onChange(data, rootNode, he) {
-    console.log("data changed to", data);
+    console.log('data changed to', data);
   }
-})
+});
 
 he.setValue('#/0', 124);
 // log: [124]
@@ -259,7 +253,6 @@ history.undo();
 // history.getRedoCount();
 ```
 
-
 ### how to write plugins
 
 plugins are function that return an object with a unique `id` and a method `onEvent(Node, PluginEvent)`.
@@ -268,12 +261,12 @@ plugins are function that return an object with a unique `id` and a method `onEv
 import { Plugin } from 'headless-json-editor';
 
 export const MyPlugin: Plugin<{ myOption: string }> = (he, options) => {
-    return {
-        id: "my-plugin-id",
-        onEvent(root, event) {
-            console.log(options.myOption, event);
-        }
-    };
+  return {
+    id: 'my-plugin-id',
+    onEvent(root, event) {
+      console.log(options.myOption, event);
+    }
+  };
 };
 ```
 
@@ -282,26 +275,26 @@ Witin `onEvent` you have access to all events omitted. You can hook into changes
 ```ts
 import { Plugin, isChangeEvent } from 'headless-json-editor';
 
-export const MyPlugin: Plugin<{ myOption: string }> = ({ draft}, options) => ({
-    id: "set-option-title-to",
-    onEvent(root, event) {
-        if (!isChangeEvent(event) || event.node.schema["MyKey"] == null) {
-            return undefined;
-        }
-        const node = event.node;
-        const target = node.schema["MyKey"];
-        const index = node.schema!.enum!.indexOf(node.value as string);
-        if (index < 0) {
-            return undefined;
-        }
-        const value = node.schema.options?.enum?.[index];
-        const [newAST, changes] = setValue(draft, root, target, value);
-        if (isJsonError(newAST)) {
-            return undefined;
-        }
-        // return new root and list of changes
-        return [newAST, changes ?? []];
+export const MyPlugin: Plugin<{ myOption: string }> = ({ draft }, options) => ({
+  id: 'set-option-title-to',
+  onEvent(root, event) {
+    if (!isChangeEvent(event) || event.node.schema['MyKey'] == null) {
+      return undefined;
     }
+    const node = event.node;
+    const target = node.schema['MyKey'];
+    const index = node.schema!.enum!.indexOf(node.value as string);
+    if (index < 0) {
+      return undefined;
+    }
+    const value = node.schema.options?.enum?.[index];
+    const [newAST, changes] = setValue(root, target, value);
+    if (isJsonError(newAST)) {
+      return undefined;
+    }
+    // return new root and list of changes
+    return [newAST, changes ?? []];
+  }
 });
 ```
 
@@ -327,11 +320,9 @@ onEvent(root, event) {
 }
 ```
 
-
 ## functional api
 
 [create and change state](#create-and-change-state) | [working with nodes](#working-with-nodes)
-
 
 > The functional api requires an instance of a json-schema draft to work with. This instance needs to be passed for all actions that change nodes. In the following example a modified draft `JsonEditor` is used. This draft offers some additions helpful to build user-forms.
 > [@see json-schema-library](https://github.com/sagold/json-schema-library) for more details
@@ -339,13 +330,12 @@ onEvent(root, event) {
 quick overview
 
 ```ts
-import { JsonEditor } from 'json-schema-library';
-import { createNode, setValue } from "headless-json-editor";
+import { createNode, setValue, compileSchema } from 'headless-json-editor';
 
 const jsonSchema = { type: 'array', items: { type: 'string' } };
-const draft = new JsonEditor({ schema: jsonSchema, data: ['first item'] });
-let rootNode = createNode(draft, ["9fa"])
-rootNode = setValue(draft, rootNode, '#/1', 124);
+const schemaNode = compileSchema({ schema: jsonSchema, data: ['first item'] });
+let rootNode = createNode(schemaNode, ['9fa']);
+rootNode = setValue(rootNode, '#/1', 124);
 
 // doRender(rootNode);
 ```
@@ -355,47 +345,46 @@ rootNode = setValue(draft, rootNode, '#/1', 124);
 > transformation functions that modify state
 
 ```ts
-import { Draft07 } from "json-schema-library";
-const draft = new Draft07(jsonSchema);
+import { compileSchema } from 'headless-json-editor';
+const schemaNode = compileSchema(jsonSchema);
 ```
 
 create node tree from schema and data
 
 ```ts
-const currentRootNode = createNode(draft, data);
+const currentRootNode = createNode(schemaNode, data);
 ```
 
 move an array item by index
 
 ```ts
-const [newRootNode, changes] = moveNode(draft, currentRootNode, "#/items", 2, 1);
+const [newRootNode, changes] = moveNode(currentRootNode, '#/items', 2, 1);
 ```
 
 delete data at location
 
 ```ts
-const [newRootNode, changes] = removeNode(draft, currentRootNode, "#/page/header");
+const [newRootNode, changes] = removeNode(currentRootNode, '#/page/header');
 ```
 
 set value at location
 
 ```ts
-const [newRootNode, changes] = setValue(draft, currentRootNode, "#/page/header", { text: "hey" });
+const [newRootNode, changes] = setValue(currentRootNode, '#/page/header', { text: 'hey' });
 ```
-
 
 ### working with nodes
 
 get all errors
 
 ```ts
-const validationErrors = errors(root);
+const validationErrors = getErrors(root);
 ```
 
 find a node
 
 ```ts
-const node = findNode(root, node => node.property === "this one");
+const node = findNode(root, (node) => node.property === 'this one');
 ```
 
 get all nodes in a flat list
@@ -407,13 +396,13 @@ const allNodes = getNodeList(root);
 get a specific node by its path
 
 ```ts
-const target = getNode(root, "#/page/header");
+const target = getNode(root, '#/page/header');
 ```
 
 get a childnode by property or index
 
 ```ts
-const page = getChildNode(root, "page");
+const page = getChildNode(root, 'page');
 ```
 
 get json data starting from node
@@ -425,30 +414,21 @@ const jsonData = getData(root);
 get all nodes along the path
 
 ```ts
-const [rootNode, page, header, title] = getNodeTrace(root, "#/page/header/title");
+const [rootNode, page, header, title] = getNodeTrace(root, '#/page/header/title');
 ```
-
 
 ## exposed utilities
 
 type guards
 
 ```ts
-import { isJsonError, isParentNode, isValueNode, isChangeEvent } from "headless-json-editor";
-```
-
-change default error messages globally, [@see settings](https://github.com/sagold/json-editor/blob/main/packages/headless-json-editor/src/settings.ts);
-
-```ts
-import { setErrorMessages } from "headless-json-editor";
+import { isJsonError, isParentNode, isValueNode, isChangeEvent, isSchemaNode } from 'headless-json-editor';
 ```
 
 bundled library [fast-equals](https://github.com/planttheidea/fast-equals) to compare data
 
 ```ts
-import { deepEqual } from "headless-json-editor";
+import { deepEqual } from 'headless-json-editor';
 ```
 
-
-# Happy Building!
-
+> **Happy Building!**
