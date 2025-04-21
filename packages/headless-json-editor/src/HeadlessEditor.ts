@@ -226,7 +226,7 @@ export class HeadlessEditor<Data = unknown> {
         return this.plugins.find((p) => p.id === pluginId);
     }
 
-    addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]) {
+    addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]): ReturnType<T> | undefined {
         const instance = plugin(this, pluginOptions);
         if (instance && instance.id) {
             this.plugins = this.plugins.filter((plugin) => {

@@ -1,12 +1,20 @@
 import { Select } from '@mantine/core';
-import { widget, WidgetPlugin, Widget, ValueNode, DefaultNodeOptions, WidgetField } from '@sagold/react-json-editor';
+import {
+    widget,
+    WidgetPlugin,
+    Widget,
+    ValueNode,
+    DefaultNodeOptions,
+    WidgetField,
+    Node
+} from '@sagold/react-json-editor';
 import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 
 export type OneOfSelectOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
 
-export function useOneOfSelectWidget(node, { skipSelectOneOf = false } = {}) {
+export function useOneOfSelectWidget(node: Node, { skipSelectOneOf = false } = {}) {
     const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.schemaNode?.oneOf);
     return chooseThisWidget;
 }
@@ -20,8 +28,8 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
         return null;
     }
 
-    const onChange = (value) => {
-        const oneOfSchemaNode = oneOf[`${value}`];
+    const onChange = (value: string | null) => {
+        const oneOfSchemaNode = oneOf[+value!];
         const data = editor.getTemplateData(oneOfSchemaNode.schema);
         editor.setValue(node.pointer, data);
     };
@@ -37,6 +45,7 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
             showDivider={options.showTitleDivider ?? true}
             title={
                 <Select
+                    role="select"
                     id={node.id}
                     {...widgetInputProps(node, { ...options, title: undefined, description: undefined })}
                     style={options.description ? { paddingBottom: '0.2em' } : undefined}

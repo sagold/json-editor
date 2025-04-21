@@ -1,4 +1,3 @@
-import '@mantine/dates/styles.css';
 import { DateInput, DateValue, TimeInput } from '@mantine/dates';
 import {
     widget,
@@ -55,7 +54,7 @@ function toLocalTime(time?: string) {
     return '';
 }
 
-function isInvalidDate(date) {
+function isInvalidDate(date: Date) {
     return isNaN(date.getTime());
 }
 

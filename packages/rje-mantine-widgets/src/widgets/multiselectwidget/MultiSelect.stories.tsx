@@ -21,6 +21,9 @@ export default {
                 type: 'array',
                 format: 'select',
                 uniqueItems: true,
+                options: {
+                    enum: ['First', 'Second', 'Third']
+                },
                 items: {
                     type: 'string',
                     enum: ['first', 'second', 'third']

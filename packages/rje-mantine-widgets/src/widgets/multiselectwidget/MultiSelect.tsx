@@ -36,7 +36,7 @@ const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, op
     // @ts-expect-error unknown schema
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
-    const data = enumValues.map((id) => ({ value: id, label: titles[id] ?? id }));
+    const data = enumValues.map((id, index) => ({ value: id, label: titles[index] ?? id }));
     const onUpdateProps = useLiveUpdate<string[]>(
         getData(node) as string[],
         setValue,
@@ -66,7 +66,7 @@ const TagListWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, o
     // @ts-expect-error unknown schema
     const enumValues = (node.schema.items.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
-    const data = enumValues.map((id) => ({ value: id, label: titles[id] ?? id }));
+    const data = enumValues.map((id, index) => ({ value: id, label: titles[index] ?? id }));
 
     return (
         <WidgetField widgetType="select" node={node} options={options} showDescription={false} showError={false}>

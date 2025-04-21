@@ -16,5 +16,6 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'html'],
     moduleNameMapper: {
         'headless-json-editor': path.resolve('./packages/headless-json-editor/src/index.ts')
-    }
+    },
+    setupFilesAfterEnv: ['./jest.setup.ts']
 };

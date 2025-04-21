@@ -1912,6 +1912,7 @@ __metadata:
     "@mantine/dates": ^7.15.0
     "@mantine/hooks": ^7.14.3
     "@sagold/react-json-editor": ^0.36.0
+    "@types/sortablejs": ^1.15.8
     classnames: ^2.5.1
     dayjs: ^1.11.13
     dayjs-plugin-utc: ^0.1.2
@@ -2561,7 +2562,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:10.4.0":
+"@testing-library/dom@npm:10.4.0, @testing-library/dom@npm:^10.4.0":
   version: 10.4.0
   resolution: "@testing-library/dom@npm:10.4.0"
   dependencies:
@@ -2592,6 +2593,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/jest-dom@npm:^6.6.3":
+  version: 6.6.3
+  resolution: "@testing-library/jest-dom@npm:6.6.3"
+  dependencies:
+    "@adobe/css-tools": ^4.4.0
+    aria-query: ^5.0.0
+    chalk: ^3.0.0
+    css.escape: ^1.5.1
+    dom-accessibility-api: ^0.6.3
+    lodash: ^4.17.21
+    redent: ^3.0.0
+  checksum: c1dc4260b05309a0084416639006cd105849acc5b102bef682a3b19bd6fce07ff6762085fc7f2599546c995a2fc66fdb1d70e50e22a634a0098524056cc9e511
+  languageName: node
+  linkType: hard
+
 "@testing-library/react@npm:^16.1.0":
   version: 16.1.0
   resolution: "@testing-library/react@npm:16.1.0"
@@ -2618,6 +2634,15 @@ __metadata:
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
   checksum: d76937dffcf0082fbf3bb89eb2b81a31bf5448048dd61c33928c5f10e33a58e035321d39145cefd469bb5a499c68a5b4086b22f1a44e3e7c7e817dc5f6782867
+  languageName: node
+  linkType: hard
+
+"@testing-library/user-event@npm:^14.6.1":
+  version: 14.6.1
+  resolution: "@testing-library/user-event@npm:14.6.1"
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: 4cb8a81fea1fea83a42619e9545137b51636bb7a3182c596bb468e5664f1e4699a275c2d0fb8b6dcc3fe2684f9d87b0637ab7cb4f566051539146872c9141fcb
   languageName: node
   linkType: hard
 
@@ -3139,6 +3164,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: b4b5381122465d80ea8b158537c00bc82317222d3fb31fd7229ff25b31fa89134abfbab969118da55622236bf3d8fee75759f3959908b5688991f492008f29bc
+  languageName: node
+  linkType: hard
+
+"@types/sortablejs@npm:^1.15.8":
+  version: 1.15.8
+  resolution: "@types/sortablejs@npm:1.15.8"
+  checksum: 7866c134a6c81cfc438af52b7910a3efdd89e49c5d196f91a90decea2644c40ab24bbae929d32abb70093ef00a5a6211fe6eb956b618478bc0c81a1dcc59e887
   languageName: node
   linkType: hard
 
@@ -7248,7 +7280,7 @@ __metadata:
     "@sagold/json-pointer": ^7.0.0
     "@types/uuid": ^9.0.8
     fast-equals: ^5.0.1
-    json-schema-library: 10.0.0-rc9
+    json-schema-library: ^10.0.0-rc11
     short-unique-id: ^5.2.0
   languageName: unknown
   linkType: soft
@@ -8834,7 +8866,10 @@ __metadata:
     "@storybook/react-webpack5": ^8.4.7
     "@storybook/test": ^8.4.7
     "@storybook/theming": ^8.4.7
+    "@testing-library/dom": ^10.4.0
+    "@testing-library/jest-dom": ^6.6.3
     "@testing-library/react": ^16.1.0
+    "@testing-library/user-event": ^14.6.1
     "@types/jest": ^29.5.4
     "@types/node": 20.5.4
     "@types/react": 18.2.21
@@ -8874,7 +8909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:10.0.0-rc9":
+"json-schema-library@npm:^10.0.0-rc11":
   version: 10.0.0-rc9
   resolution: "json-schema-library@npm:10.0.0-rc9"
   dependencies:

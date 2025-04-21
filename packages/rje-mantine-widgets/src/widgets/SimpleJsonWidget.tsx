@@ -34,7 +34,7 @@ export type SimpleJsonOptions = {
     widgetMenuItems?: WidgetMenuItems;
 } & DefaultNodeOptions;
 
-export const SimpleJsonWidget = (props) => {
+export const SimpleJsonWidget = (props: any) => {
     const node = props!.node as Node;
     if (node.schema.type === 'string') {
         return <SimpleJsonStringWidget {...props} />;
