@@ -205,7 +205,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
             const childPointer = `${pointer}/${key}`;
-            const { node: nextSN, error } = objectSN.getNodeChild(key, resolvedData, {
+            const { node: nextSN } = objectSN.getNodeChild(key, resolvedData, {
                 createSchema: true,
                 pointer: childPointer,
                 path
@@ -214,9 +214,8 @@ export const NODES: Record<NodeType, CreateNode> = {
                 // @note if !isSchemaNode the property in data is ignored, we cleanup later
                 const propertyNode = _createNode(nextSN, resolvedData[key], childPointer);
                 node.children.push(propertyNode);
-            } else {
-                console.log('createNode FAILED:', error);
             }
+            // @todo what to do with error?
         });
 
         // track optional properties (duplicate of this is in remove)
