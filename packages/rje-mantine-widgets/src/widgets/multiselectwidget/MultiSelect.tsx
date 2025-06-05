@@ -34,7 +34,7 @@ const getValueFromEvent = (value: string[]) => value;
 
 const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
     // @ts-expect-error unknown schema
-    const enumValues = (node.schema.items.enum || []) as string[];
+    const enumValues = (node.schemaNode.items?.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
     const data = enumValues.map((id, index) => ({ value: id, label: titles[index] ?? id }));
     const onUpdateProps = useLiveUpdate<string[]>(

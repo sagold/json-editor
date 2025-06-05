@@ -15,13 +15,22 @@ export type WidgetMenuItems = (WidgetMenuItem | '-' | string)[];
 
 export type WidgetMenuProps = {
     icon: string;
+    ariaLabel?: string;
     disabled?: boolean;
     readOnly?: boolean;
     inline?: boolean;
     items?: WidgetMenuItems;
 } & MenuProps;
 
-export function WidgetMenu({ icon, disabled, inline = true, readOnly, items, ...menuProps }: WidgetMenuProps) {
+export function WidgetMenu({
+    icon,
+    disabled,
+    inline = true,
+    readOnly,
+    items,
+    ariaLabel,
+    ...menuProps
+}: WidgetMenuProps) {
     if (items == null || items.length === 0 || readOnly) {
         return null;
     }
@@ -33,6 +42,7 @@ export function WidgetMenu({ icon, disabled, inline = true, readOnly, items, ...
             <Menu.Target>
                 <ActionButton
                     icon={icon}
+                    ariaLabel={ariaLabel}
                     disabled={allItemsDisabled || disabled}
                     // we use the menu-action within labels, ensure it respects the initial height
                     style={inline ? { height: '100%', minHeight: 'inherit' } : {}}

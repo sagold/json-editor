@@ -1,4 +1,5 @@
 import { isJsonError, JsonSchema, isParentNode, isValueNode } from 'headless-json-editor';
+import { extendDraft, draft07, draft2019, draft2020, oneOfFuzzyKeyword } from 'json-schema-library';
 import { renderHook, act, render } from '@testing-library/react';
 import { strict as assert } from 'assert';
 import { useEditor, UseEditorOptions } from './useEditor';
@@ -186,6 +187,48 @@ describe('useEditor', () => {
         assert.equal(renderCalls.length, 1);
         const editorAfter = renderCalls[renderCalls.length - 1];
         assert.equal(editorAfter?.getErrors().length, 1);
+    });
+
+    describe('drafts', () => {
+        const drafts = [draft07, draft2019, draft2020].map((draft) =>
+            extendDraft(draft, {
+                keywords: [oneOfFuzzyKeyword]
+            })
+        );
+
+        it('should parse with draft 2020-12', () => {
+            const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    drafts,
+                    schema: {
+                        $schema: 'draft-2020-12',
+                        type: 'object',
+                        properties: { title: { type: 'string' } }
+                    }
+                }
+            });
+
+            const editor = result.current;
+            assert(editor);
+            assert(editor.root.schemaNode.getDraftVersion(), 'draft-2020-12');
+        });
+
+        it('should parse with draft 2019-09', () => {
+            const { result } = renderHook((settings: UseEditorOptions) => useEditor(settings), {
+                initialProps: {
+                    drafts,
+                    schema: {
+                        $schema: 'draft-2019-09',
+                        type: 'object',
+                        properties: { title: { type: 'string' } }
+                    }
+                }
+            });
+
+            const editor = result.current;
+            assert(editor);
+            assert(editor.root.schemaNode.getDraftVersion(), 'draft-2019-09');
+        });
     });
 
     describe('destroy', () => {

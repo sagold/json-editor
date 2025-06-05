@@ -23,7 +23,7 @@ import { setValue } from './transform/setValue';
 import { unlinkAll } from './transform/unlinkAll';
 import { updateErrors } from './validate/updateErrors';
 import { uuid } from './utils/uuid';
-import { jsonEditorDraft } from './compileSchema';
+import { drafts as defaultDrafts } from './compileSchema';
 
 export type O = Record<string, unknown>;
 
@@ -88,7 +88,7 @@ export class HeadlessEditor<Data = unknown> {
         this.options = options;
         // setup getTemplate options for json-schema-library so that options are used by createNode and others
         this.schemaNodeConfig = {
-            drafts: drafts ?? [jsonEditorDraft],
+            drafts: drafts ?? defaultDrafts,
             formatAssertion: true,
             getDataDefaultOptions: {
                 addOptionalProps,

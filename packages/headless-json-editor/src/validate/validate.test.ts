@@ -4,7 +4,7 @@ import { getNode } from '../node/getNode';
 import { setValue } from '../transform/setValue';
 import { strict as assert } from 'assert';
 import { updateErrors as validate } from '../validate/updateErrors';
-import { compileSchema, jsonEditorDraft } from '../compileSchema';
+import { compileSchema, drafts } from '../compileSchema';
 import { Node } from '../types';
 
 describe('validate', () => {
@@ -100,13 +100,13 @@ describe('validate', () => {
                     }
                 },
                 {
-                    drafts: [
-                        extendDraft(jsonEditorDraft, {
+                    drafts: drafts.map((draft) =>
+                        extendDraft(draft, {
                             formats: {
                                 async: validator
                             }
                         })
-                    ]
+                    )
                 }
             );
         });

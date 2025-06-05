@@ -4,20 +4,20 @@ import { CSSProperties, MouseEventHandler, forwardRef } from 'react';
 
 export type ActionButtonProps = {
     icon: string;
-    label?: string;
+    ariaLabel?: string;
     disabled?: boolean;
     onClick?: MouseEventHandler<HTMLButtonElement>;
     style?: CSSProperties;
 };
 
 export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(function ActionButton(
-    { icon, disabled, onClick, label, style },
+    { icon, disabled, onClick, ariaLabel, style },
     ref
 ) {
     return (
         <ActionIcon
             ref={ref}
-            aria-label={label}
+            aria-label={ariaLabel}
             onClick={onClick}
             variant="subtle"
             disabled={disabled}

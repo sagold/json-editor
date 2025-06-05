@@ -2,6 +2,13 @@ import { StoryObj } from '@storybook/react';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { ArrayOptions } from './ArrayWidget';
 import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';
+import { oneOfFuzzyKeyword, extendDraft, draft07, draft2019, draft2020 } from 'json-schema-library';
+
+const drafts = [draft07, draft2019, draft2020].map((draft) =>
+    extendDraft(draft, {
+        keywords: [oneOfFuzzyKeyword]
+    })
+);
 
 type WidgetProps = ArrayOptions & { editorProps: UseEditorOptions };
 function WidgetForm({ editorProps, ...props }: WidgetProps) {
@@ -72,6 +79,7 @@ export const Options: Story = {
         editorProps: {
             validate: true,
             data: [{ title: 'Overview of array options' }],
+            drafts,
             schema: {
                 title: 'Array Widget Options',
                 type: 'array',
@@ -111,6 +119,30 @@ export const Options: Story = {
                     type: 'number',
                     default: 1
                 }
+            }
+        }
+    }
+};
+
+export const MinItems: Story = {
+    args: {
+        editorProps: {
+            schema: {
+                $schema: 'draft-2020-12',
+                type: 'array',
+                minItems: 2,
+                prefixItems: [
+                    {
+                        title: 'title-label',
+                        type: 'string',
+                        default: 'default title'
+                    },
+                    {
+                        title: 'description-label',
+                        type: 'string',
+                        default: 'default description'
+                    }
+                ]
             }
         }
     }

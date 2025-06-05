@@ -61,7 +61,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
     const [contentOpened, contentToggle] = useDisclosure(!(options.collapsed ?? false));
     const leftSection = options.collapsed != null && node.children.length > 0 && (
         <ActionButton
-            label="actions"
+            ariaLabel="actions"
             icon={contentOpened ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             onClick={() => contentToggle.toggle()}
         />

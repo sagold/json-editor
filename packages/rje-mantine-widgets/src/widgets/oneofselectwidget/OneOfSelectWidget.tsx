@@ -20,7 +20,6 @@ export function useOneOfSelectWidget(node: Node, { skipSelectOneOf = false } = {
 }
 
 export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor, node, options }) => {
-    // @ts-expect-error inconsitent types or logic?
     const origin = { schemaNode: node.schemaNode, index: node.oneOfIndex ?? 0 };
     const oneOf = origin.schemaNode.oneOf;
     if (!Array.isArray(oneOf)) {

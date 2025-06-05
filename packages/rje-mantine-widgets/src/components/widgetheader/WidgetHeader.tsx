@@ -19,6 +19,7 @@ export type WidgetParentHeaderProps = {
     readOnly?: boolean;
     leftSection?: ReactNode;
     showDivider?: boolean;
+    widgetMenuAriaLabel?: string;
     widgetMenuItems?: WidgetMenuItems;
 };
 
@@ -51,6 +52,7 @@ export function WidgetParentHeader({
     isArrayItem,
     leftSection,
     showHeaderMenu,
+    widgetMenuAriaLabel,
     widgetMenuItems = [],
     titleProps = {},
     showDivider,
@@ -64,6 +66,7 @@ export function WidgetParentHeader({
             <WidgetMenu
                 inline={false}
                 offset={0}
+                ariaLabel={widgetMenuAriaLabel}
                 position={'left-start'}
                 transitionProps={{ transition: 'slide-left', duration: 100 }}
                 icon={isArrayItem ? 'more_horiz' : 'menu'}

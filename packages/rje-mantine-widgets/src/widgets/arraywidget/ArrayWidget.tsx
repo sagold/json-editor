@@ -138,6 +138,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             readOnly={options.readOnly}
             leftSection={leftSection}
             showDivider={options.showTitleDivider}
+            widgetMenuAriaLabel="array-menu"
             widgetMenuItems={widgetMenuItems}
         />
     );
@@ -201,14 +202,18 @@ function getActionStates(node: ArrayNode) {
     const minItems = node.schema.minItems || 0;
     let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
     if (
-        Array.isArray(node.schema.items) &&
-        (node.schema.additionalItems === false || node.schema.additionalItems == null)
+        Array.isArray(node.schemaNode.prefixItems) &&
+        // @todo draft-version specific test for additionalItems <> items
+        (node.schema.additionalItems === false || node.schema.items === false || node.schemaNode.items == null)
     ) {
-        isAddEnabled = node.children.length < node.schema.items.length;
+        isAddEnabled = node.children.length < node.schemaNode.prefixItems.length;
     }
     return { isAddEnabled, isDeleteEnabled: minItems < node.children.length };
 }
 
+/**
+ * @returns list of array actions to be placed in menu
+ */
 function getArrayHeaderMenu(
     editor: Editor,
     node: ArrayNode,
@@ -260,8 +265,9 @@ function getArrayHeaderMenu(
 }
 
 function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, options: ArrayOptions) {
-    const schema = parentNode.schema;
-    const isInfixedArray = Array.isArray(schema.items) && schema.items.length > parseInt(child.property);
+    const schemaNode = parentNode.schemaNode;
+    const isInfixedArray =
+        Array.isArray(schemaNode.prefixItems) && schemaNode.prefixItems.length > parseInt(child.property);
     if (isInfixedArray) {
         return [];
     }

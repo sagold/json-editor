@@ -38,13 +38,14 @@ export function useEditor<Data = unknown>(settings: UseEditorOptions<Data>) {
                 ...settings,
                 schema,
                 data,
+                drafts: settings.drafts,
                 plugins: settings.plugins,
                 widgets: settings.widgets,
                 validate: settings.validate,
                 liveUpdate: settings.liveUpdate,
                 addOptionalProps: settings.addOptionalProps,
-                extendDefaults: settings.extendDefaults,
-                draftConfig: settings.draftConfig
+                extendDefaults: settings.extendDefaults
+                // draftConfig: settings.draftConfig
             });
             // console.log('create editor', instance.id);
             // store last used input data - prevents an additional rerender where
