@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { useEditor, UseEditorOptions } from '@sagold/react-json-editor';
 import { widgets } from '../index';
 import { DateWidget, type DateOptions } from './DateWidget';

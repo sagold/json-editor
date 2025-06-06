@@ -11,10 +11,8 @@ module.exports = {
 
     addons: [
         getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-essentials'),
-        getAbsolutePath('@storybook/addon-interactions'),
-        getAbsolutePath('@storybook/addon-mdx-gfm'),
-        getAbsolutePath('@storybook/addon-webpack5-compiler-swc')
+        getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
+        getAbsolutePath('@storybook/addon-docs')
     ],
 
     framework: {

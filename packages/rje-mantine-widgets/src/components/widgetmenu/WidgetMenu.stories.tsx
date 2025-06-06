@@ -1,4 +1,4 @@
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-webpack5';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { WidgetMenu, WidgetMenuProps } from './WidgetMenu';
 

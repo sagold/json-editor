@@ -1,4 +1,4 @@
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-webpack5';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { StringOptions } from './StringWidget';
 import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';

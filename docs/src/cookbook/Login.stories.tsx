@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { Button } from '@mantine/core';
 import { Editor, getErrors } from '@sagold/react-json-editor';
 import { JsonForm } from '@sagold/rje-mantine-widgets';

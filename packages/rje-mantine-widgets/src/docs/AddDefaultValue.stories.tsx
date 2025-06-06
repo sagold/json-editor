@@ -1,6 +1,6 @@
 import { UseEditorOptions, useEditor } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-mantine-widgets';
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-webpack5';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
 
 export default {

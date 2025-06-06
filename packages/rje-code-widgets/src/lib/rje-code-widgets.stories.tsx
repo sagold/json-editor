@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 import defaultWidgets, { JsonForm, Icon } from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
