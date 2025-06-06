@@ -11,6 +11,8 @@ jobs:
     ci:
         name: Install & Testing
         runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.52.0-noble
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -18,11 +20,12 @@ jobs:
                   node-version: '22.11'
                   cache: 'yarn'
             - name: Install dependencies
-              run: yarn --frozen-lockfile
+              run: yarn --immutable
             - name: Build packages
               run: yarn hje:dist; yarn rje:dist
             - name: Build docs
               run: yarn docs:dist
+            # upload docs
             - name: Upload docs
               id: deployment
               uses: actions/upload-pages-artifact@v3
@@ -30,11 +33,19 @@ jobs:
                   path: dist/docs
             - name: Run unit tests
               run: yarn test:ci
+            - name: Configure Git safe directory
+              run: git config --global --add safe.directory $GITHUB_WORKSPACE
             - uses: dorny/test-reporter@v1.6.0
               with:
                   name: unit test results
                   path: junit.xml
                   reporter: jest-junit
+            # run story tests
+            - name: Serve Storybook and run tests
+              run: |
+                  npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+                  "npx http-server dist/docs --port 6006 --silent" \
+                  "npx wait-on tcp:6006 && yarn test:stories"
 
     # publish docs
     docs_publish:
