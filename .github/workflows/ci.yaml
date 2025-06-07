@@ -25,12 +25,7 @@ jobs:
               run: yarn hje:dist; yarn rje:dist
             - name: Build docs
               run: yarn docs:dist
-            # upload docs
-            - name: Upload docs
-              id: deployment
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: dist/docs
+            # run unit tests
             - name: Run unit tests
               run: yarn test:ci
             - name: Configure Git safe directory
@@ -45,7 +40,20 @@ jobs:
               run: |
                   npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
                   "npx http-server dist/docs --port 6006 --silent" \
-                  "npx wait-on tcp:6006 && yarn test:stories"
+                  "npx wait-on tcp:6006 && yarn test:stories:ci"
+            - uses: dorny/test-reporter@v1.6.0
+              if: always() # run even if tests fail
+              with:
+                  name: storybook test results
+                  path: storybook-test-results.xml
+                  reporter: jest-junit
+
+            # upload docs
+            - name: Upload docs
+              id: deployment
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: dist/docs
 
     # publish docs
     docs_publish:

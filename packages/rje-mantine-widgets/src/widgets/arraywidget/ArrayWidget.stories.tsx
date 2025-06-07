@@ -154,13 +154,13 @@ export const MinItemsDraft2020: Story = {
         }
     },
     play: async function TestArrayWidget({ canvas /*, userEvent*/ }) {
-        const first = canvas.queryByLabelText('title-label');
+        const first = await canvas.findByLabelText('title-label');
         expect(first, 'should have initially rendered first element').toBeInTheDocument();
 
-        const second = canvas.queryByLabelText('description-label');
+        const second = await canvas.findByLabelText('description-label');
         expect(second, 'should have initially rendered second element').toBeInTheDocument();
 
-        const arrayMenu = canvas.getByRole('button', { name: 'array-menu' });
+        const arrayMenu = await canvas.findByRole('button', { name: 'array-menu' });
         expect(arrayMenu, 'should have actions disabled').toBeDisabled();
     }
 };

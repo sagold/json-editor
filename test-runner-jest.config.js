@@ -12,5 +12,6 @@ module.exports = {
      *  to merge testRunnerConfig properties with your own
      * @see https://jestjs.io/docs/configuration
      */
+    testTimeout: 20_000, // 20 seconds per story
     testPathIgnorePatterns: ['packages/rje-code-widgets']
 };
