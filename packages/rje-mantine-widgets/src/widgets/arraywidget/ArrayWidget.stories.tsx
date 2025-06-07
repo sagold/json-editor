@@ -1,9 +1,8 @@
 import { StoryObj } from '@storybook/react-webpack5';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { ArrayOptions } from './ArrayWidget';
-import { UseEditorOptions, useEditor, Widget, JsonSchema } from '@sagold/react-json-editor';
-import { expect /*, waitFor, screen */ } from 'storybook/test';
-import { deepMerge } from '@mantine/core';
+import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';
+import { expect } from 'storybook/test';
 
 type WidgetProps = ArrayOptions & { editorProps: UseEditorOptions };
 function WidgetForm({ editorProps, ...props }: WidgetProps) {
@@ -19,39 +18,7 @@ export default {
 
 type Story = StoryObj<WidgetProps>;
 
-const OptionsItemsSchema: JsonSchema = {
-    oneOf: [
-        {
-            title: 'Header',
-            type: 'object',
-            required: ['title'],
-            options: { showEditJsonAction: true },
-            properties: {
-                title: { type: 'string' }
-            }
-        },
-        {
-            title: 'Paragraph',
-            type: 'object',
-            required: ['paragraph'],
-            options: { showEditJsonAction: true },
-            properties: {
-                paragraph: { type: 'string', format: 'textarea' }
-            }
-        },
-        {
-            title: 'Quote',
-            type: 'string'
-        },
-        {
-            title: 'Number',
-            options: { showHeader: false },
-            type: 'number'
-        }
-    ]
-};
-
-export const OptionsDraft2020: Story = {
+export const Options: Story = {
     argTypes: {
         collapsed: {
             control: 'radio',
@@ -110,46 +77,61 @@ export const OptionsDraft2020: Story = {
                 $schema: 'draft-2020-12',
                 title: 'Array Widget Options',
                 type: 'array',
-                items: OptionsItemsSchema
+                items: {
+                    oneOf: [
+                        {
+                            title: 'Header',
+                            type: 'object',
+                            required: ['title'],
+                            options: { showEditJsonAction: true },
+                            properties: {
+                                title: { type: 'string' }
+                            }
+                        },
+                        {
+                            title: 'Paragraph',
+                            type: 'object',
+                            required: ['paragraph'],
+                            options: { showEditJsonAction: true },
+                            properties: {
+                                paragraph: { type: 'string', format: 'textarea' }
+                            }
+                        },
+                        {
+                            title: 'Quote',
+                            type: 'string'
+                        },
+                        {
+                            title: 'Number',
+                            options: { showHeader: false },
+                            type: 'number'
+                        }
+                    ]
+                }
             }
         }
     }
 };
 
-export const OptionsDraft2019: Story = deepMerge(OptionsDraft2020, {
-    args: {
-        editorProps: {
-            schema: {
-                $schema: 'draft-2019-09',
-                title: 'Array Widget Options',
-                type: 'array',
-                items: OptionsItemsSchema
-            }
-        }
-    }
-});
-
-const MinItemsSchema = [
-    {
-        title: 'title-label',
-        type: 'string',
-        default: 'default title'
-    },
-    {
-        title: 'description-label',
-        type: 'string',
-        default: 'default description'
-    }
-];
-
-export const MinItemsDraft2020: Story = {
+export const MinItems: Story = {
     args: {
         editorProps: {
             schema: {
                 $schema: 'draft-2020-12',
                 type: 'array',
                 minItems: 2,
-                prefixItems: MinItemsSchema
+                prefixItems: [
+                    {
+                        title: 'title-label',
+                        type: 'string',
+                        default: 'default title'
+                    },
+                    {
+                        title: 'description-label',
+                        type: 'string',
+                        default: 'default description'
+                    }
+                ]
             }
         }
     },
@@ -164,16 +146,3 @@ export const MinItemsDraft2020: Story = {
         expect(arrayMenu, 'should have actions disabled').toBeDisabled();
     }
 };
-
-export const MinItemsDraft2019: Story = deepMerge(MinItemsDraft2020, {
-    args: {
-        editorProps: {
-            schema: {
-                $schema: 'draft-2020-12',
-                type: 'array',
-                minItems: 2,
-                items: MinItemsSchema
-            }
-        }
-    }
-});
