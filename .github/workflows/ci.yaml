@@ -6,60 +6,142 @@ on:
     pull_request:
         branches: [main]
 
+defaults:
+    run:
+        shell: bash
+
 jobs:
-    # install, build, upload artefacts and run tests
-    ci:
-        name: Install & Testing
+    # ────────────────────────────────────────────────────────────────────────────────
+    # 1️⃣ Build & Package (compile all packages & a static Storybook build)
+    build:
+        name: Build & Package
+        runs-on: ubuntu-latest
+        container:
+            image: mcr.microsoft.com/playwright:v1.52.0-noble
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js & Yarn
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22.11'
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn install --immutable
+
+            - name: Build packages
+              run: |
+                  yarn hje:dist
+                  yarn rje:dist
+
+            - name: Build docs (static Storybook)
+              run: yarn docs:dist
+
+            # — Upload the built docs as a flat set of files —
+            - name: Upload built docs
+              uses: actions/upload-artifact@v4
+              with:
+                  name: storybook-docs
+                  path: dist/docs/**
+
+            # — Also upload your compiled packages so unit tests can consume them —
+            - name: Upload compiled packages
+              uses: actions/upload-artifact@v4
+              with:
+                  name: package-dist
+                  path: |
+                      packages/headless-json-editor/dist/**
+                      packages/react-json-editor/dist/**
+                      packages/rje-mantine-widgets/dist/**
+
+    # ────────────────────────────────────────────────────────────────────────────────
+    # 2️⃣ Unit Tests (runs against the built .dist output)
+    unit:
+        name: Unit Tests
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js & Yarn
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '22.11'
+                  cache: yarn
+
+            - name: Install deps (for tooling / jest)
+              run: yarn install --immutable
+
+            - name: Download compiled packages
+              uses: actions/download-artifact@v4
+              with:
+                  name: package-dist
+                  path: packages
+
+            - name: Run unit tests
+              run: yarn test:ci
+
+            - name: Publish unit test results
+              uses: dorny/test-reporter@v1.6.0
+              with:
+                  name: unit test results
+                  path: junit.xml
+                  reporter: jest-junit
+
+    # ────────────────────────────────────────────────────────────────────────────────
+    # 3️⃣ Storybook Play Tests (serve the exact same dist/docs you built)
+    stories:
+        name: Storybook Play Tests
+        needs: build
         runs-on: ubuntu-latest
         container:
             image: mcr.microsoft.com/playwright:v1.52.0-noble
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+
+            - name: Setup Node.js & Yarn
+              uses: actions/setup-node@v4
               with:
                   node-version: '22.11'
-                  cache: 'yarn'
-            - name: Install dependencies
-              run: yarn --immutable
-            - name: Build packages
-              run: yarn hje:dist; yarn rje:dist
-            - name: Build docs
-              run: yarn docs:dist
-            # run unit tests
-            - name: Run unit tests
-              run: yarn test:ci
-            - name: Configure Git safe directory
-              run: git config --global --add safe.directory $GITHUB_WORKSPACE
-            - uses: dorny/test-reporter@v1.6.0
+                  cache: yarn
+
+            - name: Install deps (for test‐runner)
+              run: yarn install --immutable
+
+            - name: Download built docs
+              uses: actions/download-artifact@v4
               with:
-                  name: unit test results
-                  path: junit.xml
-                  reporter: jest-junit
-            # run story tests
-            - name: Serve Storybook and run tests
+                  name: storybook-docs
+                  path: dist/docs
+
+            - name: Serve Storybook & run play tests
+              env:
+                  JEST_JUNIT_OUTPUT_FILE: storybook-test-results.xml
               run: |
-                  npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
-                  "npx http-server dist/docs --port 6006 --silent" \
-                  "npx wait-on tcp:6006 && yarn test:stories:ci"
-            - uses: dorny/test-reporter@v1.6.0
-              if: always() # run even if tests fail
+                  npx concurrently -k -s first -n "SB,TEST" \
+                    "npx http-server dist/docs --port 6006 --silent" \
+                    "npx wait-on tcp:6006 && yarn test:stories:ci"
+
+            - name: Configure Git safe directory for test-reporter
+              run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+            - name: Publish storybook test results
+              if: always()
+              uses: dorny/test-reporter@v1.6.0
               with:
                   name: storybook test results
                   path: storybook-test-results.xml
                   reporter: jest-junit
 
-            # upload docs
-            - name: Upload docs
-              id: deployment
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: dist/docs
-
-    # publish docs
-    docs_publish:
-        if: github.ref_name == github.event.repository.default_branch
-        needs: ci
+    # ────────────────────────────────────────────────────────────────────────────────
+    # 4️⃣ Publish Docs to GitHub Pages
+    publish-docs:
         name: Publish Docs
+        needs: [build, stories]
+        if: github.ref_name == github.event.repository.default_branch
         runs-on: ubuntu-latest
         environment:
             name: github-pages
@@ -68,6 +150,10 @@ jobs:
             pages: write
             id-token: write
         steps:
+            - name: Download built docs
+              uses: actions/download-artifact@v4
+              with:
+                  name: storybook-docs
+
             - name: Deploy to GitHub Pages
-              id: deployment
               uses: actions/deploy-pages@v4
