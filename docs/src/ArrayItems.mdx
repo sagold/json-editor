@@ -1,89 +1,156 @@
-import { Meta, Canvas } from '@storybook/addon-docs';
-import { JsonForm } from '@sagold/react-json-editor';
 import * as ArrayItems from './ArrayItems.stories';
+import { JsonForm } from '@sagold/react-json-editor';
+import { Markdown } from '@storybook/blocks';
+import { Meta, Canvas } from '@storybook/addon-docs';
+import { Tabs } from './components/Tabs';
 
 <Meta title="ArrayItems" />
 
 # Array Items
 
-> _json-schema_ has a set of definitions for array items. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
+> This section details how _JSON Schema_ array keywords transfer to a user interface build with
+> `@sagold/react-json-editor` and `@sagold/rje-mantine-widgets`.
 
-Validation of data is fully supported, the following list tracks support of the user interface:
+Validation of data is fully supported, the following list tracks support by the user interface:
 
-| Status | Feature                               | Comments                                           |
-| :----: | :------------------------------------ | :------------------------------------------------- |
-|   ✅   | [items array-schema](#array-schema)   | defined set of array items                         |
-|   ❎   | [additionalItems](#additional-items)  | ui does not support adding arbitrary data          |
-|   ✅   | [items object-schema](#object-schema) | object schema for child-items                      |
-|   ✅   | [items oneOf](#one-of)                |
-|   ✅   | [length](#length)                     | support for **minItems** and **maxItems**          |
-|   ✅   | [if-then-else](#if-then-else)         |
-|   ❌   | enum                                  | only supported by validation not by user interface |
-|   ✅   | [not](#not)                           | validation only, exlude specific item types        |
-|   ✅   | [uniqueItems](#uniqueitems)           | validation only, exclude redundant items           |
-|   ✅   | [contains](#contains)                 | validation only, ensure a specific item is present |
+<Markdown>
+  {`
+  | Status | Feature                               | Draft       | Comments |
+  | :----: | :------------------------------------ | :---------- | :------- |
+  |   ❎   | [additionalItems](#additional-items)  | <= 2019-09  | ui does not support adding arbitrary data |
+  |   ✅   | [contains](#contains)                 | *           | validation only, ensure a specific item is present |
+  |   ❌   | [enum](#enum)                         | *           | only supported by validation not by user interface |
+  |   ✅   | [items object-schema](#object-schema) | *           | object schema for child-items |
+  |   ✅   | [items oneOf](#one-of)                | *           | 
+  |   ✅   | [items array-schema](#array-schema)   | <= 2019-09  | defined set of array items |
+  |   ✅   | [if-then-else](#if-then-else)         | >= draft-07 | 
+  |   ✅   | [length](#length)                     | *           | support for **minItems** and **maxItems** |
+  |   ✅   | [not](#not)                           | *           | validation only, exlude specific item types |
+  |   ✅   | [prefixItems](#array-schema)          | >= 2020-12  | defined set of array items |
+  |   ✅   | [uniqueItems](#unique-items)          | *           | validation only, exclude redundant items |
+  `}
+</Markdown>
 
 ## Array Schema
 
-Fixed number and schema of array items
+Using array-items schema you define a JSON Schema for a fixed numer of array items. With no additional items defined,
+item edit options are disabled.
 
-<Canvas className="inline" of={ArrayItems.ItemsArray} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.ItemsArray} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.ItemsArrayDraft2019} />
+</Tabs>
 
-## additional items
+## Additional items
 
 With items defined by an items-array, `additionalItems=undefined` or `additionalItems=true` will allow any additional child.
 
-- **Note**, for a missing `additionalItems` setting, add-options are disabled
+- **Note** Keyword `additionalItems` has been removed with draft-2020-12
+- **Note** for a missing `additionalItems` setting, add-options are disabled
 
-<Canvas className="inline" of={ArrayItems.AdditionalItemsUndefined} />
+<Tabs>
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.AdditionalItemsUndefined} />
+</Tabs>
 
 With items defined by an items-array, `additionalItems=true`, the add option is available. Here, item is initialized with `null` as no schema can be derived. Thus, no input element is renderer (null-widget) for adding items. Any input items are accepted.
 
 - **Note** This feature will need support to define custom data, initially offering an json-editor
 
-<Canvas className="inline" of={ArrayItems.AdditionalItemsTrue} />
+<Tabs>
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.AdditionalItemsTrue} />
+</Tabs>
 
 Preventing additional items will disable add-options and remove any undefined item from user form and exported data. In the following example, the array is initialized with three values:
 
-<Canvas className="inline" of={ArrayItems.AdditionalItemsFalse} />
+<Tabs>
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.AdditionalItemsFalse} />
+</Tabs>
 
 With items defined by an items-array and `additionalItems` set to a valid json-schema, items may be added in the given format.
 
-<Canvas className="inline" of={ArrayItems.AdditionalItemsSchema} />
+<Tabs>
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.AdditionalItemsSchema} />
+</Tabs>
 
 ## Object Schema
 
-Array items can contain any supported json-schema:
+An array object-schema defines the structure for all array-items which are not defined by an array-schema (items,
+prefixItems). Without length restrictions array edit-options are always enabled.
 
-<Canvas className="inline" of={ArrayItems.ItemsObject} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.ItemsObject} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.ItemsObjectDraft2019} />
+</Tabs>
 
 ## One Of
 
 When using an items-object definition containing a `oneOf` statement, adding an item will show a selection dialog for each oneOf schema
 
-<Canvas className="inline" of={ArrayItems.OneOf} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.OneOf} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.OneOfDraft2019} />
+</Tabs>
 
 ## Length
 
 support for `minItems` and `maxItems` length restrictions:
 
-<Canvas className="inline" of={ArrayItems.Length} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.Length} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.LengthDraft2019} />
+</Tabs>
 
 With `minItems > 0` the editor will add items per default, if possible:
 
-<Canvas className="inline" of={ArrayItems.LengthTemplate} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.LengthTemplate} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.LengthTemplateDraft2019} />
+</Tabs>
 
 You may explicitely override this behaviour by adding a default value `default: []`
 
-<Canvas className="inline" of={ArrayItems.LengthDefaultOverride} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.LengthDefaultOverride} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.LengthDefaultOverrideDraft2019} />
+</Tabs>
 
-> Note: this behaviour is defined by the editor `extendDefaults` option
+- **Note** this behaviour can be modified by the editor option `extendDefaults`
 
 ## if-then-else
 
 example: if any number is above 1 the list is restricted to one item, else no item is allowed
 
-<Canvas className="inline" of={ArrayItems.IfThenElse} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.IfThenElse} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.IfThenElseDraft2019} />
+</Tabs>
+
+## Not
+
+Using a `not` schema, allows specific arrays to be invalidated, showing an error when `not` validates. The following example invalidates arrays that only consist of 123. If one of the array items differs from 123, the schema is valid again.
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.Not} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.NotDraft2019} />
+</Tabs>
+
+## Unique items
+
+`uniqueItems` prevents duplication in array items
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.UniqueItems} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.UniqueItemsDraft2019} />
+</Tabs>
+
+## Contains
+
+While the items schema must be valid for every item in the array, the `contains` schema only needs to validate against one or more items in the array.
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.Contains} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.ContainsDraft2019} />
+</Tabs>
 
 ## Enum
 
@@ -91,22 +158,7 @@ example: if any number is above 1 the list is restricted to one item, else no it
 - ⚠️ **TODO** fix initial data from getTemplate
 - **TODO** improve error message valid options display
 
-<Canvas className="inline" of={ArrayItems.Enum} />
-
-## Not
-
-Using a `not` schema, allows specific arrays to be invalidated, showing an error when `not` validates. The following example invalidates arrays that only consist of 123. If one of the array items differs from 123, the schema is valid again.
-
-<Canvas className="inline" of={ArrayItems.Not} />
-
-## Unique items
-
-`uniqueItems` prevents duplication in array items
-
-<Canvas className="inline" of={ArrayItems.UniqueItems} />
-
-## Contains
-
-While the items schema must be valid for every item in the array, the `contains` schema only needs to validate against one or more items in the array.
-
-<Canvas className="inline" of={ArrayItems.Contains} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.Enum} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.EnumDraft2019} />
+</Tabs>

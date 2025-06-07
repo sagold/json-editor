@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import * as ObjectProperties from './ObjectProperties.stories';
+import { Markdown } from '@storybook/blocks';
 
 <Meta title="ObjectProperties" />
 
@@ -9,6 +10,8 @@ import * as ObjectProperties from './ObjectProperties.stories';
 
 Validation of data is fully supported, the following list tracks support of the user interface:
 
+<Markdown>
+  {`
 | Status | Feature                                        | Comments                                                                  |
 | :----: | :--------------------------------------------- | :------------------------------------------------------------------------ |
 |   ✅   | [properties](#properties)                      |
@@ -20,6 +23,8 @@ Validation of data is fully supported, the following list tracks support of the 
 |   ✅   | [if-then-else](#if-then-else)                  | subschema are merged to single schema. Validation treats schemas separate |
 |   ❌   | patternProperties                              | not yet supported                                                         |
 |   ❌   | anyOf                                          | not yet supported                                                         |
+`}
+</Markdown>
 
 ## Properties
 

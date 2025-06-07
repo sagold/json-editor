@@ -1,5 +1,6 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import * as DateWidgetStories from '../../packages/rje-mantine-widgets/src/widgets/datewidget/DateWidget.stories';
+import { Markdown } from '@storybook/blocks';
 
 <Meta title="DateFormats" />
 
@@ -9,11 +10,15 @@ import * as DateWidgetStories from '../../packages/rje-mantine-widgets/src/widge
 
 Thus, working with dates and default date-based features your data needs to rely on one of the three stated formats:
 
+<Markdown>
+  {`
 |   type    | format                   | example                  |
 | :-------: | :----------------------- | :----------------------- |
 |   date    | YYYY-MM-DD               | 2023-08-20               |
 |   time    | HH:mm:ssZ                | 16:55:02Z                |
 | date-time | YYYY-MM-DDTHH:mm:ss.sssZ | 2023-08-20T14:56:17.657Z |
+`}
+</Markdown>
 
 The _date-time_-format is a [ISO 8601 date-time string format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString) in UTC timezone and can be retrieved in javascript by `(new Date()).toISOString()`.
 

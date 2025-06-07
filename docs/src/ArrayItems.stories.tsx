@@ -2,6 +2,8 @@ import { JsonForm } from '@sagold/rje-mantine-widgets';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { JsonSchema } from 'headless-json-editor';
 import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
+import deepMerge from 'deepmerge';
+import { expect, within } from 'storybook/test';
 
 const meta: Meta<typeof JsonForm> = {
     title: 'docs/ArrayItems',
@@ -17,9 +19,10 @@ export const ItemsArray: Story = {
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
-            title: 'items: [schema, schema]',
+            $schema: 'draft-2020-12',
+            title: 'prefixItems: [schema, schema]',
             type: 'array',
-            items: [
+            prefixItems: [
                 {
                     title: 'Title',
                     type: 'string'
@@ -30,33 +33,36 @@ export const ItemsArray: Story = {
                 }
             ]
         }
+    },
+    play: async ({ canvas }) => {
+        const arrayMenu = await canvas.findByRole('button', { name: 'array-menu' });
+        expect(arrayMenu, 'should have actions disabled').toBeDisabled();
+
+        const arrayItems = await canvas.findAllByRole('array-listitem');
+        expect(arrayItems, 'Should have rendered two items').toHaveLength(2);
+
+        const itemButton = within(arrayItems[0]).queryByRole('button');
+        expect(itemButton, 'should NOT have rendered array actions').not.toBeInTheDocument();
     }
 };
 
-export const ItemsArrayUnique: Story = {
+export const ItemsArrayDraft2019: Story = {
+    play: ItemsArray.play,
     args: {
         validate: true,
-        data: [{ title: 'a title' }, { subtitle: 'a subtitle' }],
+        data: ['a title', 'a subtitle'],
         schema: {
+            $schema: 'draft-2019-09',
             title: 'items: [schema, schema]',
             type: 'array',
-            options: { showEditJsonAction: true },
             items: [
                 {
                     title: 'Title',
-                    type: 'object',
-                    required: ['title'],
-                    properties: {
-                        title: { type: 'string' }
-                    }
+                    type: 'string'
                 },
                 {
                     title: 'Subtitle',
-                    type: 'object',
-                    required: ['subtitle'],
-                    properties: {
-                        subtitle: { type: 'string' }
-                    }
+                    type: 'string'
                 }
             ]
         }
@@ -68,6 +74,7 @@ export const AdditionalItemsUndefined: Story = {
         validate: true,
         data: ['a title', 'a subtitle'],
         schema: {
+            $schema: 'draft-2019-09',
             title: 'additionalItems: undefined',
             type: 'array',
             items: [
@@ -89,6 +96,7 @@ export const AdditionalItemsTrue: Story = {
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
+            $schema: 'draft-2019-09',
             title: 'additionalItems: true',
             type: 'array',
             additionalItems: true,
@@ -111,6 +119,7 @@ export const AdditionalItemsFalse: Story = {
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
+            $schema: 'draft-2019-09',
             title: 'additionalItems: false',
             type: 'array',
             additionalItems: false,
@@ -133,6 +142,7 @@ export const AdditionalItemsSchema: Story = {
         validate: true,
         data: ['a title', 'a subtitle', 'an additional item'],
         schema: {
+            $schema: 'draft-2019-09',
             title: 'additionalItems: { type: "number" }',
             type: 'array',
             additionalItems: {
@@ -159,6 +169,7 @@ export const ItemsObject: Story = {
         addOptionalProps: false,
         data: [2023],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'items: { object }',
             type: 'array',
             items: {
@@ -183,7 +194,24 @@ export const ItemsObject: Story = {
                 }
             }
         }
-    } as JsonSchema
+    },
+    play: async ({ canvas }) => {
+        const arrayMenu = await canvas.findByRole('button', { name: 'array-menu' });
+        expect(arrayMenu, 'should have actions enabled').toBeEnabled();
+
+        const arrayItems = await canvas.findAllByRole('array-listitem');
+        expect(arrayItems, 'Should have rendered one item').toHaveLength(1);
+    }
+};
+
+export const ItemsObjectDraft2019: Story = {
+    play: ItemsObject.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [2023],
+        schema: deepMerge(ItemsObject.args!.schema!, { $schema: 'draft-2019-09' })
+    }
 };
 
 export const OneOf: Story = {
@@ -192,6 +220,7 @@ export const OneOf: Story = {
         addOptionalProps: false,
         data: [{ type: 'header' }],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'items: { oneOf: [ schema, schema ] }',
             type: 'array',
             items: {
@@ -246,12 +275,23 @@ export const OneOf: Story = {
     } as JsonSchema
 };
 
+export const OneOfDraft2019: Story = {
+    play: OneOf.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [{ type: 'header' }],
+        schema: deepMerge(OneOf.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const Length: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [2023],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'minItems: 1, maxItems: 2',
             type: 'array',
             minItems: 1,
@@ -265,12 +305,23 @@ export const Length: Story = {
     }
 };
 
+export const LengthDraft2019: Story = {
+    play: Length.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [2023],
+        schema: deepMerge(Length.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const LengthTemplate: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'minItems: 1 - empty data',
             type: 'array',
             minItems: 1,
@@ -284,12 +335,23 @@ export const LengthTemplate: Story = {
     }
 };
 
+export const LengthTemplateDraft2019: Story = {
+    play: LengthTemplate.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: deepMerge(LengthTemplate.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const LengthDefaultOverride: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'minItems: 1 - empty data',
             type: 'array',
             minItems: 1,
@@ -304,12 +366,23 @@ export const LengthDefaultOverride: Story = {
     }
 };
 
+export const LengthDefaultOverrideDraft2019: Story = {
+    play: LengthDefaultOverride.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: deepMerge(LengthDefaultOverride.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const IfThenElse: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'if: { items: { maximum: 1 } }',
             type: 'array',
             items: {
@@ -333,12 +406,23 @@ export const IfThenElse: Story = {
     }
 };
 
+export const IfThenElseDraft2019: Story = {
+    play: IfThenElse.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: deepMerge(IfThenElse.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const Enum: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'enum: [[], []]',
             type: 'array',
             enum: [
@@ -354,12 +438,23 @@ export const Enum: Story = {
     }
 };
 
+export const EnumDraft2019: Story = {
+    play: Enum.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [],
+        schema: deepMerge(Enum.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const Not: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [123],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'not: { items: { const: 123 }}',
             description: 'value 123 is not allowed as array item',
             type: 'array',
@@ -378,12 +473,23 @@ export const Not: Story = {
     }
 };
 
+export const NotDraft2019: Story = {
+    play: Not.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [123],
+        schema: deepMerge(Not.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const UniqueItems: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [1, 2, 2],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'uniqueItems: true',
             type: 'array',
             uniqueItems: true,
@@ -396,12 +502,23 @@ export const UniqueItems: Story = {
     }
 };
 
+export const UniqueItemsDraft2019: Story = {
+    play: UniqueItems.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [1, 2, 2],
+        schema: deepMerge(UniqueItems.args!.schema!, { $schema: 'draft-2019-09' })
+    }
+};
+
 export const Contains: Story = {
     args: {
         validate: true,
         addOptionalProps: false,
         data: [2, 3],
         schema: {
+            $schema: 'draft-2020-12',
             title: 'contains: { const: 1 }',
             type: 'array',
             items: {
@@ -414,5 +531,15 @@ export const Contains: Story = {
                 const: 1
             }
         }
+    }
+};
+
+export const ContainsDraft2019: Story = {
+    play: Contains.play,
+    args: {
+        validate: true,
+        addOptionalProps: false,
+        data: [2, 3],
+        schema: deepMerge(Contains.args!.schema!, { $schema: 'draft-2019-09' })
     }
 };

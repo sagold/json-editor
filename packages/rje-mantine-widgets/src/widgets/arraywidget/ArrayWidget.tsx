@@ -157,7 +157,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             {node.children
                                 .filter((child) => !child.options.hidden)
                                 .map((child) => (
-                                    <Table.Tr key={child.id}>
+                                    <Table.Tr key={child.id} role="array-listitem" aria-rowindextext={child.pointer}>
                                         {sortableEnabled && DRAG_HANDLE_COLUMN}
                                         <Table.Td width={'100%'} style={{ position: 'relative' }}>
                                             <Widget
