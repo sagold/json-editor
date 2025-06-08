@@ -4,11 +4,13 @@ import defaultWidgets, { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './JsonWidget';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import '../rje-code-widgets.scss';
+import { JsonSchema } from '@sagold/react-json-editor';
 
-type Story = StoryObj<typeof JsonWidget>;
-const meta: Meta<typeof JsonWidget> = {
+type Story = StoryObj<{ schema: JsonSchema; theme?: string; data?: any }>;
+
+const meta: Meta<{ schema: JsonSchema; theme?: string; data?: any }> = {
     title: 'packages/rje-code-widgets/JsonWidget/Object',
-    component: JsonWidget,
+    // component: JsonWidget,
     argTypes: {
         theme: {
             control: { type: 'select' },

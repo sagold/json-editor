@@ -18,17 +18,17 @@ function getData(doc: Text) {
 
 export const jsonSchemaTooltip = (editor: Editor, nodePointer = '#', localSchema?: JsonSchema) =>
     hoverTooltip(async (view, pos, side) => {
-        const { pointer, cursor, location } = getJsonPointerFromPosition(view.state, pos);
+        const { pointer, cursor } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;
         const data = getData(view.state.doc);
 
-        const schema = editor.rootNode.getSchema({ pointer: `${absolutePointer}`, data, schema: localSchema });
-
-        if (schema == null || schema.type === 'error' || location === 'value') {
+        const schemaNode = localSchema ? editor.schemaNode.compileSchema(localSchema) : editor.schemaNode;
+        const { node: localNode } = schemaNode.getNode(absolutePointer, data);
+        if (!localNode) {
             return null;
         }
 
-        if (schema.title == null && schema.description == null) {
+        if (localNode.schema.title == null && localNode.schema.description == null) {
             return null;
         }
 
@@ -40,8 +40,8 @@ export const jsonSchemaTooltip = (editor: Editor, nodePointer = '#', localSchema
             create(view) {
                 root.render(
                     <div className="rje-code-tooltip rje-code-tooltip--jsonschema">
-                        {schema.title && <h1>{schema.title}</h1>}
-                        {schema.description && <Markdown>{schema.description}</Markdown>}
+                        {localNode.schema.title && <h1>{localNode.schema.title}</h1>}
+                        {localNode.schema.description && <Markdown>{localNode.schema.description}</Markdown>}
                         {/*<span className="rje-tooltip--pointer">{absolutePointer}</span>*/}
                     </div>
                 );

@@ -10,7 +10,7 @@
         "code:bundle": "NODE_ENV=production PACKAGE_NAME=rje-code-widgets rspack build",
         "code:dist": "rm -rf packages/rje-code-widgets/dist; yarn code:bundle; yarn code:ts",
         "code:ts": "(cd packages/rje-code-widgets && tsc --build .)",
-        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn mantine:dist;",
+        "dist": "rm -rf packages/*/dist; yarn hje:dist; yarn rje:dist; yarn mantine:dist; yarn code:dist;",
         "docs": "storybook dev -p 6006",
         "docs:dist": "storybook build --output-dir ./dist/docs",
         "hje:analyze": "yarn hje:bundle --analyze",

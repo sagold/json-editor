@@ -60,7 +60,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
                 setValue(JSON.parse(value));
                 setJsonValid(true);
             } catch (e) {
-                console.log('failed parsing (jsondata) value', value);
+                // console.log('failed parsing (jsondata) value', value);
                 setJsonValid(false);
             }
         },
@@ -80,9 +80,9 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
     const extensions = [
         jsonSyntax(),
         // @todo readd completion using schemaNode
-        // jsonLanguage.data.of({
-        //     autocomplete: jsonSchemaCompletion(editor.root.schemaNode, node.schema)
-        // }),
+        jsonLanguage.data.of({
+            autocomplete: jsonSchemaCompletion(node.schemaNode)
+        }),
         lintGutter(),
         linter(jsonSchemaLinter(editor, node.schema)),
         jsonSchemaTooltip(editor, node.pointer)
@@ -133,7 +133,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                 setValue(value);
                 setJsonValid(true);
             } catch (e) {
-                console.log('failed parsing (jsonstring) value', value);
+                // console.log('failed parsing (jsonstring) value', value);
                 setJsonValid(false);
             }
         },
@@ -145,13 +145,15 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
     // editor state
     const tooltip = useMemo(() => jsonSchemaTooltip(editor, node.pointer, options.schema), []);
     const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
+
     if (options.schema) {
+        const schemaNode = node.schemaNode.compileSchema(options.schema);
         extensions.push(
-            tooltip
+            tooltip,
             // @todo readd completion using schemaNode
-            // jsonLanguage.data.of({
-            //     autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
-            // })
+            jsonLanguage.data.of({
+                autocomplete: jsonSchemaCompletion(schemaNode)
+            })
         );
     }
 

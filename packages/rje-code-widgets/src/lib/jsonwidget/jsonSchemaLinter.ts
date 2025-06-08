@@ -29,8 +29,6 @@ function getPropertyValueCursor(node: SyntaxNode) {
 }
 
 export function jsonSchemaLinter(editor: Editor, schema: JsonSchema) {
-    // const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
-    // const draft = new Draft(editor.draft.config, rootSchema);
     const localSchemaNode = editor.root.schemaNode.compileSchema(schema);
 
     return async function (view: EditorView): Promise<Diagnostic[]> {
