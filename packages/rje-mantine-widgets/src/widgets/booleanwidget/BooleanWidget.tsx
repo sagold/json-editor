@@ -1,6 +1,6 @@
 import { Checkbox, Switch } from '@mantine/core';
 import { BooleanNode, WidgetField, WidgetPlugin, widget } from '@sagold/react-json-editor';
-import { widgetInputProps } from '../components/widgetInputProps';
+import { widgetInputProps } from '../../components/widgetInputProps';
 
 export const BooleanWidget = widget<BooleanNode, boolean>(({ node, options, setValue }) => {
     const Input = node.schema.format === 'switch' ? Switch : Checkbox;
