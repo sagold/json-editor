@@ -26,7 +26,7 @@ export const OptionsDraft2019: Story = deepMerge(Options, {
                 $schema: 'draft-2019-09',
                 title: 'Array Widget Options',
                 type: 'array',
-                items: Options.args.editorProps.schema.items
+                items: Options.args!.editorProps!.schema.items
             }
         }
     }
@@ -39,7 +39,7 @@ export const MinItemsDraft2019: Story = deepMerge(MinItems, {
                 $schema: 'draft-2019-09',
                 type: 'array',
                 minItems: 2,
-                items: MinItems.args.editorProps.schema.prefixItems
+                items: MinItems.args!.editorProps!.schema.prefixItems
             }
         }
     }
