@@ -1,13 +1,14 @@
 import gp from '@sagold/json-pointer';
 import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { Diagnostic } from '@codemirror/lint';
-import { Draft, JsonSchema } from 'json-schema-library';
+import { JsonSchema } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
 import { Editor } from '@sagold/react-json-editor';
 import { jsonParseLinter } from '@codemirror/lang-json';
 import { SyntaxNode } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 import { jsonLintPropertyDuplicates } from './jsonLintPropertyDuplicates';
+import { SchemaNode } from 'headless-json-editor';
 
 function getPropertyNameCursor(node: SyntaxNode) {
     if (node.name === 'Property') {
@@ -28,9 +29,9 @@ function getPropertyValueCursor(node: SyntaxNode) {
 }
 
 export function jsonSchemaLinter(editor: Editor, schema: JsonSchema) {
-    const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
-    const draft = new Draft(editor.draft.config, rootSchema);
-    const localSchema = draft.compileSchema(schema);
+    // const rootSchema = schema?.$ref ? editor.draft.getSchema() : schema;
+    // const draft = new Draft(editor.draft.config, rootSchema);
+    const localSchemaNode = editor.root.schemaNode.compileSchema(schema);
 
     return async function (view: EditorView): Promise<Diagnostic[]> {
         const jsonLint = jsonParseLinter();
@@ -38,13 +39,13 @@ export function jsonSchemaLinter(editor: Editor, schema: JsonSchema) {
         if (jsonLintResult.length > 0) {
             return jsonLintResult;
         }
-        return runJsonSchemaLinter(draft, localSchema, view);
+        return runJsonSchemaLinter(localSchemaNode, view);
     };
 }
 
-function runJsonSchemaLinter(draft: Draft, schema: JsonSchema, view: EditorView): Diagnostic[] {
+function runJsonSchemaLinter(schemaNode: SchemaNode, view: EditorView): Diagnostic[] {
     const currentData = JSON.parse(view.state.doc.toString());
-    const errors = draft.validate(currentData, schema);
+    const { errors } = schemaNode.validate(currentData);
     if (errors.length === 0) {
         return [];
     }

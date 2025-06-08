@@ -119,7 +119,8 @@
     // @include border-style($color-light-grey-1);
     // background-color: $color-light-fill;
     @include border-style($color-dark-stroke);
-    background-color: rgb(var(--rje-color-light-primary));
+    // background-color: rgb(var(--rje-color-light-primary));
+    background-color: $color-light-grey-2;
     backdrop-filter: blur(25px);
     max-width: 600px;
     box-shadow: $shadow-elevated;

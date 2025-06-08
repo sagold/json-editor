@@ -3,21 +3,24 @@ import { useState, useCallback, useMemo } from 'react';
 import CodeMirror, { ReactCodeMirrorProps } from '@uiw/react-codemirror';
 import { json as jsonSyntax, jsonLanguage } from '@codemirror/lang-json';
 import {
-    Widget, Label, JsonError,
+    Widget,
+    Label,
+    JsonError,
     widget,
     WidgetPlugin,
     StringNode,
     ParentNode,
     getData,
     DefaultNodeOptions,
-    JsonSchema
+    JsonSchema,
+    ObjectNode,
+    WidgetProps
 } from '@sagold/react-json-editor';
 import { jsonSchemaCompletion } from './jsonSchemaCompletion';
 import { jsonSchemaLinter } from './jsonSchemaLinter';
 import { jsonSchemaTooltip } from './jsonSchemaTooltip';
 import { linter, lintGutter } from '@codemirror/lint';
 import { useCodeMirrorOnBlur } from '../useCodeMirrorOnBlur';
-
 
 const InvalidJsonError: JsonError = {
     type: 'error',
@@ -31,10 +34,13 @@ const InvalidJsonError: JsonError = {
     }
 } as const;
 
-export const JsonWidget = (props) => {
+export const JsonWidget = (props: WidgetProps<ObjectNode | StringNode>) => {
+    // @ts-expect-error types
     if (props.node.schema.type === 'string') {
+        // @ts-expect-error types
         return <JsonStringWidget {...props} />;
     }
+    // @ts-expect-error types
     return <JsonDataWidget {...props} />;
 };
 
@@ -73,11 +79,12 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
 
     const extensions = [
         jsonSyntax(),
-        jsonLanguage.data.of({
-            autocomplete: jsonSchemaCompletion(editor.draft, node.schema)
-        }),
+        // @todo readd completion using schemaNode
+        // jsonLanguage.data.of({
+        //     autocomplete: jsonSchemaCompletion(editor.root.schemaNode, node.schema)
+        // }),
         lintGutter(),
-        linter(jsonSchemaLinter(editor, node.schema || {})),
+        linter(jsonSchemaLinter(editor, node.schema)),
         jsonSchemaTooltip(editor, node.pointer)
     ];
 
@@ -140,10 +147,11 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
     const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
     if (options.schema) {
         extensions.push(
-            tooltip,
-            jsonLanguage.data.of({
-                autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
-            })
+            tooltip
+            // @todo readd completion using schemaNode
+            // jsonLanguage.data.of({
+            //     autocomplete: jsonSchemaCompletion(editor.draft, options.schema)
+            // })
         );
     }
 
