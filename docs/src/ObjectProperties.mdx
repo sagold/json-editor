@@ -1,28 +1,32 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import * as ObjectProperties from './ObjectProperties.stories';
 import { Markdown } from '@storybook/blocks';
+import { Tabs } from './components/Tabs';
 
 <Meta title="ObjectProperties" />
 
 # Object Properties
 
-> _json-schema_ has a set of definitions for object properties. This section details how those definitions transfer to a user interface build with _@sagold/react-json-editor_ and its default widgets.
+> This section details how _JSON Schema_ object keywords transfer to a user interface build with
+> `@sagold/react-json-editor` and `@sagold/rje-mantine-widgets`.
 
 Validation of data is fully supported, the following list tracks support of the user interface:
 
 <Markdown>
   {`
-| Status | Feature                                        | Comments                                                                  |
-| :----: | :--------------------------------------------- | :------------------------------------------------------------------------ |
-|   ✅   | [properties](#properties)                      |
-|   ✅   | [required](#required-properties)               | per default, only required properties will be added                       |
-|   ❎   | [additionalProperties](#additional-properties) | actions to add additional properties are not available                    |
-|   ✅   | [oneOf](#one-of)                               |
-|   ✅   | [allOf](#all-of)                               | subschema are merged to single schema. Validation treats schemas separate |
-|   ✅   | [dependencies](#dependencies)                  | subschema are merged to single schema. Validation treats schemas separate |
-|   ✅   | [if-then-else](#if-then-else)                  | subschema are merged to single schema. Validation treats schemas separate |
-|   ❌   | patternProperties                              | not yet supported                                                         |
-|   ❌   | anyOf                                          | not yet supported                                                         |
+| Status | Feature                                        | Draft       | Comments |
+| :----: | :--------------------------------------------- | :-----------| :------- |
+|   ❎   | [additionalProperties](#additional-properties) | *           | actions to add additional properties are not available |
+|   ✅   | [allOf](#all-of)                               | *           | Merged SubSchemas. Individual validation |
+|   ✅   | [dependencies](#dependencies)                  | <=2019-09  | Merged SubSchemas. Individual validation |
+|   ✅   | [dependentRequired](#dependencies)             | >=2020-12  | list of required schemas that depend on an available property |
+|   ✅   | [dependentSchemas](#dependencies)              | >=2020-12  | dependent schemas based on availability of a property |
+|   ✅   | [if-then-else](#if-then-else)                  | >=draft-07 | Merged SubSchemas. Individual validation |
+|   ✅   | [oneOf](#one-of)                               | *           ||
+|   ✅   | [properties](#properties)                      | *           ||
+|   ✅   | [required](#required-properties)               | *           | per default, only required properties will be added |
+|   ❌   | patternProperties                              | *           | not yet supported |
+|   ❌   | anyOf                                          | *           | not yet supported |
 `}
 </Markdown>
 
@@ -30,47 +34,74 @@ Validation of data is fully supported, the following list tracks support of the 
 
 Per default, missing properties will only be added when they are required. Optional properties having a schema definition can be added dynamically:
 
-<Canvas className="inline" of={ObjectProperties.OptionalProperties} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.OptionalProperties} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.OptionalPropertiesDraft2019} />
+</Tabs>
 
 Optional properties containing data from input will be added automatically:
 
-<Canvas className="inline" of={ObjectProperties.InitialOptionalProperty} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.InitialOptionalProperty} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.InitialOptionalPropertyDraft2019} />
+</Tabs>
 
 You can change this behaviour to add optional properties initially by passing
 
-<Canvas className="inline" of={ObjectProperties.AddOptionalProps} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AddOptionalProps} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AddOptionalPropsDraft2019} />
+</Tabs>
 
 ## Required Properties
 
 With a property set as required, it will always be available in the form:
 
-<Canvas className="inline" of={ObjectProperties.RequiredProperties} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.RequiredProperties} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.RequiredPropertiesDraft2019} />
+</Tabs>
 
 ## Additional Properties
 
 Additional properties that are not defined within json-schema will be shown by default and may be removed:
 
-<Canvas className="inline" of={ObjectProperties.AdditionalProperties} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AdditionalProperties} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AdditionalPropertiesDraft2019} />
+</Tabs>
 
 If you set additionalProperties to false, any additional data will be removed from user form and exported data:
 
-<Canvas className="inline" of={ObjectProperties.AdditionalPropertiesFalse} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AdditionalPropertiesFalse} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AdditionalPropertiesFalseDraft2019} />
+</Tabs>
 
 Using additionalProperties with a json-schema, will apply this schema to any unknown property:
 
-<Canvas className="inline" of={ObjectProperties.AdditionalPropertiesSchema} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AdditionalPropertiesSchema} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AdditionalPropertiesSchemaDraft2019} />
+</Tabs>
 
 > _Note_ Currently no user interface is offered to add additional data. You can enable the `showEditJsonAction` option to allow users to add additional properties as json or you can create a custom object widget that supports this.
 
 Example Object with **editJson** option
 
-<Canvas className="inline" of={ObjectProperties.EditJson} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.EditJson} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.EditJsonDraft2019} />
+</Tabs>
 
 ## One Of
 
 json-schema containing an oneOf statement will show a selection to choose the sub schema:
 
-<Canvas className="inline" of={ObjectProperties.OneOfObject} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.OneOfObject} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.OneOfObjectDraft2019} />
+</Tabs>
 
 Note that json-schema requires distinguishable json-schema. If there is an undistinguishable schema (same validation results) the user interface will not behave correctly:
 
@@ -86,7 +117,12 @@ Note that json-schema requires distinguishable json-schema. If there is an undis
 ```
 </div>
 
-<Canvas className="inline" of={ObjectProperties.InvalidOneOfObject} />
+Incorrect:
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.InvalidOneOfObject} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.InvalidOneOfObjectDraft2019} />
+</Tabs>
 
 To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique property:
 
@@ -102,11 +138,16 @@ To ensure _oneOf_ schemas can be distinguished it is recommended to add a unique
 ```
 </div>
 
-<Canvas className="inline" of={ObjectProperties.TypedOneOfObject} />
+Correct:
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.TypedOneOfObject} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.TypedOneOfObjectDraft2019} />
+</Tabs>
 
 > _Note_ You can set `{ options: { hidden: true }}` to each property _id_ to hide the control variable from user interface. Still, _id_ will be exported in data.
 
-In case you want a selection to always be associated with the selected schema, identified by an _id_, it his highly recommended tp use the additional flag `oneOfProperty`. This will always select the corresponding schema, regardless of additional validation errors. So for the above example we add
+In case you want a selection to always be associated with the selected schema, identified by an _id_, it his highly recommended to use the additional flag `oneOfProperty`. This will always select the corresponding schema, regardless of additional validation errors. So for the above example we add
 
 <div className="code code--inline">
 ```ts
@@ -117,7 +158,12 @@ In case you want a selection to always be associated with the selected schema, i
 ```
 </div>
 
-<Canvas className="inline" of={ObjectProperties.OneOfProperty} />
+With `oneOfProperty`:
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.OneOfProperty} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.OneOfPropertyDraft2019} />
+</Tabs>
 
 As you can see, the selected schema is always associated with **B** although there are validation errors. This is the expected behaviour.
 
@@ -127,49 +173,82 @@ _allOf_ requires all sub schemas to be valid for the given input. For a user inp
 
 The following example has conflicting validation rules, where the last statement will be applied:
 
-<Canvas className="inline" of={ObjectProperties.AllOf} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AllOf} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AllOfDraft2019} />
+</Tabs>
 
 _allOf_ also supports any json-schema supported by json-editor, e.g. if-then-else statements
 
-<Canvas className="inline" of={ObjectProperties.AllOfIfThen} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.AllOfIfThen} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.AllOfIfThenDraft2019} />
+</Tabs>
 
 ## dependencies
 
-### `dependencies: { prop: [ property ] }`
+### list of required dependencies
 
-Dependencies are not added per default
+`dependentRequired: { prop: [ property ] }` defines schema that are required when the specified property is available.
+Per default, dependencies are not added.
 
-<Canvas className="inline" of={ObjectProperties.DependenciesList} />
+- **Note** prior to _draft-2020-12_ a list of dependencies is defined by `dependencies: { prop: [ property ] }`
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.DependenciesList} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.DependenciesListDraft2019} />
+</Tabs>
 
 Dependencies are added when they are required by another property which has been set (`!== undefined`)
 
-<Canvas className="inline" of={ObjectProperties.DependenciesListActive} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.DependenciesListActive} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.DependenciesListActiveDraft2019} />
+</Tabs>
 
-### `dependencies: { prop: { schema } }`
+### list of dependent schemas
 
-Dependent schemas are not added per default for a missing dependent property
+`dependentSchemas: { prop: { schema} }` defines a schema that is added when the specified property is available.
+Per default, dependent schemas are not added per default for a missing dependent property
 
-<Canvas className="inline" of={ObjectProperties.Dependencies} />
+- **Note** prior to _draft-2020-12_ dependent schemas are defined by `dependencies: { prop: { schema } }`
+
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.Dependencies} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.DependenciesDraft2019} />
+</Tabs>
 
 Dependent schemas are added if the dependent property is set (`!== undefined`)
 
-<Canvas className="inline" of={ObjectProperties.DependenciesActive} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.DependenciesActive} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.DependenciesActiveDraft2019} />
+</Tabs>
 
 ## if-then-else
 
 _if-then_ statement, adding or removing a schema with its data depending on the property of trigger. The following toggle should not show the property per default as the property `addition` is not set as required
 
-<Canvas className="inline" of={ObjectProperties.IfThenElse} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.IfThenElse} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.IfThenElseDraft2019} />
+</Tabs>
 
 Same setup as above, but with property `addition` set as required:
 
-<Canvas className="inline" of={ObjectProperties.IfThenElseActive} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.IfThenElseActive} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.IfThenElseActiveDraft2019} />
+</Tabs>
 
 > If you want to persist the value entered independent of the current visbility, follow the [tutorial](?path=/docs/cookbook-conditionalforms--docs).
 
 _if-then-else_ statement used to switch sub-schemas
 
-<Canvas className="inline" of={ObjectProperties.IfThenElseSwitch} />
+<Tabs>
+  <Canvas tabTitle="draft-2020-12" className="inline" of={ObjectProperties.IfThenElseSwitch} />
+  <Canvas tabTitle="draft-2019-09" className="inline" of={ObjectProperties.IfThenElseSwitchDraft2019} />
+</Tabs>
 
 ## references
 
