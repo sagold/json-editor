@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 import defaultWidgets, { JsonForm, Icon } from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
-import { MantineThemeDecorator } from '../docs/MantineThemeDecorator';
+import { MantineThemeDecorator } from './docs/MantineThemeDecorator';
 import { Button } from '@mantine/core';
 import './rje-code-widgets.scss';
 

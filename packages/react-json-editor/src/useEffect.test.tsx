@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import { StrictMode, useEffect, useRef, useState } from 'react';
 import { render } from '@testing-library/react';
-import { uuid } from '../../../headless-json-editor/src/utils/uuid';
+import { uuid } from 'headless-json-editor';
 
 type Instance = null | { id: string };
 

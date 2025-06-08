@@ -13,22 +13,14 @@ export type PropertyLocationMap = Record<string, PropertyLocation>;
  * returns a map of all jsonpointers found in json and a codemiror location as
  * their value.
  *
- * ```
- * {
- *   version: Location
- *   header: {
- *     $location: Location, // codemirror location of #/header
- *     title: Location
- *   },
- * }
- * ```
- * NO THIS ONE IS BETTER:
+ * ```ts
  * {
  *   "#/header": Location,
  *   "#/header/title": Location,
  *   "#/todos": Location,
  *   "#/todos/0": Location
  * }
+ * ```
  */
 export function buildJsonPointerMap(doc, cursor: TreeCursor, pointer = '#', map: PropertyLocationMap = {}) {
     const nodeType = cursor.node.name;

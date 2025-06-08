@@ -1,12 +1,12 @@
-import { Editor, EditorOptions, setDefaultWidgets } from './lib/Editor';
-import { useEditorPlugin } from './lib/useEditorPlugin';
-import { useEditor, UseEditorOptions } from './lib/useEditor';
-import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './lib/decorators';
-import { Widget, WidgetProps } from './lib/components/widget/Widget';
-import { WidgetDescription, WidgetDescriptionProps } from './lib/components/widget/WidgetDescription';
-import { WidgetError, WidgetErrorProps } from './lib/components/widget/WidgetError';
-import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from './lib/components/widget/WidgetField';
-import { Label } from './lib/components/label/Label';
+import { Editor, EditorOptions, setDefaultWidgets } from './Editor';
+import { useEditorPlugin } from './useEditorPlugin';
+import { useEditor, UseEditorOptions } from './useEditor';
+import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './decorators';
+import { Widget, WidgetProps } from './components/widget/Widget';
+import { WidgetDescription, WidgetDescriptionProps } from './components/widget/WidgetDescription';
+import { WidgetError, WidgetErrorProps } from './components/widget/WidgetError';
+import { WidgetField, WidgetFieldProps, WidgetFieldHeaderProps } from './components/widget/WidgetField';
+import { Label } from './components/label/Label';
 import Markdown from 'markdown-to-jsx';
 // export dependency
 export { Markdown };

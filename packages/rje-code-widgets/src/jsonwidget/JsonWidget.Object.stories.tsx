@@ -1,8 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import defaultWidgets, { JsonForm } from '@sagold/rje-mantine-widgets';
-import { JsonWidget, JsonWidgetPlugin } from './JsonWidget';
-import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
+import { JsonWidgetPlugin } from './JsonWidget';
+import { MantineThemeDecorator } from '../docs/MantineThemeDecorator';
 import '../rje-code-widgets.scss';
 import { JsonSchema } from '@sagold/react-json-editor';
 

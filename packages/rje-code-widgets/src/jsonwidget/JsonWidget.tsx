@@ -84,7 +84,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
             autocomplete: jsonSchemaCompletion(node.schemaNode)
         }),
         lintGutter(),
-        linter(jsonSchemaLinter(editor, node.schema)),
+        linter(jsonSchemaLinter(editor.schemaNode, node.schema)),
         jsonSchemaTooltip(editor, node.pointer)
     ];
 
@@ -144,7 +144,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
     // instance in this case and there would be conflicting instances on the
     // editor state
     const tooltip = useMemo(() => jsonSchemaTooltip(editor, node.pointer, options.schema), []);
-    const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor, options.schema || {}))];
+    const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor.schemaNode, options.schema || {}))];
 
     if (options.schema) {
         const schemaNode = node.schemaNode.compileSchema(options.schema);

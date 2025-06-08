@@ -3,12 +3,23 @@ import { buildJsonPointerMap } from './buildJsonPointerMap';
 import { Diagnostic } from '@codemirror/lint';
 import { JsonSchema } from 'json-schema-library';
 import { EditorView } from '@codemirror/view';
-import { Editor } from '@sagold/react-json-editor';
 import { jsonParseLinter } from '@codemirror/lang-json';
 import { SyntaxNode } from '@lezer/common';
 import { syntaxTree } from '@codemirror/language';
 import { jsonLintPropertyDuplicates } from './jsonLintPropertyDuplicates';
 import { SchemaNode } from 'headless-json-editor';
+
+export function jsonSchemaLinter(rootNode: SchemaNode, schema: JsonSchema) {
+    const localSchemaNode = rootNode.compileSchema(schema);
+    return async function (view: EditorView): Promise<Diagnostic[]> {
+        const jsonLint = jsonParseLinter();
+        const jsonLintResult = jsonLint(view);
+        if (jsonLintResult.length > 0) {
+            return jsonLintResult;
+        }
+        return runJsonSchemaLinter(localSchemaNode, view);
+    };
+}
 
 function getPropertyNameCursor(node: SyntaxNode) {
     if (node.name === 'Property') {
@@ -26,19 +37,6 @@ function getPropertyValueCursor(node: SyntaxNode) {
         return cursor;
     }
     return undefined;
-}
-
-export function jsonSchemaLinter(editor: Editor, schema: JsonSchema) {
-    const localSchemaNode = editor.root.schemaNode.compileSchema(schema);
-
-    return async function (view: EditorView): Promise<Diagnostic[]> {
-        const jsonLint = jsonParseLinter();
-        const jsonLintResult = jsonLint(view);
-        if (jsonLintResult.length > 0) {
-            return jsonLintResult;
-        }
-        return runJsonSchemaLinter(localSchemaNode, view);
-    };
 }
 
 function runJsonSchemaLinter(schemaNode: SchemaNode, view: EditorView): Diagnostic[] {
