@@ -1,11 +1,68 @@
 import { Meta, Canvas } from '@storybook/addon-docs';
 import { JsonForm } from '@sagold/react-json-editor';
 import { NpmPackageName } from '../../../docs/src/NpmPackageName';
+import * as JsonObjectWidget from './jsonwidget/JsonWidget.Object.stories';
+import * as JsonStringWidget from './jsonwidget/JsonWidget.String.stories';
 
 <Meta title="packages/rje-code-widgets/Overview" />
 
 # rje-code-widgets
 
-> additional code-widgets for `@sagold/react-json-editor`
+> Additional code-widgets for `@sagold/react-json-editor` based on CodeMirror
 
 <NpmPackageName name="@sagold/rje-code-widgets" />
+
+`rje-code-widgets` currently offers
+
+- a widget to edit `JSON data` and `JSON strings` and
+- exposes a `createCodeWidgetPlugin`-helper for editor with code syntax-highlights
+
+Usage
+
+```ts
+import { useEditor } from '@sagold/react-json-editor';
+import { JsonWidgetPlugin } from '@sagold/rje-code-widgets';
+
+function MyForm({ schema, data }) {
+  const editor = useEditor({
+    schema,
+    data,
+    widgets: [JsonWidgetPlugin, defaultWidgets]
+  });
+  return (
+    <div className="rje rje-form rje-theme rje-theme--light">
+      <Widget editor={editor} />
+    </div>
+  );
+}
+```
+
+## JsonWidget
+
+### Use code editor for json-schema defined data
+
+```json
+{
+  "type": "object",
+  "format": "json"
+}
+```
+
+<Canvas className="inline" of={JsonObjectWidget.Default} />
+
+### Use code editor for a json-string defined by an optional json-schema
+
+```json
+{
+  "type": "string",
+  "format": "json",
+
+  "options": {
+    "schema": {
+      "type": "object"
+    }
+  }
+}
+```
+
+<Canvas className="inline" of={JsonStringWidget.Default} />

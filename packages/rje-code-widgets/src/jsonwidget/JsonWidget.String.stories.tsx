@@ -9,7 +9,7 @@ import { JsonSchema } from '@sagold/react-json-editor';
 type Story = StoryObj<{ schema: JsonSchema; theme?: string; data?: any }>;
 
 const meta: Meta<{ schema: JsonSchema; theme?: string; data?: any }> = {
-    title: 'packages/rje-code-widgets/JsonWidget/Object',
+    title: 'packages/rje-code-widgets/JsonWidget/String',
     // component: JsonWidget,
     argTypes: {
         theme: {
@@ -42,33 +42,36 @@ export default meta;
 
 export const Default: Story = {
     args: {
+        data: '{ "string": "string value", "number": 123, "object": {} }',
         schema: {
-            title: 'JsonWidget to edit data based on schema it is defined on',
+            title: 'JsonWidget to edit json-string',
             description: '',
-            type: 'object',
+            type: 'string',
             format: 'json',
             options: {
-                theme: 'dark'
-            },
-            required: ['string', 'number', 'object'],
-            properties: {
-                string: {
-                    type: 'string',
-                    title: 'a string value'
-                },
-                number: {
-                    type: 'number',
-                    title: 'a number value',
-                    description:
-                        'if this value is a string, it will get converted as number or not stored at all - but still being displayed'
-                },
-                object: {
+                schema: {
                     type: 'object',
-                    title: 'an object with required title and subTitle',
-                    required: ['title'],
+                    required: ['string', 'number', 'object'],
                     properties: {
-                        title: { type: 'string' },
-                        subTitle: { type: 'string' }
+                        string: {
+                            type: 'string',
+                            title: 'a string value'
+                        },
+                        number: {
+                            type: 'number',
+                            title: 'a number value',
+                            description:
+                                'if this value is a string, it will get converted as number or not stored at all - but still being displayed'
+                        },
+                        object: {
+                            type: 'object',
+                            title: 'an object with required title and subTitle',
+                            required: ['title'],
+                            properties: {
+                                title: { type: 'string' },
+                                subTitle: { type: 'string' }
+                            }
+                        }
                     }
                 }
             }
