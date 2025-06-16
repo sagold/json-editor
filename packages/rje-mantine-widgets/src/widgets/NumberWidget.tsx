@@ -20,7 +20,7 @@ export type NumberOptions = DefaultNodeOptions<{
 const getValueFromEvent = (v: string) => +v;
 
 export const NumberWidget = widget<NumberNode<NumberOptions>, number>(({ node, options, setValue }) => {
-    const onUpdateProps = useLiveUpdate<number>(node.value ?? 0, setValue, getValueFromEvent, options.liveUpdate);
+    const onUpdateProps = useLiveUpdate<number>(+(node.value ?? 0), setValue, getValueFromEvent, options.liveUpdate);
     const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
     return (
         <WidgetField widgetType="string" node={node} options={options} showDescription={false} showError={false}>
