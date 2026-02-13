@@ -15,7 +15,7 @@ function DateWidgetStory({ data = '', schema, ...options }: DateWidgetStoryProps
     return (
         <>
             <DateWidget node={editor.getNode()} editor={editor} options={options} />
-            <code style={{ paddingTop: 8, display: 'block' }}>{editor.getData()}</code>
+            <code style={{ paddingTop: 8, display: 'block' }}>{editor.getData() as any}</code>
         </>
     );
 }

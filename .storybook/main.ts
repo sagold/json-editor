@@ -1,6 +1,14 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+import type { StorybookConfig } from '@storybook/react-webpack5';
 import path, { dirname, join } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
+
+const config: StorybookConfig = {
     stories: [
         '../docs/src/Introduction.mdx',
         '../docs/src/**/*.mdx',
@@ -34,6 +42,7 @@ module.exports = {
     }),
 
     webpackFinal: async (config, { configType }) => {
+        config.resolve = config.resolve ?? {};
         config.resolve.alias = {
             ...(config.resolve.alias ?? {}),
             '@sagold/react-json-editor': getPackagePath('react-json-editor', 'src'),
@@ -42,6 +51,8 @@ module.exports = {
             '@sagold/rje-mantine-widgets': getPackagePath('rje-mantine-widgets', 'src')
         };
 
+        config.module = config.module ?? {};
+        config.module.rules = config.module.rules ?? [];
         config.module.rules.push({
             test: /\.scss$/,
             use: [
@@ -90,3 +101,5 @@ function getPackagePath(...folders) {
 function getAbsolutePath(value) {
     return dirname(require.resolve(join(value, 'package.json')));
 }
+
+export default config;

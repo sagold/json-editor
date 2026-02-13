@@ -76,6 +76,10 @@ export function getOptions(schema: JsonSchema, property: string) {
     return options;
 }
 
+/**
+ * Returns a ValueNode for the given primitive value type
+ * (excludes object and array)
+ */
 function getValueNodeProps<T extends NodeType, V>(
     type: T,
     schemaNode: SchemaNode,
@@ -86,6 +90,9 @@ function getValueNodeProps<T extends NodeType, V>(
     const errors: JsonError[] = [];
     let { node: sN, error } = schemaNode.reduceNode(value);
     if (sN == null) {
+        // Note: this function creates a node for a primitive value
+        // Note: type of node is identified by value
+
         // input value to reduceNode was wrong and resolving a valid node failed @see error
         // in the current case thats a oneOf: [{}] schema but a number is given as input
         // for now, we ignore the value and prefer to render the (proabably) correct json-schema
@@ -299,10 +306,13 @@ export function _createNode<T extends Node = Node>(
 ): T {
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
 
-    // 03/12/24 we now resolve the type defined by the json-schema instead of the data-type
+    // 03/12/24 we now resolve the type defined by json-schema instead of from data-type
     // - this ensures the form is generated
     // - @attention this drops invalid data
     const schemaType = schemaNode.schema.type as keyof typeof NODES;
+    // Note: when no type is specified, data type is used
+    // => for schema like { oneOf: [] }, data-type is used
+    // @TODO: ADD sane behaviour here
     let resolvedType: keyof typeof NODES = NODES[schemaType] ? schemaType : dataType;
     if (Array.isArray(schemaType)) {
         resolvedType = (schemaType.includes(dataType) ? dataType : schemaType[0]) as keyof typeof NODES;

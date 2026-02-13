@@ -12,9 +12,9 @@
     },
     "dependencies": {
         "@sagold/json-pointer": "^7.2.1",
-        "@types/uuid": "^9.0.8",
-        "fast-equals": "^5.0.1",
-        "json-schema-library": "git@github.com:sagold/json-schema-library.git#next",
-        "short-unique-id": "^5.2.0"
+        "@types/uuid": "^10.0.0",
+        "fast-equals": "^6.0.0",
+        "json-schema-library": "^11.0.0",
+        "short-unique-id": "^5.3.2"
     }
 }

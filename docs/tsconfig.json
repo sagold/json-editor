@@ -8,6 +8,7 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "moduleResolution": "bundler",
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": false,
         "noImplicitReturns": true,

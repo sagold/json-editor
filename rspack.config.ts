@@ -1,8 +1,13 @@
-import path from 'path';
-import fs from 'fs';
+import path, { dirname as dir } from 'node:path';
+import fs from 'node:fs';
 import TerserPlugin from 'terser-webpack-plugin';
 import type { Configuration } from '@rspack/cli';
 import { rspack } from '@rspack/core';
+import { fileURLToPath } from 'node:url';
+import sassEmbedded from 'sass-embedded';
+
+// @ts-ignore
+const __dirname = dir(fileURLToPath(import.meta.url));
 
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const PACKAGE_NAME = process.env.PACKAGE_NAME as string;
@@ -79,7 +84,7 @@ const config: Configuration = {
                             // using `modern-compiler` and `sass-embedded` together significantly improve build performance,
                             // requires `sass-loader >= 14.2.1`
                             api: 'modern-compiler',
-                            implementation: require.resolve('sass-embedded')
+                            implementation: sassEmbedded
                         }
                     }
                 ],
