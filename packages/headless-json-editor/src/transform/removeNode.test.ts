@@ -51,6 +51,44 @@ describe('removeNode', () => {
             assert.equal(beforeString, JSON.stringify(before), 'should not have modified previous state');
             assertUnlinkedNodes(before, after, '/list/2');
         });
+
+        describe('options', () => {
+            it('should update option canAddItem on removing item', () => {
+                const schemaNode = compileSchema({
+                    $schema: 'draft-2020-12',
+                    type: 'array',
+                    prefixItems: [],
+                    minItems: 1,
+                    maxItems: 2
+                });
+                const before = createNode(schemaNode, [1, 2]);
+                assert.equal(before.options.canAddItem, false);
+
+                const [after] = removeNode(before, '/1');
+
+                assert(after.type !== 'error');
+                assert.deepEqual(getData(after), [1]);
+                assert.equal(after.options.canAddItem, true);
+            });
+
+            it('should update option canRemoveItem on removing item', () => {
+                const schemaNode = compileSchema({
+                    $schema: 'draft-2020-12',
+                    type: 'array',
+                    prefixItems: [],
+                    minItems: 1,
+                    maxItems: 2
+                });
+                const before = createNode(schemaNode, [1, 2]);
+                assert.equal(before.options.canRemoveItem, true);
+
+                const [after] = removeNode(before, '/1');
+
+                assert(after.type !== 'error');
+                assert.deepEqual(getData(after), [1]);
+                assert.equal(after.options.canRemoveItem, false);
+            });
+        });
     });
 
     describe('object', () => {

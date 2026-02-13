@@ -93,7 +93,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 disabled={options.readOnly || options.disabled}
                 onClick={() => {
                     const insertOptions = editor.getArrayAddOptions(node);
-                    if (insertOptions[0]) {
+                    if (insertOptions?.[0]?.schema) {
                         editor.appendItem(node, insertOptions[0].schema);
                     }
                 }}
@@ -121,8 +121,13 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
             onClick={() => contentToggle.toggle()}
         />
     );
-    const { isAddEnabled } = getActionStates(node);
-    const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, isAddEnabled);
+
+    if (options.canAddItem == null) {
+        throw new Error('canAddItem is null');
+    }
+
+    const canAddItem = options.canAddItem!;
+    const widgetMenuItems = getArrayHeaderMenu(editor, node, options, insertOptions, jsonModal, canAddItem);
     // const rightSection = options.showHeaderMenu !== false
     const widgetHeader = WidgetParentHeader.isEmpty(options, widgetMenuItems) ? undefined : (
         <WidgetParentHeader
@@ -179,7 +184,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                 </Collapse>
             </WidgetInputWrapper>
 
-            {contentOpened && isAddEnabled && options.readOnly !== true && (
+            {contentOpened && canAddItem && options.readOnly !== true && (
                 <Flex className="rje-array__inline-add" justify={'center'} align={'center'}>
                     {options.showInlineAddAction !== false && addAction}
                 </Flex>
@@ -196,20 +201,6 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         </WidgetField>
     );
 });
-
-// copy of rje-aria-widgets -- maybe rje utility?
-function getActionStates(node: ArrayNode) {
-    const minItems = node.schema.minItems || 0;
-    let isAddEnabled = node.schema.maxItems == null ? true : node.children.length < node.schema.maxItems;
-    if (
-        Array.isArray(node.schemaNode.prefixItems) &&
-        // @todo draft-version specific test for additionalItems <> items
-        (node.schema.additionalItems === false || node.schema.items === false || node.schemaNode.items == null)
-    ) {
-        isAddEnabled = node.children.length < node.schemaNode.prefixItems.length;
-    }
-    return { isAddEnabled, isDeleteEnabled: minItems < node.children.length };
-}
 
 /**
  * @returns list of array actions to be placed in menu
@@ -272,7 +263,11 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
         return [];
     }
 
-    const { isDeleteEnabled } = getActionStates(parentNode);
+    if (options.canRemoveItem == null) {
+        throw new Error('canRemoveItems is null');
+    }
+
+    const canRemoveItems = options.canRemoveItem;
     const menuItems: WidgetMenuItems = [
         {
             label: 'move up',
@@ -292,7 +287,7 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
             label: 'delete item',
             icon: 'delete',
             color: 'red',
-            disabled: !isDeleteEnabled || options.readOnly || options.disabled,
+            disabled: !canRemoveItems || options.readOnly || options.disabled,
             onClick: () => editor.removeValue(child.pointer)
         }
     ];
@@ -301,6 +296,6 @@ function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, op
 
 export const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
     id: 'array-widget',
-    use: (node) => node.schema.type === 'array',
+    use: (node) => node.type === 'array',
     Widget: ArrayWidget
 };

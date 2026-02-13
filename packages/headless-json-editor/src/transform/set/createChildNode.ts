@@ -2,6 +2,7 @@ import { isJsonError, ParentNode, Change, isNode } from '../../types';
 import { _createNode } from '../../node/createNode';
 import { getSchemaOfChild } from './getSchemaOfChild';
 import { getData } from '../../node/getData';
+import { updateOptions } from '../../node/options';
 
 function isNumber(value: string) {
     return `${parseInt(value)}` === value;
@@ -54,6 +55,8 @@ export function createChildNode(node: ParentNode, property: string, value: unkno
     } else {
         node.children[childIndex] = newNode;
     }
+
+    updateOptions(node);
 
     return changeSet;
 }

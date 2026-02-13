@@ -45,6 +45,11 @@ export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<
     readOnly?: boolean;
     /** flag data as required (visual only) */
     required?: boolean;
+
+    /** arrays only: if an item may be added without causing a validation error */
+    canAddItem?: boolean;
+    /** arrays only: if an item may be removed without causing a validation error */
+    canRemoveItem?: boolean;
 } & Options;
 
 type CreateNode = (schemaNode: SchemaNode, data: any, pointer: JsonPointer, isArrayItem: boolean) => Node;
@@ -162,10 +167,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             isArrayItem,
             schema,
             schemaNode: arraySchemaNode,
-            options: {
-                ...getOptions(schema, property),
-                required: schema.minItems != null && schema.minItems > 0
-            },
+            options: getOptions(schema, property),
             children: [],
             errors: []
         };
@@ -173,14 +175,18 @@ export const NODES: Record<NodeType, CreateNode> = {
         data.forEach((next, key) => {
             // Create a new node for each child, storing the reduced schema as schema and the unreduced schema in sourceNode
             const { node: itemSN } = arraySchemaNode.getNodeChild(key, data, { pointer, path, createSchema: true });
+
             if (itemSN) {
                 // note: parent node got reduced, not itemSchemaNode
                 // note: maybe tracking sourceSchema is no longer necessary (jlib = 10)
                 const itemNode = _createNode(itemSN, next, `${pointer}/${key}`, true);
                 node.children.push(itemNode);
+            } else {
+                throw new Error('failed creating array child node schema');
             }
         });
 
+        updateOptions(node, data); // update dynamic array options
         return node;
     },
     /**
@@ -198,6 +204,7 @@ export const NODES: Record<NodeType, CreateNode> = {
                 // @opnionated: if a json-schema could not be resolved, fallback to the first schema available
                 // @todo: inform user/dev about this behaviour
                 resolvedObjectSN = objectSN.oneOf?.[0] ?? objectSN;
+                resolvedObjectSN = resolvedObjectSN.resolveRef?.() ?? resolvedObjectSN;
             } else if (reduceResult.error) {
                 const validData = objectSN.getData(data);
                 const secondSN = objectSN.reduceNode(validData);
@@ -209,7 +216,7 @@ export const NODES: Record<NodeType, CreateNode> = {
             }
         }
 
-        const resolvedData = resolvedObjectSN.getData(data);
+        const resolvedData = resolvedObjectSN.getData(data) as Record<string, unknown>;
         const property = getPropertyName(pointer);
 
         const node: ObjectNode = {
@@ -232,7 +239,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
             const childPointer = `${pointer}/${key}`;
-            const { node: nextSN } = objectSN.getNodeChild(key, resolvedData, {
+            let { node: nextSN, error } = objectSN.getNodeChild(key, resolvedData, {
                 createSchema: true,
                 pointer: childPointer,
                 path
@@ -241,6 +248,19 @@ export const NODES: Record<NodeType, CreateNode> = {
                 // @note if !isSchemaNode the property in data is ignored, we cleanup later
                 const propertyNode = _createNode(nextSN, resolvedData[key], childPointer);
                 node.children.push(propertyNode);
+            } else {
+                console.log(
+                    'failed resolving property',
+                    childPointer,
+                    error,
+                    '\n key:',
+                    key,
+                    '\n resolvedData:',
+                    resolvedData,
+                    '\n parent schema:',
+                    objectSN.schema
+                );
+                // throw new Error('TODO proper treatment of this case??');
             }
             // @todo what to do with error?
         });
@@ -287,6 +307,7 @@ export function _createNode<T extends Node = Node>(
     if (Array.isArray(schemaType)) {
         resolvedType = (schemaType.includes(dataType) ? dataType : schemaType[0]) as keyof typeof NODES;
     }
+
     if (NODES[resolvedType]) {
         if (data instanceof File) {
             return NODES.file(schemaNode, data, pointer, isArrayItem) as T;

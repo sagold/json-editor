@@ -82,6 +82,76 @@ describe('createNode', () => {
         assert.equal(root.type, 'object');
     });
 
+    describe('option', () => {
+        describe('canAddItem (array)', () => {
+            it('should set canAddItem:true for undefined arrays', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12' }), []);
+                assert.equal(root.options.canAddItem, true);
+            });
+            it('should set canAddItem:true for undefined arrays (2019)', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2019-09' }), []);
+                assert.equal(root.options.canAddItem, true);
+            });
+            it('should set canAddItem:true for default arrays', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12', prefixItems: [] }), []);
+                assert.equal(root.options.canAddItem, true);
+            });
+            it('should set canAddItem:true for default arrays (2019)', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2019-09', items: [] }), []);
+                assert.equal(root.options.canAddItem, true);
+            });
+            it('should set canAddItem:false if items-list is set and no additional items', () => {
+                const root = createNode(
+                    compileSchema({ $schema: 'draft-2020-12', prefixItems: [true], items: false }),
+                    [1]
+                );
+                assert.equal(root.options.canAddItem, false);
+            });
+            it('should set canAddItem:false if items-list is set and no additional items (2019)', () => {
+                const root = createNode(
+                    compileSchema({ $schema: 'draft-2019-09', items: [true], additionalItems: false }),
+                    [1]
+                );
+                assert.equal(root.options.canAddItem, false);
+            });
+            it('should set canAddItem:true for array below maxItems', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12', maxItems: 2 }), [1]);
+                assert.equal(root.options.canAddItem, true);
+            });
+            it('should set canAddItem:false for array above maxItems', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12', maxItems: 2 }), [1, 2]);
+                assert.equal(root.options.canAddItem, false);
+            });
+        });
+
+        describe('canRemoveItem (array)', () => {
+            it('should set canRemoveItem:false for array not having array items', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12' }), []);
+                assert.equal(root.options.canRemoveItem, false);
+            });
+            it('should set canRemoveItem:false for array not having array items (2019)', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2019-09' }), []);
+                assert.equal(root.options.canRemoveItem, false);
+            });
+            it('should set canRemoveItem:true for arrays containing items', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12' }), [1]);
+                assert.equal(root.options.canRemoveItem, true);
+            });
+            it('should set canRemoveItem:true for arrays containing items (2019)', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2019-09' }), [1]);
+                assert.equal(root.options.canRemoveItem, true);
+            });
+            it('should set canRemoveItem:false for array below minItems', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12', minItems: 1 }), [1]);
+                assert.equal(root.options.canRemoveItem, false);
+            });
+            it('should set canRemoveItem:true for array above minItems', () => {
+                const root = createNode(compileSchema({ $schema: 'draft-2020-12', minItems: 1 }), [1, 2]);
+                assert.equal(root.options.canRemoveItem, true);
+            });
+        });
+    });
+
     describe('object errors', () => {
         it.skip('should return an error node for undefined and invalid data', () => {
             const node = compileSchema({
@@ -625,6 +695,63 @@ describe('createNode', () => {
                 }
             });
             assert.deepEqual(getData(root), { number: 12 });
+        });
+
+        describe('array', () => {
+            it('should create item node with first schema', () => {
+                const node = compileSchema({
+                    type: 'array',
+                    items: {
+                        oneOf: [
+                            {
+                                required: ['one'],
+                                properties: {
+                                    one: { type: 'string', $id: 'one' }
+                                }
+                            },
+                            {
+                                required: ['two'],
+                                properties: {
+                                    two: { type: 'number', $id: 'two' }
+                                }
+                            }
+                        ]
+                    }
+                });
+                const root = createNode(node, [{ $id: 'one', one: 'title' }]);
+                assert(root.type === 'array');
+                assert.equal(root.children.length, 1);
+            });
+
+            it('should create all item nodes with correct oneOf-schema', () => {
+                const node = compileSchema({
+                    type: 'array',
+                    items: {
+                        oneOf: [
+                            {
+                                required: ['one'],
+                                properties: {
+                                    one: { type: 'string', $id: 'one' }
+                                }
+                            },
+                            {
+                                required: ['two'],
+                                properties: {
+                                    two: { type: 'number', $id: 'two' }
+                                }
+                            }
+                        ]
+                    }
+                });
+                const root = createNode(node, [
+                    { $id: 'one', one: 'first' },
+                    { $id: 'two', two: 2 }
+                ]);
+                assert(root.type === 'array');
+                assert.equal(root.children.length, 2);
+                assert.equal(root.children[0].oneOfIndex, 0);
+                assert.equal(root.children[1].oneOfIndex, 1);
+            });
         });
     });
 

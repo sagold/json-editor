@@ -323,6 +323,45 @@ describe('setValue', () => {
             assert(changes);
             assert.deepEqual(changes[0], { type: 'update', node: getNode(after, '/list') });
         });
+
+        describe('options', () => {
+            it('should update option canAddItem on adding item', () => {
+                const schemaNode = compileSchema({
+                    $schema: 'draft-2020-12',
+                    type: 'array',
+                    prefixItems: [],
+                    minItems: 1,
+                    maxItems: 2
+                });
+
+                const before = createNode(schemaNode, [1]) as ArrayNode;
+                assert.equal(before.options.canAddItem, true);
+
+                const [after] = setValue(before, '/1', 'b');
+                assert(after.type !== 'error');
+                assert.deepEqual(getData(after), [1, 'b']);
+
+                assert.equal(after.options.canAddItem, false);
+            });
+
+            it('should update option canRemoveItem on adding item', () => {
+                const schemaNode = compileSchema({
+                    $schema: 'draft-2020-12',
+                    type: 'array',
+                    prefixItems: [],
+                    minItems: 1,
+                    maxItems: 2
+                });
+                const before = createNode(schemaNode, [1]) as ArrayNode;
+                assert.equal(before.options.canRemoveItem, false);
+
+                const [after] = setValue(before, '/1', 'b');
+                assert(after.type !== 'error');
+                assert.deepEqual(getData(after), [1, 'b']);
+
+                assert.equal(after.options.canRemoveItem, true);
+            });
+        });
     });
 
     describe('unknown data', () => {

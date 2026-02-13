@@ -6,6 +6,7 @@ import { split } from '@sagold/json-pointer';
 import { unlinkPath } from './unlinkPath';
 import { getData } from '../node/getData';
 import { updateOptionalPropertyList } from '../node/createNode';
+import { updateOptions } from '../node/options';
 
 export function removeNode<T extends Node = Node>(previousRoot: T, pointer: JsonPointer): [JsonError] | [T, Change[]] {
     const frags = split(pointer);
@@ -37,6 +38,8 @@ export function removeNode<T extends Node = Node>(previousRoot: T, pointer: Json
 
     parentNode.children = [...parentNode.children];
     parentNode.children.splice(removeNodeIndex, 1);
+
+    updateOptions(parentNode, parentNode.children); // update array options based on array-length
 
     if (parentNode.type === 'array') {
         for (let i = removeNodeIndex, l = parentNode.children.length; i < l; i += 1) {
