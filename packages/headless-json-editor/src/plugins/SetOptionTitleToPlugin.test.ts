@@ -35,9 +35,9 @@ describe('SetOptionTitleToPlugin', () => {
         });
 
         editor.setValue('#/selection', '2');
-        assert.equal(editor.getData().title, 'Two');
+        assert.equal((editor.getData() as any).title, 'Two');
 
         editor.setValue('#/selection', '1');
-        assert.equal(editor.getData().title, 'One');
+        assert.equal((editor.getData() as any).title, 'One');
     });
 });

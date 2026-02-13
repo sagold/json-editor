@@ -125,7 +125,7 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
                     onChange={(e) => setInternalValue(e.currentTarget.value)}
                     onBlur={() => {
                         try {
-                            const data = editor.getTemplateData(node.schema, JSON.parse(internalValue));
+                            const data = editor.getTemplateData(node.schema, JSON.parse(internalValue)) as string;
                             setInternalValue(JSON.stringify(data, null, 2));
                             setValue(data);
                             setError(undefined);

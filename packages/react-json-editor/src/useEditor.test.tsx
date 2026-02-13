@@ -156,7 +156,7 @@ describe('useEditor', () => {
 
         const editorAfter = result.current;
         assert(editorAfter);
-        assert.equal(editorAfter.getData().title, 'X');
+        assert.equal((editorAfter.getData() as any).title, 'X');
         assert.equal(editorBefore.getErrors().length, 1);
         assert(editorBefore === editorAfter);
     });

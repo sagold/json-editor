@@ -60,21 +60,21 @@ describe('HeadlessEditor', () => {
 
         it('should keep file-instance in create', () => {
             const editor = new HeadlessEditor({ schema, data: { file } });
-            const data = editor.getData();
+            const data = editor.getData() as any;
             assert.equal(data.file, file);
         });
 
         it('should keep file-instance on setData', () => {
             const editor = new HeadlessEditor({ schema, data: {} });
             editor.setData({ file });
-            const data = editor.getData();
+            const data = editor.getData() as any;
             assert.equal(data.file, file);
         });
 
         it('should keep file-instance on setValue', () => {
             const editor = new HeadlessEditor({ schema, data: {} });
             editor.setValue('/file', file);
-            const data = editor.getData();
+            const data = editor.getData() as any;
             assert.equal(data.file, file);
         });
 
@@ -84,7 +84,7 @@ describe('HeadlessEditor', () => {
                 type: 'object',
                 properties: { title: { type: 'string' }, file: { type: ['string', 'object'], format: 'file' } }
             });
-            const data = editor.getData();
+            const data = editor.getData() as any;
             assert.equal(data.file, file);
         });
 
@@ -92,7 +92,7 @@ describe('HeadlessEditor', () => {
             const editor = new HeadlessEditor({ schema, data: { file } });
             const newFile = new File([], 'new-testfile.pdf');
             editor.setValue('/file', newFile);
-            const data = editor.getData();
+            const data = editor.getData() as any;
             assert.equal(data.file, newFile);
         });
     });
@@ -142,7 +142,11 @@ describe('HeadlessEditor', () => {
 
             editor.setValue('#/title', 'still-valid');
 
-            assert.equal(editor.getData().title, 'X', 'Test-plugin should have changed title');
+            assert.equal(
+                (editor.getData() as Record<string, unknown>).title,
+                'X',
+                'Test-plugin should have changed title'
+            );
             assert.equal(editor.getErrors().length, 1);
         });
     });

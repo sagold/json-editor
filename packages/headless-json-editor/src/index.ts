@@ -35,7 +35,7 @@ export type {
     Draft,
     DraftVersion,
     ErrorConfig,
-    ErrorData,
+    AnnotationData,
     GetNodeOptions,
     JsonError,
     JsonSchemaReducer,

@@ -75,14 +75,13 @@ describe('validate', () => {
                 type: 'error',
                 code: 'async-error',
                 message: 'an async error',
-                name: 'AsyncError',
                 data: {
                     pointer: pointer ?? '',
                     schema: node.schema,
                     value: data
                 }
             };
-            return error;
+            return [error];
         };
 
         beforeEach(() => {

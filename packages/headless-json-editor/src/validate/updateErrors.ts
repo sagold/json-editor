@@ -1,4 +1,4 @@
-import { JsonError } from 'json-schema-library';
+import { JsonError, isJsonError, sanitizeErrors } from 'json-schema-library';
 import { Node, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
@@ -36,16 +36,16 @@ export async function updateErrors(node: Node) {
     });
 
     if (errorsAsync.length > 0) {
-        const errors = await Promise.all(errorsAsync);
+        const errors = await Promise.all(errorsAsync).then(sanitizeErrors);
         return errors.filter((err) => {
-            if (err) {
-                const pointer = err.data?.pointer ?? '#';
-                // schema may change
-                pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
-                pointerToErrors[pointer].push(err);
-                return true;
+            if (!isJsonError(err)) {
+                return false;
             }
-            return false;
+            const pointer = err.data?.pointer ?? '#';
+            // schema may change
+            pointerToErrors[pointer] = pointerToErrors[pointer] ?? [];
+            pointerToErrors[pointer].push(err);
+            return true;
         });
     }
 

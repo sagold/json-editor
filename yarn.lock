@@ -2235,10 +2235,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/json-pointer@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@sagold/json-pointer@npm:7.0.0"
-  checksum: d615d09c5b21a32609c4c7ec5749e7a6c5016c3238dfa4901fc95fb9a0d69903937e6eee64f029db0bc5b025a3b42bd653e8e0cacdd8757f7e74aa48dc7aec3c
+"@sagold/json-pointer@npm:^7.2.1":
+  version: 7.2.1
+  resolution: "@sagold/json-pointer@npm:7.2.1"
+  checksum: 06276df416a81dd17631f32f3ba98a476a0623d22f8baed10cb09ebb45b01ff5511e086f005b5582b8d59357265316a1b2f23a6d9d07ff66a705baaef068b588
   languageName: node
   linkType: hard
 
@@ -6870,10 +6870,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-copy@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "fast-copy@npm:3.0.2"
-  checksum: 47f584bcede08ab3198559d3e0e093a547d567715b86be2198da6e3366c3c73eed550d97b86f9fb90dae179982b89c15d68187def960f522cdce14bacdfc6184
+"fast-copy@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "fast-copy@npm:4.0.2"
+  checksum: e023f3b661ee6aa2f112e92149bf417e1ce14a1faca595351a789c51f9ce44ca4117a1d82a7a88cc065392747341bc19d21d0cd5b1ab6bc88f7da751992c5ec6
   languageName: node
   linkType: hard
 
@@ -7745,10 +7745,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
-    "@sagold/json-pointer": ^7.0.0
+    "@sagold/json-pointer": ^7.2.1
     "@types/uuid": ^9.0.8
     fast-equals: ^5.0.1
-    json-schema-library: v10.1.0
+    json-schema-library: "git@github.com:sagold/json-schema-library.git#next"
     short-unique-id: ^5.2.0
   languageName: unknown
   linkType: soft
@@ -9919,18 +9919,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:v10.1.0":
-  version: 10.1.0
-  resolution: "json-schema-library@npm:10.1.0"
+"json-schema-library@git@github.com:sagold/json-schema-library.git#next":
+  version: 10.5.3
+  resolution: "json-schema-library@git@github.com:sagold/json-schema-library.git#commit=55310d54c0fb7da17394fc8e32f0f2b9e5451aa4"
   dependencies:
-    "@sagold/json-pointer": ^7.0.0
+    "@sagold/json-pointer": ^7.2.1
     "@sagold/json-query": ^6.2.0
     deepmerge: ^4.3.1
-    fast-copy: ^3.0.2
+    fast-copy: ^4.0.2
     fast-deep-equal: ^3.1.3
-    smtp-address-parser: 1.0.10
+    lodash: ^4.17.23
+    smtp-address-parser: ^1.1.0
+    uri-js: ^4.4.1
     valid-url: ^1.0.9
-  checksum: eff4670c80573c8a270b5e633b5d1c01b7d24054de8645f3611d085752d803bb58b516c0f28307f045ba9bbb3cbe252be849bcbe5484b5da42769489e9cd928d
+  checksum: 0311167c4dc65bc303086f2ff0ab6b14bd23663b280c49fe6c19cd773df459d16508192a3e24808efd5f4f308bd1fbde7fc43e9c5a3aa9a2e943642dc66fef24
   languageName: node
   linkType: hard
 
@@ -10109,6 +10111,13 @@ __metadata:
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.23":
+  version: 4.17.23
+  resolution: "lodash@npm:4.17.23"
+  checksum: 7daad39758a72872e94651630fbb54ba76868f904211089721a64516ce865506a759d9ad3d8ff22a2a49a50a09db5d27c36f22762d21766e47e3ba918d6d7bab
   languageName: node
   linkType: hard
 
@@ -12871,12 +12880,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smtp-address-parser@npm:1.0.10":
-  version: 1.0.10
-  resolution: "smtp-address-parser@npm:1.0.10"
+"smtp-address-parser@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "smtp-address-parser@npm:1.1.0"
   dependencies:
     nearley: ^2.20.1
-  checksum: 5cf2e960a6836ebec68bb5185c62bc3d343e6fdb1434f8d0d6c273e8d5359b11f2560dea5ecbbd98a77f01f8ef94b56c31d3f6ff24a5c44ba6530b9af7b63626
+  checksum: 63314f22dfe6f2ab2845c4ffa68a48cbd1569507cf9ee429c45beff7c4b5957d6f63e84c31fe0d148f67e4b000c76cb1d8a9d1f0f6bd5a678fa9d6a80bac70e2
   languageName: node
   linkType: hard
 
@@ -13998,7 +14007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uri-js@npm:^4.2.2":
+"uri-js@npm:^4.2.2, uri-js@npm:^4.4.1":
   version: 4.4.1
   resolution: "uri-js@npm:4.4.1"
   dependencies:
