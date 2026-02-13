@@ -1,6 +1,7 @@
 import { uuid } from '../utils/uuid';
+import { updateOptions } from './options';
 
-import { getTypeOf, JsonPointer, SchemaNode, ValidationPath } from 'json-schema-library';
+import { getTypeOf, isJsonError, JsonError, JsonPointer, SchemaNode, ValidationPath } from 'json-schema-library';
 import {
     Node,
     NodeType,
@@ -77,10 +78,18 @@ function getValueNodeProps<T extends NodeType, V>(
     value: V,
     isArrayItem = false
 ) {
-    const { node: sN, error } = schemaNode.reduceNode(value);
+    const errors: JsonError[] = [];
+    let { node: sN, error } = schemaNode.reduceNode(value);
     if (sN == null) {
-        console.log(error);
-        throw new Error(`Failed reducing schema of (${type}) at '${pointer}'`);
+        // input value to reduceNode was wrong and resolving a valid node failed @see error
+        // in the current case thats a oneOf: [{}] schema but a number is given as input
+        // for now, we ignore the value and prefer to render the (proabably) correct json-schema
+        // unfortunately, the schema has to match the input value, so create a matching node
+        // but pass on the json-schema
+        sN = schemaNode.compileSchema(schemaNode.createSchema(value));
+        if (isJsonError(error)) {
+            errors.push(error);
+        }
     }
     const { schema } = sN;
     const property = getPropertyName(pointer);
@@ -95,7 +104,7 @@ function getValueNodeProps<T extends NodeType, V>(
         schema,
         schemaNode,
         value,
-        errors: []
+        errors
     };
 }
 
