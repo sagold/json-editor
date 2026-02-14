@@ -39,12 +39,18 @@ jobs:
             - name: Build docs (static Storybook)
               run: yarn docs:dist
 
-            # — Upload the built docs as a flat set of files —
-            - name: Upload built docs
+            # — Upload the built docs as a regular artifact for the test runner —
+            - name: Upload built docs for testing
               uses: actions/upload-artifact@v4
               with:
-                  name: storybook-docs
-                  path: dist/docs/**
+                  name: storybook-static
+                  path: dist/docs/
+
+            # — Upload the built docs as a GitHub Pages artifact for deployment —
+            - name: Upload built docs for GitHub Pages
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: dist/docs/
 
             # — Also upload your compiled packages so unit tests can consume them —
             - name: Upload compiled packages
@@ -114,7 +120,7 @@ jobs:
             - name: Download built docs
               uses: actions/download-artifact@v4
               with:
-                  name: storybook-docs
+                  name: storybook-static
                   path: dist/docs
 
             - name: Serve Storybook & run play tests
@@ -150,10 +156,5 @@ jobs:
             pages: write
             id-token: write
         steps:
-            - name: Download built docs
-              uses: actions/download-artifact@v4
-              with:
-                  name: storybook-docs
-
             - name: Deploy to GitHub Pages
               uses: actions/deploy-pages@v4
