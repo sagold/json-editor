@@ -1,4 +1,4 @@
-import { DateInput, DateValue, TimeInput } from '@mantine/dates';
+import { DateInput, DateTimePicker, DateValue, TimeInput } from '@mantine/dates';
 import {
     widget,
     WidgetPlugin,
@@ -98,8 +98,8 @@ const TimeWidget = widget<StringNode<DateOptions>, string>(({ node, options, set
 
 export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, options, setValue }) => {
     const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
-    const format = node.schema.format;
-    const valueFormat = (options.format ?? format === 'date') ? 'DD MMM YYYY' : 'DD MMM YYYY HH:mm';
+    const format = options.format ?? node.schema.format;
+    const valueFormat = format === 'date' ? 'DD MMM YYYY' : 'DD MMM YYYY HH:mm';
     const date = useMemo(() => {
         if (node.value == null || node.value === '') {
             console.log(`empty date ${node.value}`);
@@ -112,9 +112,13 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
             return undefined;
         }
     }, [node.value]);
+
+    const DatePickerComponent = format === 'date' ? DateInput : DateTimePicker;
+    console.log('value', format, valueFormat, node.value);
+
     return (
         <WidgetField widgetType="date" node={node} options={options} showDescription={false} showError={false}>
-            <DateInput
+            <DatePickerComponent
                 {...widgetInputProps(node, options)}
                 leftSection={leftSection}
                 rightSection={rightSection}
@@ -124,11 +128,12 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
                     if (!date) {
                         return setValue('');
                     }
+                    console.log(format, valueFormat, date);
                     if (format === 'date') {
-                        return setValue(dayjs(date).utc().format('YYYY-MM-DD'));
+                        return setValue(dayjs(date).format('YYYY-MM-DD'));
                     }
                     if (typeof date === 'string') {
-                        return setValue(date);
+                        return setValue(dayjs(date).utc().toISOString());
                     }
                     setValue(date.toISOString());
                 }}
