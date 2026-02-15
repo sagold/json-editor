@@ -31,7 +31,8 @@ export const ItemsArray: Story = {
                     title: 'Subtitle',
                     type: 'string'
                 }
-            ]
+            ],
+            maxItems: 2
         }
     },
     play: async ({ canvas }) => {

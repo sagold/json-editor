@@ -31,17 +31,22 @@ Validation of data is fully supported, the following list tracks support by the 
 
 ## Array Schema
 
-Using array-items schema you define a JSON Schema for a fixed numer of array items. With no additional items defined,
-item edit options are disabled.
+Using `prefixItems` schema you define a JSON Schema for specific array items. `maxItems` and `minItems` now restrict the number of items that can be added. Setting `maxItems: 2` will disable add-options:
 
 <Tabs>
   <Canvas tabTitle="draft-2020-12" className="inline" of={ArrayItems.ItemsArray} />
+</Tabs>
+
+Until **Draft-2019-09** Using `items[]` schema you define a JSON Schema for a fixed numer of array items. With no additional items defined,
+item edit options are disabled.
+
+<Tabs>
   <Canvas tabTitle="draft-2019-09" className="inline" of={ArrayItems.ItemsArrayDraft2019} />
 </Tabs>
 
 ## Additional items
 
-With items defined by an items-array, `additionalItems=undefined` or `additionalItems=true` will allow any additional child.
+With `items` defined by an items-array, `additionalItems=undefined` or `additionalItems=true` will allow any additional child.
 
 - **Note** Keyword `additionalItems` has been removed with draft-2020-12
 - **Note** for a missing `additionalItems` setting, add-options are disabled
@@ -72,7 +77,7 @@ With items defined by an items-array and `additionalItems` set to a valid json-s
 
 ## Object Schema
 
-An array object-schema defines the structure for all array-items which are not defined by an array-schema (items,
+An `items` object-schema defines the structure for all array-items which are not defined by an array-schema (items,
 prefixItems). Without length restrictions array edit-options are always enabled.
 
 <Tabs>
