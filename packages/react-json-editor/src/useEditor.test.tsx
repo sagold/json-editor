@@ -239,13 +239,9 @@ describe('useEditor', () => {
                     schema: { type: 'object' },
                     widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
                 });
+                // eslint-disable-next-line react-hooks/globals
                 currentEditor = editor;
-                if (editor == null) {
-                    return null;
-                }
-                const root = editor.getNode();
-                const Widget = editor.getWidget(root);
-                return <Widget node={root} editor={editor} />;
+                return editor ? <div /> : null;
             }
             const { unmount } = render(<Form />);
             assert(currentEditor != null);
@@ -278,12 +274,7 @@ describe('useEditor', () => {
                     ],
                     widgets: [{ id: 'dummy', use: () => true, Widget: () => <div /> }] as WidgetPlugin[]
                 });
-                if (editor == null) {
-                    return null;
-                }
-                const root = editor.getNode();
-                const Widget = editor.getWidget(root);
-                return <Widget node={root} editor={editor} />;
+                return editor ? <div /> : null;
             }
 
             const { rerender } = render(

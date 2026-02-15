@@ -49,13 +49,13 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
         let value = node.value ?? '';
         try {
             value = JSON.stringify(JSON.parse(value), null, 2);
-        } catch (e) {
+        } catch {
             /* ignore */
         }
         setInternalValue(value);
     }, [setInternalValue, node.value]);
 
-    let errors = node.errors.map((e) => e.message).join('\n');
+    let errors = node.errors.map((error) => error.message).join('\n');
     if (error) {
         errors = `${error.message}${node.errors.length ? `\n${node.errors.map((e) => e.message).join('\n')}` : ''}`;
     }
@@ -78,7 +78,7 @@ export const SimpleJsonStringWidget = widget<StringNode<SimpleJsonOptions>, stri
                         value = JSON.stringify(data, null, 2);
                         setInternalValue(value);
                         setError(undefined);
-                    } catch (e) {
+                    } catch {
                         setError(invalidJsonError);
                     }
                     setValue(value);
@@ -129,7 +129,7 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
                             setInternalValue(JSON.stringify(data, null, 2));
                             setValue(data);
                             setError(undefined);
-                        } catch (e) {
+                        } catch {
                             console.log('failed parsing value', internalValue);
                             setError(invalidJsonError);
                         }

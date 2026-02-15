@@ -8,11 +8,14 @@ import { JsonSchema, useEditor, Widget } from '@sagold/react-json-editor';
 import { widgets } from '../widgets';
 import { MantineThemeDecorator } from './MantineThemeDecorator';
 import { ObjectOptions } from '../widgets/objectwidget/ObjectWidget';
+import { useEffect } from 'react';
 
 function WithTwoColumns(props) {
     const editor = useEditor({ ...props, widgets });
     // @ts-ignore
-    window.getEditor = () => editor;
+    useEffect(() => {
+        window.getEditor = () => editor;
+    }, [editor]);
     return (
         <MantineProvider>
             <Flex

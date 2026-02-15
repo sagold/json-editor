@@ -254,7 +254,7 @@ function getParentPointer(pointer: string) {
 function getData(context: CompletionContext) {
     try {
         return JSON.parse(context.state.doc.toString());
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }

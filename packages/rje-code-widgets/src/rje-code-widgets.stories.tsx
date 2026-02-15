@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 import defaultWidgets, { JsonForm, Icon } from '@sagold/rje-mantine-widgets';
@@ -9,7 +9,6 @@ import './rje-code-widgets.scss';
 
 function CodeWidgetComponent(args) {
     const [editor, setEditor] = useState<Editor>();
-    const [data, setData] = useState<unknown>(null);
     const history = useEditorPlugin(editor, HistoryPlugin);
     return (
         <div className="rje-form rje-theme rje-theme--light">

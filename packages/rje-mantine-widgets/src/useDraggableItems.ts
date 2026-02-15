@@ -42,7 +42,7 @@ function createOnSortEnd(editor: Editor, pointer: string) {
         if (isNaN(targetIndex)) {
             return;
         }
-        const { to, from, oldIndex, newIndex, item } = event;
+        const { from, oldIndex, item } = event;
         // always remove node - we create it from data
         item?.parentNode?.removeChild(item);
         // 1. if container or pointer (different editors) are the same, its a move within a list

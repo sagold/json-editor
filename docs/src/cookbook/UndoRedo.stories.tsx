@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react-webpack5';
 import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-mantine-widgets';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
+import { useMemo } from 'react';
 
 const schema = {
     type: 'object',
@@ -35,13 +36,14 @@ const schema = {
 function UndoRedoExample() {
     const editor = useEditor({ data: {}, schema, widgets });
     const history = useEditorPlugin(editor, HistoryPlugin);
-    if (editor == null) {
+    const node = editor?.getNode();
+    const Widget = useMemo(() => (editor && node ? editor.getWidget(node) : null), [editor, node]);
+
+    if (editor == null || Widget == null) {
         return null;
     }
     const isUndoEnabled = history ? history.getUndoCount() > 0 : false;
     const isRedoEnabled = history ? history.getRedoCount() > 0 : false;
-    const node = editor.getNode();
-    const Widget = editor.getWidget(node);
     return (
         <>
             <div style={{ display: 'flex', gap: 8, paddingBottom: '1em' }}>
@@ -53,6 +55,7 @@ function UndoRedoExample() {
                 </Button>
             </div>
             <div className="rje-form">
+                {/* eslint-disable-next-line react-hooks/static-components */}
                 <Widget node={node} editor={editor} />
             </div>
         </>

@@ -88,7 +88,9 @@ function getValueNodeProps<T extends NodeType, V>(
     isArrayItem = false
 ) {
     const errors: JsonError[] = [];
-    let { node: sN, error } = schemaNode.reduceNode(value);
+    const result = schemaNode.reduceNode(value);
+    let sN = result.node;
+    const schemaError = result.error;
     if (sN == null) {
         // Note: this function creates a node for a primitive value
         // Note: type of node is identified by value
@@ -99,8 +101,8 @@ function getValueNodeProps<T extends NodeType, V>(
         // unfortunately, the schema has to match the input value, so create a matching node
         // but pass on the json-schema
         sN = schemaNode.compileSchema(schemaNode.createSchema(value));
-        if (isJsonError(error)) {
-            errors.push(error);
+        if (isJsonError(schemaError)) {
+            errors.push(schemaError);
         }
     }
     const { schema } = sN;

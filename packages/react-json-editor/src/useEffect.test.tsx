@@ -13,12 +13,14 @@ function useRefTest() {
             ref.current = null;
         };
     }, [ref]);
+    // eslint-disable-next-line react-hooks/refs
     return ref.current;
 }
 
 function useStateTest() {
     const [instance, setInstance] = useState<Instance>(null);
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setInstance({ id: uuid() });
         return () => setInstance(null);
     }, [setInstance]);

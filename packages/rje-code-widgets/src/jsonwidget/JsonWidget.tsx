@@ -59,7 +59,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
             try {
                 setValue(JSON.parse(value));
                 setJsonValid(true);
-            } catch (e) {
+            } catch {
                 // console.log('failed parsing (jsondata) value', value);
                 setJsonValid(false);
             }
@@ -132,7 +132,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
                 JSON.parse(value);
                 setValue(value);
                 setJsonValid(true);
-            } catch (e) {
+            } catch {
                 // console.log('failed parsing (jsonstring) value', value);
                 setJsonValid(false);
             }
@@ -143,6 +143,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
     // tooltip cannot be recreated, because of codemirror hooking into editor
     // instance in this case and there would be conflicting instances on the
     // editor state
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const tooltip = useMemo(() => jsonSchemaTooltip(editor, node.pointer, options.schema), []);
     const extensions = [jsonSyntax(), lintGutter(), linter(jsonSchemaLinter(editor.schemaNode, options.schema || {}))];
 

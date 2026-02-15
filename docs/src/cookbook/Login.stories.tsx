@@ -19,7 +19,7 @@ type FormData = {
     remember: boolean;
 };
 
-function LoginStory({ userData = { password: '', username: '', remember: false } }) {
+function LoginStory({ userData = { password: '', username: '', remember: false } }: { userData?: FormData }) {
     const [editor, setEditor] = useState<Editor>();
     const [disabled, setDisabled] = useState<boolean>(true);
 

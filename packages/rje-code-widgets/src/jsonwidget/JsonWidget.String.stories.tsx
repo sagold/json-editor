@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import defaultWidgets, { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonWidgetPlugin } from './JsonWidget';

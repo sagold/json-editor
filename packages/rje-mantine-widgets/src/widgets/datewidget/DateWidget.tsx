@@ -65,7 +65,7 @@ function toZuluTime(time: string) {
             return time;
         }
         return dayjs(date).utc().format('HH:mm:ss[Z]');
-    } catch (e) {
+    } catch {
         return time;
     }
 }
@@ -107,7 +107,7 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
         }
         try {
             return new Date(node.value ?? '');
-        } catch (e) {
+        } catch {
             console.log(`Invalid date ${node.value}`);
             return undefined;
         }

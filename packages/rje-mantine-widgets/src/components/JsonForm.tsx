@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { Editor, useEditor, UseEditorOptions } from '@sagold/react-json-editor';
 import { widgets as defaultWidgets } from '../widgets';
-import { useImperativeHandle } from 'react';
+import { useImperativeHandle, useMemo } from 'react';
 
 export function JsonForm<Data = unknown>({
     style,
@@ -18,14 +18,16 @@ export function JsonForm<Data = unknown>({
 }) {
     const widgets = Array.isArray(options.widgets) ? options.widgets : defaultWidgets;
     const instance = useEditor<Data>({ ...options, widgets });
+    const rootNode = instance?.getNode();
+    const Widget = useMemo(() => (instance && rootNode ? instance.getWidget(rootNode) : null), [instance, rootNode]);
+
     useImperativeHandle<Editor<Data> | null, Editor<Data> | null>(editor, () => instance, [instance]);
-    if (instance == null) {
+    if (instance == null || Widget == null || rootNode == null) {
         return <div className={classNames('rje-form', className)} style={style} />;
     }
-    const rootNode = instance.getNode();
-    const Widget = instance.getWidget(rootNode);
     return (
         <div className={classNames('rje-form', className)} style={style}>
+            {/* eslint-disable-next-line react-hooks/static-components */}
             <Widget node={rootNode} editor={instance} />
         </div>
     );

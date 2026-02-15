@@ -100,7 +100,9 @@ export class HeadlessEditor<Data = unknown> {
         this.schemaNode = compileSchema(schema, this.schemaNodeConfig);
         this.root = createNode<ParentNode>(this.schemaNode, this.schemaNode.getData(data));
         plugins.forEach((p) => this.addPlugin(p));
-        options.validate && this.validate();
+        if (options.validate) {
+            this.validate();
+        }
     }
 
     get optionalProperties() {
@@ -129,7 +131,9 @@ export class HeadlessEditor<Data = unknown> {
                 addOptionalProps: false
             })
         );
-        this.options.validate === true && this.validate();
+        if (this.options.validate === true) {
+            this.validate();
+        }
         const changes: Change[] = getNodeList(this.root).map((node) => ({ type: 'create', node }));
         this.root = this.runPlugins(previousState, this.root, changes);
         return this.root;

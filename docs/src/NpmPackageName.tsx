@@ -7,7 +7,7 @@ const tagStyles: CSSProperties = {
     fontFamily: 'inherit'
 };
 
-export function NpmPackageName({ name }) {
+export function NpmPackageName({ name }: { name: string }) {
     return (
         <div
             style={{

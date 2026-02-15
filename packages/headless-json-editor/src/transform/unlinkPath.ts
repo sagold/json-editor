@@ -19,7 +19,7 @@ export function buildPathsMap(paths: (JsonPointer | string[])[]) {
     return map;
 }
 
-export function unlinkMap(previousRoot: Node, map: { [p: string]: any }) {
+export function unlinkMap(): never {
     throw new Error('not implemented');
 }
 
@@ -27,7 +27,7 @@ export function unlinkMap(previousRoot: Node, map: { [p: string]: any }) {
  * Returns a new tree with cloned nodes along the given path
  * @returns [new root node, node at pointer] or error if path is invalid
  */
-export function unlinkPaths(previousRoot: Node, paths: JsonPointer[]) {
+export function unlinkPaths(): never {
     throw new Error('not implemented');
 }
 
@@ -55,12 +55,10 @@ export function unlinkPath<T extends Node = Node>(
     const frags: string[] = split(pointer);
     const nextRoot = { ...previousRoot };
     let targetNode: Node = nextRoot;
-    let childIndex = -1;
-    let childProperty: string;
 
     while (frags.length > 0) {
-        childProperty = frags.shift() as string;
-        childIndex = getChildIndex(targetNode, childProperty);
+        const childProperty = frags.shift() as string;
+        const childIndex = getChildIndex(targetNode, childProperty);
         if (!isParentNode(targetNode) || childIndex < 0) {
             return previousRoot.schemaNode.createError('invalid-path-error', {
                 pointer,
@@ -76,6 +74,7 @@ export function unlinkPath<T extends Node = Node>(
         targetNode.children = [...targetNode.children];
         // unlink next node in children
         targetNode.children[childIndex] = nextNode;
+        // move to next node
         targetNode = nextNode;
     }
 

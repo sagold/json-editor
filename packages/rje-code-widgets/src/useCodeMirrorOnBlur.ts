@@ -11,7 +11,7 @@ import { useState, useEffect, useCallback } from 'react';
  * return <CodeMirror ref={ref} />;
  * ```
  */
-export function useCodeMirrorOnBlur(onBlur?: (value: string) => void, pointer?: string) {
+export function useCodeMirrorOnBlur(onBlur?: (value: string) => void) {
     const [codeMirror, setCodeMirror] = useState<ReactCodeMirrorRef>();
     // required to reexecute this function as soon as the reference is passed
     const ref = useCallback((editor: ReactCodeMirrorRef) => {
@@ -25,17 +25,18 @@ export function useCodeMirrorOnBlur(onBlur?: (value: string) => void, pointer?: 
         if (contentDOM == null || onBlur == null) {
             return;
         }
-        const valueFromEvent = (event: FocusEvent) => {
+        const valueFromEvent = () => {
             if (onBlur == null) {
                 return;
             }
             const contents = codeMirror?.view?.state.doc.toString();
-            contents && onBlur(contents);
+            if (contents) {
+                onBlur(contents);
+            }
         };
         contentDOM.addEventListener('blur', valueFromEvent);
         return function () {
-            // console.log('remove on blur handler', pointer);
-            contentDOM?.removeEventListener('blur', valueFromEvent);
+            contentDOM.removeEventListener('blur', valueFromEvent);
         };
     }, [codeMirror, onBlur]);
     return [ref];

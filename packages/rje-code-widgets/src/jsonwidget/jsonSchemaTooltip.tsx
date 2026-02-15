@@ -11,13 +11,13 @@ const root = createRoot(dom);
 function getData(doc: Text) {
     try {
         return JSON.parse(doc.toString());
-    } catch (e) {
+    } catch {
         return undefined;
     }
 }
 
 export const jsonSchemaTooltip = (editor: Editor, nodePointer = '#', localSchema?: JsonSchema) =>
-    hoverTooltip(async (view, pos, side) => {
+    hoverTooltip(async (view, pos) => {
         const { pointer, cursor } = getJsonPointerFromPosition(view.state, pos);
         const absolutePointer = localSchema ? `#${pointer}` : `${nodePointer}${pointer}`;
         const data = getData(view.state.doc);
@@ -37,7 +37,7 @@ export const jsonSchemaTooltip = (editor: Editor, nodePointer = '#', localSchema
             pos: cursor.from,
             end: cursor.to,
             above: true,
-            create(view) {
+            create() {
                 root.render(
                     <div className="rje-code-tooltip rje-code-tooltip--jsonschema">
                         {localNode.schema.title && <h1>{localNode.schema.title}</h1>}

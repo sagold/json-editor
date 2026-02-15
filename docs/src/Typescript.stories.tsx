@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta } from '@storybook/react-webpack5';
 import { JsonSchema } from 'headless-json-editor';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
-import { useEditor, Editor } from '@sagold/react-json-editor';
 import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
-
-type Story = StoryObj<typeof TypedJsonForm>;
 const meta: Meta<typeof TypedJsonForm> = {
     title: 'docs/Typescript',
     component: TypedJsonForm,
@@ -26,25 +22,10 @@ type MyData = {
     subTitle: string;
 };
 
-function TypedUseJsonEditor() {
-    // [Node, JsonEditor<MyData>]
-    const editor = useEditor<MyData>({
-        schema: jsonSchema,
-        // (data: MyData) => void
-        onChange(data) {}
-    });
-    if (editor == null) {
-        return null;
-    }
-    // data: MyData
-    const data = editor.getData();
-    return <div />;
+function TypedJsonForm() {
+    return <JsonForm<MyData> editor={setEditor} onChange={() => {}} schema={jsonSchema} />;
 }
 
-function TypedJsonForm() {
-    const [editor, setEditor] = useState<Editor<MyData> | null>(null);
-    // data: MyData
-    const data = editor?.getData();
-
-    return <JsonForm<MyData> editor={setEditor} onChange={(data) => {}} schema={jsonSchema} />;
+function setEditor() {
+    // This is a demo component
 }
