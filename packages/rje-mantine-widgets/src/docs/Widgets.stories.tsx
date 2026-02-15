@@ -1,7 +1,7 @@
 import '../index.scss';
 import '@mantine/core/styles.css';
 import classNames from 'classnames';
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Flex, MantineProvider } from '@mantine/core';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonSchema, useEditor, Widget } from '@sagold/react-json-editor';

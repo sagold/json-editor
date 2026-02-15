@@ -95,12 +95,6 @@ const config: Configuration = {
     },
     optimization: { minimizer: [new TerserPlugin()] },
     externals: {
-        '@sagold/rje-aria-widgets': {
-            commonjs: '@sagold/rje-aria-widgets',
-            commonjs2: '@sagold/rje-aria-widgets',
-            amd: '@sagold/rje-aria-widgets',
-            root: 'rjeWidgets'
-        },
         '@sagold/rje-mantine-widgets': {
             commonjs: '@sagold/rje-mantine-widgets',
             commonjs2: '@sagold/rje-mantine-widgets',

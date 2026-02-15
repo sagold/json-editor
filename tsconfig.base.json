@@ -9,7 +9,7 @@
         "incremental": true,
         "lib": ["es2019", "dom"],
         "module": "es6",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "sourceMap": true,

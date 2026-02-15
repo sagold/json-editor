@@ -1,7 +1,7 @@
 import React from 'react';
 import defaultWidgets, { Icon } from '@sagold/rje-mantine-widgets';
 import { Button } from '@mantine/core';
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonWidget, JsonWidgetOptions, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { MantineThemeDecorator } from './docs/MantineThemeDecorator';
 import { Widget, JsonSchema, useEditor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';

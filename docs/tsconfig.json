@@ -24,9 +24,6 @@
             "path": "../packages/react-json-editor"
         },
         {
-            "path": "../packages/rje-aria-widgets"
-        },
-        {
             "path": "../packages/rje-mantine-widgets"
         },
         {

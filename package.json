@@ -36,13 +36,15 @@
         "test:unit": "jest --maxWorkers=2"
     },
     "devDependencies": {
+        "@babel/preset-env": "^7.29.0",
+        "@babel/preset-react": "^7.28.5",
+        "@babel/preset-typescript": "^7.28.5",
         "@rspack/cli": "^1.7.6",
         "@rspack/core": "^1.7.6",
         "@rspack/plugin-react-refresh": "^1.6.1",
         "@storybook/addon-docs": "^10.2.8",
         "@storybook/addon-links": "^10.2.8",
-        "@storybook/addon-webpack5-compiler-swc": "^4.0.2",
-        "@storybook/react-webpack5": "^10.2.8",
+        "@storybook/react-vite": "^10.2.8",
         "@storybook/test-runner": "^0.24.2",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/jest-dom": "^6.6.3",
@@ -76,10 +78,11 @@
         "sass-loader": "^16.0.7",
         "storybook": "10.2.8",
         "style-loader": "^4.0.0",
-        "terser-webpack-plugin": "^5.3.9",
+        "terser-webpack-plugin": "^5.3.16",
         "ts-jest": "^29.4.6",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.3",
+        "vite": "^7.3.1",
         "wait-on": "^9.0.4"
     },
     "resolutions": {

@@ -1,7 +1,7 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import type { StorybookConfig } from '@storybook/react-webpack5';
+import type { StorybookConfig } from '@storybook/react-vite';
 import path, { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,29 +19,13 @@ const config: StorybookConfig = {
 
     addons: [
         getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
         getAbsolutePath('@storybook/addon-docs')
     ],
 
-    framework: {
-        name: getAbsolutePath('@storybook/react-webpack5'),
-        options: {
-            builder: {
-                useSWC: true
-            }
-        }
-    },
-    swc: () => ({
-        jsc: {
-            transform: {
-                react: {
-                    runtime: 'automatic'
-                }
-            }
-        }
-    }),
+    framework: '@storybook/react-vite',
 
-    webpackFinal: async (config, { configType }) => {
+    viteFinal: async (config) => {
+        // Configure path aliases
         config.resolve = config.resolve ?? {};
         config.resolve.alias = {
             ...(config.resolve.alias ?? {}),
@@ -51,35 +35,20 @@ const config: StorybookConfig = {
             '@sagold/rje-mantine-widgets': getPackagePath('rje-mantine-widgets', 'src')
         };
 
-        config.module = config.module ?? {};
-        config.module.rules = config.module.rules ?? [];
-        config.module.rules.push({
-            test: /\.scss$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        importLoaders: 3,
-                        sourceMap: true
-                    }
-                },
-                {
-                    loader: 'resolve-url-loader'
-                },
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        sourceMap: true,
-                        sassOptions: {
-                            api: 'modern-compiler',
-                            implementation: require.resolve('sass-embedded')
-                            // includePaths: ['node_modules', ...((sassLoader.options && sassLoader.options.sassOptions && sassLoader.options.sassOptions.includePaths) || [])],
-                        }
-                    }
-                }
-            ]
-        });
+        // Vite automatically uses sass-embedded if installed
+        // No additional SCSS configuration needed
+
+        // Suppress "use client" directive warnings from Mantine
+        config.build = config.build ?? {};
+        config.build.rollupOptions = config.build.rollupOptions ?? {};
+        config.build.rollupOptions.onwarn = (warning, warn) => {
+            // Ignore "use client" directive warnings
+            if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('"use client"')) {
+                return;
+            }
+            warn(warning);
+        };
+
         return config;
     },
 
@@ -90,7 +59,7 @@ const config: StorybookConfig = {
     }
 };
 
-function getPackagePath(...folders) {
+function getPackagePath(...folders: string[]) {
     return path.resolve(__dirname, '..', 'packages', ...folders);
 }
 
@@ -98,7 +67,7 @@ function getPackagePath(...folders) {
  * This function is used to resolve the absolute path of a package.
  * It is needed in projects that use Yarn PnP or are set up within a monorepo.
  */
-function getAbsolutePath(value) {
+function getAbsolutePath(value: string) {
     return dirname(require.resolve(join(value, 'package.json')));
 }
 

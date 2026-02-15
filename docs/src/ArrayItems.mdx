@@ -1,5 +1,4 @@
 import * as ArrayItems from './ArrayItems.stories';
-import { JsonForm } from '@sagold/react-json-editor';
 import { Markdown, Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { Tabs } from './components/Tabs';
 
@@ -20,9 +19,9 @@ Validation of data is fully supported, the following list tracks support by the 
   |   ✅   | [contains](#contains)                 | *          | validation only, ensure a specific item is present |
   |   ❌   | [enum](#enum)                         | *          | only supported by validation not by user interface |
   |   ✅   | [items object-schema](#object-schema) | *          | object schema for child-items |
-  |   ✅   | [items oneOf](#one-of)                | *          | 
+  |   ✅   | [items oneOf](#one-of)                | *          |
   |   ✅   | [items array-schema](#array-schema)   | <=2019-09  | defined set of array items |
-  |   ✅   | [if-then-else](#if-then-else)         | >=draft-07 | 
+  |   ✅   | [if-then-else](#if-then-else)         | >=draft-07 |
   |   ✅   | [length](#length)                     | *          | support for **minItems** and **maxItems** |
   |   ✅   | [not](#not)                           | *          | validation only, exlude specific item types |
   |   ✅   | [prefixItems](#array-schema)          | >=2020-12  | defined set of array items |
