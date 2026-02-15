@@ -46,8 +46,7 @@ export const Options: Story = {
             labelPosition: 'left'
         },
         editorProps: {
-            validate: true,
-            data: [{ title: 'Overview of null options' }],
+            validate: false,
             schema: {
                 title: 'Null Widget Options',
                 type: 'null'
