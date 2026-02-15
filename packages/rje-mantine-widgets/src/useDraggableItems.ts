@@ -36,7 +36,7 @@ export function useDraggableItems(editor: Editor, options: DraggableItemsProps, 
     };
 }
 
-function getArrayPointer(element: HTMLElement) {
+export function getArrayPointer(element: HTMLElement) {
     let parent = element.parentElement;
     while (parent != null && parent !== document.body) {
         if (parent.getAttribute('data-type') === 'array') {

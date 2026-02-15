@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
 
 const meta: Meta<unknown> = {
-    title: 'Cookbook/DragAndDrop',
+    title: 'Cookbook/DragDropLists',
     component: JsonForm,
     decorators: [
         MantineThemeDecorator,
@@ -39,14 +39,17 @@ export const DragDropLists: StoryObj<typeof JsonForm> = {
     args: {
         onChange: (data) => console.log(JSON.stringify(data, null, 2)),
         data: {
-            first: ['from first'],
-            second: ['from second']
+            first: ['1. from first', '2. from first', '3. from first'],
+            second: ['1. from second', '2. from second']
         },
         schema: {
             title: 'Drag and Drop between lists',
+            description:
+                'you can move data between arrays using drag and drop of items. Key here is to have both arrays use the **same sortable group** in options.',
             type: 'object',
             properties: {
                 first: {
+                    title: 'first list',
                     type: 'array',
                     options: {
                         sortable: {
@@ -60,6 +63,7 @@ export const DragDropLists: StoryObj<typeof JsonForm> = {
                     }
                 },
                 second: {
+                    title: 'second list',
                     type: 'array',
                     options: {
                         sortable: {
