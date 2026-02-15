@@ -1,7 +1,5 @@
 import '../index.scss';
-import '@mantine/core/styles/baseline.css';
-import '@mantine/core/styles/default-css-variables.css';
-import '@mantine/core/styles/global.css';
+import '@mantine/core/styles.css';
 import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Flex, MantineProvider } from '@mantine/core';
