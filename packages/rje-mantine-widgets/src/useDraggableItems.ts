@@ -16,7 +16,7 @@ export type DraggableItemsProps = {
     sortable?: SortableOptions;
 };
 
-export function useDraggableItems(editor: Editor, options: DraggableItemsProps, ref: RefObject<HTMLElement>) {
+export function useDraggableItems(editor: Editor, options: DraggableItemsProps, ref: RefObject<HTMLElement | null>) {
     const enabled = (options.sortable?.enabled && options.disabled !== true && options?.readOnly !== true) ?? false;
     const group = options.sortable?.group ?? options.pointer;
     useEffect(() => {

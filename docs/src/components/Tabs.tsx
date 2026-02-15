@@ -1,11 +1,14 @@
 import { ReactElement, ReactNode, useState } from 'react';
 
-export function Tabs({ children }: { children: ReactElement[] }) {
+interface TabProps {
+    tabTitle: string;
+    children: ReactNode;
+}
+
+export function Tabs({ children }: { children: ReactElement<TabProps> | ReactElement<TabProps>[] }) {
     const [tabIndex, setTabIndex] = useState(0);
 
-    if (!Array.isArray(children)) {
-        children = [children];
-    }
+    const tabs = Array.isArray(children) ? children : [children];
 
     return (
         <div>
@@ -20,7 +23,7 @@ export function Tabs({ children }: { children: ReactElement[] }) {
                     border: '1px solid #fff'
                 }}
             >
-                {children.map((child, index) => (
+                {tabs.map((child, index) => (
                     <li
                         key={`${index} - ${child.props.tabTitle}`}
                         onClick={() => setTabIndex(index)}
@@ -41,8 +44,10 @@ export function Tabs({ children }: { children: ReactElement[] }) {
                     </li>
                 ))}
             </ul>
-            {children.map((child, index) => (
-                <div style={{ display: index === tabIndex ? 'block' : 'none' }}>{child}</div>
+            {tabs.map((child, index) => (
+                <div key={index} style={{ display: index === tabIndex ? 'block' : 'none' }}>
+                    {child}
+                </div>
             ))}
         </div>
     );

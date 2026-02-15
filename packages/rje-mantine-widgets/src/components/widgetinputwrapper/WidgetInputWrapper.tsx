@@ -24,7 +24,7 @@ export function WidgetInputWrapper({ header, children, errors, options }: Widget
     const withInlineDescription = !options.descriptionInline && isStringWithContent(options.description);
     return (
         <InputWrapper
-            className={classNames('rje-widget__input-wrapper', header && 'with-title')}
+            className={classNames('rje-widget__input-wrapper', !!header && 'with-title')}
             description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
             label={header}
             error={errors?.map((e) => e.message).join('\n')}

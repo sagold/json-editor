@@ -13,9 +13,9 @@
         "classnames": "^2.5.1",
         "dayjs": "^1.11.13",
         "dayjs-plugin-utc": "^0.1.2",
-        "sortablejs": "^1.15.6"
+        "sortablejs": "^1.15.7"
     },
     "devDependencies": {
-        "@types/sortablejs": "^1.15.8"
+        "@types/sortablejs": "^1.15.9"
     }
 }
