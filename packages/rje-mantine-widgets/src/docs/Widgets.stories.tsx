@@ -224,7 +224,7 @@ const schema: JsonSchema = {
             }
         },
         multiSelectTag: {
-            title: 'multi-select',
+            title: 'multi-select tag',
             description: 'standard mantine multi-select',
             type: 'array',
             format: 'taglist',

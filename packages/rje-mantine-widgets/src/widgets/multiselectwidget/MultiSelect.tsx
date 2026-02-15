@@ -7,7 +7,8 @@ import {
     getData,
     WidgetField,
     WidgetProps,
-    DecoratedWidgetProps
+    DecoratedWidgetProps,
+    JsonSchema
 } from '@sagold/react-json-editor';
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
@@ -33,8 +34,7 @@ const MultiSelectWidget = (props: WidgetProps) => {
 const getValueFromEvent = (value: string[]) => value;
 
 const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
-    // @ts-expect-error unknown schema
-    const enumValues = (node.schemaNode.items?.enum || []) as string[];
+    const enumValues = ((node.schema.items as JsonSchema)?.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
     const data = enumValues.map((id, index) => ({ value: id, label: titles[index] ?? id }));
     const onUpdateProps = useLiveUpdate<string[]>(
@@ -63,8 +63,7 @@ const SelectWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, op
 });
 
 const TagListWidget = widget<ArrayNode<MultiSelectOptions>, string[]>(({ node, options, setValue }) => {
-    // @ts-expect-error unknown schema
-    const enumValues = (node.schema.items.enum || []) as string[];
+    const enumValues = ((node.schema.items as JsonSchema)?.enum || []) as string[];
     const titles = (options.enum as string[]) ?? [];
     const data = enumValues.map((id, index) => ({ value: id, label: titles[index] ?? id }));
 

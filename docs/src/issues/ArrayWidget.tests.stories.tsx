@@ -1,16 +1,20 @@
 import { StoryObj } from '@storybook/react-vite';
-import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
-import { ArrayOptions } from './ArrayWidget';
+import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
+import { ArrayOptions } from '@sagold/rje-mantine-widgets';
 import { UseEditorOptions, useEditor, Widget } from '@sagold/react-json-editor';
 
 type WidgetProps = ArrayOptions & { editorProps: UseEditorOptions };
 function WidgetForm({ editorProps, ...props }: WidgetProps) {
     const editor = useEditor(editorProps);
-    return <Widget editor={editor} options={props} />;
+    return (
+        <div className="rje-form">
+            <Widget editor={editor} options={props} />
+        </div>
+    );
 }
 
 export default {
-    title: 'packages/rje-mantine-widgets/widgets/ArrayWidget/tests',
+    title: 'issues/ArrayWidget',
     component: WidgetForm,
     decorators: [MantineThemeDecorator]
 };
@@ -24,6 +28,7 @@ type Story = StoryObj<WidgetProps>;
  * - json-editor: ensure we still maintain nodes...
  */
 export const OneOfRefFails: Story = {
+    name: '✅ OneOf ref fails',
     args: {
         editorProps: {
             validate: true,
@@ -32,6 +37,7 @@ export const OneOfRefFails: Story = {
             },
             schema: {
                 type: 'object',
+                description: 'nested OneOfs, where a nested oneOf is invalid',
                 required: ['main'],
                 properties: {
                     main: {
@@ -47,7 +53,7 @@ export const OneOfRefFails: Story = {
                         type: 'object',
                         title: 'Parent',
                         description:
-                            'Adding a duplicate item to this list fails as uniqueItems=true in children. @todo correct error message',
+                            'Adding a duplicate item to this list fails as uniqueItems=true in children. In addition, the error message should flag the duplicated item with a unique-item error',
                         required: ['type', 'children'],
                         properties: {
                             type: {
@@ -65,24 +71,32 @@ export const OneOfRefFails: Story = {
                                         {
                                             type: 'object',
                                             title: 'Child: First',
-                                            required: ['type'],
+                                            required: ['type', 'title'],
                                             properties: {
                                                 type: {
                                                     options: { hidden: true },
                                                     type: 'string',
                                                     const: 'one'
+                                                },
+                                                title: {
+                                                    type: 'string',
+                                                    default: 'First'
                                                 }
                                             }
                                         },
                                         {
                                             type: 'object',
                                             title: 'Child: Second',
-                                            required: ['type'],
+                                            required: ['type', 'title'],
                                             properties: {
                                                 type: {
                                                     options: { hidden: true },
                                                     type: 'string',
                                                     const: 'two'
+                                                },
+                                                title: {
+                                                    type: 'string',
+                                                    default: 'Second'
                                                 }
                                             }
                                         }
