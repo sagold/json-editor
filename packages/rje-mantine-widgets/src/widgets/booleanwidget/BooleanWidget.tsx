@@ -8,7 +8,9 @@ export const BooleanWidget = widget<BooleanNode, boolean>(({ node, options, setV
         <WidgetField widgetType="toggle" node={node} options={options} showDescription={false} showError={false}>
             <Input
                 {...widgetInputProps(node, options)}
-                checked={node.value}
+                // @ts-expect-error
+                withAsterisk={undefined}
+                checked={node.value ?? false}
                 onChange={(e) => setValue(e.currentTarget.checked)}
             />
         </WidgetField>
