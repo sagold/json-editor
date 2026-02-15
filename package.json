@@ -33,7 +33,7 @@
         "test:coverage": "yarn test --collect-coverage",
         "test:stories": "test-storybook",
         "test:stories:ci": "JEST_JUNIT_OUTPUT_FILE=storybook-test-results.xml test-storybook --ci --junit",
-        "test:unit": "jest --maxWorkers=2"
+        "test:unit": "jest --maxWorkers=2 --verbose"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.29.0",
