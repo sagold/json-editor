@@ -7,11 +7,15 @@
     "main": "dist/rjeCodeWidgets.js",
     "dependencies": {
         "@codemirror/lang-json": "*",
-        "@codemirror/lint": "^6.5.0",
-        "@uiw/react-codemirror": "^4.21.24",
+        "@codemirror/lint": "^6.9.4",
+        "@uiw/react-codemirror": "^4.25.4",
         "markdown-to-jsx": "^9.7.4"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "^1.0.0-rc1"
+    },
+    "resolutions": {
+        "@codemirror/view": "^6.38.1",
+        "@codemirror/state": "^6.4.1"
     }
 }
