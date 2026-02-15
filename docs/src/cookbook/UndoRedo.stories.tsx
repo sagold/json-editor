@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import { HistoryPlugin, JsonSchema } from 'headless-json-editor';
-import { Meta, StoryObj } from '@storybook/react-webpack5';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
 import { widgets } from '@sagold/rje-mantine-widgets';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';

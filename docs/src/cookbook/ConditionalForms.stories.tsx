@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonSchema } from '@sagold/react-json-editor';
 import { JsonForm, widgets } from '@sagold/rje-mantine-widgets';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';

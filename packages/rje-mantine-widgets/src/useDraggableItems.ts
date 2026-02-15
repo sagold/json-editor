@@ -36,15 +36,52 @@ export function useDraggableItems(editor: Editor, options: DraggableItemsProps, 
     };
 }
 
-function createOnSortEnd(editor: Editor, pointer: string) {
+function getArrayPointer(element: HTMLElement) {
+    let parent = element.parentElement;
+    while (parent != null && parent !== document.body) {
+        if (parent.getAttribute('data-type') === 'array') {
+            return parent.getAttribute('data-id');
+        }
+        parent = parent.parentElement;
+    }
+    return undefined;
+}
+
+function createOnSortEnd(editor: Editor, fromPointer: string) {
     return function onSortEnd(event: Sortable.SortableEvent) {
         const targetIndex = parseInt(`${event.newIndex}`);
         if (isNaN(targetIndex)) {
             return;
         }
-        const { from, oldIndex, item } = event;
+        const { from, oldIndex, item, to } = event;
+
+        const targetPointer = getArrayPointer(to);
+        if (targetPointer == undefined) {
+            console.error('array widget failed resolving target pointer of', to);
+            return;
+        }
+
         // always remove node - we create it from data
         item?.parentNode?.removeChild(item);
+
+        if (fromPointer !== targetPointer) {
+            // 1. if container or pointer (different editors) are the same, its a move within a list
+            // 2. if item is dragged to the same position, but to another editor. now, the dragged
+            // element is removeChild from original list. We readd it here, to fix this
+            if (oldIndex != null) {
+                // readd removed child - we move it through data
+                from.insertBefore(event.item, from.childNodes[oldIndex]);
+            }
+
+            const fromValue = editor.getData(`${fromPointer}/${oldIndex}`);
+            const toValue = editor.getData(targetPointer) as unknown[];
+            // @TODO remove value must update (rerender) array
+            editor.removeValue(`${fromPointer}/${oldIndex}`);
+            toValue.splice(targetIndex, 0, fromValue);
+            editor.setValue(targetPointer, toValue);
+            return;
+        }
+
         // 1. if container or pointer (different editors) are the same, its a move within a list
         // 2. if item is dragged to the same position, but to another editor. now, the dragged
         // element is removeChild from original list. We readd it here, to fix this
@@ -52,7 +89,6 @@ function createOnSortEnd(editor: Editor, pointer: string) {
             // readd removed child - we move it through data
             from.insertBefore(event.item, from.childNodes[oldIndex]);
         }
-        // console.log('move item', `${node.pointer}/${event.oldIndex}`, targetIndex);
-        editor.moveItem(`${pointer}/${event.oldIndex}`, targetIndex);
+        editor.moveItem(`${fromPointer}/${event.oldIndex}`, targetIndex);
     };
 }

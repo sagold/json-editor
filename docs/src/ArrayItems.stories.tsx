@@ -1,5 +1,5 @@
 import { JsonForm } from '@sagold/rje-mantine-widgets';
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonSchema } from 'headless-json-editor';
 import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
 import deepMerge from 'deepmerge';
