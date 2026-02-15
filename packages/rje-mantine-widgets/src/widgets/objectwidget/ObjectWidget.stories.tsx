@@ -1,4 +1,3 @@
-// import '@mantine/core/styles.css';
 import { StoryObj } from '@storybook/react-vite';
 import { MantineThemeDecorator } from '../../docs/MantineThemeDecorator';
 import { ObjectOptions } from './ObjectWidget';

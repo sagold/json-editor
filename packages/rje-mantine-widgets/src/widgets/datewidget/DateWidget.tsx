@@ -127,6 +127,9 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
                     if (format === 'date') {
                         return setValue(dayjs(date).utc().format('YYYY-MM-DD'));
                     }
+                    if (typeof date === 'string') {
+                        return setValue(date);
+                    }
                     setValue(date.toISOString());
                 }}
             />

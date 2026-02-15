@@ -7,6 +7,6 @@
     "main": "dist/reactJsonEditor.js",
     "dependencies": {
         "headless-json-editor": "^1.0.0-rc1",
-        "markdown-to-jsx": "^7.7.1"
+        "markdown-to-jsx": "^9.7.4"
     }
 }
