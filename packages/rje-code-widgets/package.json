@@ -9,7 +9,7 @@
         "@codemirror/lang-json": "*",
         "@codemirror/lint": "^6.5.0",
         "@uiw/react-codemirror": "^4.21.24",
-        "markdown-to-jsx": "^7.7.1"
+        "markdown-to-jsx": "^9.7.4"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "^1.0.0-rc1"
