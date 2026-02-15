@@ -3,8 +3,12 @@
 `yarn test`
 `yarn dist`
 `yarn set-version 0.28.1`
-`yarn publish-all`
+`OTP=xyz yarn publish-all`
 `yarn install`
+
+## prerelease
+
+`TAG=next OTP=xyz yarn publish-all`
 
 # typescript project references
 
