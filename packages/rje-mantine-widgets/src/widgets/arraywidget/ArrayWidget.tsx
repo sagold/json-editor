@@ -10,7 +10,7 @@ import {
     Editor
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
-import { useDraggableItems, SortableOptions } from '../../useDraggableItems';
+import { useDraggableItems, SortableOptions } from '../../features/dragndrop/useDraggableItems';
 import { useRef } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';

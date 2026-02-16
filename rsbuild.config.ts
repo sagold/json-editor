@@ -1,5 +1,5 @@
 export default {
     source: {
-        exclude: [/\.(test|stories)\.tsx?$/]
+        exclude: [/\.(test|stories)\.tsx?$/, /\/docs\//]
     }
 };

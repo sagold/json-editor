@@ -1,6 +1,7 @@
 import Sortable from 'sortablejs';
 import { Editor } from '@sagold/react-json-editor';
 import { useEffect, RefObject } from 'react';
+import { getParentArrayPointer } from './getParentArrayPointer';
 
 /** sortable options: https://github.com/SortableJS/Sortable */
 export type SortableOptions = {
@@ -36,17 +37,6 @@ export function useDraggableItems(editor: Editor, options: DraggableItemsProps, 
     };
 }
 
-export function getArrayPointer(element: HTMLElement) {
-    let parent = element.parentElement;
-    while (parent != null && parent !== document.body) {
-        if (parent.getAttribute('data-type') === 'array') {
-            return parent.getAttribute('data-id');
-        }
-        parent = parent.parentElement;
-    }
-    return undefined;
-}
-
 function createOnSortEnd(editor: Editor, fromPointer: string) {
     return function onSortEnd(event: Sortable.SortableEvent) {
         const targetIndex = parseInt(`${event.newIndex}`);
@@ -55,9 +45,8 @@ function createOnSortEnd(editor: Editor, fromPointer: string) {
         }
         const { from, oldIndex, item, to } = event;
 
-        const targetPointer = getArrayPointer(to);
+        const targetPointer = getParentArrayPointer(to);
         if (targetPointer == undefined) {
-            console.error('array widget failed resolving target pointer of', to);
             return;
         }
 

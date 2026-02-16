@@ -1,8 +1,8 @@
 import Sortable from 'sortablejs';
-import { JsonForm, Editor } from '@sagold/rje-mantine-widgets';
+import { JsonForm, Editor, getParentArrayPointer } from '@sagold/rje-mantine-widgets';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { JsonSchema } from 'headless-json-editor';
 
 const schema: JsonSchema = {
@@ -20,22 +20,12 @@ const schema: JsonSchema = {
     }
 };
 
-function getArrayPointer(element: HTMLElement) {
-    let parent = element.parentElement;
-    while (parent != null && parent !== document.body) {
-        if (parent.getAttribute('data-type') === 'array') {
-            return parent.getAttribute('data-id');
-        }
-        parent = parent.parentElement;
-    }
-    return undefined;
-}
-
 function TemplateStory() {
     const ref = useRef<HTMLDivElement>(null);
-    const editor = useRef<Editor<string[]>>(null);
+    const [editor, setEditor] = useState<Editor>();
     useEffect(() => {
-        if (ref.current) {
+        if (ref.current && editor) {
+            // TODO destroy instance
             Sortable.create(ref.current, {
                 handle: '.template',
                 swapThreshold: 4,
@@ -45,22 +35,26 @@ function TemplateStory() {
                 group: { name: 'receive-templates', pull: 'clone' },
                 onEnd(event: Sortable.SortableEvent) {
                     const targetIndex = parseInt(`${event.newIndex}`);
-                    if (isNaN(targetIndex)) {
+                    if (isNaN(targetIndex) || editor == null) {
                         return;
                     }
                     const { item, to } = event;
-                    const targetPointer = getArrayPointer(to);
-                    const targetArray = editor.current.getData(targetPointer) as unknown[];
+                    const targetPointer = getParentArrayPointer(to);
+                    if (targetPointer == null) {
+                        return;
+                    }
+
+                    const targetArray = editor.getData(targetPointer) as unknown[];
                     targetArray.splice(targetIndex, 0, item.getAttribute('data-value'));
                     console.log('TO', targetPointer, targetIndex, targetArray);
-                    editor.current.setValue(targetPointer, targetArray);
+                    editor.setValue(targetPointer, targetArray);
                     // remove dragged html which got injected into dom
                     item.parentElement?.removeChild(item);
                     console.log('set');
                 }
             });
         }
-    }, [ref]);
+    }, [ref, editor]);
     return (
         <div id="dragndrop--template">
             <style>{`
@@ -89,7 +83,7 @@ function TemplateStory() {
         `}</style>
             <div className="columns">
                 <JsonForm
-                    editor={editor}
+                    editor={setEditor}
                     schema={schema}
                     data={['item default value']}
                     onChange={(data) => console.log(data)}
