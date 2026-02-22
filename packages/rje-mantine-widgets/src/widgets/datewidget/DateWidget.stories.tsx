@@ -44,7 +44,7 @@ export const Default: Story = {
 
 export const FormatDateTime: Story = {
     args: {
-        data: '2023-08-20T14:56:17.657Z',
+        data: new Date().toISOString(),
         schema: {
             title: 'Format date-time',
             type: 'string',

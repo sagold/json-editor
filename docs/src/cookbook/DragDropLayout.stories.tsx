@@ -184,7 +184,7 @@ function TemplateStory() {
 }
 
 const meta: Meta<unknown> = {
-    title: 'Cookbook/DragDropTemplate',
+    title: 'Cookbook/DragDropLayout',
     component: TemplateStory,
     decorators: [MantineThemeDecorator]
 };

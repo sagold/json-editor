@@ -114,7 +114,6 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
     }, [node.value]);
 
     const DatePickerComponent = format === 'date' ? DateInput : DateTimePicker;
-    console.log('value', format, valueFormat, node.value);
 
     return (
         <WidgetField widgetType="date" node={node} options={options} showDescription={false} showError={false}>
@@ -128,7 +127,6 @@ export const DateTimeWidget = widget<StringNode<DateOptions>, string>(({ node, o
                     if (!date) {
                         return setValue('');
                     }
-                    console.log(format, valueFormat, date);
                     if (format === 'date') {
                         return setValue(dayjs(date).format('YYYY-MM-DD'));
                     }
