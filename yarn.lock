@@ -8134,7 +8134,7 @@ __metadata:
     "@sagold/json-pointer": ^7.2.1
     "@types/uuid": ^10.0.0
     fast-equals: ^6.0.0
-    json-schema-library: ^11.0.1
+    json-schema-library: ^11.0.2
     short-unique-id: ^5.3.2
   languageName: unknown
   linkType: soft
@@ -9848,9 +9848,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^11.0.1":
-  version: 11.0.1
-  resolution: "json-schema-library@npm:11.0.1"
+"json-schema-library@npm:^11.0.2":
+  version: 11.0.2
+  resolution: "json-schema-library@npm:11.0.2"
   dependencies:
     "@sagold/json-pointer": ^7.2.1
     "@sagold/json-query": ^6.2.0
@@ -9861,7 +9861,7 @@ __metadata:
     smtp-address-parser: ^1.1.0
     uri-js: ^4.4.1
     valid-url: ^1.0.9
-  checksum: 00267088c718aab3c4898853dba055dfa00a9d29961cdb8d87b77d7972eefaacd66790d434b9be4175ff8a1c26d5f559d002777f07dc5f017df2e8db2473c9f2
+  checksum: 82b3d940f9c090938d4cfaa48e86c0e6e0159c0549df476fd921cfda3f436cf1a743ec89d4463656be91fe2870cb91ccd1752392b53128510c0ee2e648106153
   languageName: node
   linkType: hard
 
