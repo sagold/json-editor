@@ -3228,11 +3228,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/react-json-editor@^1.0.0-rc2, @sagold/react-json-editor@workspace:packages/react-json-editor":
+"@sagold/react-json-editor@^1.0.0-rc3, @sagold/react-json-editor@workspace:packages/react-json-editor":
   version: 0.0.0-use.local
   resolution: "@sagold/react-json-editor@workspace:packages/react-json-editor"
   dependencies:
-    headless-json-editor: ^1.0.0-rc2
+    headless-json-editor: ^1.0.0-rc3
     markdown-to-jsx: ^9.7.4
   languageName: unknown
   linkType: soft
@@ -3246,7 +3246,7 @@ __metadata:
     "@uiw/react-codemirror": ^4.25.4
     markdown-to-jsx: ^9.7.4
   peerDependencies:
-    "@sagold/react-json-editor": ^1.0.0-rc2
+    "@sagold/react-json-editor": ^1.0.0-rc3
   languageName: unknown
   linkType: soft
 
@@ -3257,7 +3257,7 @@ __metadata:
     "@mantine/core": ^8.3.14
     "@mantine/dates": ^8.3.14
     "@mantine/hooks": ^8.3.14
-    "@sagold/react-json-editor": ^1.0.0-rc2
+    "@sagold/react-json-editor": ^1.0.0-rc3
     "@types/sortablejs": ^1.15.9
     classnames: ^2.5.1
     dayjs: ^1.11.19
@@ -8127,7 +8127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"headless-json-editor@^1.0.0-rc2, headless-json-editor@workspace:packages/headless-json-editor":
+"headless-json-editor@^1.0.0-rc3, headless-json-editor@workspace:packages/headless-json-editor":
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:

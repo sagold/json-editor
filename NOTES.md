@@ -2,9 +2,10 @@
 
 `yarn test`
 `yarn dist`
-`yarn set-version 0.28.1`
-`OTP=xyz yarn publish-all`
+`yarn set-version 1.0.0-rc3`
 `yarn install`
+`npm login`
+`OTP=xyz yarn publish-all` for rc `TAG=next OTP=xyz yarn publish-all`
 
 ## prerelease
 
