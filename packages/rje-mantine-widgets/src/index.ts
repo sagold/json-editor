@@ -10,3 +10,5 @@ export type { ArrayOptions } from './widgets/arraywidget/ArrayWidget';
 
 export { getParentArrayPointer } from './features/dragndrop/getParentArrayPointer';
 export { useDraggableItems, useDraggableTemplates } from './features/dragndrop/useDraggableItems';
+
+export { SelectionProvider, SelectionContext, SelectionIcon } from './features/selection';
