@@ -1,7 +1,7 @@
 import { Radio } from '@mantine/core';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 
-const useWindowEvent = (event, callback) => {
+const useWindowEvent = (event: string, callback: EventListener) => {
     useEffect(() => {
         window.addEventListener(event, callback);
         return () => window.removeEventListener(event, callback);
