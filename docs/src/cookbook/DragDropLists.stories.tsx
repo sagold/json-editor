@@ -52,6 +52,7 @@ export const DragDropLists: StoryObj<typeof JsonForm> = {
                     title: 'first list',
                     type: 'array',
                     options: {
+                        showHeader: false,
                         sortable: {
                             enabled: true,
                             group: 'first&second'
@@ -66,6 +67,7 @@ export const DragDropLists: StoryObj<typeof JsonForm> = {
                     title: 'second list',
                     type: 'array',
                     options: {
+                        showHeader: false,
                         sortable: {
                             enabled: true,
                             group: 'first&second'
