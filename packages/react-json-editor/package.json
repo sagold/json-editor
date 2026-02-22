@@ -1,12 +1,12 @@
 {
     "name": "@sagold/react-json-editor",
-    "version": "1.0.0-rc2",
+    "version": "1.0.0-rc3",
     "license": "MIT",
     "module": "./dist/es6/src/index.js",
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/reactJsonEditor.js",
     "dependencies": {
-        "headless-json-editor": "^1.0.0-rc2",
+        "headless-json-editor": "^1.0.0-rc3",
         "markdown-to-jsx": "^9.7.4"
     }
 }
