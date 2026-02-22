@@ -56,7 +56,7 @@ export function useDraggableTemplates(
                 animation: 1,
                 delay: 1,
                 sort: false,
-                group: { name: 'receive-templates', pull: 'clone' },
+                group: { name: 'receive-templates', pull: 'clone', put: false },
                 onAdd: (event) => event.preventDefault(),
                 onEnd(event: Sortable.SortableEvent) {
                     const targetIndex = parseInt(`${event.newIndex}`);

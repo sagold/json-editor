@@ -1,8 +1,7 @@
-import Sortable from 'sortablejs';
-import { JsonForm, Editor, getParentArrayPointer } from '@sagold/rje-mantine-widgets';
+import { JsonForm, Editor, useDraggableTemplates } from '@sagold/rje-mantine-widgets';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { JsonSchema } from 'headless-json-editor';
 
 // prevent slide back animation
