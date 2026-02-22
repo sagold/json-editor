@@ -10,7 +10,7 @@ import {
     JsonSchema
 } from 'json-schema-library';
 
-export const drafts = [draft04, draft07, draft2020, draft2019].map((draft) =>
+export const drafts = [draft04, draft07, draft2019, draft2020].map((draft) =>
     extendDraft(draft, {
         keywords: [oneOfFuzzyKeyword],
         errors: {
