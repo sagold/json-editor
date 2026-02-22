@@ -411,6 +411,12 @@ export class HeadlessEditor<Data = unknown> {
      */
     getArrayAddOptions(node: ArrayNode): SchemaNode[] {
         const selections = node.schemaNode.getChildSelection(node.children.length);
+        if (selections == null) {
+            console.log('failed node', node);
+            console.error(`Failed fetching child options for ${node.pointer}`);
+            return [];
+        }
+
         if (isJsonError(selections) || selections.length === 0) {
             return [node.schemaNode.compileSchema({ type: 'string' })];
         }

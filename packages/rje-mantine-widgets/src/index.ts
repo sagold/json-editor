@@ -9,3 +9,4 @@ export { ArrayWidget, ArrayWidgetPlugin } from './widgets/arraywidget/ArrayWidge
 export type { ArrayOptions } from './widgets/arraywidget/ArrayWidget';
 
 export { getParentArrayPointer } from './features/dragndrop/getParentArrayPointer';
+export { useDraggableItems, useDraggableTemplates } from './features/dragndrop/useDraggableItems';

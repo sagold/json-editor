@@ -17,6 +17,11 @@ export type DraggableItemsProps = {
     sortable?: SortableOptions;
 };
 
+// !!prevent slide back animation
+// document.addEventListener('dragover', function (e) {
+//     e.preventDefault();
+// });
+
 export function useDraggableItems(editor: Editor, options: DraggableItemsProps, ref: RefObject<HTMLElement | null>) {
     const enabled = (options.sortable?.enabled && options.disabled !== true && options?.readOnly !== true) ?? false;
     const group = options.sortable?.group ?? options.pointer;
@@ -35,6 +40,46 @@ export function useDraggableItems(editor: Editor, options: DraggableItemsProps, 
     return {
         sortableEnabled: enabled
     };
+}
+
+export function useDraggableTemplates(
+    element: RefObject<HTMLElement | null>,
+    editor: Editor | undefined,
+    handle: string
+) {
+    useEffect(() => {
+        if (element.current && editor) {
+            // TODO destroy instancea
+            Sortable.create(element.current, {
+                handle,
+                swapThreshold: 1,
+                animation: 1,
+                delay: 1,
+                sort: false,
+                group: { name: 'receive-templates', pull: 'clone' },
+                onAdd: (event) => event.preventDefault(),
+                onEnd(event: Sortable.SortableEvent) {
+                    const targetIndex = parseInt(`${event.newIndex}`);
+                    if (isNaN(targetIndex) || editor == null) {
+                        return;
+                    }
+                    const { item, to } = event;
+                    const targetPointer = getParentArrayPointer(to);
+                    if (targetPointer == null) {
+                        return;
+                    }
+
+                    const targetArray = editor.getData(targetPointer) as unknown[];
+                    targetArray.splice(targetIndex, 0, item.getAttribute('data-value'));
+                    console.log('TO', targetPointer, targetIndex, targetArray);
+                    editor.setValue(targetPointer, targetArray);
+                    // remove dragged html which got injected into dom
+                    item.parentElement?.removeChild(item);
+                    console.log('set');
+                }
+            });
+        }
+    }, [element, editor, handle]);
 }
 
 function createOnSortEnd(editor: Editor, fromPointer: string) {

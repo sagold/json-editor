@@ -33,75 +33,145 @@ export const OneOfRefFails: Story = {
         editorProps: {
             validate: true,
             data: {
-                main: [{ type: 'parent', children: [{ type: 'one' }, { type: 'one' }] }]
+                pageContents: []
             },
             schema: {
                 type: 'object',
-                description: 'nested OneOfs, where a nested oneOf is invalid',
-                required: ['main'],
+                required: ['pageContents'],
                 properties: {
-                    main: {
+                    pageContents: {
+                        title: 'Page',
                         type: 'array',
+                        options: {
+                            classNames: ['scm-page-contents'],
+                            sortable: {
+                                enabled: true
+                            }
+                        },
                         items: {
                             oneOfProperty: 'type',
-                            oneOf: [{ $ref: '#/$defs/parent' }]
+                            oneOf: [{ $ref: '#/$defs/layout-column-one' }, { $ref: '#/$defs/layout-column-two' }]
                         }
+                    },
+                    footer: {
+                        $ref: '#/$defs/component:footer'
                     }
                 },
                 $defs: {
-                    parent: {
+                    'layout-column-two': {
+                        title: 'two column layout',
                         type: 'object',
-                        title: 'Parent',
-                        description:
-                            'Adding a duplicate item to this list fails as uniqueItems=true in children. In addition, the error message should flag the duplicated item with a unique-item error',
                         required: ['type', 'children'],
                         properties: {
                             type: {
                                 options: { hidden: true },
                                 type: 'string',
-                                const: 'parent'
+                                const: 'layout:column-two'
                             },
                             children: {
                                 type: 'array',
-                                title: 'Children',
-                                uniqueItems: true,
-                                items: {
-                                    oneOfProperty: 'type',
-                                    oneOf: [
-                                        {
-                                            type: 'object',
-                                            title: 'Child: First',
-                                            required: ['type', 'title'],
-                                            properties: {
-                                                type: {
-                                                    options: { hidden: true },
-                                                    type: 'string',
-                                                    const: 'one'
-                                                },
-                                                title: {
-                                                    type: 'string',
-                                                    default: 'First'
-                                                }
-                                            }
-                                        },
-                                        {
-                                            type: 'object',
-                                            title: 'Child: Second',
-                                            required: ['type', 'title'],
-                                            properties: {
-                                                type: {
-                                                    options: { hidden: true },
-                                                    type: 'string',
-                                                    const: 'two'
-                                                },
-                                                title: {
-                                                    type: 'string',
-                                                    default: 'Second'
-                                                }
-                                            }
+                                options: { classNames: ['.scm-two-columns'] },
+                                prefixItems: [
+                                    {
+                                        $ref: '#/$defs/layout-column-one',
+                                        options: {
+                                            classNames: ['.scm-column']
                                         }
+                                    },
+                                    {
+                                        $ref: '#/$defs/layout-column-one',
+                                        options: {
+                                            classNames: ['.scm-column']
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    'layout-column-one': {
+                        type: 'object',
+                        title: 'single column layout',
+                        required: ['type', 'children'],
+                        properties: {
+                            type: {
+                                options: { hidden: true },
+                                type: 'string',
+                                const: 'layout:column-one'
+                            },
+                            children: {
+                                type: 'array',
+                                uniqueItems: true,
+                                options: {
+                                    sortable: {
+                                        enabled: true
+                                    }
+                                },
+                                items: {
+                                    oneOfPropertyId: 'type',
+                                    oneOf: [
+                                        { $ref: '#/$defs/component:cta' },
+                                        { $ref: '#/$defs/component:product-list' },
+                                        { $ref: '#/$defs/component:address' }
                                     ]
                                 }
+                            }
+                        }
+                    },
+                    components: {
+                        oneOf: [
+                            { $ref: '#/$defs/component:cta' },
+                            { $ref: '#/$defs/component:product-list' },
+                            { $ref: '#/$defs/component:address' }
+                        ]
+                    },
+                    'component:cta': {
+                        type: 'object',
+                        title: 'CTA',
+                        required: ['type'],
+                        properties: {
+                            type: {
+                                options: { hidden: true },
+                                type: 'string',
+                                const: 'module:cta'
+                            }
+                        }
+                    },
+                    'component:product-list': {
+                        type: 'object',
+                        title: 'Product List',
+                        required: ['type'],
+                        properties: {
+                            type: {
+                                options: { hidden: true },
+                                type: 'string',
+                                const: 'module:product-list'
+                            }
+                        }
+                    },
+                    'component:address': {
+                        type: 'object',
+                        title: 'Address',
+                        required: ['type'],
+                        properties: {
+                            type: {
+                                options: { hidden: true },
+                                type: 'string',
+                                const: 'module:address'
+                            }
+                        }
+                    },
+                    'component:footer': {
+                        type: 'object',
+                        title: 'Footer',
+                        required: ['type', 'withLogo'],
+                        properties: {
+                            type: {
+                                options: { hidden: true },
+                                type: 'string',
+                                const: 'module:footer'
+                            },
+                            withLogo: {
+                                type: 'boolean'
                             }
                         }
                     }
