@@ -17,6 +17,7 @@ import { ArrayOptions } from '../arraywidget/ArrayWidget';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 import classNames from 'classnames';
 import { ActionButton } from '../../components/actionbutton/ActionButton';
+import { useSelect } from '../../features/selection';
 
 export type ObjectOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
@@ -35,6 +36,7 @@ export type ObjectOptions = DefaultNodeOptions<{
     descriptionInline?: boolean;
     /** if true will add a separator line to the header */
     showTitleDivider?: boolean;
+    selectable?: boolean;
     /** placement of title within the separator */
     dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
     /** Mantine Title Props */
@@ -92,8 +94,18 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         options.showInlineAddAction ??
         (!withHeaderMenu && options.readOnly !== true && node.missingProperties.length > 0);
 
+    const [selected, onSelect] = useSelect(node.pointer, options.selectable);
+
     return (
-        <WidgetField widgetType="object" node={node} options={options} showError={false} showDescription={false}>
+        <WidgetField
+            widgetType="object"
+            className={classNames({ 'rje--selectable': onSelect, 'rje--selected': selected })}
+            node={node}
+            options={options}
+            showError={false}
+            showDescription={false}
+            onClick={onSelect}
+        >
             <WidgetInputWrapper options={options} errors={node.errors} header={widgetHeader}>
                 <Collapse
                     in={contentOpened}

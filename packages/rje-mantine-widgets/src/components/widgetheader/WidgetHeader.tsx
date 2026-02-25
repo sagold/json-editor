@@ -77,7 +77,10 @@ export function WidgetParentHeader({
     }
 
     return (
-        <div className="rje-widget__parent-header" style={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+        <div
+            className="rje-widget__parent-header"
+            style={{ flexGrow: 1, display: 'flex', gap: '0.5em', alignItems: 'center' }}
+        >
             {leftSection}
             <Divider
                 labelPosition="left"

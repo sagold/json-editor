@@ -37,11 +37,14 @@ p + .rje-content--with-header {
     padding-top: var(--mantine-spacing-xs);
 }
 
+.rje--selectable > div > label {
+    cursor: pointer;
+}
+
 .rje--selected {
-    outline-color: rgba(180, 180, 240, 1);
-    outline-offset: -2px;
-    outline-style: solid;
-    outline-width: 4px;
-    box-sizing: border-box;
-    // background: blue;
+    background: rgba(41, 182, 246, 0.25);
+}
+
+tr.rje--selected > td > .rje--selected {
+    background: transparent;
 }

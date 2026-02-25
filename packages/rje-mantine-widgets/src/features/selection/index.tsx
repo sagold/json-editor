@@ -1,5 +1,5 @@
 import { Radio } from '@mantine/core';
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, use, useCallback, useContext, useEffect, useState } from 'react';
 
 const useWindowEvent = (event: string, callback: EventListener) => {
     useEffect(() => {
@@ -18,13 +18,9 @@ export const SelectionContext = createContext<{
     }
 });
 
-export function SelectionProvider({
-    children,
-    onSelect
-}: {
-    children: ReactNode;
-    onSelect?: (pointer: string | undefined) => void;
-}) {
+export type OnSelectHandler = (pointer: string | undefined) => void;
+
+export function SelectionProvider({ children, onSelect }: { children: ReactNode; onSelect?: OnSelectHandler }) {
     const [selected, setSelected] = useState<string | undefined>(undefined);
     const unselect = useCallback(() => setSelected(undefined), [setSelected]);
     useEffect(() => {
@@ -34,10 +30,29 @@ export function SelectionProvider({
     return <SelectionContext value={{ selected, set: setSelected }}> {children} </SelectionContext>;
 }
 
+/**
+ * @returns [isSelected: boolean, onSelectHandler: undefined|(event: MouseEvent) => void]
+ */
+export function useSelect(pointer: string, selectable: boolean | undefined) {
+    if (selectable) {
+        const selection = use(SelectionContext);
+        return [
+            selection.selected === pointer,
+            (event: MouseEvent) => {
+                event.stopPropagation();
+                event.preventDefault();
+                selection.set(pointer);
+            }
+        ];
+    }
+    return [false, undefined];
+}
+
 export function SelectionIcon({ pointer }: { pointer: string }) {
     const selection = useContext(SelectionContext);
     return (
         <Radio
+            style={{ '--mantine-scale': '0.7' }}
             checked={selection.selected === pointer}
             onClick={(event) => {
                 selection.set(pointer);

@@ -58,6 +58,7 @@ export const Options: Story = {
         showItemControls: true,
         /** if set, will add an accordion in the given toggle state */
         collapsed: false,
+        selectable: false,
         /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
         showEditJsonAction: true,
         /** if true will add a separator line to the header */

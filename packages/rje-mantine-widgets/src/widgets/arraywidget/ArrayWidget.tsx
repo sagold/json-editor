@@ -11,13 +11,14 @@ import {
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
 import { useDraggableItems, SortableOptions } from '../../features/dragndrop/useDraggableItems';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { WidgetInputWrapper } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { WidgetMenu, WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 import { ActionButton } from '../../components/actionbutton/ActionButton';
 import { SchemaNode } from 'json-schema-library';
+import { SelectionContext } from '../../features/selection';
 
 // for comparison https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/index.ts
 // and https://github.com/sueddeutsche/editron/blob/master/src/editors/arrayeditor/ArrayItem.ts
@@ -52,6 +53,7 @@ export type ArrayOptions = DefaultNodeOptions<{
     dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
     /** Mantine Title Props */
     titleProps?: TitleProps;
+    selectable?: boolean;
 
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
@@ -122,6 +124,8 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
         />
     );
 
+    const { selected } = useContext(SelectionContext);
+
     if (options.canAddItem == null) {
         throw new Error('canAddItem is null');
     }
@@ -162,7 +166,12 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                             {node.children
                                 .filter((child) => !child.options.hidden)
                                 .map((child) => (
-                                    <Table.Tr key={child.id} role="array-listitem" aria-rowindextext={child.pointer}>
+                                    <Table.Tr
+                                        key={child.id}
+                                        role="array-listitem"
+                                        aria-rowindextext={child.pointer}
+                                        className={selected === child.pointer ? 'rje--selected' : undefined}
+                                    >
                                         {sortableEnabled && DRAG_HANDLE_COLUMN}
                                         <Table.Td width={'100%'} style={{ position: 'relative' }}>
                                             <Widget

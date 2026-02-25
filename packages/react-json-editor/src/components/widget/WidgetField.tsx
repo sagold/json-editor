@@ -14,6 +14,7 @@ export type WidgetFieldProps = {
     children: ReactNode;
     className?: string;
     style?: CSSProperties;
+    onClick?: any;
     /* if set, errors will be taken from this list instead of node.errors.
         Example: Display all errors of children in this widget */
     errors?: JsonError[];
@@ -31,7 +32,19 @@ type WidgetFieldComponent = ForwardRefExoticComponent<
  * container for root of a widget
  */
 export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function WidgetField(
-    { widgetType, node, options, children, errors, additionalError, showDescription, showError, className, style },
+    {
+        widgetType,
+        node,
+        options,
+        children,
+        errors,
+        additionalError,
+        showDescription,
+        showError,
+        className,
+        style,
+        onClick
+    },
     ref
 ) {
     const listOfErrors = Array.isArray(errors) ? errors : node.errors;
@@ -42,6 +55,7 @@ export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function
     const { disabled = false } = options;
     return (
         <div
+            onClick={onClick}
             className={classNames(
                 'rje-field',
                 `rje-field--${parentNode ? 'parent' : 'value'}`,
