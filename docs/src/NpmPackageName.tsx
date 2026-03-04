@@ -11,7 +11,7 @@ export function NpmPackageName({ name }: { name: string }) {
     return (
         <div
             style={{
-                fontFamily: 'Inter',
+                // fontFamily: 'Inter',
                 display: 'inline-flex',
                 fontWeight: 500,
                 fontSize: '0.75em',

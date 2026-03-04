@@ -21,17 +21,7 @@ import logo from '../images/he-square-700x540.png';
   <img src={logo} style={{ marginBottom: -1, width: '100%', maxWidth: 400 }} />
 </div>
 
-<h1 style={{ textAlign: 'center' }}>json-editor documentation</h1>
-
-> Documentation around [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor), an implementation of [headless-json-editor](https://github.com/sagold/json-editor/tree/main/packages/headless-json-editor).
-
-<NpmPackageName name="@sagold/react-json-editor" />
-
-<div style={{ textAlign: 'center' }}>
-  [Overview](#overview) | [Roadmap](#roadmap) | [Changelog](?path=/docs/changelog--docs)
-</div>
-
-## Overview
+<h1 style={{ textAlign: 'center' }}>json-editor</h1>
 
 The focus of this documentation mostly lies on user interface features, its configuration options and packages. For an understanding of the general behaviour of `headless-json-editor` you can refer to the sections on root, mainly:
 
@@ -48,7 +38,7 @@ The main section focusses on overall json-schema behaviour, feature support and 
 For a **quick setup** of `react-json-editor` and its default widgets you need the following packages installed
 
 ```sh
-yarn add @sagold/react-json-editor @sagold/rje-mantine-widgets @mantine/core @mantine/hooks @mantine/dates
+yarn add @sagold/react-json-editor @sagold/rje-mantine-widgets
 ```
 
 ```tsx
@@ -123,3 +113,10 @@ _further topics_
 _done_
 
 - [✓] deprecate react-aria in favor of mantine
+
+<div style={{ display: 'flex', gap: '0.5em', paddingTop: '0.1em' }}>
+
+  <NpmPackageName name="@sagold/react-json-editor" />
+  <NpmPackageName name="@sagold/rje-mantine-widgets" />
+  <NpmPackageName name="@sagold/rje-code-widgets" />
+</div>

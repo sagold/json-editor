@@ -72,7 +72,7 @@ export const Options: Story = {
         },
         editorProps: {
             validate: true,
-            data: [{ title: 'Overview of object options' }],
+            data: { title: 'Overview of object options' },
             schema: {
                 title: 'Object Widget Options',
                 type: 'object',
@@ -87,9 +87,42 @@ export const Options: Story = {
                         type: 'string',
                         format: 'textarea'
                     },
-                    caption: {
-                        title: 'Caption',
+                    showImage: {
+                        title: 'Show Image',
+                        type: 'boolean'
+                    },
+                    sources: {
+                        title: 'Sources',
+                        type: 'array',
+                        format: 'taglist',
+                        items: {
+                            type: 'string'
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+export const Disabled: Story = {
+    args: {
+        editorProps: {
+            validate: true,
+            data: { title: 'Overview of object options' },
+            schema: {
+                title: 'Disabled object using schema-options',
+                type: 'object',
+                required: ['title', 'showImage'],
+                options: { disabled: true },
+                properties: {
+                    title: {
+                        title: 'Title',
                         type: 'string'
+                    },
+                    showImage: {
+                        title: 'Show Image',
+                        type: 'boolean'
                     },
                     sources: {
                         title: 'Sources',
