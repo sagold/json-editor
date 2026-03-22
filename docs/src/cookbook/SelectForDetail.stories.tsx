@@ -17,7 +17,7 @@ function SelectForDetailsComponent() {
     const [selected, setSelected] = useState<string | undefined>();
     const editor = useEditor({
         onChange: (data) => console.log(data),
-        data: [{ type: 'image' }, { type: 'video' }],
+        data: [{ type: 'image' }, { type: 'paragraph' }],
         schema: {
             $schema: 'draft-2020-12',
             type: 'array',
@@ -28,21 +28,25 @@ function SelectForDetailsComponent() {
                     {
                         title: 'Image',
                         type: 'object',
-                        options: { selectable: true },
-                        required: ['type', 'title'],
+                        options: { selectable: true, hideChildren: true },
+                        required: ['type', 'url', 'width', 'height', 'altText'],
                         properties: {
                             type: { const: 'image', options: { hidden: true } },
-                            title: { type: 'string', options: { hidden: true } }
+                            url: { type: 'string' },
+                            width: { type: 'number' },
+                            height: { type: 'number' },
+                            altText: { type: 'string' }
                         }
                     },
                     {
-                        title: 'Video',
+                        title: 'Paragraph',
                         type: 'object',
-                        options: { selectable: true },
-                        required: ['type', 'title'],
+                        options: { selectable: true, hideChildren: true },
+                        required: ['type', 'title', 'text'],
                         properties: {
-                            type: { const: 'video', options: { hidden: true } },
-                            title: { type: 'string', options: { hidden: true } }
+                            type: { const: 'paragraph', options: { hidden: true } },
+                            title: { type: 'string' },
+                            text: { type: 'string', format: 'textarea' }
                         }
                     }
                 ]
@@ -61,7 +65,7 @@ function SelectForDetailsComponent() {
     let detailsNode;
     if (selected) {
         detailsNode = editor.getNode(selected);
-        Details = editor.getWidget(detailsNode, { hidden: false });
+        Details = editor.getWidget(detailsNode);
     }
 
     return (
@@ -77,7 +81,7 @@ function SelectForDetailsComponent() {
                 <RootWidget editor={editor} node={rootNode} />
             </SelectionProvider>
             <div className="sidebar" style={{ flexGrow: 1, minWidth: '20em' }}>
-                {selected ? <Details editor={editor} node={detailsNode} options={{ hidden: false }} /> : null}
+                {selected ? <Details editor={editor} node={detailsNode} options={{ hideChildren: false }} /> : null}
             </div>
         </div>
     );

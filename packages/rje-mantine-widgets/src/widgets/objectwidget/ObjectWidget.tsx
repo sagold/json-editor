@@ -41,6 +41,8 @@ export type ObjectOptions = DefaultNodeOptions<{
     dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
     /** Mantine Title Props */
     titleProps?: TitleProps;
+    /** hide all children */
+    hideChildren?: boolean;
 
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
@@ -96,6 +98,8 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
 
     const [selected, onSelect] = useSelect(node.pointer, options.selectable);
 
+    console.log('render object', options);
+
     return (
         <WidgetField
             widgetType="object"
@@ -113,7 +117,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
                 >
                     <Stack className="rje-object__properties">
                         {node.children
-                            .filter((child) => !child.options.hidden)
+                            .filter((child) => !child.options.hidden && !options.hideChildren)
                             .map((child) => (
                                 <ObjectProperty
                                     key={child.id}
