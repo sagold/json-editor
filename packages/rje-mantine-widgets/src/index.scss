@@ -26,37 +26,28 @@
     position: relative;
     background: var(--mantine-primary-color-0) !important;
 
-    * * {
-        visibility: hidden;
-    }
-
-    &:after {
-        z-index: 1;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+    td {
         bounding-box: border-box;
         background: var(--mantine-primary-color-light);
     }
 
     &.drag--invalid {
-        position: relative;
-        box-sizing: border-box;
         &:after {
             z-index: 1;
             content: attr(data-errormessage);
             position: absolute;
-            color: #fff;
+            padding: 1em;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 1em;
-            bounding-box: border-box;
-            // background: var(--mantine-color-error);
+            color: #fff;
+        }
+
+        td {
             background: var(--mantine-color-red-5);
+        }
+
+        td * {
+            visibility: hidden;
         }
     }
 }
