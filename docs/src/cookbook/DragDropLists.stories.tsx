@@ -61,7 +61,8 @@ export const DragDropLists: StoryObj<typeof JsonForm> = {
                     items: {
                         type: 'string',
                         default: 'from first'
-                    }
+                    },
+                    maxItems: 3
                 },
                 second: {
                     title: 'second list',

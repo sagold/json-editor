@@ -13,13 +13,52 @@
         format(woff2);
 }
 
+// ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+// chosenClass: "sortable-chosen",  // Class name for the chosen item
+// dragClass: "sortable-drag",  // Class name for the dragging item
+
+// item being dragged, only access in onStart(_, dragElement)
 .sortable-chosen {
-    background: var(--mantine-primary-color-0) !important;
+    background: var(--rje-dragged-color) !important;
 }
 
 .sortable-ghost {
+    position: relative;
     background: var(--mantine-primary-color-0) !important;
-    opacity: 0.05;
+
+    * * {
+        visibility: hidden;
+    }
+
+    &:after {
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        bounding-box: border-box;
+        background: var(--mantine-primary-color-light);
+    }
+
+    &.drag--invalid {
+        position: relative;
+        box-sizing: border-box;
+        &:after {
+            z-index: 1;
+            content: attr(data-errormessage);
+            position: absolute;
+            color: #fff;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1em;
+            bounding-box: border-box;
+            // background: var(--mantine-color-error);
+            background: var(--mantine-color-red-5);
+        }
+    }
 }
 
 .rje-array__items {
