@@ -86,11 +86,15 @@ function validateDropTarget(editor: Editor, from: OriginContext, to: TargetConte
     return targetNode.schemaNode.validate(toValue, to.arrayPointer);
 }
 
-export function useDraggableItems(editor: Editor, options: DraggableItemsProps, ref: RefObject<HTMLElement | null>) {
+export function useDraggableItems(
+    editor: Editor | undefined,
+    options: DraggableItemsProps,
+    ref: RefObject<HTMLElement | null>
+) {
     const enabled = (options.sortable?.enabled && options.disabled !== true && options?.readOnly !== true) ?? false;
     const group = options.sortable?.group ?? options.pointer;
     useEffect(() => {
-        if (enabled && ref.current && !options.disabled && !options.readOnly) {
+        if (editor && enabled && ref.current && !options.disabled && !options.readOnly) {
             Sortable.create(ref.current, {
                 handle: '.rje-drag__handle',
                 swapThreshold: 4,
@@ -127,20 +131,23 @@ export function useDraggableItems(editor: Editor, options: DraggableItemsProps, 
 }
 
 export function useDraggableTemplates(
-    element: RefObject<HTMLElement | null>,
     editor: Editor | undefined,
-    handle: string
+    options: {
+        group?: string;
+        handle?: string;
+    },
+    element: RefObject<HTMLElement | null>
 ) {
     useEffect(() => {
         if (element.current && editor) {
             // TODO destroy instancea
             Sortable.create(element.current, {
-                handle,
+                handle: options.handle,
                 swapThreshold: 1,
                 animation: 1,
                 delay: 1,
                 sort: false,
-                group: { name: 'receive-templates', pull: 'clone', put: false },
+                group: { name: options.group ?? 'undefined', pull: 'clone', put: false },
                 onAdd: (event) => event.preventDefault(),
                 onEnd(event: Sortable.SortableEvent) {
                     const to = getTargetContext(event);
@@ -158,7 +165,7 @@ export function useDraggableTemplates(
                 }
             });
         }
-    }, [element, editor, handle]);
+    }, [element, editor, options]);
 }
 
 function retrieveDataValue(item: HTMLElement) {

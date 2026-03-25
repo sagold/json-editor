@@ -27,7 +27,7 @@ const schema: JsonSchema = {
 function TemplateStory() {
     const ref = useRef<HTMLDivElement>(null);
     const [editor, setEditor] = useState<Editor>();
-    useDraggableTemplates(ref, editor, '.template');
+    useDraggableTemplates(editor, { handle: '.template', group: 'receive-templates' }, ref);
     return (
         <div id="dragndrop--template">
             <style>{`
