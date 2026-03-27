@@ -1,3 +1,5 @@
+# 1.0.0
+
 # 0.37.0
 
 - draft support from draft-04 to draft-2020-12

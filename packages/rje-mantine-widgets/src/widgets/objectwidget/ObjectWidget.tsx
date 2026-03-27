@@ -98,8 +98,6 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
 
     const [selected, onSelect] = useSelect(node.pointer, options.selectable);
 
-    console.log('render object', options);
-
     return (
         <WidgetField
             widgetType="object"

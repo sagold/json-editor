@@ -2,7 +2,7 @@
 
 `yarn test`
 `yarn dist`
-`yarn set-version 1.0.0-rc3`
+`yarn set-version 1.0.0-rc4`
 `yarn install`
 `npm login`
 `OTP=xyz yarn publish-all` for rc `TAG=next OTP=xyz yarn publish-all`

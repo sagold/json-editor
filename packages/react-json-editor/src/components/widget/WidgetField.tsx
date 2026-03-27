@@ -55,6 +55,7 @@ export const WidgetField = forwardRef<HTMLDivElement, WidgetFieldProps>(function
     const { disabled = false } = options;
     return (
         <div
+            key={node.pointer} // required to have pointer up to date after some data modifications
             onClick={onClick}
             className={classNames(
                 'rje-field',
