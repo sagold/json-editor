@@ -6,7 +6,7 @@ import { getSections } from './getSections';
 import { useLiveUpdate } from './useLiveUpdate';
 import { ChangeEvent } from 'react';
 
-export type StringOptions = DefaultNodeOptions<{
+export type TextOptions = DefaultNodeOptions<{
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     icon?: string;
@@ -21,7 +21,7 @@ export type StringOptions = DefaultNodeOptions<{
 
 const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.currentTarget.value;
 
-export const TextWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
+export const TextWidget = widget<StringNode<TextOptions>, string>(({ node, options, setValue }) => {
     const [leftSection, rightSection] = getSections(options.icon, options.tag, options.swapIconPosition);
     const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
 
