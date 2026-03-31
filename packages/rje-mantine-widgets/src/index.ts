@@ -1,4 +1,5 @@
-export { Editor } from '@sagold/react-json-editor';
+// do not reexport react-json-editor exports
+// exception: components as this is the context of this package
 
 // widgets
 import { widgets } from './widgets';

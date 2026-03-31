@@ -258,17 +258,17 @@ export const NODES: Record<NodeType, CreateNode> = {
                 const propertyNode = _createNode(nextSN, resolvedData[key], childPointer);
                 node.children.push(propertyNode);
             } else {
-                console.log(
-                    'failed resolving property',
-                    childPointer,
-                    error,
-                    '\n key:',
-                    key,
-                    '\n resolvedData:',
-                    resolvedData,
-                    '\n parent schema:',
-                    objectSN.schema
-                );
+                // console.log(
+                //     'failed resolving property',
+                //     childPointer,
+                //     error,
+                //     '\n key:',
+                //     key,
+                //     '\n resolvedData:',
+                //     resolvedData,
+                //     '\n parent schema:',
+                //     objectSN.schema
+                // );
                 // throw new Error('TODO proper treatment of this case??');
             }
             // @todo what to do with error?

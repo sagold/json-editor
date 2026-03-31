@@ -11,7 +11,7 @@
         "@mantine/hooks": "^8.3.14",
         "@sagold/react-json-editor": "^1.0.0-rc5",
         "classnames": "^2.5.1",
-        "dayjs": "^1.11.19",
+        "dayjs": "^1.11.20",
         "dayjs-plugin-utc": "^0.1.2",
         "sortablejs": "^1.15.7"
     },

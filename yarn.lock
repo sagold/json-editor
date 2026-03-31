@@ -3228,11 +3228,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sagold/react-json-editor@^1.0.0-rc4, @sagold/react-json-editor@workspace:packages/react-json-editor":
+"@sagold/react-json-editor@^1.0.0-rc5, @sagold/react-json-editor@workspace:packages/react-json-editor":
   version: 0.0.0-use.local
   resolution: "@sagold/react-json-editor@workspace:packages/react-json-editor"
   dependencies:
-    headless-json-editor: ^1.0.0-rc4
+    headless-json-editor: ^1.0.0-rc5
     markdown-to-jsx: ^9.7.4
   languageName: unknown
   linkType: soft
@@ -3246,7 +3246,7 @@ __metadata:
     "@uiw/react-codemirror": ^4.25.4
     markdown-to-jsx: ^9.7.4
   peerDependencies:
-    "@sagold/react-json-editor": ^1.0.0-rc4
+    "@sagold/react-json-editor": ^1.0.0-rc5
   languageName: unknown
   linkType: soft
 
@@ -3257,10 +3257,10 @@ __metadata:
     "@mantine/core": ^8.3.14
     "@mantine/dates": ^8.3.14
     "@mantine/hooks": ^8.3.14
-    "@sagold/react-json-editor": ^1.0.0-rc4
+    "@sagold/react-json-editor": ^1.0.0-rc5
     "@types/sortablejs": ^1.15.9
     classnames: ^2.5.1
-    dayjs: ^1.11.19
+    dayjs: ^1.11.20
     dayjs-plugin-utc: ^0.1.2
     sortablejs: ^1.15.7
   languageName: unknown
@@ -6102,10 +6102,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.19":
-  version: 1.11.19
-  resolution: "dayjs@npm:1.11.19"
-  checksum: dfafcca2c67cc6e542fd880d77f1d91667efd323edc28f0487b470b184a11cc97696163ed5be1142ea2a031045b27a0d0555e72f60a63275e0e0401ac24bea5d
+"dayjs@npm:^1.11.20":
+  version: 1.11.20
+  resolution: "dayjs@npm:1.11.20"
+  checksum: 26f4867c4ae1315885ac3e560906d3f8c49cb6a1303e6fdd5f87ace3b814b07a45f036facad70299cea36f3eb62ee2070dd239079c56d8f55e4e684afb752a67
   languageName: node
   linkType: hard
 
@@ -8127,14 +8127,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"headless-json-editor@^1.0.0-rc4, headless-json-editor@workspace:packages/headless-json-editor":
+"headless-json-editor@^1.0.0-rc5, headless-json-editor@workspace:packages/headless-json-editor":
   version: 0.0.0-use.local
   resolution: "headless-json-editor@workspace:packages/headless-json-editor"
   dependencies:
     "@sagold/json-pointer": ^7.2.1
     "@types/uuid": ^10.0.0
     fast-equals: ^6.0.0
-    json-schema-library: ^11.0.2
+    json-schema-library: ^11.1.0
     short-unique-id: ^5.3.2
   languageName: unknown
   linkType: soft
@@ -9848,9 +9848,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-library@npm:^11.0.2":
-  version: 11.0.2
-  resolution: "json-schema-library@npm:11.0.2"
+"json-schema-library@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "json-schema-library@npm:11.1.0"
   dependencies:
     "@sagold/json-pointer": ^7.2.1
     "@sagold/json-query": ^6.2.0
@@ -9861,7 +9861,7 @@ __metadata:
     smtp-address-parser: ^1.1.0
     uri-js: ^4.4.1
     valid-url: ^1.0.9
-  checksum: 82b3d940f9c090938d4cfaa48e86c0e6e0159c0549df476fd921cfda3f436cf1a743ec89d4463656be91fe2870cb91ccd1752392b53128510c0ee2e648106153
+  checksum: db11bb4f1ac483d60ce0cb55ade57c796cf99b267d8dfbef48a3816a6367ee6abde0038ec1ade8beb0a79f60cad0ccd99d15fcbdf5a38e87621ecf204c2e7951
   languageName: node
   linkType: hard
 

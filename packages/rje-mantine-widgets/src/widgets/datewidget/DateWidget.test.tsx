@@ -6,8 +6,6 @@ import { screen } from '@testing-library/dom';
 import { render } from '@testing-library/react';
 import { MantineProvider } from '@mantine/core';
 
-const LOCAL_TIME_OFFST = new Date().getTimezoneOffset() / 60;
-
 describe('DateWidget', () => {
     let editor: Editor;
     beforeEach(
@@ -22,7 +20,8 @@ describe('DateWidget', () => {
     );
 
     it('should show correctly formatted date ', () => {
-        editor.setData('2026-02-22T15:00:00.000Z');
+        const testDate = '2026-02-22T15:00:00.000Z';
+        editor.setData(testDate);
         render(
             <MantineProvider>
                 <DateWidget editor={editor} node={editor.getNode() as ValueNode} />
@@ -30,12 +29,14 @@ describe('DateWidget', () => {
         );
         const $button = screen.getByRole('button');
         expect($button).toHaveClass('mantine-Input-input');
-        // NOTE this will fail for local offset not by full hour
-        expect($button).toHaveTextContent(`22 Feb 2026 ${15 - LOCAL_TIME_OFFST}:00`);
+        // Calculate offset for the specific test date to handle DST correctly
+        const localTimeOffset = new Date(testDate).getTimezoneOffset() / 60;
+        expect($button).toHaveTextContent(`22 Feb 2026 ${15 - localTimeOffset}:00`);
     });
 
     it('should correctly update formatted date', async () => {
-        editor.setData('2026-02-22T15:00:00.000Z');
+        const testDate = '2026-02-22T15:00:00.000Z';
+        editor.setData(testDate);
         const { container, rerender } = render(
             <MantineProvider env="test">
                 <DateWidget editor={editor} node={editor.getNode() as ValueNode} />
@@ -52,7 +53,9 @@ describe('DateWidget', () => {
 
         // check if data was correctly updated
         const datetime = editor.getData();
-        expect(datetime).toBe(`2026-02-22T${12 + LOCAL_TIME_OFFST}:00:00.000Z`);
+        // Calculate offset for the specific test date to handle DST correctly
+        const localTimeOffset = new Date(testDate).getTimezoneOffset() / 60;
+        expect(datetime).toBe(`2026-02-22T${12 + localTimeOffset}:00:00.000Z`);
 
         rerender(
             <MantineProvider env="test">
