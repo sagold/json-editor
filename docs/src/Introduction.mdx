@@ -78,41 +78,6 @@ Working with your another framework or non at all, you start with the following 
 
 > This documentation and react-implementation serves as an example and a reference for your own headless-json-editor integration and widgets. Still, the packages used here may be used directly.
 
-## Roadmap
-
-- [✓] update json-schema-library to v10
-- [ ] introduce file widget
-- [✓] introduce draft-support (especially 2020)
-
-_drag&rop features_
-
-- [✓] drag items across arrays
-- [✓] drag html-widget into array to add items
-- [✓] drag validation of wrong items while dragging
-
-_stability_
-
-- [✓] test weird/incorrect states (change of schema types, errors in dynamic schemas, wrong input data)
-- [✓] improve update flow (using diff to patch less nodes and ensure current input does not lose focus)
-- [✓] deploy docs in workflow only
-- [✓] support react strict mode
-- [✓] add integration test setup
-  - [♻️] test action menu item & visibility
-
-_further topics_
-
-- [✓] allow for error-message configuration in json-schema
-- [ ] async validation errors and update
-- [ ] i18n
-- [ ] wizard option (split form to pages)
-- [ ] delegation editor support (portal for widget details)
-- [ ] can we have sortableJS as plugin?
-- [ ] logic to support un/collapse all option
-
-_done_
-
-- [✓] deprecate react-aria in favor of mantine
-
 <div style={{ display: 'flex', gap: '0.5em', paddingTop: '0.1em' }}>
 
   <NpmPackageName name="@sagold/react-json-editor" />

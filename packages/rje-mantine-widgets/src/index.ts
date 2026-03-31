@@ -36,7 +36,11 @@ export type { StringOptions } from './widgets/stringwidget/StringWidget';
 
 // features
 export { getParentArrayPointer } from './features/dragndrop/getParentArrayPointer';
-export { useDraggableItems, useDraggableTemplates } from './features/dragndrop/useDraggableItems';
+export {
+    useDraggableItems,
+    useDraggableTemplates,
+    preventSlideBackAnimation
+} from './features/dragndrop/useDraggableItems';
 export { SelectionProvider, SelectionContext, SelectionIcon, useSelect } from './features/selection';
 
 // components

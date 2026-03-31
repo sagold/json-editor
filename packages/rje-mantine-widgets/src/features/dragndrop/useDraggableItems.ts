@@ -18,10 +18,17 @@ export type DraggableItemsProps = {
     sortable?: SortableOptions;
 };
 
-// !!prevent slide back animation
-// document.addEventListener('dragover', function (e) {
-//     e.preventDefault();
-// });
+let slideBackIsPrevented = false;
+/**
+ * prevent slide back animation of canceled (or faked) drag-action
+ */
+export function preventSlideBackAnimation() {
+    if (slideBackIsPrevented === true) {
+        return;
+    }
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    slideBackIsPrevented = true;
+}
 
 type OriginContext = {
     itemPointer: string;
@@ -91,14 +98,15 @@ export function useDraggableItems(
     options: DraggableItemsProps,
     ref: RefObject<HTMLElement | null>
 ) {
+    // const [sortableInstance, setSortableInstance] = useRef<Sortable>(undefined);
     const enabled = (options.sortable?.enabled && options.disabled !== true && options?.readOnly !== true) ?? false;
     const group = options.sortable?.group ?? options.pointer;
     useEffect(() => {
         if (editor && enabled && ref.current && !options.disabled && !options.readOnly) {
-            Sortable.create(ref.current, {
+            const sortable = Sortable.create(ref.current, {
                 handle: '.rje-drag__handle',
                 swapThreshold: 4,
-                // delay: 250,
+                ...options,
                 group,
                 // Element dragging ended
                 onEnd: createOnSortEnd(editor, options.pointer),
@@ -122,7 +130,11 @@ export function useDraggableItems(
                     }
                 }
             });
+            return () => {
+                sortable.destroy();
+            };
         }
+        return undefined;
     }, [editor, enabled, group, options, ref]);
 
     return {
@@ -140,13 +152,12 @@ export function useDraggableTemplates(
 ) {
     useEffect(() => {
         if (element.current && editor) {
-            // TODO destroy instancea
-            Sortable.create(element.current, {
-                handle: options.handle,
+            const sortable = Sortable.create(element.current, {
                 swapThreshold: 1,
                 animation: 1,
                 delay: 1,
                 sort: false,
+                ...options,
                 group: { name: options.group ?? 'undefined', pull: 'clone', put: false },
                 onAdd: (event) => event.preventDefault(),
                 onEnd(event: Sortable.SortableEvent) {
@@ -164,7 +175,11 @@ export function useDraggableTemplates(
                     item.parentElement?.removeChild(item);
                 }
             });
+            return () => {
+                sortable.destroy();
+            };
         }
+        return undefined;
     }, [element, editor, options]);
 }
 
