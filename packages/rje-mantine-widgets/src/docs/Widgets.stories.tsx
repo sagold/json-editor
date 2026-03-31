@@ -12,8 +12,8 @@ import { useEffect } from 'react';
 
 function WithTwoColumns(props) {
     const editor = useEditor({ ...props, widgets });
-    // @ts-ignore
     useEffect(() => {
+        // @ts-ignore
         window.getEditor = () => editor;
     }, [editor]);
     return (

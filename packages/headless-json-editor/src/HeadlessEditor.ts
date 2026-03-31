@@ -420,7 +420,13 @@ export class HeadlessEditor<Data = unknown> {
         if (isJsonError(selections) || selections.length === 0) {
             return [node.schemaNode.compileSchema({ type: 'string' })];
         }
-        return selections;
+
+        const result = selections.filter((v) => v != null);
+        if (selections.length !== result.length) {
+            console.warn('missing array add options. Probably incomplete schema for', node.schemaNode.schema);
+            console.log(node.schemaNode);
+        }
+        return result;
     }
 
     destroy() {

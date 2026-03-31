@@ -24,7 +24,7 @@ export function createCodeWidgetPlugin({ extensions, format }: CreateCodeWidgetP
         id: `${format}-code-widget`,
         use: (node) => node.schema.type === 'string' && node.schema.format === format,
         Widget: widget<StringNode<CodeWidgetOptions>>(({ node, options, setValue }) => {
-            const [ref] = useCodeMirrorOnBlur(setValue, node.pointer);
+            const [ref] = useCodeMirrorOnBlur(setValue);
             const onChangeListener = {};
             if (options.liveUpdate) {
                 onChangeListener['onChange'] = setValue;

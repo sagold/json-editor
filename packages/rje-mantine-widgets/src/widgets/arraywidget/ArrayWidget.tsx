@@ -234,11 +234,12 @@ function getArrayHeaderMenu(
         if (widgetMenuItems.length > 0) {
             widgetMenuItems.push('-');
         }
+        console.log('insertOptions', insertOptions);
         widgetMenuItems.push({
             icon: 'add',
             color: 'blue',
             disabled: !isAddEnabled,
-            onClick: () => editor.appendItem(node, insertOptions[0].schema),
+            onClick: () => editor.appendItem(node, insertOptions[0]?.schema),
             label: 'Add Item'
         });
     }

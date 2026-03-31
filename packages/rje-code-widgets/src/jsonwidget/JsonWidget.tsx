@@ -66,7 +66,7 @@ export const JsonDataWidget = widget<ParentNode<JsonWidgetOptions>>(({ node, opt
         },
         [setValue]
     );
-    const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
+    const [ref] = useCodeMirrorOnBlur(onChange);
     const onChangeListener = {};
     // @todo disabled live update - live update changes data (template values &
     // errors) causing the cursor to jump to position 0 while typing
@@ -158,7 +158,7 @@ export const JsonStringWidget = widget<StringNode<JsonWidgetOptions>>(({ node, o
         );
     }
 
-    const [ref] = useCodeMirrorOnBlur(onChange, node.pointer);
+    const [ref] = useCodeMirrorOnBlur(onChange);
     const onChangeListener = {};
     if (options.liveUpdate) {
         onChangeListener['onChange'] = onChange;
