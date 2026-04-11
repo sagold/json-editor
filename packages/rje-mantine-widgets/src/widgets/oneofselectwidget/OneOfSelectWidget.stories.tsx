@@ -69,7 +69,7 @@ export const Options: Story = {
                         type: 'object',
                         required: ['paragraph'],
                         properties: {
-                            paragraph: { type: 'string', format: 'textarea' }
+                            paragraph: { type: 'string', 'x-widget': 'textarea' }
                         }
                     }
                 ]

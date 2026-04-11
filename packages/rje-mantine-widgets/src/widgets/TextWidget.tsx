@@ -43,6 +43,6 @@ export const TextWidget = widget<StringNode<TextOptions>, string>(({ node, optio
 
 export const TextWidgetPlugin: WidgetPlugin = {
     id: 'text-widget',
-    use: (node) => node.schema.type === 'string' && node.schema.format === 'textarea',
+    use: (node) => node.schema.type === 'string' && node.schema['x-widget'] === 'textarea',
     Widget: TextWidget
 };

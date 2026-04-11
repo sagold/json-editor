@@ -19,7 +19,6 @@ export default {
             onChange: (v) => console.log('change:', v),
             schema: {
                 type: 'array',
-                format: 'select',
                 uniqueItems: true,
                 options: {
                     enum: ['First', 'Second', 'Third']
@@ -48,7 +47,7 @@ export const Taglist: Story = {
             onChange: (v) => console.log('change:', v),
             schema: {
                 type: 'array',
-                format: 'taglist',
+                'x-widget': 'taglist',
                 uniqueItems: true,
                 items: {
                     type: 'string',

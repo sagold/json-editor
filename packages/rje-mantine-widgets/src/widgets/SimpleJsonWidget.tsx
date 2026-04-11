@@ -142,6 +142,6 @@ export const SimpleJsonDataWidget = widget<ParentNode<SimpleJsonOptions>, string
 
 export const SimpleJsonWidgetPlugin: WidgetPlugin = {
     id: 'simple-json-widget',
-    use: ({ schema }, options) => options?.widget === 'json' || schema.format === 'json',
+    use: ({ schema }) => schema['x-widget'] === 'json' || schema.format === 'json',
     Widget: SimpleJsonWidget
 };

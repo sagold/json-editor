@@ -58,7 +58,7 @@ export function getOptions(schema: JsonSchema, property: string) {
     if (schema == null) {
         throw new Error('Missing schema in get options');
     }
-    const uiOptions = schema.options ?? {};
+    const uiOptions = schema['x-options'] ?? schema['options'] ?? {};
     const options: DefaultNodeOptions = {
         title: uiOptions.showTitle == false ? undefined : schema.title,
         description: uiOptions.showDescription === false ? undefined : schema.description,

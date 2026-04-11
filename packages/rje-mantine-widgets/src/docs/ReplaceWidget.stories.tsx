@@ -36,7 +36,7 @@ export const SameType: Story = {
                 properties: { textarea: { const: true } }
             },
             then: {
-                properties: { text: { title: 'textarea', type: 'string', format: 'textarea' } }
+                properties: { text: { title: 'textarea', type: 'string', 'x-widget': 'textarea' } }
             },
             else: {
                 properties: { text: { title: 'text', type: 'string' } }
@@ -72,7 +72,7 @@ export const SameTypeLiveUpdate: Story = {
                 properties: { text: { type: 'string', minLength: 10 } }
             },
             then: {
-                properties: { text: { type: 'string', format: 'textarea', title: 'textarea' } }
+                properties: { text: { type: 'string', 'x-widget': 'textarea', title: 'textarea' } }
             }
         }
     }

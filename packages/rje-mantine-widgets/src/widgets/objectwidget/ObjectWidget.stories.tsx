@@ -85,7 +85,7 @@ export const Options: Story = {
                     teaser: {
                         title: 'Teaser',
                         type: 'string',
-                        format: 'textarea'
+                        'x-widget': 'textarea'
                     },
                     showImage: {
                         title: 'Show Image',
@@ -94,7 +94,7 @@ export const Options: Story = {
                     sources: {
                         title: 'Sources',
                         type: 'array',
-                        format: 'taglist',
+                        'x-widget': 'taglist',
                         items: {
                             type: 'string'
                         }
@@ -127,7 +127,7 @@ export const Disabled: Story = {
                     sources: {
                         title: 'Sources',
                         type: 'array',
-                        format: 'taglist',
+                        'x-widget': 'taglist',
                         items: {
                             type: 'string'
                         }

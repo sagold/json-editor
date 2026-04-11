@@ -24,8 +24,7 @@ export type MultiSelectOptions = {
 } & DefaultNodeOptions;
 
 const MultiSelectWidget = (props: WidgetProps) => {
-    const type = (props.node?.options?.type || props?.options?.type) ?? 'select';
-    if (props.node?.schema.format === 'taglist' || type === 'taglist') {
+    if (props.node?.schema['x-widget'] === 'taglist') {
         return <TagListWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;
     }
     return <SelectWidget {...(props as DecoratedWidgetProps<ArrayNode, string>)} />;

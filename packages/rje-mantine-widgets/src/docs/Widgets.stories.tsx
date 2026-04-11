@@ -107,7 +107,7 @@ const schema: JsonSchema = {
             title: 'text',
             description: 'standard mantine TextArea',
             type: 'string',
-            format: 'textarea',
+            'x-widget': 'textarea',
             minLength: 10,
             options: {
                 icon: 'gesture',
@@ -199,7 +199,7 @@ const schema: JsonSchema = {
             description: 'standard mantine chip-group. Initially unselected, but required',
             default: null,
             title: 'select',
-            format: 'taglist',
+            'x-widget': 'taglist',
             enum: ['yes', 'maybe', 'no']
         },
         selectRadio: {
@@ -227,7 +227,7 @@ const schema: JsonSchema = {
             title: 'multi-select tag',
             description: 'standard mantine multi-select',
             type: 'array',
-            format: 'taglist',
+            'x-widget': 'taglist',
             uniqueItems: true,
             items: {
                 type: 'string',
@@ -288,7 +288,7 @@ const schema: JsonSchema = {
             title: 'string-array',
             description: 'standard mantine TagsInput',
             type: 'array',
-            format: 'taglist',
+            'x-widget': 'taglist',
             maxItems: 6,
             minItems: 1,
             default: [],
@@ -320,7 +320,7 @@ const schema: JsonSchema = {
                         properties: {
                             text: {
                                 type: 'string',
-                                format: 'textarea'
+                                'x-widget': 'textarea'
                             }
                         }
                     }
@@ -361,7 +361,7 @@ const data = {
     ]
 };
 
-export const Default: Story = {
+export const Standard: Story = {
     args: {
         validate: true,
         onChange: (v) => console.log(v),

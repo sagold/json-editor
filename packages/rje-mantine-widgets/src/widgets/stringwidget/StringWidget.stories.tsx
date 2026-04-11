@@ -69,7 +69,7 @@ export const TextareaWidget: Story = {
             onChange: (v) => console.log(`change: '${v}'`, typeof v),
             schema: {
                 type: 'string',
-                format: 'textarea'
+                'x-widget': 'textarea'
             }
         }
     }

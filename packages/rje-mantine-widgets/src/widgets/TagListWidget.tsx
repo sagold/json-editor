@@ -28,6 +28,6 @@ export const TagListWidgetPlugin: WidgetPlugin<ArrayNode> = {
     id: 'taglist-widget',
     use: (node) =>
         // @ts-expect-error test json-schema
-        node.schema.type === 'array' && node.schema.format === 'taglist' && node.schema.items?.type === 'string',
+        node.schema.type === 'array' && node.schema['x-widget'] === 'taglist' && node.schema.items?.type === 'string',
     Widget: TagListWidget
 };

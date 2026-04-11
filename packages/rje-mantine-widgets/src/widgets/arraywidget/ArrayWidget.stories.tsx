@@ -94,7 +94,7 @@ export const Options: Story = {
                             required: ['paragraph'],
                             options: { showEditJsonAction: true },
                             properties: {
-                                paragraph: { type: 'string', format: 'textarea' }
+                                paragraph: { type: 'string', 'x-widget': 'textarea' }
                             }
                         },
                         {

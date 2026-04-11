@@ -31,10 +31,10 @@ export const selectDefaultOptions = {
 
 export const SelectWidget = function (props: WidgetProps) {
     const type = (props.node?.options?.type || props?.options?.type) ?? selectDefaultOptions.type;
-    if (props.node?.schema.format === 'radiogroup' || type === 'radiogroup') {
+    if (props.node?.schema['x-widget'] === 'radiogroup') {
         return <RadioGroupWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
-    if (props.node?.schema.format === 'taglist' || type === 'taglist') {
+    if (props.node?.schema['x-widget'] === 'taglist') {
         return <TagListWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
     return <SelectOptionsWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
