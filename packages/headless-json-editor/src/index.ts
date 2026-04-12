@@ -69,7 +69,6 @@ export {
     mergeSchema,
     oneOfFuzzyKeyword,
     oneOfKeyword,
-    remotes,
     render
 } from 'json-schema-library';
 // bundled tools

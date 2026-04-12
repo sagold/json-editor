@@ -6,7 +6,9 @@
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/reactJsonEditor.js",
     "dependencies": {
+        "classnames": "^2.5.1",
         "headless-json-editor": "^1.0.0-rc5",
+        "json-schema-library": "^11.3.1",
         "markdown-to-jsx": "^9.7.4"
     }
 }

@@ -10,8 +10,20 @@ module.exports = {
             // required due to custom location of tsconfig.json configuration file
             // https://kulshekhar.github.io/ts-jest/docs/getting-started/options/tsconfig
             { tsconfig: './tsconfig.spec.json' }
+        ],
+        '^.+\\.m?js$': [
+            'ts-jest',
+            {
+                tsconfig: {
+                    allowJs: true,
+                    module: 'commonjs'
+                }
+            }
         ]
     },
+    transformIgnorePatterns: [
+        'node_modules/(?!@hyperjump)'
+    ],
     modulePathIgnorePatterns: ['dist'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'html'],
     moduleNameMapper: {

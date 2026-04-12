@@ -22,22 +22,24 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Setup Node.js & Yarn
-              uses: actions/setup-node@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10.8.0
+            - uses: actions/setup-node@v4
               with:
                   node-version: '22.22'
-                  cache: yarn
-
+                  cache: 'pnpm'
             - name: Install dependencies
-              run: yarn install --immutable
+              run: pnpm install --frozen-lockfile
 
             - name: Build packages
               run: |
-                  yarn hje:dist
-                  yarn rje:dist
+                  pnpm run hje:dist
+                  pnpm run rje:dist
 
             - name: Build docs (static Storybook)
-              run: yarn docs:dist
+              run: pnpm run docs:dist
 
             # — Upload the built docs as a regular artifact for the test runner —
             - name: Upload built docs for testing
@@ -72,14 +74,16 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Setup Node.js & Yarn
-              uses: actions/setup-node@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10.8.0
+            - uses: actions/setup-node@v4
               with:
                   node-version: '22.22'
-                  cache: yarn
-
-            - name: Install deps (for tooling / jest)
-              run: yarn install --immutable
+                  cache: 'pnpm'
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
             - name: Download compiled packages
               uses: actions/download-artifact@v4
@@ -88,7 +92,7 @@ jobs:
                   path: packages
 
             - name: Run unit tests
-              run: yarn test:ci
+              run: pnpm run test:ci
 
             - name: Publish unit test results
               uses: dorny/test-reporter@v1.6.0
@@ -108,14 +112,16 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Setup Node.js & Yarn
-              uses: actions/setup-node@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10.8.0
+            - uses: actions/setup-node@v4
               with:
                   node-version: '22.22'
-                  cache: yarn
-
-            - name: Install deps (for test‐runner)
-              run: yarn install --immutable
+                  cache: 'pnpm'
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
             - name: Download built docs
               uses: actions/download-artifact@v4
@@ -129,7 +135,7 @@ jobs:
               run: |
                   npx concurrently -k -s first -n "SB,TEST" \
                     "npx http-server dist/docs --port 6006 --silent" \
-                    "npx wait-on tcp:6006 && yarn test:stories:ci"
+                    "npx wait-on tcp:6006 && pnpm run test:stories:ci"
 
             - name: Configure Git safe directory for test-reporter
               run: git config --global --add safe.directory $GITHUB_WORKSPACE

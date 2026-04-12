@@ -1,11 +1,11 @@
 # release
 
-`yarn test`
-`yarn dist`
-`yarn set-version 1.0.0-rc6`
-`yarn install`
+`pnpm run test`
+`pnpm run dist`
+`pnpm run set-version 1.0.0-rc6`
+`pnpm run install`
 `npm login`
-`OTP=xyz yarn publish-all` for rc `TAG=next OTP=xyz yarn publish-all`
+`OTP=xyz pnpm run publish-all` for rc `TAG=next OTP=xyz pnpm run publish-all`
 
 ## prerelease
 
