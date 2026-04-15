@@ -3,12 +3,12 @@ import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
 import { getNodeTrace } from '../node/getNodeTrace';
 import { SchemaNode, isJsonError } from 'json-schema-library';
-import { Node, ArrayNode, ObjectNode, StringNode } from '../types';
+import { DataNode, ArrayNode, ObjectNode, StringNode } from '../types';
 import { setValue } from './setValue';
 import { strict as assert } from 'assert';
 import { compileSchema } from '../compileSchema';
 
-function assertUnlinkedNodes(before: Node, after: Node, path: string) {
+function assertUnlinkedNodes(before: DataNode, after: DataNode, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
     const a = getNodeTrace(before, path);
     const b = getNodeTrace(after, path);

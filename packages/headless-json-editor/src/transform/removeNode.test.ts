@@ -3,12 +3,12 @@ import { createNode } from '../node/createNode';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
 import { getNodeTrace } from '../node/getNodeTrace';
-import { Node, ObjectNode } from '../types';
+import { DataNode, ObjectNode } from '../types';
 import { strict as assert } from 'assert';
 import { removeNode } from './removeNode';
 import { compileSchema } from '../compileSchema';
 
-function assertUnlinkedNodes(before: Node, after: Node, path: string) {
+function assertUnlinkedNodes(before: DataNode, after: DataNode, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
     const a = getNodeTrace(before, path);
     const b = getNodeTrace(after, path);

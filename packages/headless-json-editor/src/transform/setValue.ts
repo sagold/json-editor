@@ -5,7 +5,7 @@ import { deepEqual } from 'fast-equals';
 import { JsonPointer, JsonError, isReduceable, SchemaNode } from 'json-schema-library';
 import { getChildIndex } from '../node/getChildNode';
 import { getData } from '../node/getData';
-import { Node, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
+import { DataNode, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
 import { replaceChildNode } from './set/replaceChildNode';
 import { syncNodes } from './set/syncNodes';
 import { updateValueNode } from './set/updateValueNode';
@@ -23,7 +23,7 @@ export type SetValueReturnType<T> = [JsonError] | [T, Change[]];
  * Set a value at pointer-location
  * @returns new node-tree with a list of changes applied or an error
  */
-export function setValue<T extends Node = Node>(node: T, pointer: JsonPointer, value: any): SetValueReturnType<T> {
+export function setValue<T extends DataNode = DataNode>(node: T, pointer: JsonPointer, value: any): SetValueReturnType<T> {
     /** path to target */
     const path = split(pointer);
     /** list of changes on nodes while performing set operation */
@@ -38,10 +38,11 @@ export function setValue<T extends Node = Node>(node: T, pointer: JsonPointer, v
         return [newRoot, changeSet];
     }
 
+    // if change on schema with dynamic keywords
     if (isReduceable(node.schemaNode)) {
-        const schemaNode = node.schemaNode;
         // root node has a dynamic schema which may change based on our new value,
         // thus we must recreate and test the tree for schema changes
+        const schemaNode = node.schemaNode;
         const currentData = getData(node);
         const { node: currentSN } = schemaNode.reduceNode(currentData);
 
@@ -135,7 +136,7 @@ function setNext(parentNode: ParentNode, path: string[], value: unknown, changeS
             value: getData(childNode),
             schema: childNode.schema,
             reason: 'expected parent data to be object or array',
-            where: 'resolving json pointer to node in transform.change'
+            where: 'resolving json pointer to node in transform.setValue.setNext'
         });
     }
 

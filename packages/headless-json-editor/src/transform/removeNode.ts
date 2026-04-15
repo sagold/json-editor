@@ -1,5 +1,5 @@
 import { JsonPointer, JsonError } from 'json-schema-library';
-import { isParentNode, Node, isJsonError, Change } from '../types';
+import { isParentNode, DataNode, isJsonError, Change } from '../types';
 import { getChildIndex } from '../node/getChildNode';
 import { updatePath } from './updatePath';
 import { split } from '@sagold/json-pointer';
@@ -8,7 +8,7 @@ import { getData } from '../node/getData';
 import { updateOptionalPropertyList } from '../node/createNode';
 import { updateOptions } from '../node/options';
 
-export function removeNode<T extends Node = Node>(previousRoot: T, pointer: JsonPointer): [JsonError] | [T, Change[]] {
+export function removeNode<T extends DataNode = DataNode>(previousRoot: T, pointer: JsonPointer): [JsonError] | [T, Change[]] {
     const frags = split(pointer);
     const property = frags.pop() as string;
 

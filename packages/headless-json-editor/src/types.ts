@@ -6,15 +6,15 @@ export type { JsonSchema, JsonError };
 
 const isObject = (v: unknown): v is Record<string, any> => getTypeOf(v) === 'object';
 
-export type DoneEvent = { type: 'done'; previous: Node; next: Node; changes: PluginEvent[] };
-export type UndoEvent = { type: 'undo'; previous: Node; next: Node };
-export type RedoEvent = { type: 'redo'; previous: Node; next: Node };
-export type ValidationEvent = { type: 'validation'; previous: Node; next: Node; errors: JsonError[] };
+export type DoneEvent = { type: 'done'; previous: DataNode; next: DataNode; changes: PluginEvent[] };
+export type UndoEvent = { type: 'undo'; previous: DataNode; next: DataNode };
+export type RedoEvent = { type: 'redo'; previous: DataNode; next: DataNode };
+export type ValidationEvent = { type: 'validation'; previous: DataNode; next: DataNode; errors: JsonError[] };
 export type PluginEvent = Change | DoneEvent | UndoEvent | RedoEvent | ValidationEvent;
 
-export type Node = ArrayNode | ObjectNode | FileNode | StringNode | NumberNode | BooleanNode | NullNode;
+export type DataNode = ArrayNode | ObjectNode | FileNode | StringNode | NumberNode | BooleanNode | NullNode;
 
-export type Change = { type: 'update' | 'create' | 'delete'; node: Node };
+export type Change = { type: 'update' | 'create' | 'delete'; node: DataNode };
 export function isChangeEvent(event: Record<string, unknown>): event is Change {
     if (event && typeof event === 'object' && typeof event.type === 'string') {
         const type = event.type;
@@ -30,7 +30,7 @@ export type ArrayType = 'array';
 export type ArrayNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ArrayType;
-    children: Node[];
+    children: DataNode[];
     oneOfIndex?: number;
     options: T;
     pointer: string;
@@ -49,7 +49,7 @@ export type ObjectType = 'object';
 export type ObjectNode<T extends DefaultNodeOptions = DefaultNodeOptions> = {
     id: string;
     type: ObjectType;
-    children: Node[];
+    children: DataNode[];
     options: T;
     oneOfIndex?: number;
     /** list of all optional properties, present or missing */
@@ -166,7 +166,7 @@ export type ValueNode<T extends DefaultNodeOptions = DefaultNodeOptions> =
     | BooleanNode<T>;
 
 const NodeTypes = ['array', 'object', 'file', 'string', 'number', 'null', 'boolean'] as const;
-export const isNode = (node: any): node is Node => NodeTypes.includes(node?.type);
+export const isNode = (node: any): node is DataNode => NodeTypes.includes(node?.type);
 const ParentTypes = ['array', 'object'];
 export const isParentNode = (node: unknown): node is ObjectNode | ArrayNode =>
     isObject(node) && ParentTypes.includes(node.type);

@@ -1,5 +1,5 @@
 import { updatePath, ensurePointer } from './updatePath';
-import { Node, ArrayNode } from '../types';
+import { DataNode, ArrayNode } from '../types';
 import { strict as assert } from 'assert';
 
 describe('ensurePointer', () => {
@@ -31,7 +31,7 @@ describe('ensurePointer', () => {
 
 describe('updatePath', () => {
     it('should update pointer of passed node', () => {
-        const oldParent = { pointer: '#/parent/oldProp' } as unknown as Node;
+        const oldParent = { pointer: '#/parent/oldProp' } as unknown as DataNode;
         const newParent = updatePath(oldParent, '#/parent', 'newProp');
 
         assert.deepEqual(newParent, { pointer: '#/parent/newProp', property: 'newProp' });

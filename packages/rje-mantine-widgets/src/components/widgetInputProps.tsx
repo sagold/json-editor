@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core';
 import { WidgetMenu, WidgetMenuItems } from './widgetmenu/WidgetMenu';
-import { Node, isParentNode } from '@sagold/react-json-editor';
+import { DataNode, isParentNode } from '@sagold/react-json-editor';
 import { WidgetDescription } from './WidgetDescription';
 
 export type WidgetInputOptions = {
@@ -15,7 +15,7 @@ export type WidgetInputOptions = {
 };
 
 export function widgetInputProps(
-    node: Node,
+    node: DataNode,
     { showHeader, title, description, required, disabled, readOnly, placeholder, widgetMenuItems }: WidgetInputOptions
 ) {
     const isValidConst = node.schema.const != null && node.errors.length === 0;

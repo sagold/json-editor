@@ -1,11 +1,11 @@
-import { Node, isParentNode } from '../../types';
+import { DataNode, isParentNode } from '../../types';
 import { JsonSchema } from '../../jsonSchema';
 
 function isSimilarSchema(a: JsonSchema, b: JsonSchema) {
     return a.type === b.type;
 }
 
-export function syncNodes(from: Node, to: Node) {
+export function syncNodes(from: DataNode, to: DataNode) {
     if (from == null || to == null) {
         return;
     }

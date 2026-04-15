@@ -3,7 +3,7 @@ import { updateOptions } from './options';
 
 import { getTypeOf, isJsonError, JsonError, JsonPointer, SchemaNode, ValidationPath } from 'json-schema-library';
 import {
-    Node,
+    DataNode,
     NodeType,
     ArrayNode,
     ObjectNode,
@@ -52,7 +52,7 @@ export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<
     canRemoveItem?: boolean;
 } & Options;
 
-type CreateNode = (schemaNode: SchemaNode, data: any, pointer: JsonPointer, isArrayItem: boolean) => Node;
+type CreateNode = (schemaNode: SchemaNode, data: any, pointer: JsonPointer, isArrayItem: boolean) => DataNode;
 
 export function getOptions(schema: JsonSchema, property: string) {
     if (schema == null) {
@@ -300,7 +300,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         getValueNodeProps('null', schemaNode, pointer, value, isArrayItem)
 };
 
-export function _createNode<T extends Node = Node>(
+export function _createNode<T extends DataNode = DataNode>(
     schemaNode: SchemaNode,
     data: unknown,
     pointer: JsonPointer,
@@ -331,7 +331,7 @@ export function _createNode<T extends Node = Node>(
     throw new Error(`unsupported datatype '${dataType}' in create node`);
 }
 
-export function createNode<T extends Node = Node>(
+export function createNode<T extends DataNode = DataNode>(
     schemaNode: SchemaNode,
     data: unknown,
     pointer: JsonPointer = '#',

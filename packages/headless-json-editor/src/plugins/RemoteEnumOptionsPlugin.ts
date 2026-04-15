@@ -1,6 +1,6 @@
 import { JsonPointer } from 'json-schema-library';
 import { Plugin, PluginInstance } from '../HeadlessEditor';
-import { getNode, getData, updateSchema, isJsonError, Change, Node } from '../index';
+import { getNode, getData, updateSchema, isJsonError, Change, DataNode } from '../index';
 import { PluginEvent } from "../types";
 
 /**
@@ -25,7 +25,7 @@ export const RemoteEnumOptionsPlugin: Plugin = () => {
     const sources: Record<string, JsonPointer> = {};
     const targets: Record<string, JsonPointer> = {};
 
-    function updateEnumInSchema(root: Node, changedNode: Node) {
+    function updateEnumInSchema(root: DataNode, changedNode: DataNode) {
         const sourceNode = getNode(root, targets[changedNode.pointer]);
         if (isJsonError(sourceNode)) {
             return;
@@ -42,12 +42,12 @@ export const RemoteEnumOptionsPlugin: Plugin = () => {
         if (isJsonError(newRoot)) {
             return undefined;
         }
-        return [newRoot, additionalChanges] as [Node, Change[]];
+        return [newRoot, additionalChanges] as [DataNode, Change[]];
     }
 
     const plugin: PluginInstance = {
         id: 'remoteEnumOptions',
-        onEvent(root: Node, event: PluginEvent) {
+        onEvent(root: DataNode, event: PluginEvent) {
             if (event.type === 'create' && event.node.options.syncEnum) {
                 // @ts-ignore
                 const source = getNode(root, event.node.options.syncEnum.source);

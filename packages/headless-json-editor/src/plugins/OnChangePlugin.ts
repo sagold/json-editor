@@ -1,9 +1,9 @@
 import { Plugin, HeadlessEditor } from '../HeadlessEditor';
-import { Node } from '../types';
+import { DataNode } from '../types';
 import { getData } from '../node/getData';
 
 // currently using any as we  need toi figure out how to parameterize plugin for use (usePlugin)
-export type OnChangeListener<Data = any> = (data: Data, root: Node, editor: HeadlessEditor<Data>) => void;
+export type OnChangeListener<Data = any> = (data: Data, root: DataNode, editor: HeadlessEditor<Data>) => void;
 export type OnChangeOptions<Data = any> = {
     /** add custom plugin-id to avoid collisions with different OnChangePlugins */
     pluginId?: string,

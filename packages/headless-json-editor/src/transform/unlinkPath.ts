@@ -1,5 +1,5 @@
 import { JsonPointer, JsonError } from 'json-schema-library';
-import { isParentNode, Node } from '../types';
+import { isParentNode, DataNode } from '../types';
 import { getChildIndex } from '../node/getChildNode';
 import { split, join } from '@sagold/json-pointer';
 import { getData } from '../node/getData';
@@ -35,10 +35,10 @@ export function unlinkPaths(): never {
  * Returns a new tree with cloned nodes along the given path
  * @returns [new root node, node at pointer] or error if path is invalid
  */
-export function unlinkPath<T extends Node = Node>(
+export function unlinkPath<T extends DataNode = DataNode>(
     previousRoot: T,
     pointer: JsonPointer | string[]
-): JsonError | [T, Node] {
+): JsonError | [T, DataNode] {
     pointer = join(pointer as JsonPointer);
     if (!isParentNode(previousRoot)) {
         return previousRoot.schemaNode.createError('invalid-node-type-error', {
@@ -54,7 +54,7 @@ export function unlinkPath<T extends Node = Node>(
 
     const frags: string[] = split(pointer);
     const nextRoot = { ...previousRoot };
-    let targetNode: Node = nextRoot;
+    let targetNode: DataNode = nextRoot;
 
     while (frags.length > 0) {
         const childProperty = frags.shift() as string;
@@ -69,7 +69,7 @@ export function unlinkPath<T extends Node = Node>(
             });
         }
         // unlink next node
-        const nextNode: Node = { ...targetNode.children[childIndex] };
+        const nextNode: DataNode = { ...targetNode.children[childIndex] };
         // unlink current childlist
         targetNode.children = [...targetNode.children];
         // unlink next node in children

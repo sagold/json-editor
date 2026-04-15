@@ -1,5 +1,5 @@
 import { JsonError } from 'json-schema-library';
-import { Node, isJsonError } from '../types';
+import { DataNode, isJsonError } from '../types';
 import { getData } from '../node/getData';
 
 function validationError(item: JsonError) {
@@ -12,7 +12,7 @@ function validationError(item: JsonError) {
  *
  * @return list of validation errors
  */
-export function validateNode(node: Node) {
+export function validateNode(node: DataNode) {
     const errors: (JsonError | Promise<JsonError | undefined>)[] = node.schemaNode
         .validate(getData(node), node.pointer)
         .errors.flat(Infinity)

@@ -6,7 +6,7 @@ import {
     DefaultNodeOptions,
     Widget,
     WidgetField,
-    Node,
+    DataNode,
     Editor
 } from '@sagold/react-json-editor';
 import { Icon } from '../../components/icon/Icon';
@@ -265,7 +265,7 @@ function getArrayHeaderMenu(
     return widgetMenuItems;
 }
 
-function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: Node, options: ArrayOptions) {
+function getArrayItemMenu(editor: Editor, parentNode: ArrayNode, child: DataNode, options: ArrayOptions) {
     const schemaNode = parentNode.schemaNode;
     const isInfixedArray =
         Array.isArray(schemaNode.prefixItems) && schemaNode.prefixItems.length > parseInt(child.property);

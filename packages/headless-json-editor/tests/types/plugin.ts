@@ -1,5 +1,5 @@
-import { Node } from "../../src/types";
-const node = {} as Node;
+import { DataNode } from "../../src/types";
+const node = {} as DataNode;
 
 
 
@@ -10,7 +10,7 @@ export type Second = Parameters<Test>;
 
 type PluginInstance<S extends Record<string, unknown> = Record<string, unknown>> = {
     id: string;
-    onEvent: (root: Node) => void;
+    onEvent: (root: DataNode) => void;
 } & S;
 
 type EditorPlugin<

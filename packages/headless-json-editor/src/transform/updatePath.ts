@@ -1,5 +1,5 @@
 import { JsonPointer } from 'json-schema-library';
-import { Node } from '../types';
+import { DataNode } from '../types';
 import gp from '@sagold/json-pointer';
 
 const POINTER_PREFIX = '#';
@@ -14,7 +14,7 @@ export function ensurePointer(pointer: JsonPointer) {
 /**
  * Clone subtree and update pointer property of all nodes
  */
-export function updatePath(node: Node, parentPointer: string, property: string) {
+export function updatePath(node: DataNode, parentPointer: string, property: string) {
     const copy = { ...node };
     parentPointer = ensurePointer(parentPointer);
     copy.property = property;

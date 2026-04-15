@@ -1,17 +1,17 @@
 import gp from '@sagold/json-pointer';
-import { Node, JsonError } from '../types';
+import { DataNode, JsonError } from '../types';
 import { getChildNode } from './getChildNode';
 import { getData } from './getData';
 
 /**
  * returns the node with the corresponding pointer
  */
-export function getNode<T extends Node = Node>(node: Node, pointer: string): T | JsonError {
+export function getNode<T extends DataNode = DataNode>(node: DataNode, pointer: string): T | JsonError {
     const frags = gp.split(pointer);
     return step(node, frags, []) as T | JsonError;
 }
 
-function step(node: Node, frags: string[], pointer: string[]): Node | JsonError {
+function step(node: DataNode, frags: string[], pointer: string[]): DataNode | JsonError {
     if (frags.length === 0) {
         return node;
     }

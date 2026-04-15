@@ -1,16 +1,16 @@
 import { JsonPointer } from 'json-schema-library';
 import { getChildNode } from './getChildNode';
-import { Node } from '../types';
+import { DataNode } from '../types';
 import { split } from '@sagold/json-pointer';
 
 /**
  * returns all nodes along the path, including the given starting node
  */
-export function getNodeTrace(node: Node, pointer: JsonPointer) {
+export function getNodeTrace(node: DataNode, pointer: JsonPointer) {
     const frags = split(pointer).reverse();
     const selection = [node];
 
-    let currentNode: Node = node;
+    let currentNode: DataNode = node;
     while (frags.length) {
         const property = frags.pop() as string;
         const nextNode = getChildNode(currentNode, property);

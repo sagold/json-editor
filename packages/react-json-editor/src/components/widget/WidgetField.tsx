@@ -1,12 +1,12 @@
 import { CSSProperties, ReactNode, forwardRef, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react';
-import { Node, DefaultNodeOptions, isParentNode, JsonError, isJsonError } from 'headless-json-editor';
+import { DataNode, DefaultNodeOptions, isParentNode, JsonError, isJsonError } from 'headless-json-editor';
 import { WidgetError } from './WidgetError';
 import { WidgetDescription } from './WidgetDescription';
 import classNames from 'classnames';
 
 export type WidgetFieldProps = {
     widgetType: string;
-    node: Node;
+    node: DataNode;
     options: DefaultNodeOptions;
     showDescription?: boolean;
     showError?: boolean;

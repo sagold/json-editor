@@ -7,7 +7,7 @@
 <p align="center">
     <a href="#introduction">introduction</a> |
     <a href="#node">node</a> |
-    <a href="#api">api</a> | 
+    <a href="#api">api</a> |
     <a href="#plugins">plugins</a> |
     <a href="#functional-api">functional api</a> |
     <a href="#exposed-utilities">exposed utilities</a>
@@ -144,7 +144,7 @@ const options: Record<string, any> = node.options;
 get children of parentNode
 
 ```ts
-const value: Node[] = node.children;
+const value: DataNode[] = node.children;
 ```
 
 get json-schema of value
@@ -255,7 +255,7 @@ history.undo();
 
 ### how to write plugins
 
-plugins are function that return an object with a unique `id` and a method `onEvent(Node, PluginEvent)`.
+plugins are function that return an object with a unique `id` and a method `onEvent(DataNode, PluginEvent)`.
 
 ```ts
 import { Plugin } from 'headless-json-editor';

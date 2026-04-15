@@ -1,9 +1,9 @@
 import { JsonError, isJsonError, sanitizeErrors } from 'json-schema-library';
-import { Node, isParentNode } from '../types';
+import { DataNode, isParentNode } from '../types';
 import { getData } from '../node/getData';
 import { getNode } from '../node/getNode';
 
-function each(node: Node, cb: (node: Node) => void) {
+function each(node: DataNode, cb: (node: DataNode) => void) {
     cb(node);
     if (isParentNode(node)) {
         node.children.forEach((child) => each(child, cb));
@@ -13,7 +13,7 @@ function each(node: Node, cb: (node: Node) => void) {
 /**
  * Perform json-schema validation and assign errors to corresponding nodes
  */
-export async function updateErrors(node: Node) {
+export async function updateErrors(node: DataNode) {
     const pointerToErrors: Record<string, JsonError[]> = {};
     // reset errors
     each(node, (n) => {
@@ -29,7 +29,7 @@ export async function updateErrors(node: Node) {
         const pointer = err.data?.pointer ?? '#';
         if (pointerToErrors[pointer] == null) {
             // retrieve new (dynamic) node
-            const n = getNode(node, pointer) as Node; // @todo ignoring possible JsonError
+            const n = getNode(node, pointer) as DataNode; // @todo ignoring possible JsonError
             pointerToErrors[pointer] = n.errors;
         }
         pointerToErrors[pointer].push(err);

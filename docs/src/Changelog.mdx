@@ -5,7 +5,7 @@ import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 # v0.35.0
 
 - Breaking: removed package rje-aria-widgets in favor of rje-mantine-widgets
-- Breaking: changed return type of useEditor to `Editor|null` (previously `[Node, Editor]`)
+- Breaking: changed return type of useEditor to `Editor|null` (previously `[DataNode, Editor]`)
 - Breaking: Following best practuces, useEditor initially returns `null`
 - add: support for onDestroy calls using strict mode
 - add: Component Widget supports an optional editor and node property. Default node is RootNode (given by editor?.getNode())

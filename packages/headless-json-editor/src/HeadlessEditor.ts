@@ -9,7 +9,7 @@ import { getData } from './node/getData';
 import {
     JsonSchema,
     Change,
-    Node,
+    DataNode,
     ParentNode,
     ArrayNode,
     isJsonError,
@@ -34,7 +34,7 @@ export type PluginInstance<Signature extends O = O> = {
      *
      *  `onEvent` may return a new root-node along with a list of changes
      */
-    onEvent: (root: Node, event: PluginEvent) => void | [Node, Change[]];
+    onEvent: (root: DataNode, event: PluginEvent) => void | [DataNode, Change[]];
     /** Called when Editor before Editor is going to be destroyed */
     onDestroy?: () => void;
 } & Signature;
@@ -66,7 +66,7 @@ export type HeadlessEditorOptions<Data = unknown> = {
 export class HeadlessEditor<Data = unknown> {
     id: string = uuid();
     /** Editor root node */
-    root: Node;
+    root: DataNode;
     /** Json-Schema API */
     schemaNode: SchemaNode;
     schemaNodeConfig: CompileOptions;
@@ -122,7 +122,7 @@ export class HeadlessEditor<Data = unknown> {
      * @param [data] - new data to set
      * @return new root node
      */
-    setData(data?: Data): Node {
+    setData(data?: Data): DataNode {
         const { schemaNode } = this;
         const previousState = this.root;
         this.root = createNode<ParentNode>(
@@ -200,7 +200,7 @@ export class HeadlessEditor<Data = unknown> {
      * Set new editor state (new tree of nodes)
      * @return new root node
      */
-    setState(state: Node, changes: PluginEvent[]) {
+    setState(state: DataNode, changes: PluginEvent[]) {
         this.root = this.runPlugins(this.root, state, changes);
         // @todo validate again? in general, when to validate?
         return this.root;
@@ -210,12 +210,12 @@ export class HeadlessEditor<Data = unknown> {
      * Get current root-node
      * @return root node
      */
-    getNode(): Node;
+    getNode(): DataNode;
     /**
      * Get current node at json-pointer location
      * @return node at requested location or json-error
      */
-    getNode(pointer: string): Node | JsonError;
+    getNode(pointer: string): DataNode | JsonError;
     getNode(pointer?: string) {
         if (pointer && typeof pointer === 'string' && pointer.replace(/^[/#]+/, '') !== '') {
             return getNode(this.root, pointer);
@@ -246,7 +246,7 @@ export class HeadlessEditor<Data = unknown> {
         return undefined;
     }
 
-    runPlugins(oldState: Node, newState: Node, changes: PluginEvent[]) {
+    runPlugins(oldState: DataNode, newState: DataNode, changes: PluginEvent[]) {
         const plugins = this.plugins;
         // @notify change
         let currentRoot = newState;
@@ -452,7 +452,7 @@ function getRootChange(changes: Change[]) {
     return lowestPointer;
 }
 
-function validateState(root: Node, pointer = '#') {
+function validateState(root: DataNode, pointer = '#') {
     // always evaluate parent as it can be that children are referenced in parent
     const validationTarget = gp.join(pointer, '..');
     let startNode = getNode(root, validationTarget);

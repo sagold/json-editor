@@ -1,5 +1,5 @@
 import { ErrorWidget } from './components/ErrorWidget';
-import { HeadlessEditor, HeadlessEditorOptions, Node, isNode } from 'headless-json-editor';
+import { HeadlessEditor, HeadlessEditorOptions, DataNode, isNode } from 'headless-json-editor';
 import { Widget, WidgetPlugin } from './decorators';
 
 let defaultWidgets: WidgetPlugin[] = [];
@@ -35,7 +35,7 @@ export class Editor<Data = unknown> extends HeadlessEditor<Data> {
         this.widgets = Array.isArray(options?.widgets) ? options.widgets : defaultWidgets;
     }
 
-    getWidget(node: Node, options?: Record<string, unknown>): Widget {
+    getWidget(node: DataNode, options?: Record<string, unknown>): Widget {
         if (!isNode(node)) {
             console.log('invalid node passed to getWidget', node);
             return ErrorWidget;
