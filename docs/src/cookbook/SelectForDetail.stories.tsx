@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEditor } from '@sagold/react-json-editor';
 import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
 import { SelectionProvider } from '@sagold/rje-mantine-widgets';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 const meta: Meta<typeof SelectForDetailsComponent> = {
     title: 'Cookbook/SelectForDetails',
@@ -54,18 +54,14 @@ function SelectForDetailsComponent() {
         }
     });
 
-    if (editor == null) {
+    const rootNode = editor?.getNode();
+    const RootWidget = useMemo(() => (editor && rootNode ? editor.getWidget(rootNode) : null), [editor, rootNode]);
+
+    const detailsNode = selected && editor ? editor.getNode(selected) : undefined;
+    const Details = useMemo(() => (detailsNode && editor ? editor.getWidget(detailsNode) : null), [editor, detailsNode]);
+
+    if (editor == null || RootWidget == null) {
         return null;
-    }
-
-    const rootNode = editor.getNode();
-    const RootWidget = editor?.getWidget(editor.getNode());
-
-    let Details;
-    let detailsNode;
-    if (selected) {
-        detailsNode = editor.getNode(selected);
-        Details = editor.getWidget(detailsNode);
     }
 
     return (
@@ -78,10 +74,12 @@ function SelectForDetailsComponent() {
                 }`}
             </style>
             <SelectionProvider onSelect={setSelected}>
+                {/* eslint-disable-next-line react-hooks/static-components */}
                 <RootWidget editor={editor} node={rootNode} />
             </SelectionProvider>
             <div className="sidebar" style={{ flexGrow: 1, minWidth: '20em' }}>
-                {selected ? <Details editor={editor} node={detailsNode} options={{ hideChildren: false }} /> : null}
+                {/* eslint-disable-next-line react-hooks/static-components */}
+                {selected && Details ? <Details editor={editor} node={detailsNode} options={{ hideChildren: false }} /> : null}
             </div>
         </div>
     );

@@ -248,7 +248,7 @@ export const NODES: Record<NodeType, CreateNode> = {
         const currentProperties = Object.keys(resolvedData ?? {});
         currentProperties.forEach((key) => {
             const childPointer = `${pointer}/${key}`;
-            const { node: nextSN, error } = objectSN.getNodeChild(key, resolvedData, {
+            const { node: nextSN } = objectSN.getNodeChild(key, resolvedData, {
                 createSchema: true,
                 pointer: childPointer,
                 path

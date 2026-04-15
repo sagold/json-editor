@@ -30,7 +30,6 @@ export const selectDefaultOptions = {
 };
 
 export const SelectWidget = function (props: WidgetProps) {
-    const type = (props.node?.options?.type || props?.options?.type) ?? selectDefaultOptions.type;
     if (props.node?.schema['x-widget'] === 'radiogroup') {
         return <RadioGroupWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
