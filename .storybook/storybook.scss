@@ -112,6 +112,7 @@
         padding-bottom: 0.25em;
         padding-left: 1rem;
         padding-right: 1rem;
+        height: auto;
         background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
 
         .innerZoomElementWrapper > * {
@@ -125,20 +126,13 @@
     /* -- preview box full width */
 
     .docs-story {
+        padding: 0;
         overflow: visible; /* contents expand outside of story box */
     }
 
     .docs-story > :first-child {
         z-index: 2; /* contents may be above *show code* action */
         overflow: visible;
-    }
-
-    .docs-story > :last-child {
-        /* .docblock-code-toggle wrapper div */
-        position: relative;
-        display: flex;
-        justify-content: flex-end;
-        z-index: auto;
     }
 
     .docblock-code-toggle {
@@ -152,6 +146,16 @@
 
     .rje-form {
         --mantine-h1-font-size: 1.5em;
+    }
+}
+
+/* preview actions "show code" below inline code block */
+#storybook-docs .sbdocs.sbdocs-preview-actions {
+    margin: 0;
+    // margin-top: 2px;
+    // background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
+    & > div {
+        justify-content: right;
     }
 }
 
