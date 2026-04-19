@@ -16,7 +16,7 @@
 
 install
 
-`yarn add @sagold/react-json-editor`
+`npm install @sagold/react-json-editor`
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/react-json-editor)](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor)
 ![Types](https://badgen.net/npm/types/@sagold/react-json-editor)

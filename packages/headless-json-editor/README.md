@@ -15,7 +15,7 @@
 
 install
 
-`yarn add headless-json-editor`
+`npm install headless-json-editor`
 
 [![Npm package version](https://badgen.net/npm/v/headless-json-editor)](https://github.com/sagold/headless-json-editor/actions/workflows/ci.yaml)
 ![Types](https://badgen.net/npm/types/headless-json-editor)

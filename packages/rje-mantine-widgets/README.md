@@ -7,7 +7,7 @@
 
 install
 
-`yarn add @sagold/rje-mantine-widgets`
+`npm install @sagold/rje-mantine-widgets`
 
 [![Npm package version](https://badgen.net/npm/v/@sagold/rje-mantine-widgets)](https://github.com/sagold/json-editor/tree/main/packages/rje-mantine-widgets)
 ![Types](https://badgen.net/npm/types/@sagold/rje-mantine-widgets)

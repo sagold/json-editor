@@ -17,7 +17,7 @@
 A simple beautiful api for your custom form generator powered by json-schema. _headless-json-editor_ builds a syntax tree of your json-schema and input data. The result can be easily walked through for rendering or further processing.
 
 ```sh
-yarn add headless-json-editor
+npm install headless-json-editor
 ```
 
 - read more in package [headless-json-editor](./packages/headless-json-editor)
@@ -30,7 +30,7 @@ yarn add headless-json-editor
 Simple and extensible react component capable of using json-schema to declaratively build and customize user forms.
 
 ```sh
-yarn add @sagold/react-json-editor
+npm install @sagold/react-json-editor
 ```
 
 - read more in package [react-json-editor](./packages/react-json-editor)
@@ -44,7 +44,7 @@ yarn add @sagold/react-json-editor
 Set of default widgets for _react-json-editor_ using _mantine_ that render a user form for all basic json datatypes.
 
 ```sh
-yarn add @sagold/rje-mantine-widgets
+npm install @sagold/react-json-editor @sagold/rje-mantine-widgets
 ```
 
 - read more in package [rje-mantine-widgets](./packages/rje-mantine-widgets)
@@ -58,7 +58,7 @@ yarn add @sagold/rje-mantine-widgets
 Additional code widgets for [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor) to edit code formatted strings, json and json with json-schema validation, tooltips and autocompletion using [CodeMirror](https://codemirror.net/) and [@uiw/react-codemirror](https://github.com/uiwjs/react-codemirror)
 
 ```sh
-yarn add @sagold/rje-code-widgets
+npm install @sagold/react-json-editor @sagold/rje-code-widgets
 ```
 
 - read more in package [rje-code-widgets](./packages/rje-code-widgets)
