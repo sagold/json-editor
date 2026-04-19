@@ -1,13 +1,13 @@
 import { getNodeList } from './getNodeList';
 import { JsonError } from 'json-schema-library';
-import { DataNode } from '../types';
+import { JsonNode } from '../types';
 
-const errorReducer = (previous: JsonError[], current: DataNode): JsonError[] => {
+const errorReducer = (previous: JsonError[], current: JsonNode): JsonError[] => {
     previous.push(...current.errors);
     return previous;
 };
 
-export function getErrors(node: DataNode): JsonError[] {
+export function getErrors(node: JsonNode): JsonError[] {
     const nodes = getNodeList(node);
     return nodes.reduceRight(errorReducer, []);
 }

@@ -1,4 +1,4 @@
-import { DataNode, StringNode, isChangeEvent, isJsonError } from '../types';
+import { JsonNode, StringNode, isChangeEvent, isJsonError } from '../types';
 import { Plugin } from '../HeadlessEditor';
 import { setValue } from '../transform/setValue';
 
@@ -11,11 +11,11 @@ type StringEnumNode = StringNode & {
     };
 };
 
-function isStringNode(node: DataNode): node is StringNode {
+function isStringNode(node: JsonNode): node is StringNode {
     return node.schema.type === 'string';
 }
 
-function isStringEnumNode(node: DataNode): node is StringEnumNode {
+function isStringEnumNode(node: JsonNode): node is StringEnumNode {
     return isStringNode(node) && Array.isArray(node?.schema?.enum);
 }
 

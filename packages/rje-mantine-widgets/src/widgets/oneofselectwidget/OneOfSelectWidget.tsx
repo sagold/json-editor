@@ -6,7 +6,7 @@ import {
     ValueNode,
     DefaultNodeOptions,
     WidgetField,
-    DataNode
+    JsonNode
 } from '@sagold/react-json-editor';
 import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/widgetinputwrapper/WidgetInputWrapper';
 import { widgetInputProps } from '../../components/widgetInputProps';
@@ -14,7 +14,7 @@ import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 
 export type OneOfSelectOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
 
-export function useOneOfSelectWidget(node: DataNode, { skipSelectOneOf = false } = {}) {
+export function useOneOfSelectWidget(node: JsonNode, { skipSelectOneOf = false } = {}) {
     const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.schemaNode?.oneOf);
     return chooseThisWidget;
 }

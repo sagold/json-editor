@@ -1,5 +1,5 @@
 import { JsonPointer, JsonError } from 'json-schema-library';
-import { DataNode, isJsonError, Change } from '../types';
+import { JsonNode, isJsonError, Change } from '../types';
 import gp from '@sagold/json-pointer';
 import { updatePath } from './updatePath';
 import { unlinkPath } from './unlinkPath';
@@ -11,11 +11,11 @@ import { getData } from '../node/getData';
  * @return new tree containing changed array
  */
 export function moveNode(
-    rootNode: DataNode,
+    rootNode: JsonNode,
     pointerToArray: JsonPointer,
     from: number,
     to: number
-): [JsonError] | [DataNode, Change[]] {
+): [JsonError] | [JsonNode, Change[]] {
     const result = unlinkPath(rootNode, pointerToArray);
     if (isJsonError(result)) {
         return [result];

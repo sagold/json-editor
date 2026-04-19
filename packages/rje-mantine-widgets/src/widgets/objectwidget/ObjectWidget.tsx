@@ -5,7 +5,7 @@ import {
     Widget,
     WidgetField,
     WidgetPlugin,
-    DataNode,
+    JsonNode,
     widget,
     Editor
 } from '@sagold/react-json-editor';
@@ -203,7 +203,7 @@ function getHeaderMenu(editor: Editor, node: ObjectNode, options: ArrayOptions, 
 
 type ObjectPropertyProps = {
     editor: Editor;
-    node: DataNode;
+    node: JsonNode;
     options: Record<string, any>;
     optionalProperties: string[];
     showItemControls?: boolean;

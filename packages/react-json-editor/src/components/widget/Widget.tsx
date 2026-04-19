@@ -1,4 +1,4 @@
-import { DataNode } from 'headless-json-editor';
+import { JsonNode } from 'headless-json-editor';
 import { Editor } from '../../Editor';
 import { WidgetField, WidgetFieldProps } from './WidgetField';
 import { WidgetDescription, WidgetDescriptionProps } from './WidgetDescription';
@@ -9,13 +9,13 @@ Widget.Field = WidgetField;
 Widget.Description = WidgetDescription;
 Widget.Error = WidgetError;
 
-export type WidgetProps<T extends DataNode = DataNode> = {
+export type WidgetProps<T extends JsonNode = JsonNode> = {
     editor: Editor | null;
-    node?: DataNode;
+    node?: JsonNode;
     options?: Partial<T['options']>;
 };
 
-export function Widget<T extends DataNode = DataNode>({ editor, node, options }: WidgetProps<T>) {
+export function Widget<T extends JsonNode = JsonNode>({ editor, node, options }: WidgetProps<T>) {
     const state = node ?? editor?.getNode();
     const ChildEditor = useMemo(() => (editor && state ? editor.getWidget(state, options) : null), [editor, state, options]);
 

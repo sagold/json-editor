@@ -1,9 +1,9 @@
-import { DataNode } from '../types';
+import { JsonNode } from '../types';
 
 /**
  * reduces a schema tree to its contained json data
  */
-export function getData(node: DataNode): unknown {
+export function getData(node: JsonNode): unknown {
     if (node == null) {
         return null;
     }

@@ -2,10 +2,10 @@ import { createNode } from './createNode';
 import { getNode } from './getNode';
 import { compileSchema, draftEditor } from 'json-schema-library';
 import { strict as assert } from 'assert';
-import { DataNode } from '../types';
+import { JsonNode } from '../types';
 
 describe('getNode', () => {
-    let node: DataNode;
+    let node: JsonNode;
     beforeEach(
         () =>
             (node = createNode(

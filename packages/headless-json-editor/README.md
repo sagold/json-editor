@@ -144,7 +144,7 @@ const options: Record<string, any> = node.options;
 get children of parentNode
 
 ```ts
-const value: DataNode[] = node.children;
+const value: JsonNode[] = node.children;
 ```
 
 get json-schema of value
@@ -255,7 +255,7 @@ history.undo();
 
 ### how to write plugins
 
-plugins are function that return an object with a unique `id` and a method `onEvent(DataNode, PluginEvent)`.
+plugins are function that return an object with a unique `id` and a method `onEvent(JsonNode, PluginEvent)`.
 
 ```ts
 import { Plugin } from 'headless-json-editor';

@@ -1,10 +1,10 @@
-import { DataNode } from 'headless-json-editor';
+import { JsonNode } from 'headless-json-editor';
 import { memo, useCallback, ReactNode } from 'react';
 import { Editor } from './Editor';
 
 type AnyOption = Record<string, unknown>;
 
-export type WidgetProps<T extends DataNode = DataNode> = {
+export type WidgetProps<T extends JsonNode = JsonNode> = {
     node: T;
     editor: Editor;
     options?: Partial<T['options']>;
@@ -14,7 +14,7 @@ export type WidgetProps<T extends DataNode = DataNode> = {
  * interface of generic json editor component.
  * it takes the current editor and the current node along with a localized option interface
  */
-export type Widget<NodeType extends DataNode = DataNode> = (props: WidgetProps<NodeType>) => ReactNode | null;
+export type Widget<NodeType extends JsonNode = JsonNode> = (props: WidgetProps<NodeType>) => ReactNode | null;
 
 /**
  * react memo node comparison
@@ -27,7 +27,7 @@ const isEqual = (prev: WidgetProps, next: WidgetProps) => {
 /**
  * props of your decorated editor
  */
-export type DecoratedWidgetProps<NodeType extends DataNode, ValueType = unknown> = {
+export type DecoratedWidgetProps<NodeType extends JsonNode, ValueType = unknown> = {
     node: NodeType;
     editor: Editor;
     options: NodeType['options'];
@@ -37,12 +37,12 @@ export type DecoratedWidgetProps<NodeType extends DataNode, ValueType = unknown>
 /**
  * interface to your decorated editor
  */
-export type DecoratedWidget<NodeType extends DataNode, ValueType = unknown> = (props: DecoratedWidgetProps<NodeType, ValueType>) => ReactNode | null;
+export type DecoratedWidget<NodeType extends JsonNode, ValueType = unknown> = (props: DecoratedWidgetProps<NodeType, ValueType>) => ReactNode | null;
 
 /**
  * add setValue helper to editor component and reduce update cycles
  */
-export function widget<NodeType extends DataNode = DataNode, ValueType = unknown>(WidgetComponent: DecoratedWidget<NodeType, ValueType>) {
+export function widget<NodeType extends JsonNode = JsonNode, ValueType = unknown>(WidgetComponent: DecoratedWidget<NodeType, ValueType>) {
     // eslint-disable-next-line react/display-name
     return memo((props: WidgetProps<NodeType>) => {
         const setValue = useCallback(
@@ -60,8 +60,8 @@ export function widget<NodeType extends DataNode = DataNode, ValueType = unknown
     }, isEqual);
 }
 
-export type WidgetPlugin<N extends DataNode = any> = {
+export type WidgetPlugin<N extends JsonNode = any> = {
     readonly id: string;
-    use: (node: DataNode, options?: AnyOption) => boolean;
+    use: (node: JsonNode, options?: AnyOption) => boolean;
     Widget: Widget<N>;
 };

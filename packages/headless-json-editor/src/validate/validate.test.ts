@@ -5,7 +5,7 @@ import { setValue } from '../transform/setValue';
 import { strict as assert } from 'assert';
 import { updateErrors as validate } from '../validate/updateErrors';
 import { compileSchema, drafts } from '../compileSchema';
-import { DataNode } from '../types';
+import { JsonNode } from '../types';
 
 describe('validate', () => {
     let schemaNode: SchemaNode;
@@ -57,7 +57,7 @@ describe('validate', () => {
     it('should validate from pointer only', () => {
         const root = createNode(schemaNode, { title: '', caption: '' });
 
-        validate(getNode(root, '/caption') as DataNode);
+        validate(getNode(root, '/caption') as JsonNode);
 
         const caption = getNode(root, '/caption');
         assert(!isJsonError(caption));

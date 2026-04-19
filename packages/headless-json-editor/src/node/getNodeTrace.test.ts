@@ -1,11 +1,11 @@
 import { createNode } from './createNode';
 import { getNodeTrace } from './getNodeTrace';
 import { strict as assert } from 'assert';
-import { DataNode } from '../types';
+import { JsonNode } from '../types';
 import { compileSchema } from '../compileSchema';
 
 describe('getNodeTrace', () => {
-    let node: DataNode;
+    let node: JsonNode;
     beforeEach(
         () =>
             (node = createNode(

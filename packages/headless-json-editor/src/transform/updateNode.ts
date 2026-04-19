@@ -3,7 +3,7 @@ import { DefaultNodeOptions, createNode } from '../node/createNode';
 import { JsonError, JsonPointer } from 'json-schema-library';
 import { getNode } from '../node/getNode';
 import { getData } from '../node/getData';
-import { DataNode, isJsonError, Change, ParentNode, JsonSchema } from '../types';
+import { JsonNode, isJsonError, Change, ParentNode, JsonSchema } from '../types';
 import { unlinkPath } from './unlinkPath';
 
 /**
@@ -15,7 +15,7 @@ import { unlinkPath } from './unlinkPath';
  * @param targetNode - node to be recreated
  * @return [newRootNode, listOfChanges]
  */
-export function updateNode<T extends DataNode = DataNode>(ast: T, pointer: JsonPointer): [JsonError | T, Change[]?] {
+export function updateNode<T extends JsonNode = JsonNode>(ast: T, pointer: JsonPointer): [JsonError | T, Change[]?] {
     const targetNode = getNode(ast, pointer);
     if (isJsonError(targetNode)) {
         return [targetNode];
@@ -54,7 +54,7 @@ export function updateNode<T extends DataNode = DataNode>(ast: T, pointer: JsonP
 /**
  * updates schema of a node
  */
-export function updateSchema(rootNode: DataNode, pointer: JsonPointer, schema: JsonSchema): [JsonError] | [DataNode, Change[]] {
+export function updateSchema(rootNode: JsonNode, pointer: JsonPointer, schema: JsonSchema): [JsonError] | [JsonNode, Change[]] {
     const result = unlinkPath(rootNode, pointer);
     if (isJsonError(result)) {
         return [result];
@@ -70,10 +70,10 @@ export function updateSchema(rootNode: DataNode, pointer: JsonPointer, schema: J
  * updates options of a node
  */
 export function updateOptions(
-    rootNode: DataNode,
+    rootNode: JsonNode,
     pointer: JsonPointer,
     options: DefaultNodeOptions
-): [JsonError] | [DataNode, Change[]] {
+): [JsonError] | [JsonNode, Change[]] {
     const result = unlinkPath(rootNode, pointer);
     if (isJsonError(result)) {
         return [result];

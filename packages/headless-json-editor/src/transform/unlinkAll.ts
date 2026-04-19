@@ -1,4 +1,4 @@
-import { DataNode, isParentNode } from '../types';
+import { JsonNode, isParentNode } from '../types';
 
 /**
  * Returns a clone of the node. Each node is a shallow clone so do not modify
@@ -6,7 +6,7 @@ import { DataNode, isParentNode } from '../types';
  *
  * @returns deep clone of node
  */
-export function unlinkAll(node: DataNode) {
+export function unlinkAll(node: JsonNode) {
     const newNode = { ...node };
     if (isParentNode(newNode)) {
         newNode.children = newNode.children.map((n) => unlinkAll(n));

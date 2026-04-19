@@ -1,5 +1,5 @@
 import { Plugin } from '../HeadlessEditor';
-import { DataNode, PluginEvent } from '../types';
+import { JsonNode, PluginEvent } from '../types';
 
 const UPDATES_TO_COLLECT: number = 12 as const;
 export const historyPluginId = 'history' as const;
@@ -12,7 +12,7 @@ type Signature = {
 }
 
 export type Commit = {
-    root: DataNode;
+    root: JsonNode;
     changes: PluginEvent[];
     updateCount: number;
 };

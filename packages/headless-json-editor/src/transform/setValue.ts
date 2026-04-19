@@ -5,7 +5,7 @@ import { deepEqual } from 'fast-equals';
 import { JsonPointer, JsonError, isReduceable, SchemaNode } from 'json-schema-library';
 import { getChildIndex } from '../node/getChildNode';
 import { getData } from '../node/getData';
-import { DataNode, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
+import { JsonNode, isValueNode, isParentNode, isJsonError, ParentNode, Change, isFileNode } from '../types';
 import { replaceChildNode } from './set/replaceChildNode';
 import { syncNodes } from './set/syncNodes';
 import { updateValueNode } from './set/updateValueNode';
@@ -23,7 +23,7 @@ export type SetValueReturnType<T> = [JsonError] | [T, Change[]];
  * Set a value at pointer-location
  * @returns new node-tree with a list of changes applied or an error
  */
-export function setValue<T extends DataNode = DataNode>(node: T, pointer: JsonPointer, value: any): SetValueReturnType<T> {
+export function setValue<T extends JsonNode = JsonNode>(node: T, pointer: JsonPointer, value: any): SetValueReturnType<T> {
     /** path to target */
     const path = split(pointer);
     /** list of changes on nodes while performing set operation */

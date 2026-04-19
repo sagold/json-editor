@@ -1,11 +1,11 @@
-import { ArrayNode, DataNode, NodeType } from '../types';
+import { ArrayNode, JsonNode, NodeType } from '../types';
 
 /** update dynamic node options based on passed data - mainly used for array action-flags */
-export function updateOptions(node: DataNode, data?: unknown) {
+export function updateOptions(node: JsonNode, data?: unknown) {
     UPDATE[node.type]?.(node, data);
 }
 
-const UPDATE: Partial<Record<NodeType, (node: DataNode, data?: unknown) => void>> = {
+const UPDATE: Partial<Record<NodeType, (node: JsonNode, data?: unknown) => void>> = {
     array(node, data) {
         const schema = node.schema;
         node.options.required = schema.minItems != null && schema.minItems > 0;

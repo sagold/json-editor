@@ -9,7 +9,7 @@ import {
     DefaultNodeOptions,
     getErrors,
     WidgetField,
-    DataNode
+    JsonNode
 } from '@sagold/react-json-editor';
 import { Textarea } from '@mantine/core';
 import { widgetInputProps } from '../components/widgetInputProps';
@@ -35,7 +35,7 @@ export type SimpleJsonOptions = {
 } & DefaultNodeOptions;
 
 export const SimpleJsonWidget = (props: any) => {
-    const node = props!.node as DataNode;
+    const node = props!.node as JsonNode;
     if (node.schema.type === 'string') {
         return <SimpleJsonStringWidget {...props} />;
     }

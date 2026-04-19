@@ -2,7 +2,7 @@
 
 **Breaking Changes**
 
-- renamed `Node` to `DataNode` to avoid collisions with native Node type
+- renamed `Node` to `JsonNode` to avoid collisions with native Node type
 - prefer `x-options` over `options` schema keyword and change format-ids to `x-widget`
 - set draft-2020-12 as default draft
 

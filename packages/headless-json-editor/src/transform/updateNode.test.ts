@@ -1,13 +1,13 @@
 import { isJsonError, JsonSchema, mergeSchema, SchemaNode } from 'json-schema-library';
 import { updateNode } from './updateNode';
 import { getNode } from '../node/getNode';
-import { DataNode, NumberNode } from '../types';
+import { JsonNode, NumberNode } from '../types';
 import { strict as assert } from 'assert';
 import { createNode } from '../node/createNode';
 import { getNodeTrace } from '../node/getNodeTrace';
 import { compileSchema } from '../compileSchema';
 
-function assertUnlinkedNodes(before: DataNode, after: DataNode, path: string) {
+function assertUnlinkedNodes(before: JsonNode, after: JsonNode, path: string) {
     assert.notEqual(before, after, 'root reference should not be the same');
     const a = getNodeTrace(before, path);
     const b = getNodeTrace(after, path);
@@ -20,7 +20,7 @@ function assertUnlinkedNodes(before: DataNode, after: DataNode, path: string) {
 
 describe('updateNode', () => {
     let schemaNode: SchemaNode;
-    let ast: DataNode;
+    let ast: JsonNode;
 
     beforeEach(() => {
         schemaNode = compileSchema({
