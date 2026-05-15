@@ -1,0 +1,136 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/useEditor" />
+
+API Reference
+
+# useEditor
+
+> `const editor = useEditor(options);`
+
+`useEditor` returns your editor-instance containing a JSON Schema tree, registered widgets and plugins and the overall state of the data.
+
+```tsx
+import { useEditor } from '@sagold/react-json-editor';
+
+function WebFormComponent() {
+  const editor = useEditor(options);
+
+  // ...
+```
+
+## Parameters
+
+### `options: UseEditorOptions`
+
+#### schema (required)
+
+```ts
+schema: JsonSchema;
+```
+
+The JSON Schema describing the web form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly.
+
+#### data
+
+```tsx
+data?;
+```
+
+The initial, partial data to be used to fill the web form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form
+
+#### widgets
+
+```tsx
+widgets?: WidgetPlugin[];
+```
+
+The list of available widgets to render the JSON Schema tree. Each node in the tree should have a matching widget to be rendered or the editor will either ignore or show an error using an Error Widget if added.
+
+#### onChange
+
+```ts
+onChange?: (data, root: JsonNode, editor: Editor) => void
+```
+
+A function called after each udpate which that accepts three arguments:
+
+- `data` the latest data of the web form
+- `root` the rootNode of the json-editor and
+- `editor` the current editor instance
+
+_Only supported by useEditor_
+
+#### disabled
+
+```tsx
+disabled?: boolean; // default false
+```
+
+Set to true to deactivate all web forms
+
+#### liveUpdate
+
+```tsx
+liveUpdate?: boolean; // default false
+```
+
+Set to `true` to update form data on each keystroke instead of on blur. Only applied to supporting editors
+
+#### plugins
+
+```tsx
+plugins?: EditorPlugin[];
+```
+
+#### addOptionalProps
+
+```tsx
+addOptionalProps?: boolean; // default false
+```
+
+#### extendDefaults
+
+```tsx
+extendDefaults?: boolean; // default false
+```
+
+#### removeInvalidData
+
+```tsx
+removeInvalidData?: boolean; // default false
+```
+
+#### cacheKey
+
+```tsx
+cacheKey?: string;
+```
+
+A unique id that if changed, will recreate the editor
+
+_Only supported by useEditor_
+
+#### drafts
+
+```tsx
+drafts?: Draft[]; // default [Draft4, Draft6, Draft7, Draft2019, Draft2020]
+```
+
+## Returns
+
+`useEditor` returns an instance of `Editor`. For details on working with `editor` see Usage below or more in depth details in API Reference on [Editor](/docs/api-editor--docs)
+
+## Caveats
+
+- when running `React.StrictMode` the returned editor instance will be undefined on the first call
+- Each JSON Schema requires a valid JSON Schema `type` keyword
+
+## Usage
+
+### Render form using `useEditor` only
+
+### Render form using `Widget` component
+
+### Typescript

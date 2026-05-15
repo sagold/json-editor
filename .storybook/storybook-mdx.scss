@@ -1,0 +1,381 @@
+@use 'sass:map';
+
+// colors
+
+// https://colorhunt.co/palette/3c486bf0f0f0f9d949f45050
+$navy: #3c486b; // blue
+$red: #c12100;
+$orange: #f45050;
+$yellow: #f9d949;
+$yellow-light: hsl(from #{$yellow} h s calc(l + 6));
+$green: #2baf8f;
+
+.docs-color-palette {
+    display: flex;
+    gap: 1px;
+    margin: 0;
+    padding: 0 !important;
+    li {
+        width: 4rem;
+        list-style: none;
+        margin: 0 !important;
+        padding: 0;
+    }
+    li:after {
+        position: relative;
+        display: inline-block;
+        content: attr(data-color);
+        left: 50%;
+        transform: translateX(-50%);
+        color: #f4f6ff;
+        font-size: 0.8rem;
+    }
+    li[data-color='red'] {
+        background-color: $red;
+    }
+    li[data-color='orange'] {
+        background-color: $orange;
+    }
+    li[data-color='yellow'] {
+        background-color: $yellow;
+    }
+    li[data-color='green'] {
+        background-color: $green;
+    }
+    li[data-color='navy'] {
+        background-color: $navy;
+    }
+}
+
+// $green2: #5ec79d,
+// $orange2: #fd9a02,
+// $red2-dark: #441207;
+// $red2: #c12100,
+// $yellow2: #feba57;
+
+$background-lighter: #fbfdff;
+$background: #f4f6ff;
+// $background-darker: hsl(from #{$background} h s calc(l - 3));
+$background-darker: oklch(from #{$background} calc(l - 0.01) c h);
+
+// MDX theme
+#storybook-docs {
+    // main
+    --docs-primary: #{$red};
+    --docs-secondary: #{$yellow};
+    --docs-tertiary: #{$green};
+    --docs-quaternary: #{$navy};
+    // by usage
+    --docs-action: #{$orange}; // color used for clickable elements
+    --docs-highlight: #{$yellow}; // color to highlight an section
+    --docs-highlight-surface: #{$yellow-light}; // color to highligh a surface
+    --docs-highlight-decoration: #{$green}; // for blockquote color element besides highlight surface
+    --docs-highlight-text: #333; // text color on highlighted surface
+    // by type
+    --docs-header: #{$red}; // titles
+    --docs-header-secondary: #{$orange}; // secondary or subtitles
+    --docs-bg: #{$background};
+    --docs-bg-canvas: #{$background-darker};
+    // components
+    --docs-tab-highlight: var(--docs-bg-canvas);
+    --docs-tab-action: #{$navy};
+}
+
+// MDX page layout
+#storybook-docs {
+    .sbdocs.sbdocs-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+
+        .sbdocs.sbdocs-content {
+            max-width: none;
+
+            > * {
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 960px;
+                width: 100%;
+
+                @media (max-width: 1000px) {
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    max-width: none;
+                    width: auto;
+                }
+
+                @media (max-width: 430px) {
+                    margin-left: 4px;
+                    margin-right: 4px;
+                    max-width: none;
+                    width: auto;
+                }
+            }
+        }
+    }
+}
+
+// Change background color of MDX documents
+#storybook-docs {
+    background-color: var(--docs-bg);
+    .sbdocs.sbdocs-wrapper {
+        background-color: inherit;
+    }
+}
+
+#storybook-docs .rje-docs--fullwidth {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: none !important;
+}
+
+// Introduction Header
+#storybook-docs .rje-docs-header {
+    position: relative;
+    margin-top: -4rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    border-bottom: 4px solid var(--docs-tertiary);
+    overflow: hidden;
+    background: $navy;
+
+    .rje-docs-header__labels {
+        position: absolute;
+        left: calc(50% + 0.5rem);
+        transform: translateX(-50%);
+        top: 0.5rem;
+        max-width: 1000px;
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    img {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .rje-docs-title {
+        padding: 1rem 0.5rem 0.25rem 0.5rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--docs-secondary);
+        border-top: 1px solid $red;
+        border-bottom: 4px solid $orange;
+        font-weight: 600;
+    }
+
+    .rje-docs-title__label {
+        font-size: 0.9rem;
+        line-height: 1;
+        display: block;
+    }
+
+    .rje-docs-title__name {
+        font-size: 2rem;
+    }
+}
+
+.sbdocs.sbdocs-content {
+    blockquote {
+        padding: 0;
+        border-left: 8px solid var(--docs-highlight-decoration);
+        font-size: 1.25em;
+
+        p {
+            margin: 0;
+            padding: 0.5rem 0.5rem 0.5rem 1rem;
+            font-size: 1.2em;
+            line-height: 1.4;
+            background: var(--docs-highlight-surface);
+            color: var(--docs-highlight-text);
+        }
+
+        a {
+            color: var(--docs-highlight-text);
+        }
+    }
+
+    h1:not(:first-child) {
+        margin-top: 1.5em;
+    }
+
+    h1:not(.mantine-Title-root) {
+        font-size: 2em;
+        // color: var(--docs-header);
+        color: $navy;
+    }
+
+    h2:not(.mantine-Title-root) {
+        font-size: 1.6rem;
+        font-weight: 200;
+        text-transform: uppercase;
+        border-bottom: 0;
+        margin-top: 1.5em;
+        color: var(--docs-header-secondary);
+    }
+
+    h2:not(.mantine-Title-root) + p {
+        margin-top: 0;
+    }
+
+    h3:not(.mantine-Title-root) {
+        font-size: 1.3rem;
+        padding-top: 1.25em;
+        color: var(--docs-header-secondary);
+    }
+
+    h4 {
+        font-size: 1.1em;
+    }
+
+    a {
+        color: var(--docs-action);
+        &:visited {
+            color: oklch(from var(--docs-action) calc(l - 0.2) c h);
+        }
+        &:hover {
+            color: oklch(from var(--docs-action) calc(l + 0.1) c h);
+        }
+        code {
+            font-size: inherit;
+        }
+    }
+
+    p,
+    li,
+    a {
+        font-size: 1.1rem;
+    }
+}
+
+/* custom codeblock (wrapped) */
+#storybook-docs .docblock-source {
+    background-color: var(--docs-bg-canvas);
+    border-color: var(--docs-highlight);
+    border-radius: 0;
+    box-shadow: none;
+    filter: brightness(1.01);
+    margin: 0;
+
+    /* code */
+    .prismjs {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    /* copy button */
+    button {
+        border-color: var(--docs-highlight);
+    }
+}
+
+/* inline code line */
+#storybook-docs {
+    code {
+        background: $yellow;
+        border: none;
+        padding: 0.25em;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        code {
+            border: 1px solid $red;
+            background: var(--docs-header-secondary);
+            color: #fff;
+        }
+    }
+
+    h1 {
+        code {
+            border: 1px solid $red;
+            background: var(--docs-header);
+            color: #fff;
+        }
+    }
+
+    a {
+        code {
+            color: #fff;
+            background: var(--docs-action);
+        }
+    }
+
+    blockquote {
+        code {
+            color: #fff;
+            background: $navy;
+            border: 1px solid $green;
+        }
+    }
+}
+
+// inline story blocks
+#storybook-docs .inline.sbdocs.sbdocs-preview {
+    box-shadow: none; /* drop shadow of story box */
+    border: none;
+    overflow: visible;
+
+    /* set preview box to full width */
+    margin: 0;
+    .docs-story > :first-child {
+        margin: 0;
+        padding-top: 1rem;
+        padding-bottom: 0.25em;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        height: auto;
+        background-color: var(--docs-bg-canvas);
+
+        .innerZoomElementWrapper > * {
+            border: none;
+        }
+    }
+    .docs-story > :last-child {
+        background-color: var(--docs-bg-canvas);
+        border: 1px solid var(--docs-highlight);
+    }
+    /* -- preview box full width */
+
+    .docs-story {
+        padding: 0;
+        overflow: visible; /* contents expand outside of story box */
+    }
+
+    .docs-story > :first-child {
+        z-index: 2; /* contents may be above *show code* action */
+        overflow: visible;
+    }
+
+    .docblock-code-toggle {
+        border: none;
+        border-radius: 4px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        background: transparent;
+        color: #777;
+    }
+
+    .rje-form {
+        --mantine-h1-font-size: 1.5em;
+
+        code {
+            background: transparent;
+        }
+    }
+}
+
+// preview actions "show code" below inline code block
+#storybook-docs .sbdocs-preview-actions {
+    margin: 0;
+    & > div {
+        justify-content: right;
+    }
+}

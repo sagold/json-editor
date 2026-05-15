@@ -1,0 +1,28 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/Editor" />
+
+API Reference
+
+# Editor
+
+> `const editor = new Editor(options);`
+
+`new Editor` returns your editor-instance containing a JSON Schema tree, registered widgets and plugins and the overall state of the data.
+
+```tsx
+import { Editor } from '@sagold/react-json-editor';
+
+const editor = Editor(options);
+```
+
+## Parameters
+
+### `options: EditorOptions`
+
+## Instance
+
+Returns an `editor` instance with the following api
+
+### `options: EditorOptions`

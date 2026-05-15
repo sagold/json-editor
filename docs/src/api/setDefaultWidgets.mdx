@@ -1,0 +1,22 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/setDefaultWidgets" />
+
+API Reference
+
+# setDefaultWidgets
+
+> `setDefaultWidgets(widgets)`
+
+`setDefaultWidgets` registers a list of widgets for all new editor instances per default
+
+```tsx
+import { setDefaultWidgets } from '@sagold/react-json-editor';
+import widgets from '@sagold/rje-mantine-widgets';
+setDefaultWidgets(widgets);
+```
+
+## Parameters
+
+### `widgets: WidgetPlugin[]`

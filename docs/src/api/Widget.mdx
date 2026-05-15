@@ -1,0 +1,31 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/Widget" />
+
+API Reference
+
+# Widget
+
+> `<Widget node={node} editor={editor} options={options} />`
+
+`Widget` renders the given node
+
+```tsx
+import { useEditor, Widget } from '@sagold/react-json-editor';
+
+function WebFormComponent() {
+  const editor = useEditor(options);
+  const node = editor.getNode();
+
+  return <Widget node={node} editor={editor} options={options} />;
+}
+```
+
+## Parameters
+
+### `node`
+
+### `editor`
+
+### `options`

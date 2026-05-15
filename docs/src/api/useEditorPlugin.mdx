@@ -1,0 +1,28 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/useEditorPlugin" />
+
+API Reference
+
+# useEditorPlugin
+
+> `useEditorPlugin(editor plugin);`
+
+`useEditorPlugin` adds a plugin to an editor instance
+
+```tsx
+import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
+
+function WebFormComponent() {
+  const editor = useEditor(options)
+  useEditorPlugin(editor, plugin);
+
+  // ...
+```
+
+## Parameters
+
+### `editor`
+
+### `plugin`
