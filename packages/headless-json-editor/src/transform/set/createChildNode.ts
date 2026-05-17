@@ -1,4 +1,4 @@
-import { isJsonError, ParentNode, Change, isNode } from '../../types';
+import { isJsonError, ParentNode, Change, isJsonNode } from '../../types';
 import { _createNode } from '../../node/createNode';
 import { getSchemaOfChild } from './getSchemaOfChild';
 import { getData } from '../../node/getData';
@@ -31,7 +31,7 @@ export function createChildNode(node: ParentNode, property: string, value: unkno
 
     const changeSet: Change[] = [];
     const childIndex = node.type === 'object' ? node.children.length : (property as unknown as number);
-    if (isNode(node.children[childIndex])) {
+    if (isJsonNode(node.children[childIndex])) {
         changeSet.push({ type: 'delete', node: node.children[childIndex] });
     }
 

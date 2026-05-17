@@ -1,4 +1,4 @@
-import { ValueNode, isJsonError, ParentNode, isNode, Change, FileNode } from '../../types';
+import { ValueNode, isJsonError, ParentNode, isJsonNode, Change, FileNode } from '../../types';
 import { _createNode } from '../../node/createNode';
 import { getChildIndex } from '../../node/getChildNode';
 import { deepEqual } from 'fast-equals';
@@ -45,7 +45,7 @@ export function updateValueNode(parent: ParentNode, child: ValueNode | FileNode,
     }
 
     // const childPointer = `${parent.pointer}/${child.property}`;
-    if (isNode(parent.children[targetIndex])) {
+    if (isJsonNode(parent.children[targetIndex])) {
         // @change replace node
         changeSet.push({ type: 'delete', node: parent.children[targetIndex] });
     }
