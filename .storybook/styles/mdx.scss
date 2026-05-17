@@ -1,62 +1,6 @@
-@use 'sass:map';
-
-// colors
-
-// https://colorhunt.co/palette/3c486bf0f0f0f9d949f45050
-$navy: #3c486b; // blue
-$red: #c12100;
-$orange: #f45050;
-$yellow: #f9d949;
-$yellow-light: hsl(from #{$yellow} h s calc(l + 6));
-$green: #2baf8f;
-
-.docs-color-palette {
-    display: flex;
-    gap: 1px;
-    margin: 0;
-    padding: 0 !important;
-    li {
-        width: 4rem;
-        list-style: none;
-        margin: 0 !important;
-        padding: 0;
-    }
-    li:after {
-        position: relative;
-        display: inline-block;
-        content: attr(data-color);
-        left: 50%;
-        transform: translateX(-50%);
-        color: #f4f6ff;
-        font-size: 0.8rem;
-    }
-    li[data-color='red'] {
-        background-color: $red;
-    }
-    li[data-color='orange'] {
-        background-color: $orange;
-    }
-    li[data-color='yellow'] {
-        background-color: $yellow;
-    }
-    li[data-color='green'] {
-        background-color: $green;
-    }
-    li[data-color='navy'] {
-        background-color: $navy;
-    }
-}
-
-// $green2: #5ec79d,
-// $orange2: #fd9a02,
-// $red2-dark: #441207;
-// $red2: #c12100,
-// $yellow2: #feba57;
-
-$background-lighter: #fbfdff;
-$background: #f4f6ff;
-// $background-darker: hsl(from #{$background} h s calc(l - 3));
-$background-darker: oklch(from #{$background} calc(l - 0.01) c h);
+// styles for mdx documents
+// main entry point: body.sb-show-main, #storybook-docs
+@use './colors.scss' as *;
 
 // MDX theme
 #storybook-docs {
@@ -68,9 +12,9 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
     // by usage
     --docs-action: #{$orange}; // color used for clickable elements
     --docs-highlight: #{$yellow}; // color to highlight an section
-    --docs-highlight-surface: #{$yellow-light}; // color to highligh a surface
-    --docs-highlight-decoration: #{$green}; // for blockquote color element besides highlight surface
-    --docs-highlight-text: #333; // text color on highlighted surface
+    --docs-highlight-surface: #{$green}; // color to highligh a surface
+    --docs-highlight-decoration: #{$navy}; // for blockquote color element besides highlight surface
+    --docs-highlight-text: #fff; // text color on highlighted surface
     // by type
     --docs-header: #{$red}; // titles
     --docs-header-secondary: #{$orange}; // secondary or subtitles
@@ -135,7 +79,7 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
     padding: 0;
     display: flex;
     justify-content: center;
-    border-bottom: 4px solid var(--docs-tertiary);
+    border-bottom: 4px solid $red;
     overflow: hidden;
     background: $navy;
 
@@ -162,7 +106,7 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
         left: 0;
         right: 0;
         background-color: var(--docs-secondary);
-        border-top: 1px solid $red;
+        border-top: 1px solid $green;
         border-bottom: 4px solid $orange;
         font-weight: 600;
     }
@@ -244,9 +188,12 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
         }
     }
 
-    p,
-    li,
-    a {
+    & > p,
+    & > ul li,
+    & > div > ul li, // tabs
+    & > ol li,
+    & > a {
+        // kept selectors specific to not leak into .rje-form
         font-size: 1.1rem;
     }
 }
@@ -275,9 +222,11 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
 /* inline code line */
 #storybook-docs {
     code {
+        font-size: 0.8em;
         background: $yellow;
         border: none;
         padding: 0.25em;
+        text-transform: initial !important;
     }
 
     h1,
@@ -287,6 +236,7 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
     h5,
     h6 {
         code {
+            font-weight: 400;
             border: 1px solid $red;
             background: var(--docs-header-secondary);
             color: #fff;
@@ -310,8 +260,8 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
 
     blockquote {
         code {
-            color: #fff;
-            background: $navy;
+            color: #333;
+            background: $yellow;
             border: 1px solid $green;
         }
     }
@@ -369,6 +319,12 @@ $background-darker: oklch(from #{$background} calc(l - 0.01) c h);
         code {
             background: transparent;
         }
+    }
+}
+
+@supports (-webkit-touch-callout: none) {
+    #storybook-docs .code.code--inline .docblock-source .prismjs {
+        font-size: 0.7rem !important; /* on mobile this still does not apply */
     }
 }
 

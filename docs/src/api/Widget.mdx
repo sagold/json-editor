@@ -1,15 +1,11 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
-import { Tabs } from '../components/Tabs';
+import { DocsHeader } from '../components/DocsHeader';
 
 <Meta title="api/Widget" />
 
-API Reference
+<DocsHeader title="Widget" breadCrumbs="API Reference"></DocsHeader>
 
-# Widget
-
-> `<Widget node={node} editor={editor} options={options} />`
-
-`Widget` renders the given node
+`Widget` selects and renders a widget for a given JsonNode
 
 ```tsx
 import { useEditor, Widget } from '@sagold/react-json-editor';
@@ -24,8 +20,8 @@ function WebFormComponent() {
 
 ## Parameters
 
-### `node`
+### `node: JsonNode`
 
-### `editor`
+### `editor: Editor`
 
-### `options`
+### `options: JsonNode["options"]`

@@ -10,17 +10,15 @@ const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
     stories: [
-        '../docs/src/Introduction.mdx',
+        '../docs/src/Introduction.mdx', // set Introduction to top of navigation
+        '../docs/src/**/Overview.mdx', // set overview to top of navigation
         '../docs/src/**/*.mdx',
         '../packages/*/src/**/*.mdx',
         '../packages/*/src/**/*.stories.tsx',
         '../docs/src/**/*.stories.tsx'
     ],
 
-    addons: [
-        getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-docs')
-    ],
+    addons: [getAbsolutePath('@storybook/addon-links'), getAbsolutePath('@storybook/addon-docs')],
 
     framework: '@storybook/react-vite',
 

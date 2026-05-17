@@ -1,28 +1,202 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
-import { Tabs } from '../components/Tabs';
+import { DocsHeader } from '../components/DocsHeader';
 
 <Meta title="api/Editor" />
 
-API Reference
-
-# Editor
-
-> `const editor = new Editor(options);`
+<DocsHeader title="Editor" breadCrumbs="API Reference">
+  [Parameters](#parameters) · [Returns](#returns) · [Instance](#instance)
+</DocsHeader>
 
 `new Editor` returns your editor-instance containing a JSON Schema tree, registered widgets and plugins and the overall state of the data.
 
 ```tsx
 import { Editor } from '@sagold/react-json-editor';
 
-const editor = Editor(options);
+const editor = new Editor(options);
 ```
 
 ## Parameters
 
 ### `options: EditorOptions`
 
-## Instance
+#### schema (required)
+
+```ts
+schema: JsonSchema;
+```
+
+The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly.
+
+#### data
+
+```tsx
+data?
+```
+
+The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form
+
+#### widgets
+
+```tsx
+widgets?: WidgetPlugin[]
+```
+
+The list of available widgets to render the JSON Schema tree. Each node in the tree should have a matching widget to be rendered or the editor will either ignore or show an error using an Error Widget if added.
+
+#### disabled
+
+```tsx
+disabled?: boolean // default false
+```
+
+Set to true to deactivate all forms
+
+#### liveUpdate
+
+```tsx
+liveUpdate?: boolean // default false
+```
+
+Set to `true` to update form data on each keystroke instead of on blur. Only applied to supporting editors
+
+#### plugins
+
+```tsx
+plugins?: EditorPlugin[]
+```
+
+#### addOptionalProps
+
+```tsx
+addOptionalProps?: boolean; // default false
+```
+
+#### extendDefaults
+
+```tsx
+extendDefaults?: boolean // default false
+```
+
+#### removeInvalidData
+
+```tsx
+removeInvalidData?: boolean // default false
+```
+
+#### drafts
+
+```tsx
+drafts?: Draft[] // default [Draft4, Draft6, Draft7, Draft2019, Draft2020]
+```
+
+## Returns
 
 Returns an `editor` instance with the following api
 
-### `options: EditorOptions`
+## Instance
+
+[getData](#getdatapointer-jsonpointer---data) · [getErrors](#geterrors-jsonerror) · [getNode](#getnodepointer-string-jsonnode--jsonerror) · [getSchema](#getschema-jsonschema) · [getTemplateData](#gettemplatedataschema-jsonschema-data-partialdata-data) · [getWidget](#getwidgetnode-jsonnode-options-jsonnodeoptions-widgetundefined) · [setData](#setdatadata-data-jsonnode) · [setSchema](#setschemaschema-jsonschema-jsonnode) · [addValue](#addvaluepointer-string-jsonnode) · [removeValue](#removevaluepointer-string-jsonnode) · [setValue](#setvaluepointer-string-value-unknown-jsonnode) · [moveItem](#moveitempointer-string-to-number-jsonnode) · [appendItem](#appenditemnode-arraynode-itemschema-jsonschema-jsonnode) · [validate](#validate-jsonerror) · [getArrayAddOptions](#getarrayaddoptionsnode-arraynode-schemanode)
+
+### `getData(pointer: JsonPointer = '#'): Data`
+
+`editor.getData` returns the current data or a subset of the data specified by a JSON Pointer
+
+#### Parameters
+
+- **`pointer`** a JSON Pointer string of the data to return. Use `undefined` or `""` to get all data or specify a path like `/header` or `/todo/4` to get the data from the requested location
+
+#### Returns
+
+Current data at the given JSON Pointer. _A type is only returned when a JSON Pointer is omitted_
+
+### `getErrors(): JsonError[]`
+
+#### Returns
+
+Current list of form validation errors of the current state. An error contains the following properties `{ type: "error", code: string, message: string, data }`. The property `data` contains details to the error. For further details check [json-schema-library#validate](https://github.com/sagold/json-schema-library#validate)
+
+### `getNode(pointer: string): JsonNode | JsonError`
+
+#### Parameters
+
+- **`pointer`** a JSON Pointer string of the node to return. Use `undefined` or `""` to get the root node or specify a data path like `/header` or `/todo/4` to get the node from the requested location
+
+#### Returns
+
+The JsonNode of the queried location or an JsonError. Use the exported methods `isNode(node)` and `isJsonError(node)` for type guards.
+
+### `getSchema(): JsonSchema`
+
+#### Returns
+
+Input JSON Schema of the current form
+
+### `getTemplateData(schema: JsonSchema, data?: Partial<Data>): Data`
+
+`editor.getTemplateData` helps you quickly create valid data for the given JSON Schema. This method is usually used to create valid data for new values to add.
+
+#### Parameters
+
+- **`schema`** JsonSchema for which the data should be created
+- **`data`** Optional partial data to set for the new data. Any missing will be added and incompatible data will get replaced.
+
+#### Returns
+
+Data valid to the given JSON Schema
+
+### `getWidget(node: JsonNode, options?: JsonNode["options"]): Widget|undefined`
+
+Use `editor.getWidget` to find a widget matching the requested `JsonNode`
+
+#### Parameters
+
+- **`node`** is a JsonNode belonging to the root JsonNode of this editor, or the root itself. You can get the root by calling `editor.getNode()` or any nested root by specifying a JSON Pointer to the data `editor.getNode("#/header/title")`;
+- **`options`** can be passed to the lookup function, which will be available in a WidgetPlugin's use-function: `use(node, options) => boolean`. Usually, options are passed to getWidget as well as to the widget itself
+
+#### Returns
+
+The **Widget component** to render the given node or undefined
+
+### `setData(data: Data): JsonNode`
+
+`editor.setData` will replace the current form data by the given value
+
+#### Parameters
+
+- **`data`** Data valid to the current JSON Schema
+
+#### Returns
+
+The new root node with the given input data
+
+### `setSchema(schema: JsonSchema): JsonNode`
+
+`editor.setSchema` will replace the JSON Schema and recreate the JsonNode tree of the form
+
+#### Parameters
+
+- **`schema`** JSON Schema of the new form
+
+#### Returns
+
+The new root node for the given JSON Schema
+
+### `addValue(pointer: string): JsonNode`
+
+### `removeValue(pointer: string): JsonNode`
+
+### `setValue(pointer: string, value: unknown): JsonNode`
+
+### `moveItem(pointer: string, to: number): JsonNode`
+
+### `appendItem(node: ArrayNode, itemSchema: JsonSchema): JsonNode`
+
+### `validate(): JsonError[]`
+
+`editor.validate` runs the validation for the current form and returns a list of validation errors.
+
+#### Returns
+
+List of validation errors. [@see getErrors](#geterrors-jsonerror)
+
+### `getArrayAddOptions(node: ArrayNode): SchemaNode[]`

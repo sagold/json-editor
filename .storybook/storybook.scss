@@ -1,5 +1,8 @@
-@use '../packages/rje-code-widgets/src/index' as *;
-@use './storybook-mdx.scss';
+@use '../packages/rje-code-widgets/src/index';
+@use './styles/colors.scss' as *;
+@use './styles/mdx.scss';
+@use './styles/stories.scss';
+@use './styles/debug.scss'; // color p€alette
 
 @font-face {
     font-family: Icon;
@@ -9,73 +12,46 @@
         format(woff2);
 }
 
-/* add support rje theme variables */
-#storybook-docs {
-    --rje-font-family: Inter, sans-serif;
-    --rje-color-light-primary: 31, 101, 141;
-    --rje-color-light-secondary: 9, 66, 98;
-    --rje-color-light-text: 7, 23, 32;
-    --rje-color-dark-primary: 50, 133, 180;
-    --rje-color-dark-secondary: 145, 192, 218;
-    --rje-color-dark-text: 235, 240, 241;
+// remove rje-form style overrides in mdx documents
+#storybook-docs .rje-form {
+    div {
+        // we have to override font-family as this is being enforced by storybook
+        font-family: Inter, sans-serif;
+    }
 
-    .rje-form {
-        --mantine-h1-font-weight: 400;
-        --mantine-h2-font-weight: 400;
-        // --rje-action-color: #eb5b00;
-        // --rje-action-color: #3c486b;
-        --rje-action-color: #2baf8f;
+    code {
+        // overwrite leaking mdx styles
+        background: transparent;
     }
 }
 
-// sidebar
-#storybook-explorer-menu {
-    // background: red;
-    .sidebar-item[data-selected='true'] {
-        background-color: var(--docs-highlight-secondary);
+// rje style adjustments in mdx documents
+#storybook-docs .rje-form {
+    --mantine-color-disabled: #{$background-lighter}; // highlight inputs (focus)
+    --mantine-color-error: #{$red}; // highlight inputs (focus)
+    --mantine-font-family-headings: Inter, sans-serif;
+    --mantine-h1-font-weight: 400;
+    --mantine-h2-font-size: 1rem;
+    --mantine-h2-font-weight: 400;
+    --mantine-primary-color-filled-hover: #{$yellow};
+    --mantine-primary-color-filled: #{$green}; // highlight inputs (focus)
+
+    --rje-action-color: #{$green};
+
+    input {
+        --checkbox-color: #{$green};
+    }
+
+    .rje-array__table {
+        --table-striped-color: transparent;
     }
 }
 
-/*
-    Stories
-*/
-.sbdocs.sbdocs-preview {
-    box-shadow: none; /* drop shadow of story box */
+div[data-portal='true'] {
+    --menu-item-color: #{$green};
+    --menu-item-hover: #{$green-light};
 }
 
-@supports (-webkit-touch-callout: none) {
-    #storybook-docs .code.code--inline .docblock-source .prismjs {
-        font-size: 0.7rem !important; /* on mobile this still does not apply */
-    }
-}
-
-.rje-theme-decorator {
-    display: flex;
-    flex-wrap: wrap;
-
-    & > * {
-        flex-grow: 1;
-        box-sizing: border-box;
-        min-width: 50%;
-    }
-
-    .rje-theme--light {
-        padding: 16px;
-        background: rgba(243, 243, 241, 1);
-    }
-
-    .rje-theme--dark {
-        padding: 16px;
-        background: rgba(26, 27, 25, 1);
-    }
-
-    .story-columns {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .story-columns ~ .story-columns {
-        padding-top: 8px;
-    }
+// rje theme overrides in .stories
+#storybook-root .rje-form {
 }
