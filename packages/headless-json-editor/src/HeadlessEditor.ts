@@ -304,7 +304,7 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * @todo add Value only supports setting property, either change api or add iteratively
+     * @todo addValue only supports setting property, either change api or add iteratively
      * Shortcut to add a value at a given location. This usually is used to add array-items
      *
      * @return new root node

@@ -183,13 +183,70 @@ The new root node for the given JSON Schema
 
 ### `addValue(pointer: string): JsonNode`
 
+`editor.addValue` adds a value at a given location. This usually is used to add array-items
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the value to add
+
+#### Returns
+
+The new root node
+
+#### Caveats
+
+- addValue **only supports adding properties**
+
 ### `removeValue(pointer: string): JsonNode`
+
+`editor.removeValue` deletes the value at the given JSON Pointer
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the node which should be removed. Specify a data path like `/header` or `/todo/4` to remove the node from the specified location
+
+#### Returns
+
+The new root node
 
 ### `setValue(pointer: string, value: unknown): JsonNode`
 
+`editor.setValue` Sets or replaces a value at given data location
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string pointing to the data location of the value
+- **`value`** The actual data value to set
+
+#### Returns
+
+The new root node
+
 ### `moveItem(pointer: string, to: number): JsonNode`
 
+`editor.moveItem` will move the referenced **array-item** to another array position
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the node
+- **`to`** the index to move the array item to
+
+#### Returns
+
+The new root node
+
 ### `appendItem(node: ArrayNode, itemSchema: JsonSchema): JsonNode`
+
+`editor.appendItem` will add an item defined by a JSON Schema to the end of the target array
+
+#### Parameters
+
+- **`node`** ArrayNode of item
+- **`itemSchema`** JSON Schema of the item to add
+
+#### Returns
+
+The new root node
 
 ### `validate(): JsonError[]`
 
@@ -197,6 +254,16 @@ The new root node for the given JSON Schema
 
 #### Returns
 
-List of validation errors. [@see getErrors](#geterrors-jsonerror)
+List of validation errors. See [getErrors](#geterrors-jsonerror) for details
 
 ### `getArrayAddOptions(node: ArrayNode): SchemaNode[]`
+
+`editor.getArrayAddOptions` will return all available options for items to be added to this array
+
+#### Parameters
+
+- **`node`** ArrayNode
+
+#### Returns
+
+List of available JSON subschemas to insert into the array. Access the JSON Schema of each option by `SchemaNode.schema`. For more details see [json-schema-library#schemanode-methods](https://github.com/sagold/json-schema-library#schemanode-methods)
