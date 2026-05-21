@@ -1,0 +1,500 @@
+{
+  "Editor": {
+    "name": "Editor",
+    "types": [
+      {
+        "name": "Data",
+        "kind": "TypeParameter",
+        "text": "Data = unknown",
+        "default": "UnknownKeyword"
+      }
+    ],
+    "kind": "ClassDeclaration",
+    "filepath": "/Users/saschagoldhofer/Arbeit/versioned/sagold/json-editor/packages/react-json-editor/src/Editor.ts",
+    "constructor": {
+      "kind": "Constructor",
+      "parameters": [
+        {
+          "name": "options",
+          "kind": "Constructor",
+          "type": "EditorOptions",
+          "typeArgs": [
+            "TypeReference"
+          ],
+          "optional": false,
+          "text": "options: EditorOptions<Data>"
+        }
+      ]
+    },
+    "properties": [
+      {
+        "name": "id",
+        "kind": "PropertyDeclaration",
+        "typeKind": "StringKeyword",
+        "typeArgs": [],
+        "optional": false,
+        "text": "readonly id: string = uuid();"
+      },
+      {
+        "name": "root",
+        "kind": "PropertyDeclaration",
+        "typeKind": "TypeReference",
+        "typeArgs": [],
+        "comment": "Editor root node",
+        "optional": false,
+        "text": "root: JsonNode;"
+      },
+      {
+        "name": "schemaNode",
+        "kind": "PropertyDeclaration",
+        "typeKind": "TypeReference",
+        "typeArgs": [],
+        "comment": "Json-Schema API",
+        "optional": false,
+        "text": "schemaNode: SchemaNode;"
+      },
+      {
+        "name": "schemaNodeConfig",
+        "kind": "PropertyDeclaration",
+        "typeKind": "TypeReference",
+        "typeArgs": [],
+        "optional": false,
+        "text": "schemaNodeConfig: CompileOptions;"
+      },
+      {
+        "name": "plugins",
+        "kind": "PropertyDeclaration",
+        "type": "PluginInstance",
+        "typeKind": "ArrayType",
+        "typeArgs": [],
+        "comment": "list of active plugins",
+        "optional": false,
+        "text": "plugins: PluginInstance[] = [];"
+      },
+      {
+        "name": "options",
+        "kind": "PropertyDeclaration",
+        "typeKind": "TypeReference",
+        "typeArgs": [],
+        "comment": "input options for this editor instance",
+        "optional": false,
+        "text": "options: HeadlessEditorOptions<Data>;"
+      },
+      {
+        "name": "widgets",
+        "kind": "PropertyDeclaration",
+        "type": "WidgetPlugin",
+        "typeKind": "ArrayType",
+        "typeArgs": [],
+        "optional": false,
+        "text": "widgets: WidgetPlugin[];"
+      },
+      {
+        "name": "widgetOptions",
+        "kind": "PropertyDeclaration",
+        "typeKind": "TypeLiteral",
+        "typeArgs": [],
+        "optional": false,
+        "text": "widgetOptions: {\n        /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */\n        liveUpdate?: boolean;\n        /** if true disables all editors */\n        disabled?: boolean;\n    } = {};"
+      }
+    ],
+    "methods": [
+      {
+        "name": "getData",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Returns the current json data",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer = '#'",
+            "comment": "optional json-pointer of data to return. Returns whole json-data per default"
+          }
+        ]
+      },
+      {
+        "name": "setData",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Set new data and rebuild node tree",
+        "parameters": [
+          {
+            "name": "data",
+            "kind": "MethodDeclaration",
+            "type": "Data",
+            "typeArgs": [],
+            "optional": true,
+            "text": "data?: Data",
+            "comment": "new data to set"
+          }
+        ],
+        "returns": "new root node"
+      },
+      {
+        "name": "getTemplateData",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Shortcut to return default data based on json-schema only",
+        "parameters": [
+          {
+            "name": "schema",
+            "kind": "MethodDeclaration",
+            "type": "JsonSchema",
+            "typeArgs": [],
+            "optional": false,
+            "text": "schema: JsonSchema",
+            "comment": "json-schema to get default data from. Defaults to current schema"
+          },
+          {
+            "name": "data",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "data = null",
+            "comment": "optional data to merge with default data"
+          }
+        ],
+        "returns": "default data confirming to json-schema"
+      },
+      {
+        "name": "getSchema",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "",
+        "parameters": [],
+        "returns": "current json-schema"
+      },
+      {
+        "name": "setSchema",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "sets a new or modified json-schema and updates data and nodes",
+        "parameters": [
+          {
+            "name": "schema",
+            "kind": "MethodDeclaration",
+            "type": "JsonSchema",
+            "typeArgs": [],
+            "optional": false,
+            "text": "schema: JsonSchema",
+            "comment": "new json-schema to set"
+          }
+        ],
+        "returns": "new root node"
+      },
+      {
+        "name": "validate",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Perform data validation and update nodes",
+        "parameters": [],
+        "returns": "list of validation errors"
+      },
+      {
+        "name": "getErrors",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Get current validation errors of node-tree",
+        "parameters": [],
+        "returns": "validation errors of state"
+      },
+      {
+        "name": "setState",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Set new editor state (new tree of nodes)",
+        "parameters": [
+          {
+            "name": "state",
+            "kind": "MethodDeclaration",
+            "type": "JsonNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "state: JsonNode"
+          },
+          {
+            "name": "changes",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "changes: PluginEvent[]"
+          }
+        ],
+        "returns": "new root node"
+      },
+      {
+        "name": "getNode",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Get current root-node",
+        "parameters": [],
+        "returns": "root node"
+      },
+      {
+        "name": "getNode",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Get current node at json-pointer location",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer: string"
+          }
+        ],
+        "returns": "node at requested location or json-error"
+      },
+      {
+        "name": "getNode",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": true,
+            "text": "pointer?: string"
+          }
+        ]
+      },
+      {
+        "name": "findPlugin",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Get a plugin by pluginId",
+        "parameters": [
+          {
+            "name": "pluginId",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pluginId: string"
+          }
+        ]
+      },
+      {
+        "name": "addPlugin",
+        "kind": "MethodDeclaration",
+        "types": [
+          {
+            "name": "T",
+            "kind": "TypeParameter",
+            "text": "T extends Plugin"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plugin",
+            "kind": "MethodDeclaration",
+            "type": "T",
+            "typeArgs": [],
+            "optional": false,
+            "text": "plugin: T"
+          },
+          {
+            "name": "pluginOptions",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": true,
+            "text": "pluginOptions?: Parameters<T>[1]"
+          }
+        ]
+      },
+      {
+        "name": "runPlugins",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "parameters": [
+          {
+            "name": "oldState",
+            "kind": "MethodDeclaration",
+            "type": "JsonNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "oldState: JsonNode"
+          },
+          {
+            "name": "newState",
+            "kind": "MethodDeclaration",
+            "type": "JsonNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "newState: JsonNode"
+          },
+          {
+            "name": "changes",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "changes: PluginEvent[]"
+          }
+        ]
+      },
+      {
+        "name": "setValue",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Set value at given data-location",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer: string",
+            "comment": "json-pointer in data of target value"
+          },
+          {
+            "name": "value",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "value: unknown",
+            "comment": "value to set at location"
+          }
+        ],
+        "returns": "new root node or current one if nothing changed"
+      },
+      {
+        "name": "addValue",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "@todo addValue only supports setting property, either change api or add iteratively\nShortcut to add a value at a given location. This usually is used to add array-items",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer: string"
+          }
+        ],
+        "returns": "new root node"
+      },
+      {
+        "name": "removeValue",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Delete the value at the given json-pointer location",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer: string"
+          }
+        ],
+        "returns": "new root node"
+      },
+      {
+        "name": "moveItem",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Move the referenced array-item to another array position",
+        "parameters": [
+          {
+            "name": "pointer",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "pointer: string"
+          },
+          {
+            "name": "to",
+            "kind": "MethodDeclaration",
+            "typeArgs": [],
+            "optional": false,
+            "text": "to: number"
+          }
+        ]
+      },
+      {
+        "name": "appendItem",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "Append an item defined by a json-schema to the target array",
+        "parameters": [
+          {
+            "name": "node",
+            "kind": "MethodDeclaration",
+            "type": "ArrayNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "node: ArrayNode"
+          },
+          {
+            "name": "itemSchema",
+            "kind": "MethodDeclaration",
+            "type": "JsonSchema",
+            "typeArgs": [],
+            "optional": false,
+            "text": "itemSchema: JsonSchema"
+          }
+        ]
+      },
+      {
+        "name": "getArrayAddOptions",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "comment": "",
+        "parameters": [
+          {
+            "name": "node",
+            "kind": "MethodDeclaration",
+            "type": "ArrayNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "node: ArrayNode"
+          }
+        ],
+        "returns": "a list of available json subschemas to insert"
+      },
+      {
+        "name": "destroy",
+        "kind": "MethodDeclaration",
+        "types": [],
+        "parameters": []
+      },
+      {
+        "name": "getWidget",
+        "kind": "MethodDeclaration",
+        "types": [
+          {
+            "name": "T",
+            "kind": "TypeParameter",
+            "text": "T extends JsonNode['options'] = JsonNode['options']"
+          }
+        ],
+        "comment": "Use `editor.getWidget` to find a widget matching the requested `JsonNode`",
+        "parameters": [
+          {
+            "name": "node",
+            "kind": "MethodDeclaration",
+            "type": "JsonNode",
+            "typeArgs": [],
+            "optional": false,
+            "text": "node: JsonNode",
+            "comment": "is a JsonNode belonging to the root JsonNode of this editor, or the root itself. You can get the root by calling `editor.getNode()` or any nested root by specifying a JSON Pointer to the data `editor.getNode(\"#/header/title\")`;"
+          },
+          {
+            "name": "options",
+            "kind": "MethodDeclaration",
+            "type": "T",
+            "typeArgs": [],
+            "optional": true,
+            "text": "options?: T",
+            "comment": "can be passed to the lookup function, which will be available in a WidgetPlugin's use-function: `use(node, options) => boolean`. Usually, options are passed to getWidget as well as to the widget itself"
+          }
+        ],
+        "returns": "The **Widget component** to render the given node or undefined"
+      }
+    ]
+  }
+}

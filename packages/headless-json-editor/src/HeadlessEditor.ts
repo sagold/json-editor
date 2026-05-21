@@ -64,7 +64,7 @@ export type HeadlessEditorOptions<Data = unknown> = {
 // @todo test setSchema
 // @todo difference between setValue and setData (root?)?
 export class HeadlessEditor<Data = unknown> {
-    id: string = uuid();
+    readonly id: string = uuid();
     /** Editor root node */
     root: JsonNode;
     /** Json-Schema API */

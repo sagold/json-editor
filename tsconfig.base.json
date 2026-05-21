@@ -27,5 +27,6 @@
         { "path": "./packages/rje-code-widgets" },
         { "path": "./packages/rje-mantine-widgets" }
     ],
-    "exclude": ["node_modules", "tmp"]
+    "include": ["packages/**/*.ts", "packages/**/*.tsx", "tools/**/*"],
+    "exclude": ["node_modules", "tmp", "dist"]
 }
