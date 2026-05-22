@@ -53,7 +53,14 @@ function getReturnType(context: ParseContext, node: ts.Node) {
     const signature = checker.getSignatureFromDeclaration(node as ts.SignatureDeclaration);
     if (!signature) return undefined;
     const returnType = checker.getReturnTypeOfSignature(signature);
-    const raw = checker.typeToString(returnType, node as ts.Declaration, ts.TypeFormatFlags.UseFullyQualifiedType);
+    // UseFullyQualifiedType: ensures JSX.Element is printed as "JSX.Element" not just "Element"
+    // UseAliasDefinedOutsideCurrentScope: prefers the public alias name (e.g. "JsonSchema") over
+    // minified internal names from bundled declarations (e.g. "c" in json-schema-library's .d.cts)
+    const raw = checker.typeToString(
+        returnType,
+        node as ts.Declaration,
+        ts.TypeFormatFlags.UseFullyQualifiedType | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
+    );
     // strip import("..."). module prefixes from fully-qualified names (e.g. import(".../jsx-runtime").JSX.Element -> JSX.Element)
     return raw.replace(/import\("[^"]*"\)\./g, '');
 }
@@ -148,11 +155,9 @@ const parser = {
         return result;
     },
     [SyntaxKind['TypeAliasDeclaration']]: (context: ParseContext, node: ts.Node) => {
-        const docs = getDocs(context.source, node);
         const localResult = {
-            kindType: 'TypeAliasDeclaration',
-            comment: docs.comment,
-            tags: docs.tags
+            ...getDocs(context.source, node),
+            kindType: 'TypeAliasDeclaration'
         };
         // we parse a declaration and want references inlined
         context.inlineDeclaration = true;
@@ -178,9 +183,8 @@ const parser = {
         return result;
     },
     [SyntaxKind['FunctionType']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
-        const docs = getDocs(context.source, node);
         result.type = {
-            ...docs,
+            ...getDocs(context.source, node),
             kindType: 'FunctionType',
             text: node.getText(context.source)
         };
@@ -245,13 +249,12 @@ const parser = {
         }
     },
     [SyntaxKind['PropertyDeclaration']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
-        const docs = getDocs(context.source, node);
         const typeKind = pointer.get<number | undefined>(node, '/type/kind');
         const property: O = {
+            ...getDocs(context.source, node),
             kindType: 'PropertyDeclaration',
             name: pointer.get(node, '/name/escapedText'),
             typeKind: typeKind ? SyntaxKind[typeKind] : undefined,
-            comment: docs.comment,
             optional: pointer.get(node, '/questionToken/') != null,
             text: node.getText(context.source)
         };
@@ -259,10 +262,10 @@ const parser = {
         result.properties.push(property);
     },
     [SyntaxKind['MethodDeclaration']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
-        const docs = getDocs(context.source, node);
         const method: O = {
+            ...getDocs(context.source, node),
             kindType: 'MethodDeclaration',
-            comment: docs.comment,
+            text: node.getText(context.source),
             returns: getReturnType(context, node)
         };
         parseChildren(context, node, method);
@@ -270,10 +273,9 @@ const parser = {
         result.methods.push(method);
     },
     [SyntaxKind['Constructor']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
-        const docs = getDocs(context.source, node);
         const ctor: O = {
+            ...getDocs(context.source, node),
             kindType: 'Constructor',
-            comment: docs.comment,
             returns: getReturnType(context, node)
         };
         parseChildren(context, node, ctor);
@@ -295,11 +297,10 @@ const parser = {
         }
     },
     [SyntaxKind['ClassDeclaration']]: (context: ParseContext, node: ts.Node) => {
-        const docs = getDocs(context.source, node);
         const result: O = {
+            ...getDocs(context.source, node),
             kindType: 'ClassDeclaration',
             filepath: context.source.fileName,
-            comment: docs.comment,
             properties: [],
             methods: []
         };
@@ -315,7 +316,7 @@ const parser = {
         const property = {
             kindType: 'PropertySignature',
             text: node.getText(context.source),
-            comment: getDocs(context.source, node)?.comment
+            ...getDocs(context.source, node)
         };
 
         parseChildren(context, node, property);
@@ -366,16 +367,21 @@ function getDocumentationFor(identifier: string, filepath: string, skipInlining:
 const docs = {
     Editor: getDocumentationFor('Editor', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
     EditorOptions: getDocumentationFor('EditorOptions', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
+    setDefaultWidgets: getDocumentationFor('setDefaultWidgets', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
     useEditor: getDocumentationFor('useEditor', 'react-json-editor/src/useEditor.ts', [
         'UseEditorOptions',
         'WidgetPlugin'
     ]),
     useEditorOptions: getDocumentationFor('UseEditorOptions', 'react-json-editor/src/useEditor.ts', ['JsonSchema']),
+    useEditorPlugin: getDocumentationFor('useEditorPlugin', 'react-json-editor/src/useEditorPlugin.ts', [
+        'UseEditorOptions',
+        'WidgetPlugin'
+    ]),
     Widget: getDocumentationFor('Widget', 'react-json-editor/src/components/widget/Widget.tsx', ['JsonSchema']),
     WidgetProps: getDocumentationFor('WidgetProps', 'react-json-editor/src/components/widget/Widget.tsx', [
         'JsonNode',
         'Editor'
     ])
 };
-fs.writeFileSync(path.join(process.cwd(), 'docs/generated/api/data.json'), JSON.stringify(docs, null, 2), 'utf-8');
+fs.writeFileSync(path.join(process.cwd(), 'docs/generated/api.json'), JSON.stringify(docs, null, 2), 'utf-8');
 // console.log(typeDocs);

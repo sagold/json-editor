@@ -1,11 +1,13 @@
+{/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 
 <Meta title="api/useEditorPlugin" />
+<DocsHeader title="useEditorPlugin" breadCrumbs="API Reference" type="Hook">
+  [Parameters](#parameters) · [Returns](#returns)
+</DocsHeader>
 
-<DocsHeader title="useEditorPlugin" breadCrumbs="API Reference"></DocsHeader>
-
-`useEditorPlugin` adds a plugin to an editor instance
+Add a plugin to an editor instance
 
 ```tsx
 import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
@@ -20,5 +22,10 @@ function WebFormComponent() {
 ## Parameters
 
 ### `editor`
-
 ### `plugin`
+### `plugin?: T`
+### `options`
+
+## Returns
+
+**`ReturnType<T> | undefined`** 

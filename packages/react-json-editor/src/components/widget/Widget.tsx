@@ -15,9 +15,32 @@ export type WidgetProps<T extends JsonNode = JsonNode> = {
     options?: Partial<T['options']>;
 };
 
-export function Widget<T extends JsonNode = JsonNode>({ editor, node, options }: WidgetProps<T>) {
+/**
+ * Selects and renders a matching widget for the given JsonNode
+ *
+ * @example
+ * import { useEditor, Widget } from '@sagold/react-json-editor';
+ *
+ * function WebFormComponent() {
+ *   const editor = useEditor(options);
+ *   const node = editor.getNode();
+ *
+ *   return <Widget node={node} editor={editor} options={options} />;
+ * }
+ *
+ * @param props The widget props
+ * @param props.editor  The editor instance controlling this widget
+ * @param props.node    The JsonNode to render a widget for
+ * @param props.options Optional overrides for the node's display options
+ * @returns matching WidgetComponent from WidgetPlugins or null
+ */
+export function Widget<T extends JsonNode = JsonNode>(props: WidgetProps<T>) {
+    const { editor, node, options } = props;
     const state = node ?? editor?.getNode();
-    const ChildEditor = useMemo(() => (editor && state ? editor.getWidget(state, options) : null), [editor, state, options]);
+    const ChildEditor = useMemo(
+        () => (editor && state ? editor.getWidget(state, options) : null),
+        [editor, state, options]
+    );
 
     if (editor == null || ChildEditor == null || state == null) {
         return null;

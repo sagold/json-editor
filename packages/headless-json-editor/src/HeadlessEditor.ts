@@ -46,9 +46,12 @@ export type Plugin<
 > = (he: Editor, options: Options) => PluginInstance<Signature> | undefined;
 
 export type HeadlessEditorOptions<Data = unknown> = {
+    /** The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly. */
     schema: JsonSchema;
+    /** The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form */
     data?: Data;
     drafts?: Draft[];
+    /* list of active plugins */
     plugins?: Plugin[];
     /** if data should be initially validated */
     validate?: boolean;
@@ -67,8 +70,9 @@ export class HeadlessEditor<Data = unknown> {
     readonly id: string = uuid();
     /** Editor root node */
     root: JsonNode;
-    /** Json-Schema API */
+    /** JSON Schema API */
     schemaNode: SchemaNode;
+    /** JSON Schema API options */
     schemaNodeConfig: CompileOptions;
     /** list of active plugins */
     plugins: PluginInstance[] = [];
@@ -111,16 +115,17 @@ export class HeadlessEditor<Data = unknown> {
 
     /**
      * Returns the current json data
-     * @param [pointer] - optional json-pointer of data to return. Returns whole json-data per default
+     * @param pointer   A JSON Pointer string of the data to return. Use `undefined` or `""` to get all data or specify a path like `/header` or `/todo/4` to get the data from the requested location
      */
     getData(pointer = '#') {
         return gp.get(getData(this.root), pointer);
     }
 
     /**
-     * Set new data and rebuild node tree
-     * @param [data] - new data to set
-     * @return new root node
+     * Get current data or a subset of the data specified by a JSON Pointer
+     *
+     * @param data to set
+     * @returns new root node
      */
     setData(data?: Data): JsonNode {
         const { schemaNode } = this;
@@ -141,9 +146,9 @@ export class HeadlessEditor<Data = unknown> {
 
     /**
      * Shortcut to return default data based on json-schema only
-     * @param [schema] - json-schema to get default data from. Defaults to current schema
-     * @param [data] - optional data to merge with default data
-     * @return default data confirming to json-schema
+     * @param schema    json-schema to get default data from. Defaults to current schema
+     * @param data  optional data to merge with default data
+     * @returns default data confirming to json-schema
      */
     getTemplateData(schema: JsonSchema, data = null) {
         const node = this.schemaNode.compileSchema(schema);
@@ -151,16 +156,16 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * @return current json-schema
+     * @returns Input JSON Schema of the current form
      */
     getSchema() {
         return this.schemaNode.schema;
     }
 
     /**
-     * sets a new or modified json-schema and updates data and nodes
-     * @param schema - new json-schema to set
-     * @return new root node
+     * Replace the JSON Schema and recreate the JsonNode tree of the form
+     * @param schema    JSON Schema of the new form
+     * @returns The new root node for the given JSON Schema
      */
     setSchema(schema: JsonSchema) {
         this.schemaNode = compileSchema(schema, this.schemaNodeConfig);
@@ -168,8 +173,8 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Perform data validation and update nodes
-     * @return list of validation errors
+     * Run validation for the current form and update the list of errors
+     * @returns List of validation errors. See [getErrors](#getErrors) for details
      */
     validate() {
         if (this.root == null) {
@@ -189,8 +194,13 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Get current validation errors of node-tree
-     * @return validation errors of state
+     * Get current validation errors of node-tree.
+     * An error contains the following properties
+     * `{ type: "error", code: string, message: string, data }`.
+     * The property `data` contains details to the error.
+     * For further details check [json-schema-library#validate](https://github.com/sagold/json-schema-library#validate)
+     *
+     * @returns Current list of form validation errors of the current state.
      */
     getErrors() {
         return this.root ? getErrors(this.root) : [];
@@ -198,7 +208,7 @@ export class HeadlessEditor<Data = unknown> {
 
     /**
      * Set new editor state (new tree of nodes)
-     * @return new root node
+     * @returns new root node
      */
     setState(state: JsonNode, changes: PluginEvent[]) {
         this.root = this.runPlugins(this.root, state, changes);
@@ -208,12 +218,12 @@ export class HeadlessEditor<Data = unknown> {
 
     /**
      * Get current root-node
-     * @return root node
+     * @returns root node
      */
     getNode(): JsonNode;
     /**
      * Get current node at json-pointer location
-     * @return node at requested location or json-error
+     * @returns node at requested location or json-error
      */
     getNode(pointer: string): JsonNode | JsonError;
     getNode(pointer?: string) {
@@ -246,6 +256,11 @@ export class HeadlessEditor<Data = unknown> {
         return undefined;
     }
 
+    /**
+     * Runs all plugins per given change, allowing them to return a modified newState
+     *
+     * @returns The new root node
+     */
     runPlugins(oldState: JsonNode, newState: JsonNode, changes: PluginEvent[]) {
         const plugins = this.plugins;
         // @notify change
@@ -270,10 +285,10 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Set value at given data-location
-     * @param pointer - json-pointer in data of target value
-     * @param value - value to set at location
-     * @return new root node or current one if nothing changed
+     * Set or replace a value at given data location
+     * @param pointer   json-pointer in data of target value
+     * @param value     value to set at location
+     * @returns new root node or current one if nothing changed
      */
     setValue(pointer: string, value: unknown) {
         const previousNode = getNode(this.root, pointer);
@@ -304,10 +319,11 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * @todo addValue only supports setting property, either change api or add iteratively
-     * Shortcut to add a value at a given location. This usually is used to add array-items
+     * Add a value at a given location. This usually is used to add array-items
+     * @caveat addValue **only supports adding properties**
      *
-     * @return new root node
+     * @param pointer   A JSON Pointer string to the value to add
+     * @returns The new root node
      */
     addValue(pointer: string) {
         const { node, error } = this.schemaNode.getNode(pointer, getData(this.root));
@@ -324,8 +340,9 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Delete the value at the given json-pointer location
-     * @return new root node
+     * Delete the value at the given JSON Pointer
+     * @param pointer   A JSON Pointer string to the node which should be removed. Specify a data path like `/header` or `/todo/4` to remove the node from the specified location
+     * @returns The new root node
      */
     removeValue(pointer: string) {
         const [state, changes] = removeNode(this.root, pointer);
@@ -349,7 +366,10 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Move the referenced array-item to another array position
+     * Move the referenced **array-item** to another array position
+     * @param pointer   A JSON Pointer string to the node
+     * @param to    The index to move the array item to
+     * @returns The new root node
      */
     moveItem(pointer: string, to: number) {
         const [parent, from] = gp.splitLast(pointer);
@@ -373,7 +393,10 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * Append an item defined by a json-schema to the target array
+     * Add an item defined by a JSON Schema to the end of the target array
+     * @param node  ArrayNode of item
+     * @param itemSchema    JSON Schema of the item to add
+     * @returns The new root node
      */
     appendItem(node: ArrayNode, itemSchema: JsonSchema) {
         const itemSchemaNode = this.schemaNode.compileSchema(itemSchema);
@@ -407,7 +430,8 @@ export class HeadlessEditor<Data = unknown> {
     }
 
     /**
-     * @return a list of available json subschemas to insert
+     * Get all available items that can be added next to the specified array
+     * @returns List of available JSON subschemas to insert into the array. Access the JSON Schema of each option by `SchemaNode.schema`. For more details see [json-schema-library#schemanode-methods](https://github.com/sagold/json-schema-library#schemanode-methods)
      */
     getArrayAddOptions(node: ArrayNode): SchemaNode[] {
         const selections = node.schemaNode.getChildSelection(node.children.length);

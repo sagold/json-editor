@@ -14,14 +14,17 @@ export type JSDocInfo = {
 /**
  * Extracts JSDoc comment and full text for a node
  */
-export function getDocs(ast: ts.SourceFile, node: ts.Node): JSDocInfo {
+export function getDocs(_ast: ts.SourceFile, node: ts.Node): JSDocInfo {
     let jsDocText: string | undefined;
     let tags: DocTag[] = [];
 
     if ('jsDoc' in node && Array.isArray((node as any).jsDoc)) {
         const jsDocs = node.jsDoc as ts.JSDoc[];
         if (jsDocs.length > 0) {
-            jsDocText = stripJsDocDelimiters(jsDocs.map((doc) => doc.getFullText(ast)).join('\n'));
+            jsDocText = jsDocs
+                .map((doc) => parseJsDocComment(doc.comment))
+                .filter(Boolean)
+                .join('\n') || undefined;
             tags = jsDocs.flatMap((doc) => (doc.tags ?? []).map(parseTag));
         }
     }
@@ -33,7 +36,7 @@ export function getDocs(ast: ts.SourceFile, node: ts.Node): JSDocInfo {
 }
 
 function parseTag(tag: ts.JSDocTag): DocTag {
-    const name = ts.isJSDocParameterTag(tag) ? (tag.name as ts.Identifier).text : undefined;
+    const name = ts.isJSDocParameterTag(tag) ? entityNameToString(tag.name) : undefined;
     return {
         tag: tag.tagName.text,
         comment: parseComment(tag),
@@ -41,14 +44,15 @@ function parseTag(tag: ts.JSDocTag): DocTag {
     };
 }
 
-function stripJsDocDelimiters(text: string): string {
-    return text
-        .replace(/^\/\*\*\s*/m, '') // remove opening /**
-        .replace(/\s*\*\/\s*$/m, '') // remove closing */
-        .replace(/^\s*\* ?/gm, '') // remove leading * on each line
-        .replace(/^\s*@param.*$/gm, '') // remove leading * on each line
-        .replace(/^\s*@returns?.*$/gm, '') // remove leading * on each line
-        .trim();
+function entityNameToString(name: ts.EntityName): string {
+    if (ts.isIdentifier(name)) return name.text;
+    return entityNameToString(name.left) + '.' + name.right.text;
+}
+
+function parseJsDocComment(comment: ts.JSDoc['comment']): string | undefined {
+    if (typeof comment === 'string') return comment.trim() || undefined;
+    if (Array.isArray(comment)) return comment.map((c) => c.text).join('').trim() || undefined;
+    return undefined;
 }
 
 function parseComment(tag: ts.JSDocTag): string | undefined {

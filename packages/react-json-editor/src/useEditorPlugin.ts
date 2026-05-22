@@ -2,8 +2,20 @@ import { HeadlessEditor, Plugin, deepEqual } from 'headless-json-editor';
 import { useMemo, useRef } from 'react';
 
 /**
- * register a plugin-instance to json-editor
- * Note: plugins having a state will be reset
+ * Add a plugin to an editor instance
+ *
+ * @example
+ * import { useEditor, useEditorPlugin } from '@sagold/react-json-editor';
+ *
+ * function WebFormComponent() {
+ *   const editor = useEditor(options)
+ *   useEditorPlugin(editor, plugin);
+ *
+ *   // ...
+ *
+ * @param editor    to add plugin to. Skips adding plugin if editor is empty
+ * @param plugin    plugin to add
+ * @param options   plugin options to pass to addPlugin
  */
 export function useEditorPlugin<T extends Plugin, E extends HeadlessEditor>(
     editor?: E | null,

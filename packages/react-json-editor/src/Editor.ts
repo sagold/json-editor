@@ -3,26 +3,50 @@ import { HeadlessEditor, HeadlessEditorOptions, type JsonNode, isJsonNode } from
 import { Widget, WidgetPlugin } from './decorators';
 
 let defaultWidgets: WidgetPlugin[] = [];
+/**
+ * Register a list of widgets for all new editor instances per default
+ *
+ * @example
+ *  import { setDefaultWidgets } from '@sagold/react-json-editor';
+ *  import widgets from '@sagold/rje-mantine-widgets';
+ *  setDefaultWidgets(widgets);
+ */
 export function setDefaultWidgets(widgets: WidgetPlugin[]) {
     defaultWidgets = widgets;
 }
 
 export type EditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
+    /** The list of available widgets to render the JSON Schema tree. Each node in the tree should have a matching widget to be rendered or the editor will either ignore or show an error using an Error Widget if added. */
     widgets?: WidgetPlugin[];
+    /** Set to `true` to update form data on each keystroke instead of on blur. Only applied to supporting editors */
+    liveUpdate?: boolean;
+    /** Set to true to deactivate all forms */
+    disabled?: boolean;
+};
+
+type WidgetOptions = {
     /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     /** if true disables all editors */
     disabled?: boolean;
 };
 
+/**
+ * `new Editor` returns your editor-instance containing a JSON Schema tree, registered widgets and plugins and the overall state of the data.
+ *
+ * @example
+ * import { Editor } from '@sagold/react-json-editor';
+ *
+ * const editor = new Editor(options);
+ *
+ * @caveat Each JSON Schema requires a valid JSON Schema type keyword
+ *
+ * @returns Returns an `editor` instance
+ */
 export class Editor<Data = unknown> extends HeadlessEditor<Data> {
     widgets: WidgetPlugin[];
-    widgetOptions: {
-        /** if all supporting editors should update on each keystroke instead of on blur. Defaults to false */
-        liveUpdate?: boolean;
-        /** if true disables all editors */
-        disabled?: boolean;
-    } = {};
+    /* input options for this editor instance */
+    widgetOptions: WidgetOptions = {};
 
     constructor(options: EditorOptions<Data>) {
         super(options);

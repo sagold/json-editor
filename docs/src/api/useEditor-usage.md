@@ -1,0 +1,55 @@
+## Usage
+
+### Render form using `useEditor` only
+
+```ts
+import { useEditor } from '@sagold/react-json-editor';
+
+function WebFormComponent() {
+  const editor = useEditor({ schema });
+  const node = editor?.getNode();
+
+  if (editor && node) {
+    const WidgetComponent = editor?.getWidget(node);
+    return { WidgetComponent && <WidgetComponent editor={editor} node={} /> }
+  }
+
+  return null;
+}
+```
+
+### Render form using `Widget` component
+
+```ts
+import { useEditor, Widget } from '@sagold/react-json-editor';
+
+function WebFormComponent() {
+  const editor = useEditor({ schema });
+
+  return <Widget editor={editor} node={editor?.getNode()} />;
+}
+```
+
+### Typescript
+
+The first type parameter of `useEditor` defines the data type of the web form data. With a specific type specified, input data is validated against this type. The type will define the state of data when using `editor.getData()`:
+
+```ts
+import { useEditor, JsonSchema, Widget } from '@sagold/react-json-editor';
+
+type MyData = {
+  title: string
+};
+
+function WebFormComponent({ schema }: { schema: JsonSchema }) {
+  // JsonEditor<MyData>
+  const editor = useEditor<MyData>({
+    schema,
+    // data: MyData
+    data: {},
+    // (data: MyData) => void
+    onChange(data) {}
+  });
+  return <Widget editor={editor} node={editor?.getNode()} />;
+}
+```
