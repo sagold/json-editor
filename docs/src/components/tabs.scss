@@ -1,0 +1,34 @@
+.rje-docs-tabs {
+    .docblock-source {
+        margin: 0;
+    }
+
+    ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        gap: 8;
+        padding: 0;
+        align-items: center;
+        // border: 1px solid #fff;
+    }
+
+    li.rje-docs-tab {
+        cursor: pointer;
+        margin: 0;
+        padding: 4px 12px;
+        margin: 0;
+        text-decoration: underline;
+        color: var(--docs-tab-action, var(--docs-action));
+    }
+
+    li.rje-docs-tab--active {
+        cursor: default;
+        background-color: var(--docs-tab-highlight, var(--docs-highlight));
+        text-decoration: none;
+        border: 1px solid var(--docs-highlight);
+        border-bottom: 0;
+        // border-color: var(--docs-highlight);
+        color: #333;
+    }
+}

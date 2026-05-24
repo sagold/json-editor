@@ -5,10 +5,27 @@ import { WidgetPlugin } from './decorators';
 import { useEditorPlugin } from './useEditorPlugin';
 
 export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
-    // editor?: Editor<Data> | null;
+    /**
+     * A function called after each udpate which that accepts three arguments:
+     *
+     * - `data` the latest data of the web form
+     * - `root` the rootNode of the json-editor and
+     * - `editor` the current editor instance
+     *
+     * _Only supported by useEditor_
+     */
     onChange?: OnChangeListener<Data>;
+    /**
+     * The list of available widgets to render the JSON Schema tree. Each node in the tree should
+     * have a matching widget to be rendered or the editor will either ignore or show an error
+     * using an Error Widget if added.
+     */
     widgets?: WidgetPlugin[];
-    /** optional cacheKey. Change cacheKey to recreate json-editor */
+    /**
+     * A unique id that if changed, will recreate the editor
+     *
+     * _Only supported by useEditor_
+     */
     cacheKey?: string | number;
     /** if all optional properties should be added when missing */
     addOptionalProps?: boolean;
@@ -20,10 +37,24 @@ export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
 document?.addEventListener?.('invalid', (e) => e.preventDefault(), true);
 
 /**
- * add json editor widget capabilities to your functional component
+ * Create an editor-instance containing a JSON Schema tree, registered widgets and plugins and the
+ * overall state of the data.
+ *
+ * @example
+ * import { useEditor } from '@sagold/react-json-editor';
+ *
+ * function WebFormComponent() {
+ *   const editor = useEditor(options);
+ *
+ *   // ...
+ *
+ * @caveat when running React.StrictMode the returned editor instance will be undefined on the first call
+ * @caveat Each JSON Schema requires a valid JSON Schema type keyword
+ *
+ * @returns Returns an instance of `Editor`. For details on working with `editor` see Usage below or more in depth details in API Reference on [Editor#instance](/docs/api-editor--docs#instance)
  */
-export function useEditor<Data = unknown>(settings: UseEditorOptions<Data>) {
-    const { schema, data, cacheKey } = settings;
+export function useEditor<Data = unknown>(options: UseEditorOptions<Data>) {
+    const { schema, data, cacheKey } = options;
     // track instance
     const [editor, setEditor] = useState<Editor<Data> | null>(null);
     // track current data
@@ -35,17 +66,17 @@ export function useEditor<Data = unknown>(settings: UseEditorOptions<Data>) {
     useEffect(
         () => {
             const instance = new Editor<Data>({
-                ...settings,
+                ...options,
                 schema,
                 data,
-                drafts: settings.drafts,
-                plugins: settings.plugins,
-                widgets: settings.widgets,
-                validate: settings.validate,
-                liveUpdate: settings.liveUpdate,
-                addOptionalProps: settings.addOptionalProps,
-                extendDefaults: settings.extendDefaults
-                // draftConfig: settings.draftConfig
+                drafts: options.drafts,
+                plugins: options.plugins,
+                widgets: options.widgets,
+                validate: options.validate,
+                liveUpdate: options.liveUpdate,
+                addOptionalProps: options.addOptionalProps,
+                extendDefaults: options.extendDefaults
+                // draftConfig: options.draftConfig
             });
             // console.log('create editor', instance.id);
             // store last used input data - prevents an additional rerender where
@@ -67,8 +98,8 @@ export function useEditor<Data = unknown>(settings: UseEditorOptions<Data>) {
         pluginId: 'InternalOnChange',
         onChange(data, root, editor) {
             setCurrentData(data);
-            if (settings.onChange) {
-                settings.onChange(data, root, editor);
+            if (options.onChange) {
+                options.onChange(data, root, editor);
             }
         }
     });

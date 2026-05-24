@@ -1,0 +1,122 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/DateWidgetPlugin" />
+<DocsHeader title="DateWidgetPlugin" breadCrumbs="API reference » widgets » DateWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'date-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => {
+        if (node.schema.type !== 'string') {
+            return false;
+        }
+
+        if (node.schema.format === 'time') {
+            return true;
+        }
+
+        return node.schema.format === 'date' || node.schema.format === 'date-time';
+    }
+```
+
+
+### DateWidget
+
+
+```tsx
+Widget: DateWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### format
+
+
+```tsx
+format?: string;
+```
+
+
+date and time display format for input field
+
+### seconds
+
+
+```tsx
+seconds?: boolean;
+```
+
+
+for time inputs, show seconds
+
+### liveUpdate
+
+
+```tsx
+liveUpdate?: boolean;
+```
+
+
+if value should update on each keystroke instead of on blur. Defaults to false
+
+### icon
+
+
+```tsx
+icon?: string;
+```
+
+
+### tag
+
+
+```tsx
+tag?: string;
+```
+
+
+### swapIconPosition
+
+
+```tsx
+swapIconPosition?: boolean;
+```
+
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

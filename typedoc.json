@@ -1,0 +1,40 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "entryPoints": [
+        "packages/headless-json-editor/src/index.ts",
+        "packages/react-json-editor/src/index.ts",
+        "packages/rje-mantine-widgets/src/index.ts",
+        "packages/rje-code-widgets/src/index.ts"
+    ],
+    "entryPointStrategy": "expand",
+    "json": "docs/generated/api/docs.json",
+    "tsconfig": "tsconfig.docs.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "skipLibCheck": true,
+        "ignoreDeprecations": "6.0"
+    },
+    "skipErrorChecking": true,
+    "exclude": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "**/tests/**",
+        "**/*.stories/**"
+    ],
+    "excludePrivate": true,
+    "excludeProtected": false,
+    "excludeInternal": false,
+    "name": "JSON Editor",
+    "includeVersion": true,
+    "disableSources": false,
+    "sourceLinkTemplate": "https://github.com/sagold/json-editor/blob/{gitRevision}/{path}#L{line}",
+    "navigationLinks": {
+        "GitHub": "https://github.com/sagold/json-editor"
+    }
+}

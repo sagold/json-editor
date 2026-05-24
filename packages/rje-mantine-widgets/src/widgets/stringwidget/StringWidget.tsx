@@ -27,7 +27,8 @@ export type StringOptions = DefaultNodeOptions<{
 const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.currentTarget.value;
 
 export const StringWidget = widget<StringNode<StringOptions>, string>(({ node, options, setValue }) => {
-    const Input = node.schema.format === 'password' ? PasswordInput : TextInput;
+    const Input =
+        node.schema.format === 'password' || node.schema['x-widget'] === 'password' ? PasswordInput : TextInput;
     const onUpdateProps = useLiveUpdate<string>(node.value ?? '', setValue, getValueFromEvent, options.liveUpdate);
     const clearValue = useCallback(() => setValue(''), [setValue]);
     // eslint-disable-next-line prefer-const

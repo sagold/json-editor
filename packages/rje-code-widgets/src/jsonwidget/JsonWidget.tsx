@@ -45,6 +45,7 @@ export const JsonWidget = (props: WidgetProps<ObjectNode | StringNode>) => {
 };
 
 export type JsonWidgetOptions = {
+    /** JSON Schema when using JSON Widget on `type: "string"` */
     schema?: JsonSchema;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     // liveUpdate?: boolean;

@@ -1,0 +1,20 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Tabs } from '../components/Tabs';
+
+<Meta title="api/Overview" />
+
+# API Reference
+
+- [`Editor`](/docs/api-editor--docs) lets you access, change and render the current state of the web form
+- [`useEditor`](/docs/api-useeditor--docs) lets your create the web form based on a JSON Schema. Returns an `Editor` instance
+- [`useEditorPlugin`](/docs/api-useeditorplugin--docs) lets you add a plugin to an `editor` instance
+- [`setDefaultWidgets`](/docs/api-setdefaultwidgets--docs) lets add available widgets once, globally
+
+## Utilities
+
+- [`Widget`](/docs/api-widget--docs) component simplifies rendering a json-editor _Node_ as a web form
+
+## Exposed Third-Party libraries
+
+- [markdown-to-jsx](https://github.com/quantizor/markdown-to-jsx) component is exported as **MarkDown**: `import { Markdown } from @sagold/react-json-editor;`
+- [headless-json-editor](https://github.com/sagold/json-editor/tree/main/packages/headless-json-editor#api) tools and types are re-exported

@@ -1,0 +1,60 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/TagListWidgetPlugin" />
+<DocsHeader title="TagListWidgetPlugin" breadCrumbs="API reference » widgets » TagListWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'taglist-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) =>
+        // @ts-expect-error test json-schema
+        node.schema.type === 'array' && node.schema['x-widget'] === 'taglist' && node.schema.items?.type === 'string'
+```
+
+
+### TagListWidget
+
+
+```tsx
+Widget: TagListWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

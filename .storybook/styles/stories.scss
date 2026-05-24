@@ -1,0 +1,11 @@
+// styles for .stories
+// main entry point: body.sb-show-main, #storybook-root
+@use './colors.scss' as *;
+
+body.sb-show-main {
+    background: $background;
+}
+
+#storybook-root {
+    // background: red;
+}

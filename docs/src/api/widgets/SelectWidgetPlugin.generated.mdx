@@ -1,0 +1,95 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/SelectWidgetPlugin" />
+<DocsHeader title="SelectWidgetPlugin" breadCrumbs="API reference » widgets » SelectWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'select-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) =>
+        (node.schema.type?.includes?.('string') || node.schema.type === 'string') && Array.isArray(node.schema.enum)
+```
+
+
+### SelectWidget
+
+
+```tsx
+Widget: SelectWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### type
+
+
+```tsx
+'select' | 'taglist'
+```
+
+
+### variant
+
+
+```tsx
+variant?: ChipProps['variant'];
+```
+
+
+chip variant for taglist
+
+### horizontal
+
+
+```tsx
+horizontal?: boolean;
+```
+
+
+set to true to render radiogroup in a single line
+
+### loading
+
+
+```tsx
+loading?: boolean;
+```
+
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

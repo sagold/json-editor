@@ -166,7 +166,7 @@ export type ValueNode<T extends DefaultNodeOptions = DefaultNodeOptions> =
     | BooleanNode<T>;
 
 const NodeTypes = ['array', 'object', 'file', 'string', 'number', 'null', 'boolean'] as const;
-export const isNode = (node: any): node is JsonNode => NodeTypes.includes(node?.type);
+export const isJsonNode = (node: any): node is JsonNode => NodeTypes.includes(node?.type);
 const ParentTypes = ['array', 'object'];
 export const isParentNode = (node: unknown): node is ObjectNode | ArrayNode =>
     isObject(node) && ParentTypes.includes(node.type);

@@ -1,0 +1,477 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../components/DocsHeader';
+
+<Meta title="api/Editor" />
+<DocsHeader title="Editor" breadCrumbs="API reference » Editor" type="Class">
+  [Parameters](#parameters) · [Returns](#returns) · [Methods](#methods)
+</DocsHeader>
+
+`new Editor` returns your editor-instance containing a JSON Schema tree, registered widgets and plugins and the overall state of the data.
+
+```tsx
+import { Editor } from '@sagold/react-json-editor';
+
+const editor = new Editor(options);
+```
+
+## Parameters
+
+### `options: EditorOptions`
+
+#### schema (required)
+
+```tsx
+schema: JsonSchema;
+```
+
+The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly.
+
+#### data
+
+```tsx
+data?: Data;
+```
+
+The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form
+
+#### drafts
+
+```tsx
+drafts?: Draft[];
+```
+
+
+#### plugins
+
+```tsx
+plugins?: Plugin[];
+```
+
+
+#### validate
+
+```tsx
+validate?: boolean;
+```
+
+if data should be initially validated
+
+#### addOptionalProps
+
+```tsx
+addOptionalProps?: boolean;
+```
+
+if all optional properties should be added when missing
+
+#### extendDefaults
+
+```tsx
+extendDefaults?: boolean;
+```
+
+if json-schema default-values should be extended (required properties, min-length of items). Defaults to false
+
+#### removeInvalidData
+
+```tsx
+removeInvalidData?: boolean;
+```
+
+Remove data that does not match input schema. Defaults to false
+
+#### widgets
+
+```tsx
+widgets?: WidgetPlugin[];
+```
+
+The list of available widgets to render the JSON Schema tree. Each node in the tree should have a matching widget to be rendered or the editor will either ignore or show an error using an Error Widget if added.
+
+#### liveUpdate
+
+```tsx
+liveUpdate?: boolean;
+```
+
+Set to `true` to update form data on each keystroke instead of on blur. Only applied to supporting editors
+
+#### disabled
+
+```tsx
+disabled?: boolean;
+```
+
+Set to true to deactivate all forms
+
+## Returns
+
+Returns an `editor` instance
+
+## Methods
+
+[getData](#getdata) · [setData](#setdata) · [getTemplateData](#gettemplatedata) · [getSchema](#getschema) · [setSchema](#setschema) · [validate](#validate) · [getErrors](#geterrors) · [setState](#setstate) · [getNode](#getnode) · [getNode](#getnode) · [findPlugin](#findplugin) · [runPlugins](#runplugins) · [setValue](#setvalue) · [addValue](#addvalue) · [removeValue](#removevalue) · [moveItem](#moveitem) · [appendItem](#appenditem) · [getArrayAddOptions](#getarrayaddoptions) · [destroy](#destroy) · [getWidget](#getwidget)
+
+### `getData`
+
+
+```tsx
+getData(pointer = '#')
+```
+
+
+Returns the current json data
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string of the data to return. Use `undefined` or `""` to get all data or specify a path like `/header` or `/todo/4` to get the data from the requested location
+
+#### Returns
+
+**`unknown`** 
+
+### `setData`
+
+
+```tsx
+setData(data?: Data): JsonNode
+```
+
+
+Get current data or a subset of the data specified by a JSON Pointer
+
+#### Parameters
+
+- **`data`** to set
+
+#### Returns
+
+**`JsonNode`** new root node
+
+### `getTemplateData`
+
+
+```tsx
+getTemplateData(schema: JsonSchema, data = null)
+```
+
+
+Shortcut to return default data based on json-schema only
+
+#### Parameters
+
+- **`schema`** json-schema to get default data from. Defaults to current schema
+- **`data`** optional data to merge with default data
+
+#### Returns
+
+**`any`** default data confirming to json-schema
+
+### `getSchema`
+
+
+```tsx
+getSchema()
+```
+
+
+
+#### Returns
+
+**`JsonSchema`** Input JSON Schema of the current form
+
+### `setSchema`
+
+
+```tsx
+setSchema(schema: JsonSchema)
+```
+
+
+Replace the JSON Schema and recreate the JsonNode tree of the form
+
+#### Parameters
+
+- **`schema`** JSON Schema of the new form
+
+#### Returns
+
+**`JsonNode`** The new root node for the given JSON Schema
+
+### `validate`
+
+
+```tsx
+validate()
+```
+
+
+Run validation for the current form and update the list of errors
+
+
+
+#### Returns
+
+**`JsonError[]`** List of validation errors. See [getErrors](#getErrors) for details
+
+### `getErrors`
+
+
+```tsx
+getErrors()
+```
+
+
+Get current validation errors of node-tree.
+An error contains the following properties
+`{ type: "error", code: string, message: string, data }`.
+The property `data` contains details to the error.
+For further details check [json-schema-library#validate](https://github.com/sagold/json-schema-library#validate)
+
+
+
+#### Returns
+
+**`JsonError[]`** Current list of form validation errors of the current state.
+
+### `setState`
+
+
+```tsx
+setState(state: JsonNode, changes: PluginEvent[])
+```
+
+
+Set new editor state (new tree of nodes)
+
+#### Parameters
+
+- **`state`** 
+- **`changes`** 
+
+#### Returns
+
+**`JsonNode`** new root node
+
+### `getNode`
+
+
+```tsx
+getNode(): JsonNode;
+```
+
+
+Get current root-node
+
+
+
+#### Returns
+
+**`JsonNode`** root node
+
+### `getNode`
+
+
+```tsx
+getNode(pointer?: string)
+```
+
+#### Parameters
+
+- **`pointer`** 
+
+#### Returns
+
+**`JsonNode | JsonError`** 
+
+### `findPlugin`
+
+
+```tsx
+findPlugin(pluginId: string)
+```
+
+
+Get a plugin by pluginId
+
+#### Parameters
+
+- **`pluginId`** 
+
+#### Returns
+
+**`PluginInstance<O> | undefined`** 
+
+### `runPlugins`
+
+
+```tsx
+runPlugins(oldState: JsonNode, newState: JsonNode, changes: PluginEvent[])
+```
+
+
+Runs all plugins per given change, allowing them to return a modified newState
+
+#### Parameters
+
+- **`oldState`** 
+- **`newState`** 
+- **`changes`** 
+
+#### Returns
+
+**`JsonNode`** The new root node
+
+### `setValue`
+
+
+```tsx
+setValue(pointer: string, value: unknown)
+```
+
+
+Set or replace a value at given data location
+
+#### Parameters
+
+- **`pointer`** json-pointer in data of target value
+- **`value`** value to set at location
+
+#### Returns
+
+**`JsonNode`** new root node or current one if nothing changed
+
+### `addValue`
+
+
+```tsx
+addValue(pointer: string)
+```
+
+
+Add a value at a given location. This usually is used to add array-items
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the value to add
+
+#### Returns
+
+**`JsonNode`** The new root node
+
+
+#### Caveats
+
+- addValue **only supports adding properties**
+
+### `removeValue`
+
+
+```tsx
+removeValue(pointer: string)
+```
+
+
+Delete the value at the given JSON Pointer
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the node which should be removed. Specify a data path like `/header` or `/todo/4` to remove the node from the specified location
+
+#### Returns
+
+**`JsonNode`** The new root node
+
+### `moveItem`
+
+
+```tsx
+moveItem(pointer: string, to: number)
+```
+
+
+Move the referenced **array-item** to another array position
+
+#### Parameters
+
+- **`pointer`** A JSON Pointer string to the node
+- **`to`** The index to move the array item to
+
+#### Returns
+
+**`JsonNode`** The new root node
+
+### `appendItem`
+
+
+```tsx
+appendItem(node: ArrayNode, itemSchema: JsonSchema)
+```
+
+
+Add an item defined by a JSON Schema to the end of the target array
+
+#### Parameters
+
+- **`node`** ArrayNode of item
+- **`itemSchema`** JSON Schema of the item to add
+
+#### Returns
+
+**`JsonNode`** The new root node
+
+### `getArrayAddOptions`
+
+
+```tsx
+getArrayAddOptions(node: ArrayNode): SchemaNode[]
+```
+
+
+Get all available items that can be added next to the specified array
+
+#### Parameters
+
+- **`node`** 
+
+#### Returns
+
+**`SchemaNode[]`** List of available JSON subschemas to insert into the array. Access the JSON Schema of each option by `SchemaNode.schema`. For more details see [json-schema-library#schemanode-methods](https://github.com/sagold/json-schema-library#schemanode-methods)
+
+### `destroy`
+
+
+```tsx
+destroy()
+```
+
+
+destroys editor instance including all plugins, releasing used memory.
+
+
+
+
+#### Caveats
+
+- plugins will receive an onDestroy call once and are responsible to release memory on their own
+
+### `getWidget`
+
+
+```tsx
+getWidget<T extends JsonNode['options'] = JsonNode['options']>(node: JsonNode, options?: T): Widget
+```
+
+
+Use `editor.getWidget` to find a widget matching the requested `JsonNode`
+
+#### Parameters
+
+- **`node`** is a JsonNode belonging to the root JsonNode of this editor, or the root itself. You can get the root by calling `editor.getNode()` or any nested root by specifying a JSON Pointer to the data `editor.getNode("#/header/title")`;
+- **`options`** can be passed to the lookup function, which will be available in a WidgetPlugin's use-function: `use(node, options) => boolean`. Usually, options are passed to getWidget as well as to the widget itself
+
+#### Returns
+
+**`Widget`** The **Widget component** to render the given node or undefined
+

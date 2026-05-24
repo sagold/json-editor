@@ -1,0 +1,29 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "skipLibCheck": true,
+        "ignoreDeprecations": "6.0",
+        "noImplicitAny": false
+    },
+    "include": [
+        "packages/headless-json-editor/src/**/*.ts",
+        "packages/react-json-editor/src/**/*.ts",
+        "packages/react-json-editor/src/**/*.tsx",
+        "packages/rje-mantine-widgets/src/**/*.ts",
+        "packages/rje-mantine-widgets/src/**/*.tsx",
+        "packages/rje-code-widgets/src/**/*.ts",
+        "packages/rje-code-widgets/src/**/*.tsx"
+    ],
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "**/tests/**",
+        "**/node_modules/**",
+        "**/dist/**"
+    ]
+}

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonForm } from '@sagold/rje-mantine-widgets';
 import { JsonSchema } from 'headless-json-editor';
-import { MantineThemeDecorator } from './decorators/MantineThemeDecorator';
+import { MantineThemeDecorator } from '../decorators/MantineThemeDecorator';
 import deepmerge from 'deepmerge';
 
 const meta: Meta<typeof JsonForm> = {

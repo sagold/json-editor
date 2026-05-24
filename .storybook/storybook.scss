@@ -1,4 +1,8 @@
-@use '../packages/rje-code-widgets/src/index' as *;
+@use '../packages/rje-code-widgets/src/index';
+@use './styles/colors.scss' as *;
+@use './styles/mdx.scss';
+@use './styles/stories.scss';
+@use './styles/debug.scss'; // color p€alette
 
 @font-face {
     font-family: Icon;
@@ -8,189 +12,46 @@
         format(woff2);
 }
 
-/* add support rje theme variables */
-#storybook-docs {
-    --rje-font-family: Inter, sans-serif;
-    --rje-color-light-primary: 31, 101, 141;
-    --rje-color-light-secondary: 9, 66, 98;
-    --rje-color-light-text: 7, 23, 32;
-    --rje-color-dark-primary: 50, 133, 180;
-    --rje-color-dark-secondary: 145, 192, 218;
-    --rje-color-dark-text: 235, 240, 241;
-}
-
-/* markdown styling */
-.sbdocs.sbdocs-content {
-    max-width: 48em;
-
-    blockquote p {
-        font-size: 1.2em;
-        line-height: 1.4;
+// remove rje-form style overrides in mdx documents
+#storybook-docs .rje-form {
+    div {
+        // we have to override font-family as this is being enforced by storybook
+        font-family: Inter, sans-serif;
     }
 
-    h2:not(.mantine-Title-root) {
-        font-weight: 200;
-        text-transform: uppercase;
-        border-bottom: 0;
-        margin-top: 1.5em;
-
-        code {
-            text-transform: none;
-        }
-    }
-
-    h2:not(.mantine-Title-root) + p {
-        margin-top: 0;
-    }
-
-    h3:not(.mantine-Title-root) {
-        font-size: 1em;
-        padding-top: 1.25em;
-
-        code {
-            border: none;
-            margin: 0;
-            background: transparent;
-            padding: 0;
-        }
-    }
-}
-
-.sbdocs.sbdocs-preview {
-    box-shadow: none; /* drop shadow of story box */
-}
-
-/* move global left and right padding to first elements in contents */
-#storybook-docs .sbdocs-wrapper {
-    padding-left: 0;
-    padding-right: 0;
-    .sbdocs-content > * {
-        margin-left: 1rem;
-        margin-right: 1rem;
-    }
-}
-
-/* custom codeblock (wrapped) */
-#storybook-docs .code.code--inline {
-    &,
-    pre {
-        margin: 0;
-    }
-
-    + .inline.sbdocs.sbdocs-preview {
-        margin-top: 1em;
-    }
-
-    .docblock-source {
-        margin: 0;
-        box-shadow: none;
-        border-radius: 0;
-        .prismjs {
-            font-size: 0.8rem;
-            line-height: 1.5;
-        }
-    }
-}
-
-@supports (-webkit-touch-callout: none) {
-    #storybook-docs .code.code--inline .docblock-source .prismjs {
-        font-size: 0.7rem !important; /* on mobile this still does not apply */
-    }
-}
-
-/* inline story blocks have no visual separation from content */
-#storybook-docs .inline.sbdocs.sbdocs-preview {
-    box-shadow: none; /* drop shadow of story box */
-    border: none;
-    overflow: visible;
-
-    /* set preview box to full width */
-    margin: 0;
-    .docs-story > :first-child {
-        margin: 0;
-        padding-top: 1rem;
-        padding-bottom: 0.25em;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        height: auto;
-        background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
-
-        .innerZoomElementWrapper > * {
-            border: none;
-        }
-    }
-    .docs-story > :last-child {
-        background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
-        border-top: 0.5px dashed #999;
-    }
-    /* -- preview box full width */
-
-    .docs-story {
-        padding: 0;
-        overflow: visible; /* contents expand outside of story box */
-    }
-
-    .docs-story > :first-child {
-        z-index: 2; /* contents may be above *show code* action */
-        overflow: visible;
-    }
-
-    .docblock-code-toggle {
-        border: none;
-        border-radius: 4px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
+    code {
+        // overwrite leaking mdx styles
         background: transparent;
-        color: #777;
-    }
-
-    .rje-form {
-        --mantine-h1-font-size: 1.5em;
     }
 }
 
-/* preview actions "show code" below inline code block */
-#storybook-docs .sbdocs.sbdocs-preview-actions {
-    margin: 0;
-    // margin-top: 2px;
-    // background-color: var(--mantine-color-gray-0, hsla(203, 50%, 30%, 0.05));
-    & > div {
-        justify-content: right;
+// rje style adjustments in mdx documents
+#storybook-docs .rje-form {
+    --mantine-color-disabled: #{$background-lighter}; // highlight inputs (focus)
+    --mantine-color-error: #{$red}; // highlight inputs (focus)
+    --mantine-font-family-headings: Inter, sans-serif;
+    --mantine-h1-font-weight: 400;
+    --mantine-h2-font-size: 1rem;
+    --mantine-h2-font-weight: 400;
+    --mantine-primary-color-filled-hover: #{$yellow};
+    --mantine-primary-color-filled: #{$green}; // highlight inputs (focus)
+
+    --rje-action-color: #{$green};
+
+    input {
+        --checkbox-color: #{$green};
+    }
+
+    .rje-array__table {
+        --table-striped-color: transparent;
     }
 }
 
-/* remove fixed height on mdx-canvas
-.sbdocs-preview .docs-story > div > div[scale] {
-    height: auto;
-} */
+div[data-portal='true'] {
+    --menu-item-color: #{$green};
+    --menu-item-hover: #{$green-light};
+}
 
-.rje-theme-decorator {
-    display: flex;
-    flex-wrap: wrap;
-
-    & > * {
-        flex-grow: 1;
-        box-sizing: border-box;
-        min-width: 50%;
-    }
-
-    .rje-theme--light {
-        padding: 16px;
-        background: rgba(243, 243, 241, 1);
-    }
-
-    .rje-theme--dark {
-        padding: 16px;
-        background: rgba(26, 27, 25, 1);
-    }
-
-    .story-columns {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .story-columns ~ .story-columns {
-        padding-top: 8px;
-    }
+// rje theme overrides in .stories
+#storybook-root .rje-form {
 }

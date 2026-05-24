@@ -1,0 +1,68 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/ColorWidgetPlugin" />
+<DocsHeader title="ColorWidgetPlugin" breadCrumbs="API reference » widgets » ColorWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'color-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => node.schema.type === 'string' && node.schema.format === 'hexColor'
+```
+
+
+### ColorWidget
+
+
+```tsx
+Widget: ColorWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### liveUpdate
+
+
+```tsx
+liveUpdate?: boolean;
+```
+
+
+if value should update on each keystroke instead of on blur. Defaults to false
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

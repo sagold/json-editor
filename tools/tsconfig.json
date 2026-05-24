@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "module": "Preserve",
+        "moduleResolution": "Bundler",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "noImplicitAny": false,
+        "types": ["node"]
+    },
+    "include": ["./**/*.ts"]
+}

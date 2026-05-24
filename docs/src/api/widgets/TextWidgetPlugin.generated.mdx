@@ -1,0 +1,92 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/TextWidgetPlugin" />
+<DocsHeader title="TextWidgetPlugin" breadCrumbs="API reference » widgets » TextWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'text-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => node.schema.type === 'string' && node.schema['x-widget'] === 'textarea'
+```
+
+
+### TextWidget
+
+
+```tsx
+Widget: TextWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### liveUpdate
+
+
+```tsx
+liveUpdate?: boolean;
+```
+
+
+if value should update on each keystroke instead of on blur. Defaults to false
+
+### icon
+
+
+```tsx
+icon?: string;
+```
+
+
+### tag
+
+
+```tsx
+tag?: string;
+```
+
+
+### swapIconPosition
+
+
+```tsx
+swapIconPosition?: boolean;
+```
+
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

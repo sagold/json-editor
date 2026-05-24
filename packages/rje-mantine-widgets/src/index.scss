@@ -78,3 +78,10 @@ p + .rje-content--with-header {
 tr.rje--selected > td > .rje--selected {
     background: transparent;
 }
+
+@media (max-width: 430px) {
+    .rje-form textarea.mantine-Input-input,
+    .rje-form input.mantine-Input-input {
+        font-size: 16px;
+    }
+}

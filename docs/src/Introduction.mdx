@@ -1,86 +1,110 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { NpmPackageName } from './NpmPackageName';
-import logo from '../images/he-square-700x540.png';
+import logo from '../images/he-square-700x540-orange.png';
+import { Tabs } from './components/Tabs';
+import * as Introduction from './Introduction.stories';
 
 <Meta title="Introduction" />
 
-<a href="https://GitHub.com/sagold/json-editor/" style={{ position: 'absolute' }}>
-  <img src="https://badgen.net/badge/icon/github?icon=github&label" />
-</a>
+<div class="rje-docs-header rje-docs--fullwidth">
+  <img src={logo} />
+  <div class="rje-docs-header__labels">
+    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
+      <img src="https://badgen.net/badge/icon/github?icon=github&label" />
+    </a>
+    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
+      <img src="https://badgen.net/npm/v/@sagold/react-json-editor"  />
+    </a>
+  </div>
 
-<div
-  style={{
-    margin: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    borderBottom: '1px solid #333',
-    overflow: 'hidden',
-    padding: '0 4em'
-  }}
->
-  <img src={logo} style={{ marginBottom: -1, width: '100%', maxWidth: 400 }} />
+  <div class="rje-docs-title" style={{ textAlign: 'center' }}>
+    <span class="rje-docs-title__label">@sagold</span>
+    <span class="rje-docs-title__name">react-json-editor</span>
+  </div>
 </div>
 
-<h1 style={{ textAlign: 'center' }}>json-editor</h1>
-
-The focus of this documentation mostly lies on user interface features, its configuration options and packages. For an understanding of the general behaviour of `headless-json-editor` you can refer to the sections on root, mainly:
-
-- [ObjectProperties](?path=/docs/objectproperties--docs)
-- [ArrayItems](?path=/docs/arrayitems--docs)
-- [DateFormat](?path=/docs/dateformats--docs)
-
-The main section focusses on overall json-schema behaviour, feature support and configration options. In addition
-
-- [**COOKBOOK**](?path=/docs/cookbook-conditionalforms--docs) lists a small set of usage examples
-- **PACKAGES** lists examples and showcases widgets and their options. The main package to get started is [rje-mantine-widgets](?path=/docs/packages-rje-mantine-widgets-overview--docs)
-- [**DOCS**](/?path=/story/docs-arrayitems--items-array) section mainly contains stories used in documentation pages, but is still helpful as an overview and to play with features and widget options in isolation.
-
-For a **quick setup** of `react-json-editor` and its default widgets you need the following packages installed
+> A highly flexible react library to declaratively build interactive web forms.
 
 ```sh
 npm install @sagold/react-json-editor @sagold/rje-mantine-widgets
 ```
 
-```tsx
-import { MantineProvider } from '@mantine/core';
-import '@mantine/core/styles/baseline.css';
-import '@mantine/core/styles/default-css-variables.css';
-import '@mantine/core/styles/global.css';
-import { JsonForm } from '@sagold/rje-mantine-widgets';
-import '@sagold/rje-mantine-widgets/dist/styles.css';
+# Quick Start
 
-function App() {
-  return (
-    <MantineProvider>
-      <JsonForm
-        schema={{
+Out of the box _@sagold/react-json-editor_ comes with a **useEditor** hook to manage data and a JSON Schema for each nested value.
+In order to render any sub schema as input form, we add a set of **widgets** from _@sagold/rje-mantine-widgets_.
+
+<Tabs>
+  
+  <div tabTitle="code">
+    ```ts
+    import { useEditor, Widget } from '@sagold/react-json-editor';
+    import widgets from '@sagold/rje-mantine-widgets';
+    import { MantineProvider } from '@mantine/core';
+
+    type MyData = {
+      name?: string;
+      pass?: string;
+    };
+
+    function Login() {
+      const editor = useEditor<MyData>({
+        widgets,
+        schema: {
           title: 'Login',
+          type: 'object',
           required: ['name', 'pass'],
           properties: {
-            name: { type: 'string' },
-            pass: { type: 'string' }
+            name: { type: 'string', options: { icon: 'person', swapIconPosition: true } },
+            pass: { type: 'string', 'x-widget': 'password' }
           }
-        }}
-        onChange={console.log}
-      />
-    </MantineProvider>
-  );
-}
-```
+        },
+        data: { name: 'user123' },
+        onChange: console.log
+      });
 
-Working with your **own react widgets** you should start with
+      return (
+          <MantineProvider>
+              <Widget editor={editor} node={editor?.getNode()} />
+          </MantineProvider>
+      );
+    }
+    ```
 
-- @sagold/react-json-editor
+  </div>
+  <Canvas tabTitle="preview" className="inline" of={Introduction.Login} />
+  <div tabTitle="styling">
+    ```tsx
+    import '@mantine/core/styles/baseline.css';
+    import '@mantine/core/styles/default-css-variables.css';
+    import '@mantine/core/styles/global.css';
+    import '@sagold/rje-mantine-widgets/dist/styles.css';
+    ```
+  </div>
+</Tabs>
 
-Working with your another framework or non at all, you start with the following package
+# Documentation
 
-- headless-json-editor
+<ul class="docs-color-palette">
+  <li data-color="red"></li>
+  <li data-color="orange"></li>
+  <li data-color="yellow"></li>
+  <li data-color="green"></li>
+  <li data-color="navy"></li>
+</ul>
 
-> This documentation and react-implementation serves as an example and a reference for your own headless-json-editor integration and widgets. Still, the packages used here may be used directly.
+Check out the [Getting Started](/docs/getting-started--docs) page for a quick overview.
 
-<div style={{ display: 'flex', gap: '0.5em', paddingTop: '0.1em', flexWrap: "wrap" }}>
+The documentation is divided into several sections:
 
-  <NpmPackageName name="@sagold/react-json-editor" />
-  <NpmPackageName name="@sagold/rje-mantine-widgets" />
-  <NpmPackageName name="@sagold/rje-code-widgets" />
-</div>
+- [JSON Schema Behaviour](/docs/schema-behaviour-overview--docs)
+- [API Reference](/docs/api-overview--docs)
+- [Widgets Reference](?path=/docs/api-widgets-arraywidgetplugin--docs)
+
+You can improve this documentation by sending pull requests to [this repository](https://github.com/sagold/json-editor).
+
+# Examples
+
+- [Cookbook](http://localhost:6006/?path=/docs/cookbook-conditionalforms--docs)
+- [Widgets Overview](/docs/packages-rje-mantine-widgets-overview--docs)
+- [Code Widgets Overview](/docs/packages-rje-code-widgets-overview--docs)
