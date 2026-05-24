@@ -453,6 +453,11 @@ export class HeadlessEditor<Data = unknown> {
         return result;
     }
 
+    /**
+     * destroys editor instance including all plugins, releasing used memory.
+     *
+     * @caveat plugins will receive an onDestroy call once and are responsible to release memory on their own
+     */
     destroy() {
         if (this.plugins == null) {
             return;

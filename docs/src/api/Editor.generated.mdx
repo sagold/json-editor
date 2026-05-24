@@ -3,7 +3,7 @@ import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 
 <Meta title="api/Editor" />
-<DocsHeader title="Editor" breadCrumbs="API Reference" type="Class">
+<DocsHeader title="Editor" breadCrumbs="API reference » Editor" type="Class">
   [Parameters](#parameters) · [Returns](#returns) · [Methods](#methods)
 </DocsHeader>
 
@@ -447,6 +447,14 @@ destroy()
 ```
 
 
+destroys editor instance including all plugins, releasing used memory.
+
+
+
+
+#### Caveats
+
+- plugins will receive an onDestroy call once and are responsible to release memory on their own
 
 ### `getWidget`
 

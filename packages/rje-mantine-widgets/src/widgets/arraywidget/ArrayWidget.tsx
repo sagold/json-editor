@@ -29,10 +29,25 @@ const DRAG_HANDLE_COLUMN = (
     </Table.Td>
 );
 
+/**
+ * JSON Schema array options
+ *
+ * @example
+ * {
+ *    "type": "array",
+ *    "x-options": {
+ *       "showEditJsonAction": false
+ *    }
+ * }
+ */
 export type ArrayOptions = DefaultNodeOptions<{
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
-    /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
+    /**
+     * if set, will add an edit-json action to edit, copy and paste json-data for this location
+     *
+     * @story ArrayWidget.Options
+     */
     showEditJsonAction?: boolean;
     /** Is set internally to true to add a delete option for this object. */
     isOptional?: boolean;
@@ -44,7 +59,7 @@ export type ArrayOptions = DefaultNodeOptions<{
     showItemControls?: boolean;
     /** set to true to inline description */
     descriptionInline?: boolean;
-    /** set to { enabled: true } for dragndrop */
+    /** set to `{ enabled: true }` for dragndrop */
     sortable?: SortableOptions;
 
     /** if true will add a separator line to the header */
@@ -57,7 +72,11 @@ export type ArrayOptions = DefaultNodeOptions<{
 
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
-    /** internal option for menu action items */
+    /**
+     * @ignore
+     *
+     * internal option for menu action items
+     */
     widgetMenuItems?: WidgetMenuItems;
 }>;
 
@@ -65,6 +84,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
     const depth = Math.min(6, node.pointer.split('/').length);
     const order = options.titleProps?.order ?? ((depth === 1 ? 1 : 2) as TitleOrder);
+
     const childOptions = {
         titleProps: {
             order: Math.min(6, order + 1)

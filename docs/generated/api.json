@@ -612,7 +612,13 @@
         ]
       },
       {
-        "tags": [],
+        "comment": "destroys editor instance including all plugins, releasing used memory.",
+        "tags": [
+          {
+            "tag": "caveat",
+            "comment": "plugins will receive an onDestroy call once and are responsible to release memory on their own"
+          }
+        ],
         "kindType": "MethodDeclaration",
         "text": "destroy() {\n        if (this.plugins == null) {\n            return;\n        }\n        this.plugins.forEach((p) => p.onDestroy?.());\n        // @ts-expect-error unresolved property\n        ['root', 'schemaNode', 'plugins', 'options'].forEach((property) => (this[property] = null));\n    }",
         "returns": "void",
@@ -655,7 +661,8 @@
             "type": {
               "kindType": "TypeReference",
               "name": "JsonNode",
-              "filepath": "packages/headless-json-editor/src/index.ts"
+              "filepath": "packages/headless-json-editor/src/index.ts",
+              "package": "headless-json-editor"
             }
           },
           {
@@ -703,7 +710,8 @@
           }
         }
       ]
-    }
+    },
+    "package": "@sagold/react-json-editor"
   },
   "EditorOptions": {
     "tags": [],
@@ -818,7 +826,8 @@
           }
         ]
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
   "setDefaultWidgets": {
     "comment": "Register a list of widgets for all new editor instances per default",
@@ -839,7 +848,8 @@
         "text": "widgets: WidgetPlugin[]",
         "name": "widgets"
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
   "useEditor": {
     "comment": "Create an editor-instance containing a JSON Schema tree, registered widgets and plugins and the\noverall state of the data.",
@@ -878,11 +888,17 @@
       {
         "tags": [],
         "text": "options: UseEditorOptions<Data>",
-        "name": "options"
+        "name": "options",
+        "type": {
+          "kindType": "TypeReference",
+          "name": "UseEditorOptions",
+          "filepath": "packages/react-json-editor/src/useEditor.ts"
+        }
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
-  "useEditorOptions": {
+  "UseEditorOptions": {
     "tags": [],
     "kindType": "TypeAliasDeclaration",
     "isExported": true,
@@ -979,7 +995,8 @@
             "type": {
               "tags": [],
               "kindType": "FunctionType",
-              "text": "(data: Data, root: JsonNode, editor: HeadlessEditor<Data>) => void"
+              "text": "(data: Data, root: JsonNode, editor: HeadlessEditor<Data>) => void",
+              "returns": "void"
             },
             "referenced": true,
             "parameter": [
@@ -4776,7 +4793,8 @@
                         "type": {
                           "tags": [],
                           "kindType": "FunctionType",
-                          "text": "(he: Editor, options: Options) => PluginInstance<Signature> | undefined"
+                          "text": "(he: Editor, options: Options) => PluginInstance<Signature> | undefined",
+                          "returns": "PluginInstance<Signature> | undefined"
                         },
                         "referenced": true,
                         "parameter": [
@@ -4818,7 +4836,8 @@
                                   "type": {
                                     "tags": [],
                                     "kindType": "FunctionType",
-                                    "text": "(root: JsonNode, event: PluginEvent) => void | [JsonNode, Change[]]"
+                                    "text": "(root: JsonNode, event: PluginEvent) => void | [JsonNode, Change[]]",
+                                    "returns": "void | [JsonNode, Change[]]"
                                   },
                                   "parameter": [
                                     {
@@ -11840,7 +11859,8 @@
                                   "type": {
                                     "tags": [],
                                     "kindType": "FunctionType",
-                                    "text": "() => void"
+                                    "text": "() => void",
+                                    "returns": "void"
                                   }
                                 }
                               ]
@@ -13631,7 +13651,13 @@
                     ]
                   },
                   {
-                    "tags": [],
+                    "comment": "destroys editor instance including all plugins, releasing used memory.",
+                    "tags": [
+                      {
+                        "tag": "caveat",
+                        "comment": "plugins will receive an onDestroy call once and are responsible to release memory on their own"
+                      }
+                    ],
                     "kindType": "MethodDeclaration",
                     "text": "destroy() {\n        if (this.plugins == null) {\n            return;\n        }\n        this.plugins.forEach((p) => p.onDestroy?.());\n        // @ts-expect-error unresolved property\n        ['root', 'schemaNode', 'plugins', 'options'].forEach((property) => (this[property] = null));\n    }",
                     "returns": "void",
@@ -13676,7 +13702,8 @@
           }
         ]
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
   "useEditorPlugin": {
     "comment": "Add a plugin to an editor instance",
@@ -13699,6 +13726,10 @@
         "tag": "param",
         "comment": "plugin options to pass to addPlugin",
         "name": "options"
+      },
+      {
+        "tag": "returns",
+        "comment": "plugin instance used by editor"
       }
     ],
     "kindType": "FunctionDeclaration",
@@ -13714,7 +13745,8 @@
         "type": {
           "kindType": "TypeReference",
           "name": "Plugin",
-          "filepath": "packages/headless-json-editor/src/index.ts"
+          "filepath": "packages/headless-json-editor/src/index.ts",
+          "package": "headless-json-editor"
         }
       },
       {
@@ -13724,7 +13756,8 @@
         "type": {
           "kindType": "TypeReference",
           "name": "HeadlessEditor",
-          "filepath": "packages/headless-json-editor/src/index.ts"
+          "filepath": "packages/headless-json-editor/src/index.ts",
+          "package": "headless-json-editor"
         }
       }
     ],
@@ -13758,7 +13791,8 @@
         "name": "options",
         "optional": true
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
   "Widget": {
     "comment": "Selects and renders a matching widget for the given JsonNode",
@@ -13801,12 +13835,7 @@
       {
         "kindType": "TypeParameter",
         "text": "T extends JsonNode = JsonNode",
-        "name": "T",
-        "type": {
-          "kindType": "TypeReference",
-          "name": "JsonNode",
-          "filepath": "packages/headless-json-editor/src/index.ts"
-        }
+        "name": "T"
       }
     ],
     "parameter": [
@@ -13820,7 +13849,8 @@
           "filepath": "packages/react-json-editor/src/components/widget/Widget.tsx"
         }
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
   },
   "WidgetProps": {
     "tags": [],
@@ -13841,6 +13871,7 @@
         "tags": [],
         "name": "editor",
         "types": [
+          [],
           {
             "text": "null"
           }
@@ -13864,6 +13895,1380 @@
           "name": "Partial"
         }
       }
-    ]
+    ],
+    "package": "@sagold/react-json-editor"
+  },
+  "WidgetPlugin": {
+    "comment": "Editor plugin type for widgets",
+    "tags": [
+      {
+        "tag": "example",
+        "comment": "import { type WidgetPlugin, type ArrayNode } from \"@sagold/rect-json-editor\";\n\nconst ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {\n  id: 'array-widget',\n  use: (node) => node.type === 'array',\n  Widget: ArrayWidget\n};"
+      }
+    ],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "WidgetPlugin",
+    "typeParameter": [
+      {
+        "kindType": "TypeParameter",
+        "text": "N extends JsonNode = any",
+        "name": "N"
+      }
+    ],
+    "properties": [
+      {
+        "kindType": "PropertySignature",
+        "text": "readonly id: string;",
+        "comment": "Unique id of this widget",
+        "tags": [],
+        "name": "id"
+      },
+      {
+        "kindType": "PropertySignature",
+        "text": "use: (node: JsonNode, options?: AnyOption) => boolean;",
+        "comment": "`use` will select this widget to render the passed JsonNode when true is returned",
+        "tags": [
+          {
+            "tag": "param",
+            "comment": "JsonNode which searches for a matching widget to render",
+            "name": "node"
+          },
+          {
+            "tag": "param",
+            "comment": "node options and options passed to getWidget function",
+            "name": "options"
+          },
+          {
+            "tag": "returns",
+            "comment": "`true` if this widget should be selected to render the node"
+          }
+        ],
+        "name": "use",
+        "type": {
+          "tags": [],
+          "kindType": "FunctionType",
+          "text": "(node: JsonNode, options?: AnyOption) => boolean",
+          "returns": "boolean"
+        },
+        "parameter": [
+          {
+            "tags": [],
+            "text": "node: JsonNode",
+            "name": "node"
+          },
+          {
+            "tags": [],
+            "text": "options?: AnyOption",
+            "name": "options",
+            "optional": true
+          }
+        ]
+      },
+      {
+        "kindType": "PropertySignature",
+        "text": "Widget: Widget<N>;",
+        "comment": "The widget component to render",
+        "tags": [],
+        "name": "Widget"
+      }
+    ],
+    "package": "@sagold/react-json-editor"
+  },
+  "ArrayWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "ArrayWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'array-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.type === 'array'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: ArrayWidget",
+        "name": "ArrayWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "ArrayOptions": {
+    "comment": "JSON Schema array options",
+    "tags": [
+      {
+        "tag": "example",
+        "comment": "{\n   \"type\": \"array\",\n   \"x-options\": {\n      \"showEditJsonAction\": false\n   }\n}"
+      }
+    ],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "ArrayOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "collapsed?: boolean;",
+          "comment": "if set, will add an accordion in the given toggle state",
+          "tags": [],
+          "name": "collapsed",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showEditJsonAction?: boolean;",
+          "comment": "if set, will add an edit-json action to edit, copy and paste json-data for this location",
+          "tags": [
+            {
+              "tag": "story",
+              "comment": "ArrayWidget.Options"
+            }
+          ],
+          "name": "showEditJsonAction",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "isOptional?: boolean;",
+          "comment": "Is set internally to true to add a delete option for this object.",
+          "tags": [],
+          "name": "isOptional",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showInlineAddAction?: boolean;",
+          "comment": "set to true to show inline button at the end of the array to add another item",
+          "tags": [],
+          "name": "showInlineAddAction",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeaderMenu?: boolean;",
+          "comment": "set to false to deactivate array menu",
+          "tags": [],
+          "name": "showHeaderMenu",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showItemControls?: boolean;",
+          "comment": "set to false to deactivate any array item-controls",
+          "tags": [],
+          "name": "showItemControls",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "descriptionInline?: boolean;",
+          "comment": "set to true to inline description",
+          "tags": [],
+          "name": "descriptionInline",
+          "optional": true
+        },
+        {
+          "kindType": "TypeLiteral",
+          "text": "sortable?: SortableOptions;",
+          "comment": "set to `{ enabled: true }` for dragndrop",
+          "tags": [],
+          "name": "sortable",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "SortableOptions"
+          },
+          "referenced": true,
+          "properties": [
+            {
+              "kindType": "PropertySignature",
+              "text": "enabled?: boolean;",
+              "tags": [],
+              "name": "enabled",
+              "optional": true
+            },
+            {
+              "kindType": "PropertySignature",
+              "text": "group?: string;",
+              "comment": "name of sortable group, defaults to json-pointer",
+              "tags": [],
+              "name": "group",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showTitleDivider?: boolean;",
+          "comment": "if true will add a separator line to the header",
+          "tags": [],
+          "name": "showTitleDivider",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;",
+          "comment": "placement of title within the separator",
+          "tags": [],
+          "name": "dividerProps",
+          "optional": true,
+          "type": {
+            "kindType": "UnionType",
+            "name": "Pick",
+            "typeArgs": [
+              {
+                "kindType": "TypeReference",
+                "name": "DividerProps"
+              }
+            ],
+            "text": "'labelPosition' | 'color'",
+            "types": [
+              {
+                "text": "'labelPosition'"
+              },
+              {
+                "text": "'color'"
+              }
+            ]
+          }
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "titleProps?: TitleProps;",
+          "comment": "Mantine Title Props",
+          "tags": [],
+          "name": "titleProps",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "TitleProps"
+          }
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "selectable?: boolean;",
+          "tags": [],
+          "name": "selectable",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "tags": [
+            {
+              "tag": "ignore",
+              "comment": "internal option for menu action items"
+            }
+          ],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "BooleanWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "BooleanWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'boolean-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'boolean'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: BooleanWidget",
+        "name": "BooleanWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "DateWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "DateWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'date-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => {\n        if (node.schema.type !== 'string') {\n            return false;\n        }\n\n        if (node.schema.format === 'time') {\n            return true;\n        }\n\n        return node.schema.format === 'date' || node.schema.format === 'date-time';\n    }",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: DateWidget",
+        "name": "DateWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "DateOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "DateOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "format?: string;",
+          "comment": "date and time display format for input field",
+          "tags": [
+            {
+              "tag": "see",
+              "comment": "://day.js.org/docs/en/parse/string-format"
+            }
+          ],
+          "name": "format",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "seconds?: boolean;",
+          "comment": "for time inputs, show seconds",
+          "tags": [],
+          "name": "seconds",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "liveUpdate?: boolean;",
+          "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+          "tags": [],
+          "name": "liveUpdate",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "icon?: string;",
+          "tags": [],
+          "name": "icon",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "tag?: string;",
+          "tags": [],
+          "name": "tag",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "swapIconPosition?: boolean;",
+          "tags": [],
+          "name": "swapIconPosition",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "comment": "internal option for menu action items",
+          "tags": [],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "MultiSelectWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "MultiSelectWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'select-multiple-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) =>\n        // @ts-expect-error unknown schema\n        node.schema.items?.type === 'string' && node.schema.uniqueItems && Array.isArray(node.schema.items?.enum)",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: MultiSelectWidget",
+        "name": "MultiSelectWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "MultiSelectOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "MultiSelectOptions",
+    "types": [
+      {
+        "properties": [
+          {
+            "kindType": "PropertySignature",
+            "text": "liveUpdate?: boolean;",
+            "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+            "tags": [],
+            "name": "liveUpdate",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "showHeader?: boolean;",
+            "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+            "tags": [],
+            "name": "showHeader",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "widgetMenuItems?: WidgetMenuItems;",
+            "comment": "internal option for menu action items",
+            "tags": [],
+            "name": "widgetMenuItems",
+            "optional": true,
+            "type": {
+              "kindType": "TypeReference",
+              "name": "WidgetMenuItems"
+            }
+          }
+        ]
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "NullWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "NullWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'null-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'null'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: NullWidget",
+        "name": "NullWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "NullOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "NullOptions",
+    "types": [
+      {
+        "properties": [
+          {
+            "kindType": "PropertySignature",
+            "text": "showHeader?: boolean;",
+            "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+            "tags": [],
+            "name": "showHeader",
+            "optional": true
+          }
+        ]
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "ObjectWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "ObjectWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'object-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'object'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: ObjectWidget",
+        "name": "ObjectWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "ObjectOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "ObjectOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "collapsed?: boolean;",
+          "comment": "if set, will add an accordion in the given toggle state",
+          "tags": [],
+          "name": "collapsed",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showEditJsonAction?: boolean;",
+          "comment": "if set, will add an edit-json action to edit, copy and paste json-data for this location",
+          "tags": [],
+          "name": "showEditJsonAction",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "isOptional?: boolean;",
+          "comment": "Is set internally to true to add a delete option for this object.",
+          "tags": [],
+          "name": "isOptional",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showInlineAddAction?: boolean;",
+          "comment": "set to true to show inline button at the end of the array to add another item",
+          "tags": [],
+          "name": "showInlineAddAction",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeaderMenu?: boolean;",
+          "comment": "set to false to deactivate array menu",
+          "tags": [],
+          "name": "showHeaderMenu",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showItemControls?: boolean;",
+          "comment": "set to false to deactivate any array item-controls",
+          "tags": [],
+          "name": "showItemControls",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "descriptionInline?: boolean;",
+          "comment": "set to true to inline description",
+          "tags": [],
+          "name": "descriptionInline",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showTitleDivider?: boolean;",
+          "comment": "if true will add a separator line to the header",
+          "tags": [],
+          "name": "showTitleDivider",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "selectable?: boolean;",
+          "tags": [],
+          "name": "selectable",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;",
+          "comment": "placement of title within the separator",
+          "tags": [],
+          "name": "dividerProps",
+          "optional": true,
+          "type": {
+            "kindType": "UnionType",
+            "name": "Pick",
+            "typeArgs": [
+              {
+                "kindType": "TypeReference",
+                "name": "DividerProps"
+              }
+            ],
+            "text": "'labelPosition' | 'color'",
+            "types": [
+              {
+                "text": "'labelPosition'"
+              },
+              {
+                "text": "'color'"
+              }
+            ]
+          }
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "titleProps?: TitleProps;",
+          "comment": "Mantine Title Props",
+          "tags": [],
+          "name": "titleProps",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "TitleProps"
+          }
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "hideChildren?: boolean;",
+          "comment": "hide all children",
+          "tags": [],
+          "name": "hideChildren",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "comment": "internal option for menu action items",
+          "tags": [],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "OneOfSelectWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "OneOfSelectWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'oneof-select-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: useOneOfSelectWidget",
+        "name": "useOneOfSelectWidget"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: OneOfSelectWidget",
+        "name": "OneOfSelectWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "OneOfSelectOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "OneOfSelectOptions",
+    "types": [],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "StringWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "StringWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'string-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'string'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: StringWidget",
+        "name": "StringWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "StringOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "StringOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "liveUpdate?: boolean;",
+          "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+          "tags": [],
+          "name": "liveUpdate",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "clearable?: boolean;",
+          "comment": "if true, shows a clear input action",
+          "tags": [],
+          "name": "clearable",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "icon?: string;",
+          "comment": "icon to display on left side of input field",
+          "tags": [],
+          "name": "icon",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "tag?: string;",
+          "comment": "short string to display on right side of input field",
+          "tags": [],
+          "name": "tag",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "swapIconPosition?: boolean;",
+          "comment": "swap placement of icon and label",
+          "tags": [],
+          "name": "swapIconPosition",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "comment": "internal option for menu action items",
+          "tags": [],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "ColorWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "ColorWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'color-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'string' && node.schema.format === 'hexColor'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: ColorWidget",
+        "name": "ColorWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "ColorOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "ColorOptions",
+    "types": [
+      {
+        "properties": [
+          {
+            "kindType": "PropertySignature",
+            "text": "liveUpdate?: boolean;",
+            "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+            "tags": [],
+            "name": "liveUpdate",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "showHeader?: boolean;",
+            "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+            "tags": [],
+            "name": "showHeader",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "widgetMenuItems?: WidgetMenuItems;",
+            "comment": "internal option for menu action items",
+            "tags": [],
+            "name": "widgetMenuItems",
+            "optional": true,
+            "type": {
+              "kindType": "TypeReference",
+              "name": "WidgetMenuItems"
+            }
+          }
+        ]
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "NumberWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "NumberWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'string-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'number'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: NumberWidget",
+        "name": "NumberWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "NumberOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "NumberOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "liveUpdate?: boolean;",
+          "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+          "tags": [],
+          "name": "liveUpdate",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "icon?: string;",
+          "tags": [],
+          "name": "icon",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "tag?: string;",
+          "tags": [],
+          "name": "tag",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "swapIconPosition?: boolean;",
+          "tags": [],
+          "name": "swapIconPosition",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "comment": "internal option for menu action items",
+          "tags": [],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "SelectWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "SelectWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'select-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) =>\n        (node.schema.type?.includes?.('string') || node.schema.type === 'string') && Array.isArray(node.schema.enum)",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: SelectWidget",
+        "name": "SelectWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "SelectOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "SelectOptions",
+    "types": [
+      {
+        "properties": [
+          {
+            "kindType": "UnionType",
+            "text": "'select' | 'taglist'",
+            "tags": [],
+            "name": "type",
+            "optional": true,
+            "types": [
+              {
+                "text": "'select'"
+              },
+              {
+                "text": "'taglist'"
+              }
+            ]
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "variant?: ChipProps['variant'];",
+            "comment": "chip variant for taglist",
+            "tags": [],
+            "name": "variant",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "horizontal?: boolean;",
+            "comment": "set to true to render radiogroup in a single line",
+            "tags": [],
+            "name": "horizontal",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "loading?: boolean;",
+            "tags": [],
+            "name": "loading",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "showHeader?: boolean;",
+            "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+            "tags": [],
+            "name": "showHeader",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "widgetMenuItems?: WidgetMenuItems;",
+            "comment": "internal option for menu action items",
+            "tags": [],
+            "name": "widgetMenuItems",
+            "optional": true,
+            "type": {
+              "kindType": "TypeReference",
+              "name": "WidgetMenuItems"
+            }
+          }
+        ]
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "TagListWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "TagListWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'taglist-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) =>\n        // @ts-expect-error test json-schema\n        node.schema.type === 'array' && node.schema['x-widget'] === 'taglist' && node.schema.items?.type === 'string'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: TagListWidget",
+        "name": "TagListWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "TagListOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "TagListOptions",
+    "types": [
+      {
+        "properties": [
+          {
+            "kindType": "PropertySignature",
+            "text": "showHeader?: boolean;",
+            "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+            "tags": [],
+            "name": "showHeader",
+            "optional": true
+          },
+          {
+            "kindType": "PropertySignature",
+            "text": "widgetMenuItems?: WidgetMenuItems;",
+            "comment": "internal option for menu action items",
+            "tags": [],
+            "name": "widgetMenuItems",
+            "optional": true,
+            "type": {
+              "kindType": "TypeReference",
+              "name": "WidgetMenuItems"
+            }
+          }
+        ]
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "TextWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "TextWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'text-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: (node) => node.schema.type === 'string' && node.schema['x-widget'] === 'textarea'",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: TextWidget",
+        "name": "TextWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "TextOptions": {
+    "tags": [],
+    "kindType": "TypeAliasDeclaration",
+    "isExported": true,
+    "name": "TextOptions",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "DefaultNodeOptions",
+      "properties": [
+        {
+          "kindType": "PropertySignature",
+          "text": "liveUpdate?: boolean;",
+          "comment": "if value should update on each keystroke instead of on blur. Defaults to false",
+          "tags": [],
+          "name": "liveUpdate",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "icon?: string;",
+          "tags": [],
+          "name": "icon",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "tag?: string;",
+          "tags": [],
+          "name": "tag",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "swapIconPosition?: boolean;",
+          "tags": [],
+          "name": "swapIconPosition",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "showHeader?: boolean;",
+          "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available",
+          "tags": [],
+          "name": "showHeader",
+          "optional": true
+        },
+        {
+          "kindType": "PropertySignature",
+          "text": "widgetMenuItems?: WidgetMenuItems;",
+          "comment": "internal option for menu action items",
+          "tags": [],
+          "name": "widgetMenuItems",
+          "optional": true,
+          "type": {
+            "kindType": "TypeReference",
+            "name": "WidgetMenuItems"
+          }
+        }
+      ]
+    },
+    "package": "@sagold/rje-mantine-widgets"
+  },
+  "UnknownWidgetPlugin": {
+    "tags": [],
+    "kindType": "VariableDeclaration",
+    "isComponent": false,
+    "name": "UnknownWidgetPlugin",
+    "type": {
+      "kindType": "TypeReference",
+      "name": "WidgetPlugin",
+      "filepath": "packages/react-json-editor/src/index.ts",
+      "package": "@sagold/react-json-editor"
+    },
+    "properties": [
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "id: 'unknown-widget'",
+        "name": "id"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "use: () => true",
+        "name": "use"
+      },
+      {
+        "tags": [],
+        "kindType": "PropertyAssignment",
+        "text": "Widget: UnknownWidget",
+        "name": "UnknownWidget"
+      }
+    ],
+    "package": "@sagold/rje-mantine-widgets"
   }
 }

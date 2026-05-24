@@ -1,0 +1,176 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/ObjectWidgetPlugin" />
+<DocsHeader title="ObjectWidgetPlugin" breadCrumbs="API reference » widgets » ObjectWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'object-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => node.schema.type === 'object'
+```
+
+
+### ObjectWidget
+
+
+```tsx
+Widget: ObjectWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### collapsed
+
+
+```tsx
+collapsed?: boolean;
+```
+
+
+if set, will add an accordion in the given toggle state
+
+### showEditJsonAction
+
+
+```tsx
+showEditJsonAction?: boolean;
+```
+
+
+if set, will add an edit-json action to edit, copy and paste json-data for this location
+
+### isOptional
+
+
+```tsx
+isOptional?: boolean;
+```
+
+
+Is set internally to true to add a delete option for this object.
+
+### showInlineAddAction
+
+
+```tsx
+showInlineAddAction?: boolean;
+```
+
+
+set to true to show inline button at the end of the array to add another item
+
+### showHeaderMenu
+
+
+```tsx
+showHeaderMenu?: boolean;
+```
+
+
+set to false to deactivate array menu
+
+### showItemControls
+
+
+```tsx
+showItemControls?: boolean;
+```
+
+
+set to false to deactivate any array item-controls
+
+### descriptionInline
+
+
+```tsx
+descriptionInline?: boolean;
+```
+
+
+set to true to inline description
+
+### showTitleDivider
+
+
+```tsx
+showTitleDivider?: boolean;
+```
+
+
+if true will add a separator line to the header
+
+### selectable
+
+
+```tsx
+selectable?: boolean;
+```
+
+
+### dividerProps
+
+
+```tsx
+dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
+```
+
+
+placement of title within the separator
+
+### titleProps
+
+
+```tsx
+titleProps?: TitleProps;
+```
+
+
+Mantine Title Props
+
+### hideChildren
+
+
+```tsx
+hideChildren?: boolean;
+```
+
+
+hide all children
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

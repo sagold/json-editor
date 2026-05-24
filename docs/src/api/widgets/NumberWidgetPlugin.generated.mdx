@@ -1,0 +1,92 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/NumberWidgetPlugin" />
+<DocsHeader title="NumberWidgetPlugin" breadCrumbs="API reference » widgets » NumberWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'string-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => node.schema.type === 'number'
+```
+
+
+### NumberWidget
+
+
+```tsx
+Widget: NumberWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### liveUpdate
+
+
+```tsx
+liveUpdate?: boolean;
+```
+
+
+if value should update on each keystroke instead of on blur. Defaults to false
+
+### icon
+
+
+```tsx
+icon?: string;
+```
+
+
+### tag
+
+
+```tsx
+tag?: string;
+```
+
+
+### swapIconPosition
+
+
+```tsx
+swapIconPosition?: boolean;
+```
+
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

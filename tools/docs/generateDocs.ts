@@ -14,6 +14,12 @@ function getDeclarationType(entity: Record<string, any>) {
     if (entity.kindType === 'ClassDeclaration') {
         return 'Class';
     }
+    if (entity.kindType === 'TypeAliasDeclaration') {
+        return 'Type';
+    }
+    if (entity.kindType === 'VariableDeclaration') {
+        return entity?.type?.name ?? 'Value';
+    }
     if (entity.kindType === 'FunctionDeclaration') {
         return entity.name.startsWith('use') ? 'Hook' : entity.isComponent ? 'Component' : 'Function';
     }
@@ -92,6 +98,90 @@ function flat(list: (string | string[])[]) {
 }
 
 const generate = {
+    VariableDeclaration: (api: APIData, data: Record<string, any>) => {
+        const doc = [
+            `${data.comment}`,
+            ...render.codeBlock(data.tags?.find((tag) => tag.tag === 'example')?.comment),
+            // object
+            ...maybeAll(data.properties.length, '## Properties'),
+            maybe('', data.properties?.length),
+            ...flat(
+                data.properties?.map((property) => [
+                    `### ${property.name}`,
+                    '',
+                    ...render.codeBlock(`${property.text}`),
+                    '',
+                    maybe(property.comment),
+                    maybe('', property.comment),
+                    ...maybeAll(
+                        property.parameter?.length,
+                        '#### Parameter',
+                        '',
+                        ...flat(
+                            property.parameter?.map((param) => {
+                                const comment = getTag(property.tags, 'param', param.name)?.comment;
+                                return `- **\`${param.name}\`** ${comment ?? ''}`;
+                            })
+                        ),
+                        '',
+                        ...maybeAll(
+                            property.type?.returns ?? getTag(property.tags, 'returns'),
+                            '#### Returns',
+                            '',
+                            `${property.type?.returns ? `**\`${property.type?.returns}\`**` : ''} ${getTag(property.tags, 'returns')?.comment}`
+                        )
+                    )
+                ])
+            )
+        ];
+
+        return doc;
+    },
+    TypeAliasDeclaration: (api: APIData, data: Record<string, any>) => {
+        // inconsistent due to Type<SubType> vs Type = {}
+        const properties =
+            data.properties ||
+            data.type?.properties ||
+            flat(data.types?.map((type) => type?.properties)).filter((v) => v != null);
+
+        const doc = [
+            `${data.comment}`,
+            ...render.codeBlock(data.tags?.find((tag) => tag.tag === 'example')?.comment),
+            // properties
+            maybe('## Properties', data.properties?.length),
+            maybe('', properties?.length),
+            ...flat(
+                properties?.map((property) => [
+                    `### ${property.name}`,
+                    '',
+                    ...render.codeBlock(`${property.text}`),
+                    '',
+                    maybe(property.comment),
+                    maybe('', property.comment),
+                    ...maybeAll(
+                        property.parameter?.length,
+                        '#### Parameter',
+                        '',
+                        ...flat(
+                            property.parameter?.map((param) => {
+                                const comment = getTag(property.tags, 'param', param.name)?.comment;
+                                return `- **\`${param.name}\`** ${comment ?? ''}`;
+                            })
+                        ),
+                        '',
+                        ...maybeAll(
+                            property.type?.returns ?? getTag(property.tags, 'returns'),
+                            '#### Returns',
+                            '',
+                            `${property.type?.returns ? `**\`${property.type?.returns}\`**` : ''} ${getTag(property.tags, 'returns')?.comment}`
+                        )
+                    )
+                ])
+            ),
+            maybe('', data.properties?.length)
+        ];
+        return doc;
+    },
     FunctionDeclaration: (api: APIData, data: Record<string, any>) => {
         // function parameters
         const { parameter } = data;
@@ -111,14 +201,9 @@ const generate = {
         // ## properties
         if (parameter?.length > 0) doc.push();
         parameter?.map((param) => {
-            let header = '###';
-            if (!data.isComponent) {
-                doc.push(`### \`${param.name}\``);
-                header += '#';
-            }
+            doc.push(`### \`${param.name}${param.type?.name ? `: ${param.type.name}` : ''}\``);
             if (param.type?.kindType === 'TypeReference') {
                 const propertiesTypeName = param.type.name;
-                doc.push(`### \`${param.text}\``);
                 // print all properties from prop-type
                 api[propertiesTypeName]?.properties?.forEach((typeProperty) => {
                     const tag = getTag(data.tags, 'param', `${param.name}.${typeProperty.name}`) ?? '';
@@ -219,8 +304,22 @@ const generate = {
     }
 };
 
-function generateDocs(data: APIData, identifier: string) {
-    const folderPath = path.join(process.cwd(), 'docs', 'src', 'api');
+type GenerateDocsArgs = {
+    data: APIData;
+    identifier: string;
+    location: string;
+    folderPath: string;
+    combine?: {
+        identifier: string;
+        header: string;
+    }[];
+};
+
+/**
+ * @param location  folder for storybook sidebar location, e.g. {location}/{identifier}.
+ */
+function generateDocs(settings: GenerateDocsArgs) {
+    const { data, identifier, location, folderPath, combine = [] } = settings;
 
     const entity = data[identifier];
     if (entity == null) {
@@ -228,43 +327,145 @@ function generateDocs(data: APIData, identifier: string) {
         return;
     }
 
+    if (generate[entity.kindType] == null) {
+        console.error(`Entity type '${entity.kindType}' is not yet implemented. Skipping '${identifier}'`);
+        return;
+    }
+
+    // create docs
     const docs = generate[entity.kindType](data, entity) as (string | null)[];
     try {
         // append snippets
         const usage = fs.readFileSync(path.join(folderPath, `${entity.name}-usage.md`), 'utf8');
         docs.push(...usage.split(EOL));
     } catch (e) {}
+    combine.forEach(({ identifier, header }) => {
+        const entity = data[identifier];
+        const combineDocs = generate[entity.kindType](data, entity) as (string | null)[];
+        docs.push('', `## ${header}`, '', ...combineDocs);
+        try {
+            // append snippets
+            const usage = fs.readFileSync(path.join(folderPath, `${entity.name}-usage.md`), 'utf8');
+            docs.push(...usage.split(EOL));
+        } catch (e) {}
+    });
 
+    // create main navigation
     const navigation = docs
         .filter((entry) => /^\s*## /.test(entry))
         .map((entry) => entry.replace(/^[ #]+/, ''))
-        .map((entry) => `[${entry}](#${entry.toLowerCase()})`);
+        .map((entry) => `[${entry}](#${entry.toLowerCase().replace(/\s+/g, '-')})`);
 
-    console.log('navigation', navigation);
+    const relUrl = location
+        .split('/')
+        .map((_i) => '..')
+        .join('/');
 
+    // create header
     const type = getDeclarationType(entity);
+    const breadCrumbs = location.split('/');
+    breadCrumbs.shift(); // api
+    breadCrumbs.unshift('API reference');
+    breadCrumbs.push(identifier);
+
     const docsHeader = [
         '{/* generated */}',
         "import { Meta, Canvas } from '@storybook/addon-docs/blocks';",
-        "import { DocsHeader } from '../components/DocsHeader';",
+        `import { DocsHeader } from '${relUrl}/components/DocsHeader';`,
         '',
-        `<Meta title="api/${identifier}" />`,
-        `<DocsHeader title="${identifier}" breadCrumbs="API Reference" type="${type}">`,
+        `<Meta title="${location}/${identifier}" />`,
+        `<DocsHeader title="${identifier}" breadCrumbs="${breadCrumbs.join(' » ')}" type="${type}">`,
         `  ${navigation.join(SEPARATOR)}`,
         '</DocsHeader>',
         ''
     ];
     docs.unshift(...docsHeader);
-
     fs.writeFileSync(
         path.join(folderPath, `${entity.name}.generated.mdx`),
-        docs.filter((v) => v != null).join(EOL),
+        docs.filter((v) => v != null && v !== 'undefined').join(EOL),
         'utf-8'
     );
 }
 
-generateDocs(apiData, 'Editor');
-generateDocs(apiData, 'Widget');
-generateDocs(apiData, 'setDefaultWidgets');
-generateDocs(apiData, 'useEditor');
-generateDocs(apiData, 'useEditorPlugin');
+const rjeAPI: Omit<GenerateDocsArgs, 'identifier'> = {
+    data: apiData,
+    folderPath: path.join(process.cwd(), 'docs', 'src', 'api'),
+    location: 'api'
+};
+generateDocs({ ...rjeAPI, identifier: 'Editor' });
+generateDocs({ ...rjeAPI, identifier: 'Widget' });
+generateDocs({ ...rjeAPI, identifier: 'setDefaultWidgets' });
+generateDocs({ ...rjeAPI, identifier: 'useEditor' });
+generateDocs({ ...rjeAPI, identifier: 'useEditorPlugin' });
+generateDocs({ ...rjeAPI, identifier: 'WidgetPlugin' });
+
+const rjeMantineWidgetsAPI: Omit<GenerateDocsArgs, 'identifier'> = {
+    data: apiData,
+    folderPath: path.join(process.cwd(), 'docs', 'src', 'api', 'widgets'),
+    location: 'api/widgets'
+};
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'ArrayWidgetPlugin',
+    combine: [{ identifier: 'ArrayOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({ ...rjeMantineWidgetsAPI, identifier: 'BooleanWidgetPlugin' });
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'DateWidgetPlugin',
+    combine: [{ identifier: 'DateOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'MultiSelectWidgetPlugin',
+    combine: [{ identifier: 'MultiSelectOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'NullWidgetPlugin',
+    combine: [{ identifier: 'NullOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'ObjectWidgetPlugin',
+    combine: [{ identifier: 'ObjectOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'OneOfSelectWidgetPlugin',
+    combine: [{ identifier: 'OneOfSelectOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'StringWidgetPlugin',
+    combine: [{ identifier: 'StringOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'ColorWidgetPlugin',
+    combine: [{ identifier: 'ColorOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'NumberWidgetPlugin',
+    combine: [{ identifier: 'NumberOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'SelectWidgetPlugin',
+    combine: [{ identifier: 'SelectOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'TagListWidgetPlugin',
+    combine: [{ identifier: 'TagListOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'TextWidgetPlugin',
+    combine: [{ identifier: 'TextOptions', header: 'JSON Schema Options' }]
+});
+generateDocs({
+    ...rjeMantineWidgetsAPI,
+    identifier: 'UnknownWidgetPlugin'
+});

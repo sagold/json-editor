@@ -1,0 +1,61 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../components/DocsHeader';
+
+<Meta title="api/WidgetPlugin" />
+<DocsHeader title="WidgetPlugin" breadCrumbs="API reference » WidgetPlugin" type="Type">
+  [Properties](#properties)
+</DocsHeader>
+
+Editor plugin type for widgets
+
+```tsx
+import { type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
+
+const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
+  id: 'array-widget',
+  use: (node) => node.type === 'array',
+  Widget: ArrayWidget
+};
+```
+
+## Properties
+
+### id
+
+
+```tsx
+readonly id: string;
+```
+
+
+Unique id of this widget
+
+### use
+
+
+```tsx
+use: (node: JsonNode, options?: AnyOption) => boolean;
+```
+
+
+`use` will select this widget to render the passed JsonNode when true is returned
+
+#### Parameter
+
+- **`node`** JsonNode which searches for a matching widget to render
+- **`options`** node options and options passed to getWidget function
+
+#### Returns
+
+**`boolean`** `true` if this widget should be selected to render the node
+### Widget
+
+
+```tsx
+Widget: Widget<N>;
+```
+
+
+The widget component to render
+

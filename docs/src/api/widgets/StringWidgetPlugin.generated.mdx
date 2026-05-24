@@ -1,0 +1,108 @@
+{/* generated */}
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { DocsHeader } from '../../components/DocsHeader';
+
+<Meta title="api/widgets/StringWidgetPlugin" />
+<DocsHeader title="StringWidgetPlugin" breadCrumbs="API reference » widgets » StringWidgetPlugin" type="WidgetPlugin">
+  [Properties](#properties) · [JSON Schema Options](#json-schema-options)
+</DocsHeader>
+
+## Properties
+
+### id
+
+
+```tsx
+id: 'string-widget'
+```
+
+
+### use
+
+
+```tsx
+use: (node) => node.schema.type === 'string'
+```
+
+
+### StringWidget
+
+
+```tsx
+Widget: StringWidget
+```
+
+
+
+## JSON Schema Options
+
+
+### liveUpdate
+
+
+```tsx
+liveUpdate?: boolean;
+```
+
+
+if value should update on each keystroke instead of on blur. Defaults to false
+
+### clearable
+
+
+```tsx
+clearable?: boolean;
+```
+
+
+if true, shows a clear input action
+
+### icon
+
+
+```tsx
+icon?: string;
+```
+
+
+icon to display on left side of input field
+
+### tag
+
+
+```tsx
+tag?: string;
+```
+
+
+short string to display on right side of input field
+
+### swapIconPosition
+
+
+```tsx
+swapIconPosition?: boolean;
+```
+
+
+swap placement of icon and label
+
+### showHeader
+
+
+```tsx
+showHeader?: boolean;
+```
+
+
+if false, will hide title. will hide complete title-header if no menu-actions are available
+
+### widgetMenuItems
+
+
+```tsx
+widgetMenuItems?: WidgetMenuItems;
+```
+
+
+internal option for menu action items

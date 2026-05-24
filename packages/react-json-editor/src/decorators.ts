@@ -37,12 +37,16 @@ export type DecoratedWidgetProps<NodeType extends JsonNode, ValueType = unknown>
 /**
  * interface to your decorated editor
  */
-export type DecoratedWidget<NodeType extends JsonNode, ValueType = unknown> = (props: DecoratedWidgetProps<NodeType, ValueType>) => ReactNode | null;
+export type DecoratedWidget<NodeType extends JsonNode, ValueType = unknown> = (
+    props: DecoratedWidgetProps<NodeType, ValueType>
+) => ReactNode | null;
 
 /**
  * add setValue helper to editor component and reduce update cycles
  */
-export function widget<NodeType extends JsonNode = JsonNode, ValueType = unknown>(WidgetComponent: DecoratedWidget<NodeType, ValueType>) {
+export function widget<NodeType extends JsonNode = JsonNode, ValueType = unknown>(
+    WidgetComponent: DecoratedWidget<NodeType, ValueType>
+) {
     // eslint-disable-next-line react/display-name
     return memo((props: WidgetProps<NodeType>) => {
         const setValue = useCallback(
@@ -60,8 +64,33 @@ export function widget<NodeType extends JsonNode = JsonNode, ValueType = unknown
     }, isEqual);
 }
 
+/**
+ * Editor plugin type for widgets
+ *
+ * @example
+ * import { type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
+ *
+ * const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
+ *   id: 'array-widget',
+ *   use: (node) => node.type === 'array',
+ *   Widget: ArrayWidget
+ * };
+ */
 export type WidgetPlugin<N extends JsonNode = any> = {
+    /**
+     * Unique id of this widget
+     */
     readonly id: string;
+    /**
+     * `use` will select this widget to render the passed JsonNode when true is returned
+     *
+     * @param node  JsonNode which searches for a matching widget to render
+     * @param options   node options and options passed to getWidget function
+     * @returns `true` if this widget should be selected to render the node
+     */
     use: (node: JsonNode, options?: AnyOption) => boolean;
+    /**
+     * The widget component to render
+     */
     Widget: Widget<N>;
 };

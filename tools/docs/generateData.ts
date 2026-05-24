@@ -14,10 +14,28 @@ import pointer from '@sagold/json-pointer';
  * @returns the first occurence of the given identifier
  */
 function findIdentifier(ast: SourceFile, identifier: string) {
+    // Node kinds that wrap declarations without being named themselves.
+    // Traversing through these allows finding identifiers nested inside
+    // e.g. VariableStatement → VariableDeclarationList → VariableDeclaration → Identifier
+    const DECLARATION_WRAPPERS = new Set([SyntaxKind.VariableDeclarationList, SyntaxKind.VariableDeclaration]);
+
+    function findDeclarationNode(node: ts.Node): ts.Node | undefined {
+        if (get(node, 'Identifier')?.getText(ast) === identifier) {
+            return node;
+        }
+        let found: ts.Node | undefined;
+        node.forEachChild((child) => {
+            if (!found && DECLARATION_WRAPPERS.has(child.kind)) {
+                found = findDeclarationNode(child);
+            }
+        });
+        return found;
+    }
+
     let result: ts.Node | undefined;
     ast.forEachChild((child) => {
-        if (get(child, 'Identifier')?.getText(ast) === identifier) {
-            result = child;
+        if (!result) {
+            result = findDeclarationNode(child);
         }
     });
     return result;
@@ -49,6 +67,7 @@ function containsJsx(node: ts.Node): boolean {
 }
 
 function getReturnType(context: ParseContext, node: ts.Node) {
+    if (!ts.isFunctionLike(node)) return undefined;
     const checker = context.program.getTypeChecker();
     const signature = checker.getSignatureFromDeclaration(node as ts.SignatureDeclaration);
     if (!signature) return undefined;
@@ -125,6 +144,29 @@ const parser = {
         parseChildren(context, node, result);
         return result;
     },
+    [SyntaxKind['VariableDeclaration']]: (context: ParseContext, node: ts.Node) => {
+        const fnNode = node as ts.FunctionDeclaration;
+        const result = {
+            ...getDocs(context.source, node),
+            kindType: 'VariableDeclaration',
+            isComponent: fnNode.body ? containsJsx(fnNode.body) : false
+        };
+        parseChildren(context, node, result);
+        return result;
+    },
+    [SyntaxKind['ObjectLiteralExpression']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
+        result.properties = parseChildren(context, node, result);
+        return result;
+    },
+    [SyntaxKind['PropertyAssignment']]: (context: ParseContext, node: ts.Node) => {
+        const result = {
+            ...getDocs(context.source, node),
+            kindType: 'PropertyAssignment',
+            text: node.getText(context.source)
+        };
+        parseChildren(context, node, result);
+        return result;
+    },
     [SyntaxKind['Parameter']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
         result.parameter = result.parameter ?? [];
         const meta = {
@@ -134,7 +176,6 @@ const parser = {
         result.parameter.push(meta);
         parseChildren(context, node, meta);
     },
-    // TYPES
     [SyntaxKind['QuestionToken']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
         result.optional = true;
     },
@@ -158,6 +199,7 @@ const parser = {
         const localResult = {
             ...getDocs(context.source, node),
             kindType: 'TypeAliasDeclaration'
+            // text: node.getText(context.source)
         };
         // we parse a declaration and want references inlined
         context.inlineDeclaration = true;
@@ -183,10 +225,12 @@ const parser = {
         return result;
     },
     [SyntaxKind['FunctionType']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
+        const returns = getReturnType(context, node);
         result.type = {
             ...getDocs(context.source, node),
             kindType: 'FunctionType',
-            text: node.getText(context.source)
+            text: node.getText(context.source),
+            returns
         };
         parseChildren(context, node, result);
         return result;
@@ -199,20 +243,22 @@ const parser = {
     },
     [SyntaxKind['TypeReference']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
         const referencedType = pointer.get<string>(node, 'typeName/escapedText');
-
         if (referencedType && context.skipInlining.includes(referencedType)) {
             return;
         }
 
         // Shallow mode: not inside a TypeAliasDeclaration — record the type name with its source filepath
         if (context.inlineDeclaration !== true) {
-            const importedPath = referencedType ? getImportMap(context.source)[referencedType] : undefined;
-            const absolutePath = importedPath ?? context.source.fileName;
-            const typeRef = {
+            const importEntry = referencedType ? getImportMap(context.source)[referencedType] : undefined;
+            const absolutePath = importEntry?.filepath ?? context.source.fileName;
+            const typeRef: O = {
                 kindType: 'TypeReference',
                 name: referencedType,
                 filepath: path.relative(process.cwd(), absolutePath)
             };
+            if (importEntry?.package) {
+                typeRef.package = importEntry.package;
+            }
             if (isTypeArgument(node)) {
                 result.typeArgs = result.typeArgs ?? [];
                 result.typeArgs.push(typeRef);
@@ -233,7 +279,7 @@ const parser = {
 
         if (!referencedType) return;
 
-        const referenceFilePath = getImportMap(context.source)[referencedType];
+        const referenceFilePath = getImportMap(context.source)[referencedType]?.filepath;
         if (referenceFilePath) {
             const definition = getDeclaration(context.program, referenceFilePath, referencedType);
             if (!definition) return;
@@ -283,7 +329,9 @@ const parser = {
     },
     [SyntaxKind['HeritageClause']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
         const inheritedClassName = pointer.get<string>(node, 'types/0/expression/escapedText');
-        const inheritedFilePath = inheritedClassName ? getImportMap(context.source)[inheritedClassName] : undefined;
+        const inheritedFilePath = inheritedClassName
+            ? getImportMap(context.source)[inheritedClassName]?.filepath
+            : undefined;
         if (inheritedFilePath && inheritedClassName) {
             const definition = getDeclaration(context.program, inheritedFilePath, inheritedClassName);
             if (definition && ts.isClassDeclaration(definition.node)) {
@@ -337,16 +385,8 @@ function parseChildren(context: ParseContext, node: ts.Node, result?: O) {
     return returnValues;
 }
 
-function getDocumentationFor(identifier: string, filepath: string, skipInlining: string[]) {
-    const filePath = path.join(process.cwd(), 'packages', filepath);
-    const program = ts.createProgram([filePath], {
-        baseUrl: process.cwd(),
-        strictNullChecks: true,
-        jsx: ts.JsxEmit.ReactJSX,
-        jsxImportSource: 'react',
-        typeRoots: [path.join(process.cwd(), 'node_modules/@types')],
-        paths: { 'headless-json-editor': ['packages/headless-json-editor/src/index.ts'] }
-    });
+function getDocumentationFor(program: Program, identifier: string, src: string, skipInlining: string[]) {
+    const filePath = path.join(process.cwd(), 'packages', src);
     const ast = program.getSourceFile(filePath);
     if (ast == null) {
         throw new Error(`failed building ast from '${filePath}'`);
@@ -364,24 +404,131 @@ function getDocumentationFor(identifier: string, filepath: string, skipInlining:
     return parser[targetNode.kind]({ program, source: ast, skipInlining, resolving: new Set() }, targetNode);
 }
 
-const docs = {
-    Editor: getDocumentationFor('Editor', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
-    EditorOptions: getDocumentationFor('EditorOptions', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
-    setDefaultWidgets: getDocumentationFor('setDefaultWidgets', 'react-json-editor/src/Editor.ts', ['JsonSchema']),
-    useEditor: getDocumentationFor('useEditor', 'react-json-editor/src/useEditor.ts', [
-        'UseEditorOptions',
-        'WidgetPlugin'
-    ]),
-    useEditorOptions: getDocumentationFor('UseEditorOptions', 'react-json-editor/src/useEditor.ts', ['JsonSchema']),
-    useEditorPlugin: getDocumentationFor('useEditorPlugin', 'react-json-editor/src/useEditorPlugin.ts', [
-        'UseEditorOptions',
-        'WidgetPlugin'
-    ]),
-    Widget: getDocumentationFor('Widget', 'react-json-editor/src/components/widget/Widget.tsx', ['JsonSchema']),
-    WidgetProps: getDocumentationFor('WidgetProps', 'react-json-editor/src/components/widget/Widget.tsx', [
-        'JsonNode',
-        'Editor'
-    ])
-};
-fs.writeFileSync(path.join(process.cwd(), 'docs/generated/api.json'), JSON.stringify(docs, null, 2), 'utf-8');
+const documentation = [
+    {
+        src: 'react-json-editor/src/Editor.ts',
+        identifier: ['Editor', 'EditorOptions', 'setDefaultWidgets'],
+        skipInlining: ['JsonSchema']
+    },
+    {
+        src: 'react-json-editor/src/useEditor.ts',
+        identifier: ['useEditor', 'UseEditorOptions'],
+        skipInlining: ['JsonSchema']
+    },
+    {
+        src: 'react-json-editor/src/useEditorPlugin.ts',
+        identifier: ['useEditorPlugin'],
+        skipInlining: ['JsonSchema']
+    },
+    {
+        src: 'react-json-editor/src/components/widget/Widget.tsx',
+        identifier: ['Widget', 'WidgetProps'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'react-json-editor/src/decorators.ts',
+        identifier: ['WidgetPlugin'],
+        skipInlining: ['JsonNode', 'JsonSchema', 'AnyOption', 'Widget']
+    },
+    // widgets
+    {
+        src: 'rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx',
+        identifier: ['ArrayWidgetPlugin', 'ArrayOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/booleanwidget/BooleanWidget.tsx',
+        identifier: ['BooleanWidgetPlugin'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/datewidget/DateWidget.tsx',
+        identifier: ['DateWidgetPlugin', 'DateOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/multiselectwidget/MultiSelect.tsx',
+        identifier: ['MultiSelectWidgetPlugin', 'MultiSelectOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/nullwidget/NullWidget.tsx',
+        identifier: ['NullWidgetPlugin', 'NullOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx',
+        identifier: ['ObjectWidgetPlugin', 'ObjectOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/oneofselectwidget/OneOfSelectWidget.tsx',
+        identifier: ['OneOfSelectWidgetPlugin', 'OneOfSelectOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/stringwidget/StringWidget.tsx',
+        identifier: ['StringWidgetPlugin', 'StringOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/ColorWidget.tsx',
+        identifier: ['ColorWidgetPlugin', 'ColorOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/NumberWidget.tsx',
+        identifier: ['NumberWidgetPlugin', 'NumberOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/SelectWidget.tsx',
+        identifier: ['SelectWidgetPlugin', 'SelectOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/TagListWidget.tsx',
+        identifier: ['TagListWidgetPlugin', 'TagListOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/TextWidget.tsx',
+        identifier: ['TextWidgetPlugin', 'TextOptions'],
+        skipInlining: ['JsonNode']
+    },
+    {
+        src: 'rje-mantine-widgets/src/widgets/UnknownWidget.tsx',
+        identifier: ['UnknownWidgetPlugin'],
+        skipInlining: ['JsonNode']
+    }
+];
+
+function createDocumentationData() {
+    const result = {};
+    const rootFiles = documentation.map(({ src }) => path.join(process.cwd(), 'packages', src));
+    const program = ts.createProgram(rootFiles, {
+        baseUrl: process.cwd(),
+        strictNullChecks: true,
+        jsx: ts.JsxEmit.ReactJSX,
+        jsxImportSource: 'react',
+        typeRoots: [path.join(process.cwd(), 'node_modules/@types')],
+        paths: { 'headless-json-editor': ['packages/headless-json-editor/src/index.ts'] }
+    });
+    documentation.forEach((set) => {
+        const { skipInlining, src } = set;
+        set.identifier.forEach((identifier) => {
+            result[identifier] = getDocumentationFor(program, identifier, src, skipInlining);
+            let pkgName = src.split('/')[0];
+            pkgName = pkgName === 'headless-json-editor' ? pkgName : `@sagold/${pkgName}`;
+            result[identifier].package = pkgName;
+        });
+    });
+    return result;
+}
+
+fs.writeFileSync(
+    path.join(process.cwd(), 'docs/generated/api.json'),
+    JSON.stringify(createDocumentationData(), null, 2),
+    'utf-8'
+);
 // console.log(typeDocs);

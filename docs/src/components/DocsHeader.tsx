@@ -14,7 +14,7 @@ export function DocsHeader({
 }) {
     return (
         <div className="mdx-docs-header">
-            {breadCrumbs && <div className="mdx-docs-header__breadcrumbs">API Reference</div>}
+            {breadCrumbs && <div className="mdx-docs-header__breadcrumbs">{breadCrumbs}</div>}
             {children && <div>{children}</div>}
             <h1 className="mdx-docs-header__title">
                 {title} {type && <span style={{ fontSize: '0.7em', fontWeight: 400 }}> : {type}</span>}
