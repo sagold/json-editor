@@ -68,13 +68,16 @@ export function widget<NodeType extends JsonNode = JsonNode, ValueType = unknown
  * Editor plugin type for widgets
  *
  * @example
- * import { type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
+ * import { Editor, type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
  *
  * const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
  *   id: 'array-widget',
  *   use: (node) => node.type === 'array',
  *   Widget: ArrayWidget
  * };
+ *
+ * // add widget to editor instance
+ * const editor = new Editor({ widgets: [ArrayWidgetPlugin, ...defaultWidgets] });
  */
 export type WidgetPlugin<N extends JsonNode = any> = {
     /**
@@ -91,6 +94,29 @@ export type WidgetPlugin<N extends JsonNode = any> = {
     use: (node: JsonNode, options?: AnyOption) => boolean;
     /**
      * The widget component to render
+     *
+     * @example
+     * import { type WidgetPlugin, type DecoratedWidgetProps, widget, type StringNode } from "@sagold/rect-json-editor";
+     *
+     * function MyStringWidget({ editor, node, options, setValue }: DecoratedWidgetProps<StringNode, string>) {}
+     *
+     * const MyWidgetPlugin: WidgetPlugin<StringNode> = {
+     *   id: 'my-string-widget',
+     *   use: (node) => node.type === 'string',
+     *   Widget: widget(MyStringWidget)
+     * };
+     *
+     * @example // using widget decorator only
+     * import { type WidgetPlugin, widget, type StringNode } from "@sagold/rect-json-editor";
+     *
+     * const MyStringWidget = widget<StringNode, string>(({ editor, node, options, setValue }) {});
+     *
+     * const MyWidgetPlugin: WidgetPlugin<StringNode> = {
+     *   id: 'my-string-widget',
+     *   use: (node) => node.type === 'string',
+     *   Widget: MyStringWidget
+     * };
+     *
      */
     Widget: Widget<N>;
 };

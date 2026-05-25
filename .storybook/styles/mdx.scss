@@ -106,7 +106,8 @@
     }
 
     .rje-docs-title {
-        padding: 1rem 0.5rem 0.25rem 0.5rem;
+        padding-top: 1rem;
+        padding-bottom: 0.25rem;
         position: absolute;
         bottom: 0;
         left: 0;
@@ -115,6 +116,21 @@
         border-top: 1px solid $green;
         border-bottom: 4px solid $orange;
         font-weight: 600;
+    }
+
+    // temp custom header for package
+    .rje-docs-title__main {
+        marrgin-top: 1rem;
+        position: relative;
+        background-color: var(--docs-action);
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin: 0 !important;
+        font-size: 1.5rem;
+        color: #fff;
+        border-top: 1px solid $navy;
     }
 
     .rje-docs-title__label {

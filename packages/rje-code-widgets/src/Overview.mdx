@@ -1,7 +1,25 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
-import { NpmPackageName } from '../../../docs/src/NpmPackageName';
+import logo from '../../../docs/images/he-square-700x540-orange.png';
 import * as JsonObjectWidget from './jsonwidget/JsonWidget.Object.stories';
 import * as JsonStringWidget from './jsonwidget/JsonWidget.String.stories';
+
+<div class="rje-docs-header rje-docs--fullwidth">
+  <img src={logo} />
+  <div class="rje-docs-header__labels">
+    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
+      <img src="https://badgen.net/badge/icon/github?icon=github&label" />
+    </a>
+    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
+      <img src="https://badgen.net/npm/v/@sagold/react-json-editor"  />
+    </a>
+  </div>
+
+<div class="rje-docs-title" style={{ textAlign: 'center', paddingBottom: 0 }}>
+  <div class="rje-docs-title__label">react-json-editor</div>
+  <div class="rje-docs-title__main">@sagold/rje-code-widgets</div>
+</div>
+
+</div>
 
 <Meta title="packages/rje-code-widgets/Overview" />
 
@@ -9,7 +27,9 @@ import * as JsonStringWidget from './jsonwidget/JsonWidget.String.stories';
 
 > Additional code-widgets for `@sagold/react-json-editor` based on CodeMirror
 
-<NpmPackageName name="@sagold/rje-code-widgets" />
+```sh
+npm install @sagold/react-json-editor @sagold/rje-code-widgets
+```
 
 `rje-code-widgets` currently offers
 
@@ -26,7 +46,7 @@ function MyForm({ schema, data }) {
   const editor = useEditor({
     schema,
     data,
-    widgets: [JsonWidgetPlugin, defaultWidgets]
+    widgets: [JsonWidgetPlugin, ...widgets]
   });
   return (
     <div className="rje rje-form rje-theme rje-theme--light">

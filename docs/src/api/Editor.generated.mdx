@@ -460,7 +460,7 @@ destroys editor instance including all plugins, releasing used memory.
 
 
 ```tsx
-getWidget<T extends JsonNode['options'] = JsonNode['options']>(node: JsonNode, options?: T): Widget
+getWidget(node: JsonNode, options?: Record<string, any>): Widget
 ```
 
 

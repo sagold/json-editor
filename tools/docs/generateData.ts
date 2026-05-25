@@ -195,6 +195,13 @@ const parser = {
         result.text = node.getText(context.source);
         return result;
     },
+    // [SyntaxKind['ArrayType']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
+    //     result.type = {
+    //         kindType: 'ArrayType',
+    //         text: node.getText(context.source)
+    //     };
+    //     parseChildren(context, node, result.type);
+    // },
     [SyntaxKind['TypeAliasDeclaration']]: (context: ParseContext, node: ts.Node) => {
         const localResult = {
             ...getDocs(context.source, node),
@@ -244,6 +251,13 @@ const parser = {
     [SyntaxKind['TypeReference']]: (context: ParseContext, node: ts.Node, result: O = {}) => {
         const referencedType = pointer.get<string>(node, 'typeName/escapedText');
         if (referencedType && context.skipInlining.includes(referencedType)) {
+            const importEntry = referencedType ? getImportMap(context.source)[referencedType] : undefined;
+            const absolutePath = importEntry?.filepath ?? context.source.fileName;
+            result.type = {
+                kindType: 'TypeReference',
+                name: referencedType,
+                filepath: path.relative(process.cwd(), absolutePath)
+            };
             return;
         }
 
@@ -408,17 +422,17 @@ const documentation = [
     {
         src: 'react-json-editor/src/Editor.ts',
         identifier: ['Editor', 'EditorOptions', 'setDefaultWidgets'],
-        skipInlining: ['JsonSchema']
+        skipInlining: ['JsonSchema', 'JsonNode']
     },
     {
         src: 'react-json-editor/src/useEditor.ts',
         identifier: ['useEditor', 'UseEditorOptions'],
-        skipInlining: ['JsonSchema']
+        skipInlining: ['JsonSchema', 'JsonNode']
     },
     {
         src: 'react-json-editor/src/useEditorPlugin.ts',
         identifier: ['useEditorPlugin'],
-        skipInlining: ['JsonSchema']
+        skipInlining: ['JsonSchema', 'JsonNode']
     },
     {
         src: 'react-json-editor/src/components/widget/Widget.tsx',

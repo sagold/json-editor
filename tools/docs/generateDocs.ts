@@ -202,11 +202,12 @@ const generate = {
         if (parameter?.length > 0) doc.push();
         parameter?.map((param) => {
             doc.push(`### \`${param.name}${param.type?.name ? `: ${param.type.name}` : ''}\``);
+            // multiple param properties?
             if (param.type?.kindType === 'TypeReference') {
                 const propertiesTypeName = param.type.name;
                 // print all properties from prop-type
                 api[propertiesTypeName]?.properties?.forEach((typeProperty) => {
-                    const tag = getTag(data.tags, 'param', `${param.name}.${typeProperty.name}`) ?? '';
+                    let tag = getTag(data.tags, 'param', `${param.name}.${typeProperty.name}`);
 
                     if (typeProperty.kindType === 'UnionType') {
                         doc.push(`- **\`${typeProperty.name}: ${typeProperty.text}\`** ${tag?.comment ?? ''}`);
@@ -214,6 +215,12 @@ const generate = {
                         doc.push(`- **\`${typeProperty.text}\`** ${tag?.comment ?? ''}`);
                     }
                 });
+                // just the description
+            } else {
+                const comment = getTag(data.tags, 'param', param.name)?.comment;
+                if (comment) {
+                    doc.push('', comment, '');
+                }
             }
         });
 

@@ -1,0 +1,42 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+
+<Meta title="Getting Started" />
+
+# Getting Started
+
+> `@sagold/json-editor` is a toolbox to create your own custom forms.
+
+Out of the box, you can use `@sagold/react-json-editor` with a full set of widgets from `@sagold/rje-mantine-widgets` to use a complete json-editor library. All data types are supported and in addition there are multiple variations to certain user forms. From here, you can go in different directions:
+
+- Replace or extend widgets with **your own widgets**. _Widgets_ in general are responsible for most custom behaviour, thus they are a great place to fully customize your forms. Doing so, you can use **any component library** that fits your needs. Iteratively writing your own widgets is the recommended way to build a proper json-editor that fits your needs. Writing most custom widgets is pretty simple - just follow any of the widgets from [@sagold/rje-mantine-widgets](https://github.com/sagold/json-editor/tree/main/packages/rje-mantine-widgets/src/widgets)
+- In case you do not want to use [Mantine](https://mantine.dev/) component library, write all of our required widgets in the component library of your choosing. **`@sagold/react-json-editor` is a React integration** of `headless-json-editor` and does not have any dependencies to a component library.
+- If you want to use any other frontend framework for rendering, like **Svelte, Vue.js, etc** you can write your framework integration of `headless-json-editor`. Follow [@sagold/react-json-editor#useEditor](https://github.com/sagold/json-editor/blob/main/packages/react-json-editor/src/useEditor.ts) for an example implementation.
+
+## Widgets
+
+> Widgets are the central element to customize your web form.
+
+Widgets are configured using JSON Schema options:
+
+```json
+// JSON Schema
+{
+  "type": "array",
+  "x-options": {
+    "showInlineAddOption": false
+  }
+}
+```
+
+A widget is selected when its `use` result is `true`. `@sagold/json-editor` works on a list of widgets that are iterated from first to last element to find the widget which matches first to a given Json Node. To add special widgets out them at the start of your widget list. If nothing was matched, the default widget for this data type will be picked and render a form:
+
+```tsx
+const MyCustomWidgetPlugin = {
+  id: 'myCustomWidget',
+  use: (node: JsonNode, options?: Record<string, any>) =>
+    node.schema.type === 'array' && node.schema['x-options']?.showInlineAddOption != null,
+  Widget: MyCustomWidget
+};
+
+const editor new Editor({ schema, widgets: [MyCustomWidgetPlugin, ...defaultWidgets] });
+```

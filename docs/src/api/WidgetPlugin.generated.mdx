@@ -10,13 +10,16 @@ import { DocsHeader } from '../components/DocsHeader';
 Editor plugin type for widgets
 
 ```tsx
-import { type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
+import { Editor, type WidgetPlugin, type ArrayNode } from "@sagold/rect-json-editor";
 
 const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
   id: 'array-widget',
   use: (node) => node.type === 'array',
   Widget: ArrayWidget
 };
+
+// add widget to editor instance
+const editor = new Editor({ widgets: [ArrayWidgetPlugin, ...defaultWidgets] });
 ```
 
 ## Properties

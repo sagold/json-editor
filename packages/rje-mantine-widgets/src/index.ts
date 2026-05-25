@@ -34,6 +34,9 @@ export { UnknownWidget, UnknownWidgetPlugin } from './widgets/UnknownWidget';
 export { StringWidget } from './widgets/stringwidget/StringWidget';
 export type { StringOptions } from './widgets/stringwidget/StringWidget';
 
+// Mantine
+export { MantineProvider } from '@mantine/core';
+
 // features
 export { getParentArrayPointer } from './features/dragndrop/getParentArrayPointer';
 export {
