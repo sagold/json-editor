@@ -1,21 +1,23 @@
 {
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
-        "rootDir": "./",
-        "jsx": "react-jsx",
         "allowJs": true,
-        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": true,
+        "jsx": "react-jsx",
         "moduleResolution": "bundler",
-        "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": false,
-        "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "resolveJsonModule": true,
+        "rootDir": "./",
+        "strict": true,
+        "types": ["node"]
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "generator/**/*"],
     "references": [
         {
             "path": "../packages/headless-json-editor"

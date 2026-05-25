@@ -4,7 +4,7 @@ import { DocsHeader } from '../components/DocsHeader';
 
 <Meta title="api/WidgetPlugin" />
 <DocsHeader title="WidgetPlugin" breadCrumbs="API reference » WidgetPlugin" type="Type">
-  [Properties](#properties)
+  
 </DocsHeader>
 
 Editor plugin type for widgets
@@ -22,7 +22,6 @@ const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
 const editor = new Editor({ widgets: [ArrayWidgetPlugin, ...defaultWidgets] });
 ```
 
-## Properties
 
 ### id
 
@@ -56,9 +55,8 @@ use: (node: JsonNode, options?: AnyOption) => boolean;
 
 
 ```tsx
-Widget: Widget<N>;
+Widget: WidgetComponent<N>;
 ```
 
 
 The widget component to render
-

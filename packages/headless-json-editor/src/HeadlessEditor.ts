@@ -64,8 +64,13 @@ export type HeadlessEditorOptions<Data = unknown> = {
     [p: string]: unknown;
 } & O;
 
-// @todo test setSchema
-// @todo difference between setValue and setData (root?)?
+/**
+ * - Manages the current node tree in state to simplify changing and updating the nodes
+ * - Exposes a plugin api
+ *
+ * @todo test setSchema
+ * @todo difference between setValue and setData (root?)?
+ */
 export class HeadlessEditor<Data = unknown> {
     readonly id: string = uuid();
     /** Editor root node */

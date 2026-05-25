@@ -94,7 +94,7 @@ export const Options: Story = {
                     sources: {
                         title: 'Sources',
                         type: 'array',
-                        'x-widget': 'taglist',
+                        'x-widget': 'select:taglist',
                         items: {
                             type: 'string'
                         }
@@ -127,7 +127,7 @@ export const Disabled: Story = {
                     sources: {
                         title: 'Sources',
                         type: 'array',
-                        'x-widget': 'taglist',
+                        'x-widget': 'select:taglist',
                         items: {
                             type: 'string'
                         }

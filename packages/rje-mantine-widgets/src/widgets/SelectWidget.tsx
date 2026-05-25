@@ -11,31 +11,46 @@ import { Chip, ChipProps, Group, InputWrapper, Radio, Select, Stack } from '@man
 import { widgetInputProps } from '../components/widgetInputProps';
 import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
-export type SelectOptions = {
-    type?: 'select' | 'taglist';
+/**
+ * JSON Schema string-enum options
+ *
+ * @example
+ * {
+ *    "type": "string",
+ *    "enum": ["month", "quarter", "year"],
+ *    "x-options": {
+ *       "showHeader": false
+ *    }
+ * }
+ */
+export type SelectOptions = DefaultNodeOptions<{
+    /** list of titles for the JSON Schema enum options - matched by index */
+    enum?: string[];
     /** chip variant for taglist */
     variant?: ChipProps['variant'];
     /** set to true to render radiogroup in a single line */
     horizontal?: boolean;
     loading?: boolean;
 
-    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+    /**
+     * if false, will hide title. will hide complete title-header if no menu-actions are available
+     */
     showHeader?: boolean;
-    /** internal option for menu action items */
-    widgetMenuItems?: WidgetMenuItems;
-} & DefaultNodeOptions;
 
-export const selectDefaultOptions = {
-    type: 'select'
-};
+    /**
+     * @internal option for menu action items
+     */
+    widgetMenuItems?: WidgetMenuItems;
+}>;
 
 export const SelectWidget = function (props: WidgetProps) {
-    if (props.node?.schema['x-widget'] === 'radiogroup') {
+    if (props.node?.schema['x-widget'] === 'select:radiogroup') {
         return <RadioGroupWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
-    if (props.node?.schema['x-widget'] === 'taglist') {
+    if (props.node?.schema['x-widget'] === 'select:taglist') {
         return <TagListWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
     }
+    // schema['x-widget'] === 'select'
     return <SelectOptionsWidget {...(props as DecoratedWidgetProps<StringNode, boolean>)} />;
 };
 
@@ -112,6 +127,22 @@ export const SelectOptionsWidget = widget<StringNode<SelectOptions>, string | nu
     );
 });
 
+/**
+ * Select Widget will render a JSON Schema `type: "string", enum: [string]` as a selection.
+ *
+ * Three select components are available and you can choose between each type using the `x-widget` property:
+ *
+ * - per default it will render as normal select input
+ * - `x-widget: "select:taglist` will render a horizontal options represented as tags to be selected directly
+ * - `x-widget: "select:radiogroup` will render a vertical radiogroup with all options visible
+ *
+ * @example
+ * {
+ *  "type": "string",
+ *  "enum": ["month", "quarter", "year"],
+ *  "x-widget": "select:radiogroup"
+ * }
+ */
 export const SelectWidgetPlugin: WidgetPlugin = {
     id: 'select-widget',
     use: (node) =>

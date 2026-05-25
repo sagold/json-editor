@@ -1,15 +1,20 @@
 import { ErrorWidget } from './components/ErrorWidget';
 import { HeadlessEditor, HeadlessEditorOptions, type JsonNode, isJsonNode } from 'headless-json-editor';
-import { Widget, WidgetPlugin } from './decorators';
+import { WidgetComponent, WidgetPlugin } from './decorators';
 
 let defaultWidgets: WidgetPlugin[] = [];
+
 /**
  * Register a list of widgets for all new editor instances per default
+ *
+ * If a list of widgets is added to editor.widgets, this default list will be overriden
  *
  * @example
  *  import { setDefaultWidgets } from '@sagold/react-json-editor';
  *  import widgets from '@sagold/rje-mantine-widgets';
  *  setDefaultWidgets(widgets);
+ *
+ * @param widgets   list of widgets to set per default
  */
 export function setDefaultWidgets(widgets: WidgetPlugin[]) {
     defaultWidgets = widgets;
@@ -66,7 +71,7 @@ export class Editor<Data = unknown> extends HeadlessEditor<Data> {
      * @param options - can be passed to the lookup function, which will be available in a WidgetPlugin's use-function: `use(node, options) => boolean`. Usually, options are passed to getWidget as well as to the widget itself
      * @returns The **Widget component** to render the given node or undefined
      */
-    getWidget(node: JsonNode, options?: Record<string, any>): Widget {
+    getWidget(node: JsonNode, options?: Record<string, any>): WidgetComponent {
         if (!isJsonNode(node)) {
             console.log('invalid node passed to getWidget', node);
             return ErrorWidget;

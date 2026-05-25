@@ -23,9 +23,32 @@ function WebFormComponent() {
 ## Properties
 
 ### `props: WidgetProps`
-- **`editor: Editor | null`** The editor instance controlling this widget
-- **`node?: JsonNode;`** The JsonNode to render a widget for
-- **`options?: Partial<T['options']>;`** Optional overrides for the node's display options
+
+The widget props
+
+#### node
+
+```tsx
+node: T;
+```
+
+
+
+#### editor
+
+```tsx
+editor: Editor;
+```
+
+
+
+#### options
+
+```tsx
+options?: Partial<T['options']>;
+```
+
+
 
 ## Returns
 

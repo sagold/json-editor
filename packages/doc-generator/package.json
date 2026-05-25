@@ -1,0 +1,13 @@
+{
+    "name": "@sagold/doc-generator",
+    "version": "1.0.0",
+    "license": "UNLICENSED",
+    "module": "./src.index.ts",
+    "types": "./src/index.ts",
+    "author": {
+        "name": "Sascha Goldhofer",
+        "email": "github@saschagoldhofer.de",
+        "url": "https://github.com/sagold/"
+    },
+    "dependencies": {}
+}

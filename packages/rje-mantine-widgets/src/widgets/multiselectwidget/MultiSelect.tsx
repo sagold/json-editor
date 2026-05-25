@@ -14,14 +14,16 @@ import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetMenuItems } from '../../components/widgetmenu/WidgetMenu';
 import { useLiveUpdate } from '../useLiveUpdate';
 
-export type MultiSelectOptions = {
+export type MultiSelectOptions = DefaultNodeOptions<{
+    /** list of titles for the JSON Schema enum options - matched by index */
+    enum?: string[];
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-} & DefaultNodeOptions;
+}>;
 
 const MultiSelectWidget = (props: WidgetProps) => {
     if (props.node?.schema['x-widget'] === 'taglist') {

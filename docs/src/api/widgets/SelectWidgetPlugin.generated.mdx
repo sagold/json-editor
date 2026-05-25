@@ -7,6 +7,22 @@ import { DocsHeader } from '../../components/DocsHeader';
   [Properties](#properties) · [JSON Schema Options](#json-schema-options)
 </DocsHeader>
 
+Select Widget will render a JSON Schema `type: "string", enum: [string]` as a selection.
+
+Three select components are available and you can choose between each type using the `x-widget` property:
+
+- per default it will render as normal select input
+- `x-widget: "select:taglist` will render a horizontal options represented as tags to be selected directly
+- `x-widget: "select:radiogroup` will render a vertical radiogroup with all options visible
+
+```tsx
+{
+ "type": "string",
+ "enum": ["month", "quarter", "year"],
+ "x-widget": "select:radiogroup"
+}
+```
+
 ## Properties
 
 ### id
@@ -37,14 +53,128 @@ Widget: SelectWidget
 
 ## JSON Schema Options
 
+JSON Schema string-enum options
 
-### type
+```tsx
+{
+   "type": "string",
+   "enum": ["month", "quarter", "year"],
+   "x-options": {
+      "showHeader": false
+   }
+}
+```
+
+
+### classNames
 
 
 ```tsx
-'select' | 'taglist'
+classNames?: string[];
 ```
 
+
+additional classnames the ui should add to the root of this data point
+
+### description
+
+
+```tsx
+description?: string;
+```
+
+
+description of this data point
+
+### disabled
+
+
+```tsx
+disabled: boolean;
+```
+
+
+if changes to this data point are disabled
+
+### placeholder
+
+
+```tsx
+placeholder?: string;
+```
+
+
+if supported, will add a placeholder for the input element
+
+### hidden
+
+
+```tsx
+hidden: boolean;
+```
+
+
+if this data point should be hidden from display
+
+### title
+
+
+```tsx
+title?: string;
+```
+
+
+title of this data point
+
+### readOnly
+
+
+```tsx
+readOnly?: boolean;
+```
+
+
+disable edit of form, but allow selection and copy of value
+
+### required
+
+
+```tsx
+required?: boolean;
+```
+
+
+flag data as required (visual only)
+
+### canAddItem
+
+
+```tsx
+canAddItem?: boolean;
+```
+
+
+arrays only: if an item may be added without causing a validation error
+
+### canRemoveItem
+
+
+```tsx
+canRemoveItem?: boolean;
+```
+
+
+arrays only: if an item may be removed without causing a validation error
+
+### enum
+
+
+```tsx
+enum?: string[];
+```
+
+
+list of titles for the JSON Schema enum options - matched by index
 
 ### variant
 
@@ -91,5 +221,3 @@ if false, will hide title. will hide complete title-header if no menu-actions ar
 widgetMenuItems?: WidgetMenuItems;
 ```
 
-
-internal option for menu action items

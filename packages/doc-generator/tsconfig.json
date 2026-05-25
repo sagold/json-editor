@@ -1,0 +1,35 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react-jsx",
+        "moduleResolution": "bundler",
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": false,
+        "noImplicitOverride": true,
+        "noImplicitReturns": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "resolveJsonModule": true,
+        "rootDir": "./",
+        "strict": true,
+        "types": ["node", "jest"]
+    },
+    "include": ["src/**/*"],
+    "references": [
+        {
+            "path": "../headless-json-editor"
+        },
+        {
+            "path": "../react-json-editor"
+        },
+        {
+            "path": "../rje-mantine-widgets"
+        },
+        {
+            "path": "../rje-code-widgets"
+        }
+    ]
+}

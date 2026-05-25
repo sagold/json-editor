@@ -199,7 +199,7 @@ const schema: JsonSchema = {
             description: 'standard mantine chip-group. Initially unselected, but required',
             default: null,
             title: 'select',
-            'x-widget': 'taglist',
+            'x-widget': 'select:taglist',
             enum: ['yes', 'maybe', 'no']
         },
         selectRadio: {
@@ -207,7 +207,7 @@ const schema: JsonSchema = {
             description: 'standard mantine chip-group. Initially unselected, but required',
             default: null,
             title: 'select',
-            format: 'radiogroup',
+            'x-widget': 'select:radiogroup',
             enum: ['yes', 'maybe', 'no']
         },
         multiSelect: {
@@ -227,7 +227,7 @@ const schema: JsonSchema = {
             title: 'multi-select tag',
             description: 'standard mantine multi-select',
             type: 'array',
-            'x-widget': 'taglist',
+            'x-widget': 'select:taglist',
             uniqueItems: true,
             items: {
                 type: 'string',
@@ -288,7 +288,7 @@ const schema: JsonSchema = {
             title: 'string-array',
             description: 'standard mantine TagsInput',
             type: 'array',
-            'x-widget': 'taglist',
+            'x-widget': 'select:taglist',
             maxItems: 6,
             minItems: 1,
             default: [],

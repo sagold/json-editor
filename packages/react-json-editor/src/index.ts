@@ -1,7 +1,7 @@
 import { Editor, EditorOptions, setDefaultWidgets } from './Editor';
 import { useEditorPlugin } from './useEditorPlugin';
 import { useEditor, UseEditorOptions } from './useEditor';
-import { widget, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './decorators';
+import { widget, WidgetComponent, WidgetPlugin, DecoratedWidgetProps, DecoratedWidget } from './decorators';
 import { Widget, WidgetProps } from './components/widget/Widget';
 import { WidgetDescription, WidgetDescriptionProps } from './components/widget/WidgetDescription';
 import { WidgetError, WidgetErrorProps } from './components/widget/WidgetError';
@@ -32,6 +32,7 @@ export type {
     DecoratedWidgetProps,
     EditorOptions,
     UseEditorOptions,
+    WidgetComponent,
     WidgetDescriptionProps,
     WidgetErrorProps,
     WidgetFieldHeaderProps,

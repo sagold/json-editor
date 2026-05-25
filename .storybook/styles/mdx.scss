@@ -195,6 +195,7 @@
 
     h4 {
         font-size: 1.1em;
+        color: var(--docs-quaternary);
     }
 
     a {
@@ -271,6 +272,16 @@
             border: 1px solid $red;
             background: var(--docs-header);
             color: #fff;
+        }
+    }
+
+    h4 {
+        code {
+            border: 1px solid $yellow;
+            background: var(--docs-bg-canvas);
+            border-color: var(--docs-highlight);
+            color: var(--docs-quaternary);
+            font-weight: bold;
         }
     }
 

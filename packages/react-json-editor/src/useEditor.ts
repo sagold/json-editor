@@ -6,7 +6,7 @@ import { useEditorPlugin } from './useEditorPlugin';
 
 export type UseEditorOptions<Data = unknown> = HeadlessEditorOptions<Data> & {
     /**
-     * A function called after each udpate which that accepts three arguments:
+     * A function called after each update which that accepts three arguments:
      *
      * - `data` the latest data of the web form
      * - `root` the rootNode of the json-editor and

@@ -14,7 +14,7 @@ export type WidgetProps<T extends JsonNode = JsonNode> = {
  * interface of generic json editor component.
  * it takes the current editor and the current node along with a localized option interface
  */
-export type Widget<NodeType extends JsonNode = JsonNode> = (props: WidgetProps<NodeType>) => ReactNode | null;
+export type WidgetComponent<NodeType extends JsonNode = JsonNode> = (props: WidgetProps<NodeType>) => ReactNode | null;
 
 /**
  * react memo node comparison
@@ -118,5 +118,5 @@ export type WidgetPlugin<N extends JsonNode = any> = {
      * };
      *
      */
-    Widget: Widget<N>;
+    Widget: WidgetComponent<N>;
 };

@@ -23,6 +23,121 @@ function WebFormComponent() {
 
 ### `options: UseEditorOptions`
 
+
+#### schema
+
+```tsx
+schema: JsonSchema;
+```
+
+The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly.
+
+#### data
+
+```tsx
+data?: Data;
+```
+
+The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form
+
+#### drafts
+
+```tsx
+drafts?: Draft[];
+```
+
+
+
+#### plugins
+
+```tsx
+plugins?: Plugin[];
+```
+
+
+
+#### validate
+
+```tsx
+validate?: boolean;
+```
+
+if data should be initially validated
+
+#### addOptionalProps
+
+```tsx
+addOptionalProps?: boolean;
+```
+
+if all optional properties should be added when missing
+
+#### extendDefaults
+
+```tsx
+extendDefaults?: boolean;
+```
+
+if json-schema default-values should be extended (required properties, min-length of items). Defaults to false
+
+#### removeInvalidData
+
+```tsx
+removeInvalidData?: boolean;
+```
+
+Remove data that does not match input schema. Defaults to false
+
+#### onChange
+
+```tsx
+onChange?: OnChangeListener<Data>;
+```
+
+A function called after each update which that accepts three arguments:
+
+- `data` the latest data of the web form
+- `root` the rootNode of the json-editor and
+- `editor` the current editor instance
+
+_Only supported by useEditor_
+
+#### widgets
+
+```tsx
+widgets?: WidgetPlugin[];
+```
+
+The list of available widgets to render the JSON Schema tree. Each node in the tree should
+have a matching widget to be rendered or the editor will either ignore or show an error
+using an Error Widget if added.
+
+#### cacheKey
+
+```tsx
+cacheKey?: string | number;
+```
+
+A unique id that if changed, will recreate the editor
+
+_Only supported by useEditor_
+
+#### addOptionalProps
+
+```tsx
+addOptionalProps?: boolean;
+```
+
+if all optional properties should be added when missing
+
+#### liveUpdate
+
+```tsx
+liveUpdate?: boolean;
+```
+
+set tpo true to validate while typing. Defaults to onBlur
+
 ## Returns
 
 **`Editor<Data> | null`** Returns an instance of `Editor`. For details on working with `editor` see Usage below or more in depth details in API Reference on [Editor#instance](/docs/api-editor--docs#instance)

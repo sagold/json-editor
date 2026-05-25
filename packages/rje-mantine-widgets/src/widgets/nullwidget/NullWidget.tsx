@@ -3,11 +3,12 @@ import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/wi
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 import { TitleOrder } from '@mantine/core';
 
-export type NullOptions = {
-    /** if false, will hide title. will hide complete title-header if no menu-actions are available */
-    showHeader?: boolean;
-} & WidgetInputWrapperProps['options'] &
-    DefaultNodeOptions;
+export type NullOptions = DefaultNodeOptions<
+    {
+        /** if false, will hide title. will hide complete title-header if no menu-actions are available */
+        showHeader?: boolean;
+    } & WidgetInputWrapperProps['options']
+>;
 
 export const NullWidget = widget<NullNode<NullOptions>, null>(({ node, options }) => {
     const depth = Math.min(6, node.pointer.split('/').length);

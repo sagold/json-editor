@@ -1,0 +1,96 @@
+{
+    "parseFilepaths": [
+        "packages/headless-json-editor/src/node/createNode.ts",
+        "packages/headless-json-editor/src/HeadlessEditor.ts",
+        "packages/react-json-editor/src/Editor.ts",
+        "packages/react-json-editor/src/useEditor.ts",
+        "packages/react-json-editor/src/useEditorPlugin.ts",
+        "packages/react-json-editor/src/components/widget/Widget.tsx",
+        "packages/react-json-editor/src/decorators.ts",
+        "packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/booleanwidget/BooleanWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/datewidget/DateWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/multiselectwidget/MultiSelect.tsx",
+        "packages/rje-mantine-widgets/src/widgets/nullwidget/NullWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/oneofselectwidget/OneOfSelectWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/stringwidget/StringWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/ColorWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/NumberWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/SelectWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/TagListWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/TextWidget.tsx",
+        "packages/rje-mantine-widgets/src/widgets/UnknownWidget.tsx",
+        "packages/rje-code-widgets/src/jsonwidget/JsonWidget.tsx"
+    ],
+    "docs": [
+        "docs/src/api/Editor",
+        "docs/src/api/Widget",
+        "docs/src/api/setDefaultWidgets",
+        "docs/src/api/useEditor",
+        "docs/src/api/useEditorPlugin",
+        "docs/src/api/WidgetPlugin",
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "ArrayWidgetPlugin",
+            "combine": [{ "identifier": "ArrayOptions", "header": "JSON Schema Options" }]
+        },
+        "docs/src/api/widgets/BooleanWidgetPlugin",
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "DateWidgetPlugin",
+            "combine": [{ "identifier": "DateOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "MultiSelectWidgetPlugin",
+            "combine": [{ "identifier": "MultiSelectOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "NullWidgetPlugin",
+            "combine": [{ "identifier": "NullOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "ObjectWidgetPlugin",
+            "combine": [{ "identifier": "ObjectOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "OneOfSelectWidgetPlugin",
+            "combine": [{ "identifier": "OneOfSelectOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "StringWidgetPlugin",
+            "combine": [{ "identifier": "StringOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "ColorWidgetPlugin",
+            "combine": [{ "identifier": "ColorOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "NumberWidgetPlugin",
+            "combine": [{ "identifier": "NumberOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "SelectWidgetPlugin",
+            "combine": [{ "identifier": "SelectOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "TagListWidgetPlugin",
+            "combine": [{ "identifier": "TagListOptions", "header": "JSON Schema Options" }]
+        },
+        {
+            "folderPath": "docs/src/api/widgets",
+            "identifier": "TextWidgetPlugin",
+            "combine": [{ "identifier": "TextOptions", "header": "JSON Schema Options" }]
+        },
+        "docs/src/api/widgets/UnknownWidgetPlugin"
+    ]
+}

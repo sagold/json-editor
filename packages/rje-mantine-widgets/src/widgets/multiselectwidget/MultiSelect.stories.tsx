@@ -47,7 +47,7 @@ export const Taglist: Story = {
             onChange: (v) => console.log('change:', v),
             schema: {
                 type: 'array',
-                'x-widget': 'taglist',
+                'x-widget': 'select:taglist',
                 uniqueItems: true,
                 items: {
                     type: 'string',

@@ -9,15 +9,43 @@ import { DocsHeader } from '../components/DocsHeader';
 
 Register a list of widgets for all new editor instances per default
 
+If a list of widgets is added to editor.widgets, this default list will be overriden
+
 ```tsx
-import { setDefaultWidgets } from '@sagold/react-json-editor';
+ import { setDefaultWidgets } from '@sagold/react-json-editor';
  import widgets from '@sagold/rje-mantine-widgets';
  setDefaultWidgets(widgets);
 ```
 
 ## Parameters
 
-### `widgets`
+### `widgets: WidgetPlugin`
+
+list of widgets to set per default
+
+#### id
+
+```tsx
+readonly id: string;
+```
+
+Unique id of this widget
+
+#### use
+
+```tsx
+use: (node: JsonNode, options?: AnyOption) => boolean;
+```
+
+`use` will select this widget to render the passed JsonNode when true is returned
+
+#### Widget
+
+```tsx
+Widget: WidgetComponent<N>;
+```
+
+The widget component to render
 
 ## Returns
 

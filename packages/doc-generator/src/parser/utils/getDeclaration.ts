@@ -2,7 +2,7 @@ import ts from 'typescript';
 
 export type Declaration = {
     node: ts.Node;
-    ast: ts.SourceFile;
+    source: ts.SourceFile;
 };
 
 /**
@@ -63,12 +63,12 @@ export function getDeclaration(
             }
         });
         if (found) {
-            return { node: found, ast: sourceFile };
+            return { node: found, source: sourceFile };
         }
     }
 
     return {
         node: declaration,
-        ast: sourceFile
+        source: sourceFile
     };
 }
