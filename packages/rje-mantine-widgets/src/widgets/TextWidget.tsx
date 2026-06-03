@@ -6,7 +6,7 @@ import { getSections } from './getSections';
 import { useLiveUpdate } from './useLiveUpdate';
 import { ChangeEvent } from 'react';
 
-export type TextOptions = DefaultNodeOptions<{
+export type TextOptions = DefaultNodeOptions & {
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     icon?: string;
@@ -17,7 +17,7 @@ export type TextOptions = DefaultNodeOptions<{
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.currentTarget.value;
 

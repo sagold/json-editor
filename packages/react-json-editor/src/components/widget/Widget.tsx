@@ -11,7 +11,7 @@ Widget.Error = WidgetError;
 
 export type WidgetProps<T extends JsonNode = JsonNode> = {
     editor: Editor | null;
-    node?: JsonNode;
+    node?: T;
     options?: Partial<T['options']>;
 };
 

@@ -1,7 +1,13 @@
 import { JsonPointer } from 'json-schema-library';
 import { Plugin, PluginInstance } from '../HeadlessEditor';
-import { getNode, getData, updateSchema, isJsonError, Change, JsonNode } from '../index';
-import { PluginEvent } from "../types";
+import { getNode, getData, updateSchema, isJsonError, Change, JsonNode, DefaultNodeOptions } from '../index';
+import { PluginEvent } from '../types';
+
+type RemoteEnumOptions = {
+    syncEnum?: {
+        source: string;
+    };
+};
 
 /**
  * prototypical plugin to support a dynamic enum for a schema like
@@ -48,7 +54,7 @@ export const RemoteEnumOptionsPlugin: Plugin = () => {
     const plugin: PluginInstance = {
         id: 'remoteEnumOptions',
         onEvent(root: JsonNode, event: PluginEvent) {
-            if (event.type === 'create' && event.node.options.syncEnum) {
+            if (event.type === 'create' && (event.node.options as RemoteEnumOptions).syncEnum) {
                 // @ts-ignore
                 const source = getNode(root, event.node.options.syncEnum.source);
                 if (!isJsonError(source)) {

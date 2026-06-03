@@ -1,4 +1,4 @@
-import { DefaultNodeOptions } from "./node/createNode";
+import { DefaultNodeOptions } from './node/createNode';
 
 /**
  * JSON Schema v7 taken from "json-schema" library
@@ -40,7 +40,6 @@ export interface JsonSchemaObject {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface JsonSchemaArray extends Array<JsonSchemaType> {}
 
-
 /**
  * JSON Schema v7 taken from "json-schema"
  * @see https://tools.ietf.org/html/draft-handrews-json-schema-validation-01
@@ -67,18 +66,20 @@ export interface JsonSchema {
      * @see https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema-00#section-8.2.4
      * @see https://datatracker.ietf.org/doc/html/draft-bhutton-json-schema-validation-00#appendix-A
      */
-    $defs?: {
-        [key: string]: JsonSchemaDefinition;
-    } | undefined;
+    $defs?:
+        | {
+              [key: string]: JsonSchemaDefinition;
+          }
+        | undefined;
 
     /**
      * custom json-editor additions
      */
-    options?: Partial<DefaultNodeOptions>;
+    options?: Partial<DefaultNodeOptions> & Record<string, any>;
 
     /**
-    * custom json-schema-library additions
-    */
+     * custom json-schema-library additions
+     */
     isActive?: boolean;
     isDynamic?: boolean;
     /**
@@ -126,16 +127,22 @@ export interface JsonSchema {
     maxProperties?: number | undefined;
     minProperties?: number | undefined;
     required?: string[] | undefined;
-    properties?: {
-        [key: string]: JsonSchemaDefinition;
-    } | undefined;
-    patternProperties?: {
-        [key: string]: JsonSchemaDefinition;
-    } | undefined;
+    properties?:
+        | {
+              [key: string]: JsonSchemaDefinition;
+          }
+        | undefined;
+    patternProperties?:
+        | {
+              [key: string]: JsonSchemaDefinition;
+          }
+        | undefined;
     additionalProperties?: JsonSchemaDefinition | undefined;
-    dependencies?: {
-        [key: string]: JsonSchemaDefinition | string[];
-    } | undefined;
+    dependencies?:
+        | {
+              [key: string]: JsonSchemaDefinition | string[];
+          }
+        | undefined;
     propertyNames?: JsonSchemaDefinition | undefined;
 
     /**
@@ -167,9 +174,11 @@ export interface JsonSchema {
     /**
      * @see https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-9
      */
-    definitions?: {
-        [key: string]: JsonSchemaDefinition;
-    } | undefined;
+    definitions?:
+        | {
+              [key: string]: JsonSchemaDefinition;
+          }
+        | undefined;
 
     /**
      * @see https://tools.ietf.org/html/draft-handrews-json-schema-validation-01#section-10

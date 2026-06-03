@@ -40,7 +40,7 @@ const DRAG_HANDLE_COLUMN = (
  *    }
  * }
  */
-export type ArrayOptions = DefaultNodeOptions<{
+export type ArrayOptions = DefaultNodeOptions & {
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
     /**
@@ -69,16 +69,13 @@ export type ArrayOptions = DefaultNodeOptions<{
     /** Mantine Title Props */
     titleProps?: TitleProps;
     selectable?: boolean;
-
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
-    /**
-     * @ignore
-     *
-     * internal option for menu action items
-     */
+    /** @internal */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+    /** @internal */
+    widget?: string;
+};
 
 export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, options }) => {
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
@@ -200,6 +197,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
                                                 editor={editor}
                                                 options={{
                                                     ...childOptions,
+                                                    // @ts-expect-error @todo add general type, extending default?
                                                     widgetMenuItems: withActions
                                                         ? getArrayItemMenu(editor, node, child, options)
                                                         : undefined

@@ -3,12 +3,12 @@ import { widget, WidgetPlugin, ArrayNode, DefaultNodeOptions, WidgetField, getDa
 import { widgetInputProps } from '../components/widgetInputProps';
 import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 
-export type TagListOptions = DefaultNodeOptions<{
+export type TagListOptions = DefaultNodeOptions & {
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 export const TagListWidget = widget<ArrayNode<TagListOptions>, string[]>(({ node, options, setValue }) => {
     return (

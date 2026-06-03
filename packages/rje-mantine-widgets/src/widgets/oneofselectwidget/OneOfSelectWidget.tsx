@@ -12,7 +12,13 @@ import { WidgetInputWrapper, WidgetInputWrapperProps } from '../../components/wi
 import { widgetInputProps } from '../../components/widgetInputProps';
 import { WidgetParentHeader } from '../../components/widgetheader/WidgetHeader';
 
-export type OneOfSelectOptions = WidgetInputWrapperProps['options'] & DefaultNodeOptions;
+export type OneOfSelectOptions = WidgetInputWrapperProps['options'] &
+    DefaultNodeOptions & {
+        /**
+         * @internal
+         */
+        skipSelectOneOf?: boolean;
+    };
 
 export function useOneOfSelectWidget(node: JsonNode, { skipSelectOneOf = false } = {}) {
     const chooseThisWidget = !skipSelectOneOf && !node.isArrayItem && Array.isArray(node.schemaNode?.oneOf);

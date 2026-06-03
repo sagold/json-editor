@@ -7,7 +7,7 @@ import { useLiveUpdate } from '../useLiveUpdate';
 import { ChangeEvent, useCallback } from 'react';
 import { ActionButton } from '../../components/actionbutton/ActionButton';
 
-export type StringOptions = DefaultNodeOptions<{
+export type StringOptions = DefaultNodeOptions & {
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     /** if true, shows a clear input action */
@@ -22,7 +22,7 @@ export type StringOptions = DefaultNodeOptions<{
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 const getValueFromEvent = (event: ChangeEvent<HTMLInputElement>) => event.currentTarget.value;
 

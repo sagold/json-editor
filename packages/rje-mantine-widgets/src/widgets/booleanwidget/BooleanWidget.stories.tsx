@@ -35,8 +35,7 @@ type Story = StoryObj<WidgetProps>;
 
 export const Options: Story = {
     args: {
-        disabled: false,
-        showHeader: true
+        disabled: false
     }
 };
 

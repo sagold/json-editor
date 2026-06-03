@@ -5,7 +5,7 @@ import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
 import { useLiveUpdate } from './useLiveUpdate';
 import { getSections } from './getSections';
 
-export type NumberOptions = DefaultNodeOptions<{
+export type NumberOptions = DefaultNodeOptions & {
     /** if value should update on each keystroke instead of on blur. Defaults to false */
     liveUpdate?: boolean;
     icon?: string;
@@ -15,7 +15,7 @@ export type NumberOptions = DefaultNodeOptions<{
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 const getValueFromEvent = (v: string) => +v;
 

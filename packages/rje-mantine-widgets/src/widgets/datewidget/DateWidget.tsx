@@ -16,7 +16,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 import { useEffect, useMemo, useState } from 'react';
 
-export type DateOptions = DefaultNodeOptions<{
+export type DateOptions = DefaultNodeOptions & {
     /** date and time display format for input field @see https://day.js.org/docs/en/parse/string-format */
     format?: string;
     /** for time inputs, show seconds */
@@ -31,7 +31,7 @@ export type DateOptions = DefaultNodeOptions<{
     showHeader?: boolean;
     /** internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 export const DateWidget = function (props: WidgetProps) {
     const format = props.node?.schema.format;

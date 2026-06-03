@@ -28,7 +28,9 @@ function propertySortResult(aIndex: number, bIndex: number) {
     return aIndex - bIndex;
 }
 
-export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<string, unknown>> = {
+interface ExtendedNodeOptions {}
+
+export type DefaultNodeOptions = {
     /** additional classnames the ui should add to the root of this data point */
     classNames?: string[];
     /** description of this data point */
@@ -50,7 +52,7 @@ export type DefaultNodeOptions<Options extends Record<string, unknown> = Record<
     canAddItem?: boolean;
     /** arrays only: if an item may be removed without causing a validation error */
     canRemoveItem?: boolean;
-} & Options;
+} & ExtendedNodeOptions;
 
 type CreateNode = (schemaNode: SchemaNode, data: any, pointer: JsonPointer, isArrayItem: boolean) => JsonNode;
 

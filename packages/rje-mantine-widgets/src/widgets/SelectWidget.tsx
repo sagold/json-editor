@@ -23,7 +23,7 @@ import { WidgetMenuItems } from '../components/widgetmenu/WidgetMenu';
  *    }
  * }
  */
-export type SelectOptions = DefaultNodeOptions<{
+export type SelectOptions = DefaultNodeOptions & {
     /** list of titles for the JSON Schema enum options - matched by index */
     enum?: string[];
     /** chip variant for taglist */
@@ -41,7 +41,7 @@ export type SelectOptions = DefaultNodeOptions<{
      * @internal option for menu action items
      */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+};
 
 export const SelectWidget = function (props: WidgetProps) {
     if (props.node?.schema['x-widget'] === 'select:radiogroup') {

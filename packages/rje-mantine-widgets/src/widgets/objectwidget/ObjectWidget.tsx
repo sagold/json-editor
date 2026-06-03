@@ -19,7 +19,7 @@ import classNames from 'classnames';
 import { ActionButton } from '../../components/actionbutton/ActionButton';
 import { useSelect } from '../../features/selection';
 
-export type ObjectOptions = DefaultNodeOptions<{
+export type ObjectOptions = DefaultNodeOptions & {
     /** if set, will add an accordion in the given toggle state */
     collapsed?: boolean;
     /** if set, will add an edit-json action to edit, copy and paste json-data for this location */
@@ -46,9 +46,11 @@ export type ObjectOptions = DefaultNodeOptions<{
 
     /** if false, will hide title. will hide complete title-header if no menu-actions are available */
     showHeader?: boolean;
-    /** internal option for menu action items */
+    /** @internal option for menu action items */
     widgetMenuItems?: WidgetMenuItems;
-}>;
+    /** @internal */
+    widget?: string;
+};
 
 export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, editor }) => {
     const [isJsonModalOpen, jsonModal] = useDisclosure(false);
@@ -217,6 +219,7 @@ function ObjectProperty({ editor, node, options, optionalProperties, showItemCon
                 editor={editor}
                 options={{
                     ...options,
+                    // @ts-expect-error @todo fix option typing?
                     isOptional: optionalProperties.includes(node.property),
                     widgetMenuItems:
                         showItemControls !== false &&

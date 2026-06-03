@@ -21,9 +21,11 @@ export type WidgetParentHeaderProps = {
     showDivider?: boolean;
     widgetMenuAriaLabel?: string;
     widgetMenuItems?: WidgetMenuItems;
+    collapsed?: boolean;
+    showHeader?: boolean;
 };
 
-function isWidgetParentHeaderEmpty(options: DefaultNodeOptions, widgetMenuItems: WidgetMenuItems = []) {
+function isWidgetParentHeaderEmpty(options: WidgetParentHeaderProps, widgetMenuItems: WidgetMenuItems = []) {
     const withTitle = isStringWithContent(options.title);
     const withDescription = isStringWithContent(options.description);
     if (options.showHeader === false) {
