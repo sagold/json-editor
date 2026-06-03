@@ -14,6 +14,8 @@ const expectedTypes: KindName[] = ['IntersectionType', 'TypeAliasDeclaration', '
 
 type Context = {
     parseResult: Record<string, Result>;
+    /** list of TypeReference identifiers (names) to ignore which will then not be resolved */
+    ignoreReference?: string[];
 };
 
 /**
@@ -119,6 +121,10 @@ export function mergeType(
     }
 
     if (isTypeReference(inputType)) {
+        if (context.ignoreReference?.includes(inputType.name)) {
+            return inputType;
+        }
+
         const reference =
             // @ts-expect-error meta
             args?.find((t) => t.parameterName === inputType.name || t.name === inputType.name) ??

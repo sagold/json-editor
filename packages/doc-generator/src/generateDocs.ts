@@ -29,6 +29,7 @@ type GenerateDocsArgs = {
     identifier: string;
     location: string;
     folderPath: string;
+    ignoreReference: string[];
     combine?: {
         identifier: string;
         header: string;
@@ -53,7 +54,7 @@ function generateDocs(settings: GenerateDocsArgs) {
     }
 
     // create docs
-    const docs = kindRenderer[entity.kindName](data, entity) as (string | null)[];
+    const docs = kindRenderer[entity.kindName](data, entity, settings.ignoreReference) as (string | null)[];
     try {
         // append snippets
         const usage = fs.readFileSync(path.join(folderPath, `${entity.name}-usage.md`), 'utf8');
@@ -65,7 +66,7 @@ function generateDocs(settings: GenerateDocsArgs) {
             console.log(`Failed combining entity '${identifier}' - not found in data`);
             return;
         }
-        const combineDocs = kindRenderer[entity.kindName](data, entity) as (string | null)[];
+        const combineDocs = kindRenderer[entity.kindName](data, entity, settings.ignoreReference) as (string | null)[];
         docs.push('', `## ${header}`, '', ...combineDocs);
         try {
             // append snippets
@@ -131,10 +132,12 @@ docData.docs.forEach((doc) => {
             data: apiData,
             identifier: doc.split('/').pop() as string,
             location: doc.replace(/^.*\/src\//, '').replace(/\/[^/]+$/, ''),
-            folderPath: doc.replace(/\/[^/]+$/, '')
+            folderPath: doc.replace(/\/[^/]+$/, ''),
+            ignoreReference: []
         };
     } else {
         settings = {
+            ignoreReference: [],
             ...doc,
             location: doc.folderPath.replace(/^.*\/src\//, ''),
             data: apiData

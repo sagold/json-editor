@@ -12,12 +12,12 @@ import { Result } from '../parser/types';
 type WorkingDoc = (string | null | undefined)[];
 
 const filterValidTypes = (v: Result) => v != null && Object.keys(v).length > 0;
-function resolveTypeReference(api: APIDocs, reference: APIDocs) {
+function resolveTypeReference(api: APIDocs, reference: APIDocs, ignoreReference: string[] = []) {
     const properties: Result[] = [];
     const references: APIDocs[] = [];
 
     // @ts-expect-error todo types
-    const mergedType = mergeType({ parseResult: api }, reference, reference.typeArguments);
+    const mergedType = mergeType({ parseResult: api, ignoreReference }, reference, reference.typeArguments);
     if (isTypeLiteral(mergedType)) {
         properties.push(...(mergedType.properties ?? []));
     } else if (isIntersectionType(mergedType)) {
@@ -73,12 +73,15 @@ export const kindRenderer = {
 
         return doc;
     },
-    TypeAliasDeclaration: (api: APIDocs, data: Record<string, any>) => {
-        const { properties, references } = resolveTypeReference(api, data.type);
+    TypeAliasDeclaration: (api: APIDocs, data: Record<string, any>, ignoreReference: string[] = []) => {
+        const { properties, references } = resolveTypeReference(api, data.type, ignoreReference);
         console.log('TYPE ALIAS', data.type, data.type.typeArguments, JSON.stringify(api.DefaultNodeOptions, null, 2));
         const doc = [
             `${data.comment}`,
             ...codeBlock(data.tags?.find((tag) => tag.tag === 'example')?.comment),
+            // 'Additional Options:',
+            // references.map((r) => r.name).join(' & '),
+
             // properties
             // maybe('## Properties', properties?.length),
             maybe('', properties?.length),

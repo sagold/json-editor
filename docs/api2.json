@@ -30,162 +30,118 @@
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
     "lineNumber": 31,
     "type": {
-      "kindName": "IntersectionType",
-      "types": [
+      "kindName": "TypeLiteral",
+      "properties": [
         {
-          "kindName": "TypeLiteral",
-          "properties": [
-            {
-              "kindName": "PropertySignature",
-              "text": "classNames?: string[];",
-              "type": {
-                "text": "string",
-                "kindName": "StringKeyword"
-              },
-              "name": "classNames",
-              "isOptional": true,
-              "comment": "additional classnames the ui should add to the root of this data point"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "description?: string;",
-              "type": {
-                "kindName": "StringKeyword",
-                "text": "string"
-              },
-              "name": "description",
-              "isOptional": true,
-              "comment": "description of this data point"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "disabled: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "disabled",
-              "comment": "if changes to this data point are disabled"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "placeholder?: string;",
-              "type": {
-                "kindName": "StringKeyword",
-                "text": "string"
-              },
-              "name": "placeholder",
-              "isOptional": true,
-              "comment": "if supported, will add a placeholder for the input element"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "hidden: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "hidden",
-              "comment": "if this data point should be hidden from display"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "title?: string;",
-              "type": {
-                "kindName": "StringKeyword",
-                "text": "string"
-              },
-              "name": "title",
-              "isOptional": true,
-              "comment": "title of this data point"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "readOnly?: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "readOnly",
-              "isOptional": true,
-              "comment": "disable edit of form, but allow selection and copy of value"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "required?: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "required",
-              "isOptional": true,
-              "comment": "flag data as required (visual only)"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "canAddItem?: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "canAddItem",
-              "isOptional": true,
-              "comment": "arrays only: if an item may be added without causing a validation error"
-            },
-            {
-              "kindName": "PropertySignature",
-              "text": "canRemoveItem?: boolean;",
-              "type": {
-                "kindName": "BooleanKeyword",
-                "text": "boolean"
-              },
-              "name": "canRemoveItem",
-              "isOptional": true,
-              "comment": "arrays only: if an item may be removed without causing a validation error"
-            }
-          ]
+          "kindName": "PropertySignature",
+          "text": "classNames?: string[];",
+          "type": {
+            "text": "string",
+            "kindName": "StringKeyword"
+          },
+          "name": "classNames",
+          "isOptional": true,
+          "comment": "additional classnames the ui should add to the root of this data point"
         },
         {
-          "kindName": "TypeReference",
-          "name": "Options"
+          "kindName": "PropertySignature",
+          "text": "description?: string;",
+          "type": {
+            "kindName": "StringKeyword",
+            "text": "string"
+          },
+          "name": "description",
+          "isOptional": true,
+          "comment": "description of this data point"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "disabled: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "disabled",
+          "comment": "if changes to this data point are disabled"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "placeholder?: string;",
+          "type": {
+            "kindName": "StringKeyword",
+            "text": "string"
+          },
+          "name": "placeholder",
+          "isOptional": true,
+          "comment": "if supported, will add a placeholder for the input element"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "hidden: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "hidden",
+          "comment": "if this data point should be hidden from display"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "title?: string;",
+          "type": {
+            "kindName": "StringKeyword",
+            "text": "string"
+          },
+          "name": "title",
+          "isOptional": true,
+          "comment": "title of this data point"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "readOnly?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "readOnly",
+          "isOptional": true,
+          "comment": "disable edit of form, but allow selection and copy of value"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "required?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "required",
+          "isOptional": true,
+          "comment": "flag data as required (visual only)"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "canAddItem?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "canAddItem",
+          "isOptional": true,
+          "comment": "arrays only: if an item may be added without causing a validation error"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "canRemoveItem?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "canRemoveItem",
+          "isOptional": true,
+          "comment": "arrays only: if an item may be removed without causing a validation error"
         }
       ]
     },
-    "typeParameters": [
-      {
-        "kindName": "TypeParameter",
-        "text": "Options extends Record<string, unknown> = Record<string, unknown>",
-        "default": {
-          "kindName": "TypeReference",
-          "typeArguments": [
-            {
-              "kindName": "StringKeyword",
-              "text": "string"
-            },
-            {
-              "kindName": "UnknownKeyword",
-              "text": "unknown"
-            }
-          ],
-          "name": "Record"
-        },
-        "constraint": {
-          "kindName": "TypeReference",
-          "typeArguments": [
-            {
-              "kindName": "StringKeyword",
-              "text": "string"
-            },
-            {
-              "kindName": "UnknownKeyword",
-              "text": "unknown"
-            }
-          ],
-          "name": "Record"
-        },
-        "name": "Options"
-      }
-    ],
     "isExported": true,
     "name": "DefaultNodeOptions"
   },
@@ -243,7 +199,7 @@
     "kindName": "FunctionDeclaration",
     "isComponent": false,
     "returns": {
-      "type": "DefaultNodeOptions<Record<string, unknown>>"
+      "type": "DefaultNodeOptions"
     },
     "parameters": [
       {
@@ -270,7 +226,7 @@
     "kindName": "FunctionDeclaration",
     "isComponent": false,
     "returns": {
-      "type": "{ id: string; type: T; pointer: string; property: string; isArrayItem: boolean; options: DefaultNodeOptions<Record<string, unknown>>; oneOfIndex: number | undefined; schema: JsonSchema; schemaNode: SchemaNode; value: V; errors: JsonError[]; }"
+      "type": "{ id: string; type: T; pointer: string; property: string; isArrayItem: boolean; options: DefaultNodeOptions; oneOfIndex: number | undefined; schema: JsonSchema; schemaNode: SchemaNode; value: V; errors: JsonError[]; }"
     },
     "typeParameters": [
       {
@@ -3363,8 +3319,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx",
     "lineNumber": 43,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -3540,15 +3500,28 @@
               "isOptional": true,
               "tags": [
                 {
-                  "comment": "internal option for menu action items",
-                  "tag": "ignore"
+                  "tag": "internal"
+                }
+              ]
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "widget?: string;",
+              "type": {
+                "kindName": "StringKeyword",
+                "text": "string"
+              },
+              "name": "widget",
+              "isOptional": true,
+              "tags": [
+                {
+                  "tag": "internal"
                 }
               ]
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "ArrayOptions",
@@ -3565,7 +3538,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx",
-    "lineNumber": 83,
+    "lineNumber": 80,
     "name": "ArrayWidget"
   },
   "getArrayHeaderMenu": {
@@ -3689,7 +3662,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx",
-    "lineNumber": 327,
+    "lineNumber": 325,
     "type": {
       "kindName": "TypeReference",
       "typeArguments": [
@@ -3795,8 +3768,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/datewidget/DateWidget.tsx",
     "lineNumber": 19,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -3893,8 +3870,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "DateOptions"
@@ -4028,8 +4004,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/multiselectwidget/MultiSelect.tsx",
     "lineNumber": 17,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -4079,8 +4059,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "MultiSelectOptions"
@@ -4206,32 +4185,30 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/nullwidget/NullWidget.tsx",
     "lineNumber": 6,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
         {
-          "kindName": "IntersectionType",
-          "types": [
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
+        {
+          "kindName": "TypeLiteral",
+          "properties": [
             {
-              "kindName": "TypeLiteral",
-              "properties": [
-                {
-                  "kindName": "PropertySignature",
-                  "text": "showHeader?: boolean;",
-                  "type": {
-                    "kindName": "BooleanKeyword",
-                    "text": "boolean"
-                  },
-                  "name": "showHeader",
-                  "isOptional": true,
-                  "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available"
-                }
-              ]
-            },
-            {}
+              "kindName": "PropertySignature",
+              "text": "showHeader?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "showHeader",
+              "isOptional": true,
+              "comment": "if false, will hide title. will hide complete title-header if no menu-actions are available"
+            }
           ]
-        }
-      ],
-      "name": "DefaultNodeOptions"
+        },
+        {}
+      ]
     },
     "isExported": true,
     "name": "NullOptions"
@@ -4241,7 +4218,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-mantine-widgets/src/widgets/nullwidget/NullWidget.tsx",
-    "lineNumber": 13,
+    "lineNumber": 11,
     "name": "NullWidget"
   },
   "NullWidgetPlugin": {
@@ -4249,7 +4226,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/rje-mantine-widgets/src/widgets/nullwidget/NullWidget.tsx",
-    "lineNumber": 37,
+    "lineNumber": 35,
     "type": {
       "kindName": "TypeReference",
       "name": "WidgetPlugin"
@@ -4295,8 +4272,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx",
     "lineNumber": 22,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -4464,12 +4445,31 @@
               },
               "name": "widgetMenuItems",
               "isOptional": true,
-              "comment": "internal option for menu action items"
+              "tags": [
+                {
+                  "comment": "option for menu action items",
+                  "tag": "internal"
+                }
+              ]
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "widget?: string;",
+              "type": {
+                "kindName": "StringKeyword",
+                "text": "string"
+              },
+              "name": "widget",
+              "isOptional": true,
+              "tags": [
+                {
+                  "tag": "internal"
+                }
+              ]
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "ObjectOptions"
@@ -4479,7 +4479,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx",
-    "lineNumber": 53,
+    "lineNumber": 55,
     "name": "ObjectWidget"
   },
   "getHeaderMenu": {
@@ -4541,7 +4541,7 @@
   "ObjectPropertyProps": {
     "kindName": "TypeAliasDeclaration",
     "filepath": "packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx",
-    "lineNumber": 204,
+    "lineNumber": 206,
     "type": {
       "kindName": "TypeLiteral",
       "properties": [
@@ -4627,7 +4627,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx",
-    "lineNumber": 240,
+    "lineNumber": 243,
     "type": {
       "kindName": "TypeReference",
       "name": "WidgetPlugin"
@@ -4679,6 +4679,26 @@
         {
           "kindName": "TypeReference",
           "name": "DefaultNodeOptions"
+        },
+        {
+          "kindName": "TypeLiteral",
+          "properties": [
+            {
+              "kindName": "PropertySignature",
+              "text": "skipSelectOneOf?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "skipSelectOneOf",
+              "isOptional": true,
+              "tags": [
+                {
+                  "tag": "internal"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -4713,7 +4733,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-mantine-widgets/src/widgets/oneofselectwidget/OneOfSelectWidget.tsx",
-    "lineNumber": 22,
+    "lineNumber": 28,
     "name": "OneOfSelectWidget"
   },
   "OneOfSelectWidgetPlugin": {
@@ -4721,7 +4741,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/rje-mantine-widgets/src/widgets/oneofselectwidget/OneOfSelectWidget.tsx",
-    "lineNumber": 86,
+    "lineNumber": 92,
     "type": {
       "kindName": "TypeReference",
       "name": "WidgetPlugin"
@@ -4754,8 +4774,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/stringwidget/StringWidget.tsx",
     "lineNumber": 10,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -4838,8 +4862,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "StringOptions"
@@ -4903,8 +4926,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/ColorWidget.tsx",
     "lineNumber": 8,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -4943,8 +4970,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "ColorOptions"
@@ -5008,8 +5034,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/NumberWidget.tsx",
     "lineNumber": 8,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -5078,8 +5108,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "NumberOptions"
@@ -5143,8 +5172,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/SelectWidget.tsx",
     "lineNumber": 26,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -5217,8 +5250,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "SelectOptions",
@@ -5303,8 +5335,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/TagListWidget.tsx",
     "lineNumber": 6,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -5332,8 +5368,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "TagListOptions"
@@ -5395,8 +5430,12 @@
     "filepath": "packages/rje-mantine-widgets/src/widgets/TextWidget.tsx",
     "lineNumber": 9,
     "type": {
-      "kindName": "TypeReference",
-      "typeArguments": [
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
         {
           "kindName": "TypeLiteral",
           "properties": [
@@ -5465,8 +5504,7 @@
             }
           ]
         }
-      ],
-      "name": "DefaultNodeOptions"
+      ]
     },
     "isExported": true,
     "name": "TextOptions"

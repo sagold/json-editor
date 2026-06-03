@@ -234,21 +234,36 @@ describe('mergeType', () => {
 
     describe('TypeAliasDeclaration.ts', () => {
         // TypeAliasDeclaration » IntersectionType » TypeLiteral[]
-        let parseResult: Record<string, Result> | undefined;
+        let parseResult: Record<string, Result>;
         // @ts-expect-error needs fix of return type
         beforeEach(() => (parseResult = parse([getFixture('TypeAliasDeclaration.ts')])));
 
         it('should return TypeLiteral with correct properties', () => {
-            console.log(JSON.stringify(parseResult, null, 2));
-            assert(parseResult);
+            // console.log(JSON.stringify(parseResult, null, 2));
             const typeDeclaration = get(parseResult, 'EditorOptions');
             assert(typeDeclaration);
             // console.log(JSON.stringify(typeDeclaration, null, 2));
             assert.equal(get(typeDeclaration, 'kindName'), 'TypeAliasDeclaration');
 
             const result = mergeType({ parseResult }, typeDeclaration);
-            // assert.equal(get(result, 'kindName'), 'TypeLiteral');
-            console.log('result', JSON.stringify(result, null, 2));
+            assert.equal(get(result, 'kindName'), 'TypeLiteral');
+            // console.log('result', JSON.stringify(result, null, 2));
+        });
+
+        it('should not inline type from ignore-list', () => {
+            const typeDeclaration = get(parseResult, 'CombinedType');
+            assert(typeDeclaration);
+            assert.equal(get(typeDeclaration, 'kindName'), 'TypeAliasDeclaration');
+
+            const intersectionType = mergeType(
+                { parseResult, ignoreReference: ['LocalObjectType'] },
+                typeDeclaration
+            ) as IntersectionType;
+            assert.equal(get(intersectionType, 'kindName'), 'IntersectionType');
+
+            const reference = intersectionType?.types?.find((t) => t.kindName === 'TypeReference');
+            assert.equal(get(reference, 'kindName'), 'TypeReference');
+            assert.equal(get(reference, 'name'), 'LocalObjectType');
         });
     });
 });
