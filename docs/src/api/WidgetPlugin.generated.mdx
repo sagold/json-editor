@@ -1,6 +1,7 @@
 {/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
+import { Code } from '../components/Code';
 
 <Meta title="api/WidgetPlugin" />
 <DocsHeader title="WidgetPlugin" breadCrumbs="API reference » WidgetPlugin" type="Type">
@@ -26,9 +27,7 @@ const editor = new Editor({ widgets: [ArrayWidgetPlugin, ...defaultWidgets] });
 ### id
 
 
-```tsx
-readonly id: string;
-```
+<Code>{`readonly id: string;`}</Code>
 
 
 Unique id of this widget
@@ -36,9 +35,7 @@ Unique id of this widget
 ### use
 
 
-```tsx
-use: (node: JsonNode, options?: AnyOption) => boolean;
-```
+<Code>{`use: (node: JsonNode, options?: AnyOption) => boolean;`}</Code>
 
 
 `use` will select this widget to render the passed JsonNode when true is returned
@@ -54,9 +51,7 @@ use: (node: JsonNode, options?: AnyOption) => boolean;
 ### Widget
 
 
-```tsx
-Widget: WidgetComponent<N>;
-```
+<Code>{`Widget: WidgetComponent<N>;`}</Code>
 
 
 The widget component to render

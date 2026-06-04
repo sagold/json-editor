@@ -97,6 +97,7 @@ function generateDocs(settings: GenerateDocsArgs) {
         '{/* generated */}',
         "import { Meta, Canvas } from '@storybook/addon-docs/blocks';",
         `import { DocsHeader } from '${relUrl}/components/DocsHeader';`,
+        `import { Code } from '${relUrl}/components/Code';`,
         '',
         `<Meta title="${location}/${identifier}" />`,
         `<DocsHeader title="${identifier}" breadCrumbs="${breadCrumbs.join(' » ')}" type="${type}">`,

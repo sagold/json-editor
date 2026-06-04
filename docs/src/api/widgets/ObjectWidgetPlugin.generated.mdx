@@ -1,6 +1,7 @@
 {/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
+import { Code } from '../../components/Code';
 
 <Meta title="api/widgets/ObjectWidgetPlugin" />
 <DocsHeader title="ObjectWidgetPlugin" breadCrumbs="API reference » widgets » ObjectWidgetPlugin" type="WidgetPlugin">
@@ -12,25 +13,19 @@ import { DocsHeader } from '../../components/DocsHeader';
 ### id
 
 
-```tsx
-id: 'object-widget'
-```
+<Code>{`id: 'object-widget'`}</Code>
 
 
 ### use
 
 
-```tsx
-use: (node) => node.schema.type === 'object'
-```
+<Code>{`use: (node) => node.schema.type === 'object'`}</Code>
 
 
 ### ObjectWidget
 
 
-```tsx
-Widget: ObjectWidget
-```
+<Code>{`Widget: ObjectWidget`}</Code>
 
 
 
@@ -40,9 +35,7 @@ Widget: ObjectWidget
 ### classNames
 
 
-```tsx
-classNames?: string[];
-```
+<Code>{`classNames?: string[];`}</Code>
 
 
 additional classnames the ui should add to the root of this data point
@@ -50,9 +43,7 @@ additional classnames the ui should add to the root of this data point
 ### description
 
 
-```tsx
-description?: string;
-```
+<Code>{`description?: string;`}</Code>
 
 
 description of this data point
@@ -60,9 +51,7 @@ description of this data point
 ### disabled
 
 
-```tsx
-disabled: boolean;
-```
+<Code>{`disabled: boolean;`}</Code>
 
 
 if changes to this data point are disabled
@@ -70,9 +59,7 @@ if changes to this data point are disabled
 ### placeholder
 
 
-```tsx
-placeholder?: string;
-```
+<Code>{`placeholder?: string;`}</Code>
 
 
 if supported, will add a placeholder for the input element
@@ -80,9 +67,7 @@ if supported, will add a placeholder for the input element
 ### hidden
 
 
-```tsx
-hidden: boolean;
-```
+<Code>{`hidden: boolean;`}</Code>
 
 
 if this data point should be hidden from display
@@ -90,9 +75,7 @@ if this data point should be hidden from display
 ### title
 
 
-```tsx
-title?: string;
-```
+<Code>{`title?: string;`}</Code>
 
 
 title of this data point
@@ -100,9 +83,7 @@ title of this data point
 ### readOnly
 
 
-```tsx
-readOnly?: boolean;
-```
+<Code>{`readOnly?: boolean;`}</Code>
 
 
 disable edit of form, but allow selection and copy of value
@@ -110,9 +91,7 @@ disable edit of form, but allow selection and copy of value
 ### required
 
 
-```tsx
-required?: boolean;
-```
+<Code>{`required?: boolean;`}</Code>
 
 
 flag data as required (visual only)
@@ -120,9 +99,7 @@ flag data as required (visual only)
 ### canAddItem
 
 
-```tsx
-canAddItem?: boolean;
-```
+<Code>{`canAddItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be added without causing a validation error
@@ -130,9 +107,7 @@ arrays only: if an item may be added without causing a validation error
 ### canRemoveItem
 
 
-```tsx
-canRemoveItem?: boolean;
-```
+<Code>{`canRemoveItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be removed without causing a validation error
@@ -140,9 +115,7 @@ arrays only: if an item may be removed without causing a validation error
 ### collapsed
 
 
-```tsx
-collapsed?: boolean;
-```
+<Code>{`collapsed?: boolean;`}</Code>
 
 
 if set, will add an accordion in the given toggle state
@@ -150,9 +123,7 @@ if set, will add an accordion in the given toggle state
 ### showEditJsonAction
 
 
-```tsx
-showEditJsonAction?: boolean;
-```
+<Code>{`showEditJsonAction?: boolean;`}</Code>
 
 
 if set, will add an edit-json action to edit, copy and paste json-data for this location
@@ -160,9 +131,7 @@ if set, will add an edit-json action to edit, copy and paste json-data for this 
 ### isOptional
 
 
-```tsx
-isOptional?: boolean;
-```
+<Code>{`isOptional?: boolean;`}</Code>
 
 
 Is set internally to true to add a delete option for this object.
@@ -170,9 +139,7 @@ Is set internally to true to add a delete option for this object.
 ### showInlineAddAction
 
 
-```tsx
-showInlineAddAction?: boolean;
-```
+<Code>{`showInlineAddAction?: boolean;`}</Code>
 
 
 set to true to show inline button at the end of the array to add another item
@@ -180,9 +147,7 @@ set to true to show inline button at the end of the array to add another item
 ### showHeaderMenu
 
 
-```tsx
-showHeaderMenu?: boolean;
-```
+<Code>{`showHeaderMenu?: boolean;`}</Code>
 
 
 set to false to deactivate array menu
@@ -190,9 +155,7 @@ set to false to deactivate array menu
 ### showItemControls
 
 
-```tsx
-showItemControls?: boolean;
-```
+<Code>{`showItemControls?: boolean;`}</Code>
 
 
 set to false to deactivate any array item-controls
@@ -200,9 +163,7 @@ set to false to deactivate any array item-controls
 ### descriptionInline
 
 
-```tsx
-descriptionInline?: boolean;
-```
+<Code>{`descriptionInline?: boolean;`}</Code>
 
 
 set to true to inline description
@@ -210,9 +171,7 @@ set to true to inline description
 ### showTitleDivider
 
 
-```tsx
-showTitleDivider?: boolean;
-```
+<Code>{`showTitleDivider?: boolean;`}</Code>
 
 
 if true will add a separator line to the header
@@ -220,17 +179,13 @@ if true will add a separator line to the header
 ### selectable
 
 
-```tsx
-selectable?: boolean;
-```
+<Code>{`selectable?: boolean;`}</Code>
 
 
 ### dividerProps
 
 
-```tsx
-dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
-```
+<Code>{`dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;`}</Code>
 
 
 placement of title within the separator
@@ -238,9 +193,7 @@ placement of title within the separator
 ### titleProps
 
 
-```tsx
-titleProps?: TitleProps;
-```
+<Code>{`titleProps?: TitleProps;`}</Code>
 
 
 Mantine Title Props
@@ -248,9 +201,7 @@ Mantine Title Props
 ### hideChildren
 
 
-```tsx
-hideChildren?: boolean;
-```
+<Code>{`hideChildren?: boolean;`}</Code>
 
 
 hide all children
@@ -258,9 +209,7 @@ hide all children
 ### showHeader
 
 
-```tsx
-showHeader?: boolean;
-```
+<Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
@@ -268,9 +217,11 @@ if false, will hide title. will hide complete title-header if no menu-actions ar
 ### widgetMenuItems
 
 
-```tsx
-widgetMenuItems?: WidgetMenuItems;
-```
+<Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
 
 
-internal option for menu action items
+### widget
+
+
+<Code>{`widget?: string;`}</Code>
+

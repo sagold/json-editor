@@ -30,10 +30,12 @@
         "docs/src/api/useEditor",
         "docs/src/api/useEditorPlugin",
         "docs/src/api/WidgetPlugin",
+        "docs/src/api/DefaultNodeOptions",
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "ArrayWidgetPlugin",
-            "combine": [{ "identifier": "ArrayOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "ArrayOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         "docs/src/api/widgets/BooleanWidgetPlugin",
         {

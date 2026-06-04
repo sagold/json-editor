@@ -245,12 +245,31 @@
 /* inline code line */
 #storybook-docs {
     code {
-        font-size: 0.8em;
-        background: $yellow;
-        border: none;
+        * {
+            font-size: 0.8em;
+            font-family: ui-monospace, Menlo, Monaco, 'Roboto Mono', monospace;
+        }
+
+        // border: none;
         padding: 0.25em;
         text-transform: initial !important;
         white-space: break-spaces;
+    }
+
+    div:not(.hljs):not(.docs-code) > code {
+        background: $yellow;
+        border: none;
+    }
+
+    .hljs,
+    .docs-code {
+        border: 1px solid $yellow;
+        background-color: var(--docs-bg-canvas) !important;
+
+        code {
+            padding: 0.5rem 1rem;
+            display: block;
+        }
     }
 
     h1,

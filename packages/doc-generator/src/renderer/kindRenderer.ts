@@ -1,6 +1,6 @@
 import query from '@sagold/json-query';
 import { type APIDocs, mergeType, isTypeLiteral, isIntersectionType, isTypeReference } from '../parser';
-import { codeBlock } from './codeBlock';
+import { codeBlock, simpleCodeBlock } from './codeBlock';
 import { method } from './method';
 import { maybeAll } from './utils/maybeAll';
 import { maybe } from './utils/maybe';
@@ -45,7 +45,7 @@ export const kindRenderer = {
                 data.properties?.map((property) => [
                     `### ${property.name}`,
                     '',
-                    ...codeBlock(`${property.text}`),
+                    ...simpleCodeBlock(`${property.text}`),
                     '',
                     maybe(property.comment),
                     maybe('', property.comment),
@@ -73,7 +73,7 @@ export const kindRenderer = {
 
         return doc;
     },
-    TypeAliasDeclaration: (api: APIDocs, data: Record<string, any>, ignoreReference: string[] = []) => {
+    TypeAliasDeclaration: (api: APIDocs, data: Record<string, any>, ignoreReference: String[] = []) => {
         const { properties, references } = resolveTypeReference(api, data.type, ignoreReference);
         console.log('TYPE ALIAS', data.type, data.type.typeArguments, JSON.stringify(api.DefaultNodeOptions, null, 2));
         const doc = [
@@ -90,7 +90,7 @@ export const kindRenderer = {
                 properties?.map((property) => [
                     `### ${property.name}`,
                     '',
-                    ...codeBlock(`${property.text}`),
+                    ...simpleCodeBlock(`${property.text}`),
                     '',
                     maybe(property.comment),
                     maybe('', property.comment),
@@ -148,7 +148,7 @@ export const kindRenderer = {
                     doc.push(
                         '',
                         `#### ${typeProperty.name}`,
-                        ...codeBlock(typeProperty.text),
+                        ...simpleCodeBlock(typeProperty.text),
                         typeProperty.comment ?? tag?.comment ?? ''
                     );
                 });
@@ -213,7 +213,7 @@ export const kindRenderer = {
                     doc.push(
                         '',
                         `#### ${typeProperty.name}${typeProperty.isOptional ? '' : ' (required)'}`,
-                        ...codeBlock(typeProperty.text),
+                        ...simpleCodeBlock(typeProperty.text),
                         typeProperty.comment
                     );
                 });

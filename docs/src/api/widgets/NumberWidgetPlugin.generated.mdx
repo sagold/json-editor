@@ -1,6 +1,7 @@
 {/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
+import { Code } from '../../components/Code';
 
 <Meta title="api/widgets/NumberWidgetPlugin" />
 <DocsHeader title="NumberWidgetPlugin" breadCrumbs="API reference » widgets » NumberWidgetPlugin" type="WidgetPlugin">
@@ -12,25 +13,19 @@ import { DocsHeader } from '../../components/DocsHeader';
 ### id
 
 
-```tsx
-id: 'string-widget'
-```
+<Code>{`id: 'string-widget'`}</Code>
 
 
 ### use
 
 
-```tsx
-use: (node) => node.schema.type === 'number'
-```
+<Code>{`use: (node) => node.schema.type === 'number'`}</Code>
 
 
 ### NumberWidget
 
 
-```tsx
-Widget: NumberWidget
-```
+<Code>{`Widget: NumberWidget`}</Code>
 
 
 
@@ -40,9 +35,7 @@ Widget: NumberWidget
 ### classNames
 
 
-```tsx
-classNames?: string[];
-```
+<Code>{`classNames?: string[];`}</Code>
 
 
 additional classnames the ui should add to the root of this data point
@@ -50,9 +43,7 @@ additional classnames the ui should add to the root of this data point
 ### description
 
 
-```tsx
-description?: string;
-```
+<Code>{`description?: string;`}</Code>
 
 
 description of this data point
@@ -60,9 +51,7 @@ description of this data point
 ### disabled
 
 
-```tsx
-disabled: boolean;
-```
+<Code>{`disabled: boolean;`}</Code>
 
 
 if changes to this data point are disabled
@@ -70,9 +59,7 @@ if changes to this data point are disabled
 ### placeholder
 
 
-```tsx
-placeholder?: string;
-```
+<Code>{`placeholder?: string;`}</Code>
 
 
 if supported, will add a placeholder for the input element
@@ -80,9 +67,7 @@ if supported, will add a placeholder for the input element
 ### hidden
 
 
-```tsx
-hidden: boolean;
-```
+<Code>{`hidden: boolean;`}</Code>
 
 
 if this data point should be hidden from display
@@ -90,9 +75,7 @@ if this data point should be hidden from display
 ### title
 
 
-```tsx
-title?: string;
-```
+<Code>{`title?: string;`}</Code>
 
 
 title of this data point
@@ -100,9 +83,7 @@ title of this data point
 ### readOnly
 
 
-```tsx
-readOnly?: boolean;
-```
+<Code>{`readOnly?: boolean;`}</Code>
 
 
 disable edit of form, but allow selection and copy of value
@@ -110,9 +91,7 @@ disable edit of form, but allow selection and copy of value
 ### required
 
 
-```tsx
-required?: boolean;
-```
+<Code>{`required?: boolean;`}</Code>
 
 
 flag data as required (visual only)
@@ -120,9 +99,7 @@ flag data as required (visual only)
 ### canAddItem
 
 
-```tsx
-canAddItem?: boolean;
-```
+<Code>{`canAddItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be added without causing a validation error
@@ -130,9 +107,7 @@ arrays only: if an item may be added without causing a validation error
 ### canRemoveItem
 
 
-```tsx
-canRemoveItem?: boolean;
-```
+<Code>{`canRemoveItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be removed without causing a validation error
@@ -140,9 +115,7 @@ arrays only: if an item may be removed without causing a validation error
 ### liveUpdate
 
 
-```tsx
-liveUpdate?: boolean;
-```
+<Code>{`liveUpdate?: boolean;`}</Code>
 
 
 if value should update on each keystroke instead of on blur. Defaults to false
@@ -150,33 +123,25 @@ if value should update on each keystroke instead of on blur. Defaults to false
 ### icon
 
 
-```tsx
-icon?: string;
-```
+<Code>{`icon?: string;`}</Code>
 
 
 ### tag
 
 
-```tsx
-tag?: string;
-```
+<Code>{`tag?: string;`}</Code>
 
 
 ### swapIconPosition
 
 
-```tsx
-swapIconPosition?: boolean;
-```
+<Code>{`swapIconPosition?: boolean;`}</Code>
 
 
 ### showHeader
 
 
-```tsx
-showHeader?: boolean;
-```
+<Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
@@ -184,9 +149,7 @@ if false, will hide title. will hide complete title-header if no menu-actions ar
 ### widgetMenuItems
 
 
-```tsx
-widgetMenuItems?: WidgetMenuItems;
-```
+<Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
 
 
 internal option for menu action items

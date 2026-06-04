@@ -1,0 +1,137 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+
+<Meta title="HowTo Create a Widget" />
+
+# How to create your custom Widget
+
+[Define WidgetPlugin](#create-a-widgetplugin-for-you-custom-widget) ·
+[Create Custom Widget for string-type](#create-a-custom-widget-for-string-type)
+
+A widget is a react component that renders a web form associated with a JsonNode. For an input like `{ title: "Hi!" }` there will be a widget for rendering the object and a widget to render a form for title.
+
+A JsonNode represents a data-point which holds its value, schema and some metadata. JsonNodes are created for all values, like string, a number, an object, etc.
+
+> Widgets fully control what they do with the JsonNode. They can skip them, render any UI and optionally pass any child back to json-editor to let other widgets take care of the JsonNode
+
+Creating a custom widget is quite simple and straight forward. It requires basically two steps
+
+1. **create your custom component**, wrapped by the widget-decorator and
+2. **create the WidgetPlugin** object containing id, your custom component and a use-callback to register your component to render a specific node
+
+json-editor will accept your WidgetPlugin in the list of widgets passed to on initialization.
+
+For more complex data types, like object and arrays you might need to know some details on working with **editor-instance, nodes and the functional api**. We will go through all this here, starting with the simple use-case, a Widget for simple values, like string.
+
+## Create a WidgetPlugin for you custom widget
+
+Suppose we create a custom widget for string-types. Let us create the WidgetPlugin first, so you can register it to to json-editor now and see the results while implementing your custom component.
+
+```tsx
+// MyStringWidgetPlugin.tsx
+import { widget, WidgetPlugin } from '@sagold/react-json-editor';
+
+const MyStringWidget = widget(() => (
+  <div>my string widget</div>
+);
+
+export const MyStringWidgetPlugin = {
+  id: "my-string-widget",
+  use: (node) => node.schema.type === "string",
+  Widget: MyStringWidget
+};
+```
+
+With this, you can register your widget to your json-editor instance:
+
+```tsx
+import { Editor } from '@sagold/react-json-editor';
+import { widgets } from '@sagold/rje-mantine-widgets';
+import { MyStringWidgetPlugin } from './MyStringWidgetPlugin';
+
+const editor = new Editor({
+  widgets: [MyStringWidgetPlugin, ...widgets],
+  schema: { type: 'string' }
+});
+```
+
+Note that we added the widget first to ensure it is called begore any other widget might register.
+
+### WidgetPlugin id
+
+A unique id for custom widget. If a widget with this id has already been registeres to json-editor it will throw an error. This id can be used to find certain widgets in the list od widgets.
+
+### WidgetPlugin Widget
+
+A Custom component receiving the editor instance, current node and options. The use of a widget decorator is recommended for performance reasons, to add the setValue helper and improved types. Read more about this in [widget-decorator](#widget-decorator)
+
+### Widget `use` callback
+
+The `use` callback serves to register a Widget to a JsonNode. From the list of widgets, the first widget to return `true`
+on this callback will be rendered.
+
+> When defining a list of widgets for json-editor, widgets will run from **first to last widget** and select the first widget that return `true` on the use-callback. This means, **specific widgets should be added first to the widgets list,** where generic widgets, e.g any string should come last
+
+To evaluate your requirements you receive the JsonNode **node**, an optional **options**.
+
+**inspect JSON Schema**
+
+access the JSON Schema on the node to check for specific keywords. The following example will register to all string types
+
+```tsx
+const use = (node) => node.schema.type === 'string';
+```
+
+Of course you can be more specific than this
+
+```tsx
+const use = (node) => node.schema.type === 'string' && node.schema.format === 'email';
+```
+
+or look for custom atrributes
+
+```tsx
+const use = (node) => node.schema['x-widget'] === 'MyString';
+```
+
+**inspect option**
+
+Options are passed when directly rendering this node or by any parent widget, which allows for control is specific parent-child contexts or to handle widget wrappers (to skip rendering themselves again)
+
+```tsx
+const use = (node, options) => node.schema.type === 'string' && options?.widget === 'MyString';
+```
+
+**inspect data**
+
+And you can also access the data of the node for comparisson.
+Writing general components usually will not need this
+
+```tsx
+import { getValue } from '@sagold/react-json-editor';
+
+const use = (node) => getValue(node) === 'Hey';
+```
+
+## Create a custom widget for string-type
+
+Start by adding your component, wrapping it in the widget-decorator:
+
+```tsx
+import { widget, StringNode } from '@sagold/react-json-editor';
+
+const MyStringWidget = widget<StringNode, string>(({ node, options, setValue }) => {
+  return <div>my custom widget</div>
+}
+```
+
+- widget
+- StringNode
+- node
+- options
+- setValue
+
+- getData
+- editor.\*
+- pointer
+- Widget
+- children

@@ -1,6 +1,7 @@
 {/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
+import { Code } from '../../components/Code';
 
 <Meta title="api/widgets/SelectWidgetPlugin" />
 <DocsHeader title="SelectWidgetPlugin" breadCrumbs="API reference » widgets » SelectWidgetPlugin" type="WidgetPlugin">
@@ -28,26 +29,20 @@ Three select components are available and you can choose between each type using
 ### id
 
 
-```tsx
-id: 'select-widget'
-```
+<Code>{`id: 'select-widget'`}</Code>
 
 
 ### use
 
 
-```tsx
-use: (node) =>
-        (node.schema.type?.includes?.('string') || node.schema.type === 'string') && Array.isArray(node.schema.enum)
-```
+<Code>{`use: (node) =>
+        (node.schema.type?.includes?.('string') || node.schema.type === 'string') && Array.isArray(node.schema.enum)`}</Code>
 
 
 ### SelectWidget
 
 
-```tsx
-Widget: SelectWidget
-```
+<Code>{`Widget: SelectWidget`}</Code>
 
 
 
@@ -69,9 +64,7 @@ JSON Schema string-enum options
 ### classNames
 
 
-```tsx
-classNames?: string[];
-```
+<Code>{`classNames?: string[];`}</Code>
 
 
 additional classnames the ui should add to the root of this data point
@@ -79,9 +72,7 @@ additional classnames the ui should add to the root of this data point
 ### description
 
 
-```tsx
-description?: string;
-```
+<Code>{`description?: string;`}</Code>
 
 
 description of this data point
@@ -89,9 +80,7 @@ description of this data point
 ### disabled
 
 
-```tsx
-disabled: boolean;
-```
+<Code>{`disabled: boolean;`}</Code>
 
 
 if changes to this data point are disabled
@@ -99,9 +88,7 @@ if changes to this data point are disabled
 ### placeholder
 
 
-```tsx
-placeholder?: string;
-```
+<Code>{`placeholder?: string;`}</Code>
 
 
 if supported, will add a placeholder for the input element
@@ -109,9 +96,7 @@ if supported, will add a placeholder for the input element
 ### hidden
 
 
-```tsx
-hidden: boolean;
-```
+<Code>{`hidden: boolean;`}</Code>
 
 
 if this data point should be hidden from display
@@ -119,9 +104,7 @@ if this data point should be hidden from display
 ### title
 
 
-```tsx
-title?: string;
-```
+<Code>{`title?: string;`}</Code>
 
 
 title of this data point
@@ -129,9 +112,7 @@ title of this data point
 ### readOnly
 
 
-```tsx
-readOnly?: boolean;
-```
+<Code>{`readOnly?: boolean;`}</Code>
 
 
 disable edit of form, but allow selection and copy of value
@@ -139,9 +120,7 @@ disable edit of form, but allow selection and copy of value
 ### required
 
 
-```tsx
-required?: boolean;
-```
+<Code>{`required?: boolean;`}</Code>
 
 
 flag data as required (visual only)
@@ -149,9 +128,7 @@ flag data as required (visual only)
 ### canAddItem
 
 
-```tsx
-canAddItem?: boolean;
-```
+<Code>{`canAddItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be added without causing a validation error
@@ -159,9 +136,7 @@ arrays only: if an item may be added without causing a validation error
 ### canRemoveItem
 
 
-```tsx
-canRemoveItem?: boolean;
-```
+<Code>{`canRemoveItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be removed without causing a validation error
@@ -169,9 +144,7 @@ arrays only: if an item may be removed without causing a validation error
 ### enum
 
 
-```tsx
-enum?: string[];
-```
+<Code>{`enum?: string[];`}</Code>
 
 
 list of titles for the JSON Schema enum options - matched by index
@@ -179,9 +152,7 @@ list of titles for the JSON Schema enum options - matched by index
 ### variant
 
 
-```tsx
-variant?: ChipProps['variant'];
-```
+<Code>{`variant?: ChipProps['variant'];`}</Code>
 
 
 chip variant for taglist
@@ -189,9 +160,7 @@ chip variant for taglist
 ### horizontal
 
 
-```tsx
-horizontal?: boolean;
-```
+<Code>{`horizontal?: boolean;`}</Code>
 
 
 set to true to render radiogroup in a single line
@@ -199,17 +168,13 @@ set to true to render radiogroup in a single line
 ### loading
 
 
-```tsx
-loading?: boolean;
-```
+<Code>{`loading?: boolean;`}</Code>
 
 
 ### showHeader
 
 
-```tsx
-showHeader?: boolean;
-```
+<Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
@@ -217,7 +182,5 @@ if false, will hide title. will hide complete title-header if no menu-actions ar
 ### widgetMenuItems
 
 
-```tsx
-widgetMenuItems?: WidgetMenuItems;
-```
+<Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
 

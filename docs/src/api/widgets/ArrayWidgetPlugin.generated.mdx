@@ -1,6 +1,7 @@
 {/* generated */}
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
+import { Code } from '../../components/Code';
 
 <Meta title="api/widgets/ArrayWidgetPlugin" />
 <DocsHeader title="ArrayWidgetPlugin" breadCrumbs="API reference » widgets » ArrayWidgetPlugin" type="WidgetPlugin">
@@ -12,25 +13,19 @@ import { DocsHeader } from '../../components/DocsHeader';
 ### id
 
 
-```tsx
-id: 'array-widget'
-```
+<Code>{`id: 'array-widget'`}</Code>
 
 
 ### use
 
 
-```tsx
-use: (node) => node.type === 'array'
-```
+<Code>{`use: (node) => node.type === 'array'`}</Code>
 
 
 ### ArrayWidget
 
 
-```tsx
-Widget: ArrayWidget
-```
+<Code>{`Widget: ArrayWidget`}</Code>
 
 
 
@@ -48,112 +43,10 @@ JSON Schema array options
 ```
 
 
-### classNames
-
-
-```tsx
-classNames?: string[];
-```
-
-
-additional classnames the ui should add to the root of this data point
-
-### description
-
-
-```tsx
-description?: string;
-```
-
-
-description of this data point
-
-### disabled
-
-
-```tsx
-disabled: boolean;
-```
-
-
-if changes to this data point are disabled
-
-### placeholder
-
-
-```tsx
-placeholder?: string;
-```
-
-
-if supported, will add a placeholder for the input element
-
-### hidden
-
-
-```tsx
-hidden: boolean;
-```
-
-
-if this data point should be hidden from display
-
-### title
-
-
-```tsx
-title?: string;
-```
-
-
-title of this data point
-
-### readOnly
-
-
-```tsx
-readOnly?: boolean;
-```
-
-
-disable edit of form, but allow selection and copy of value
-
-### required
-
-
-```tsx
-required?: boolean;
-```
-
-
-flag data as required (visual only)
-
-### canAddItem
-
-
-```tsx
-canAddItem?: boolean;
-```
-
-
-arrays only: if an item may be added without causing a validation error
-
-### canRemoveItem
-
-
-```tsx
-canRemoveItem?: boolean;
-```
-
-
-arrays only: if an item may be removed without causing a validation error
-
 ### collapsed
 
 
-```tsx
-collapsed?: boolean;
-```
+<Code>{`collapsed?: boolean;`}</Code>
 
 
 if set, will add an accordion in the given toggle state
@@ -161,9 +54,7 @@ if set, will add an accordion in the given toggle state
 ### showEditJsonAction
 
 
-```tsx
-showEditJsonAction?: boolean;
-```
+<Code>{`showEditJsonAction?: boolean;`}</Code>
 
 
 if set, will add an edit-json action to edit, copy and paste json-data for this location
@@ -171,9 +62,7 @@ if set, will add an edit-json action to edit, copy and paste json-data for this 
 ### isOptional
 
 
-```tsx
-isOptional?: boolean;
-```
+<Code>{`isOptional?: boolean;`}</Code>
 
 
 Is set internally to true to add a delete option for this object.
@@ -181,9 +70,7 @@ Is set internally to true to add a delete option for this object.
 ### showInlineAddAction
 
 
-```tsx
-showInlineAddAction?: boolean;
-```
+<Code>{`showInlineAddAction?: boolean;`}</Code>
 
 
 set to true to show inline button at the end of the array to add another item
@@ -191,9 +78,7 @@ set to true to show inline button at the end of the array to add another item
 ### showHeaderMenu
 
 
-```tsx
-showHeaderMenu?: boolean;
-```
+<Code>{`showHeaderMenu?: boolean;`}</Code>
 
 
 set to false to deactivate array menu
@@ -201,9 +86,7 @@ set to false to deactivate array menu
 ### showItemControls
 
 
-```tsx
-showItemControls?: boolean;
-```
+<Code>{`showItemControls?: boolean;`}</Code>
 
 
 set to false to deactivate any array item-controls
@@ -211,9 +94,7 @@ set to false to deactivate any array item-controls
 ### descriptionInline
 
 
-```tsx
-descriptionInline?: boolean;
-```
+<Code>{`descriptionInline?: boolean;`}</Code>
 
 
 set to true to inline description
@@ -221,9 +102,7 @@ set to true to inline description
 ### sortable
 
 
-```tsx
-sortable?: SortableOptions;
-```
+<Code>{`sortable?: SortableOptions;`}</Code>
 
 
 set to `{ enabled: true }` for dragndrop
@@ -231,9 +110,7 @@ set to `{ enabled: true }` for dragndrop
 ### showTitleDivider
 
 
-```tsx
-showTitleDivider?: boolean;
-```
+<Code>{`showTitleDivider?: boolean;`}</Code>
 
 
 if true will add a separator line to the header
@@ -241,9 +118,7 @@ if true will add a separator line to the header
 ### dividerProps
 
 
-```tsx
-dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;
-```
+<Code>{`dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;`}</Code>
 
 
 placement of title within the separator
@@ -251,9 +126,7 @@ placement of title within the separator
 ### titleProps
 
 
-```tsx
-titleProps?: TitleProps;
-```
+<Code>{`titleProps?: TitleProps;`}</Code>
 
 
 Mantine Title Props
@@ -261,17 +134,13 @@ Mantine Title Props
 ### selectable
 
 
-```tsx
-selectable?: boolean;
-```
+<Code>{`selectable?: boolean;`}</Code>
 
 
 ### showHeader
 
 
-```tsx
-showHeader?: boolean;
-```
+<Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
@@ -279,7 +148,11 @@ if false, will hide title. will hide complete title-header if no menu-actions ar
 ### widgetMenuItems
 
 
-```tsx
-widgetMenuItems?: WidgetMenuItems;
-```
+<Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
+
+
+### widget
+
+
+<Code>{`widget?: string;`}</Code>
 
