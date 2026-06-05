@@ -52,7 +52,7 @@ export const kindRenderer = {
             `${data.comment}`,
             ...codeBlock(data.tags?.find((tag) => tag.tag === 'example')?.comment),
             // object
-            ...maybeAll(data.properties.length, '## Properties'),
+            ...maybeAll(data.properties?.length, '## Properties'),
             maybe('', data.properties?.length),
             ...flat(
                 data.properties?.map((property) => [

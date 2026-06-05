@@ -6,6 +6,7 @@
         "packages/react-json-editor/src/useEditor.ts",
         "packages/react-json-editor/src/useEditorPlugin.ts",
         "packages/react-json-editor/src/components/widget/Widget.tsx",
+        "packages/react-json-editor/src/components/widget/WidgetField.tsx",
         "packages/react-json-editor/src/decorators.ts",
         "packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx",
         "packages/rje-mantine-widgets/src/widgets/booleanwidget/BooleanWidget.tsx",
@@ -26,6 +27,7 @@
     "docs": [
         "docs/src/api/Editor",
         "docs/src/api/Widget",
+        "docs/src/api/WidgetField",
         "docs/src/api/setDefaultWidgets",
         "docs/src/api/useEditor",
         "docs/src/api/useEditorPlugin",

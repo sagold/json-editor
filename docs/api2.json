@@ -28,117 +28,126 @@
   "DefaultNodeOptions": {
     "kindName": "TypeAliasDeclaration",
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
-    "lineNumber": 31,
+    "lineNumber": 33,
     "type": {
-      "kindName": "TypeLiteral",
-      "properties": [
+      "kindName": "IntersectionType",
+      "types": [
         {
-          "kindName": "PropertySignature",
-          "text": "classNames?: string[];",
-          "type": {
-            "text": "string",
-            "kindName": "StringKeyword"
-          },
-          "name": "classNames",
-          "isOptional": true,
-          "comment": "additional classnames the ui should add to the root of this data point"
+          "kindName": "TypeLiteral",
+          "properties": [
+            {
+              "kindName": "PropertySignature",
+              "text": "classNames?: string[];",
+              "type": {
+                "text": "string",
+                "kindName": "StringKeyword"
+              },
+              "name": "classNames",
+              "isOptional": true,
+              "comment": "additional classnames the ui should add to the root of this data point"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "description?: string;",
+              "type": {
+                "kindName": "StringKeyword",
+                "text": "string"
+              },
+              "name": "description",
+              "isOptional": true,
+              "comment": "description of this data point"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "disabled: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "disabled",
+              "comment": "if changes to this data point are disabled"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "placeholder?: string;",
+              "type": {
+                "kindName": "StringKeyword",
+                "text": "string"
+              },
+              "name": "placeholder",
+              "isOptional": true,
+              "comment": "if supported, will add a placeholder for the input element"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "hidden: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "hidden",
+              "comment": "if this data point should be hidden from display"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "title?: string;",
+              "type": {
+                "kindName": "StringKeyword",
+                "text": "string"
+              },
+              "name": "title",
+              "isOptional": true,
+              "comment": "title of this data point"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "readOnly?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "readOnly",
+              "isOptional": true,
+              "comment": "disable edit of form, but allow selection and copy of value"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "required?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "required",
+              "isOptional": true,
+              "comment": "flag data as required (visual only)"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "canAddItem?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "canAddItem",
+              "isOptional": true,
+              "comment": "arrays only: if an item may be added without causing a validation error"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "canRemoveItem?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "canRemoveItem",
+              "isOptional": true,
+              "comment": "arrays only: if an item may be removed without causing a validation error"
+            }
+          ]
         },
         {
-          "kindName": "PropertySignature",
-          "text": "description?: string;",
-          "type": {
-            "kindName": "StringKeyword",
-            "text": "string"
-          },
-          "name": "description",
-          "isOptional": true,
-          "comment": "description of this data point"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "disabled: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "disabled",
-          "comment": "if changes to this data point are disabled"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "placeholder?: string;",
-          "type": {
-            "kindName": "StringKeyword",
-            "text": "string"
-          },
-          "name": "placeholder",
-          "isOptional": true,
-          "comment": "if supported, will add a placeholder for the input element"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "hidden: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "hidden",
-          "comment": "if this data point should be hidden from display"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "title?: string;",
-          "type": {
-            "kindName": "StringKeyword",
-            "text": "string"
-          },
-          "name": "title",
-          "isOptional": true,
-          "comment": "title of this data point"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "readOnly?: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "readOnly",
-          "isOptional": true,
-          "comment": "disable edit of form, but allow selection and copy of value"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "required?: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "required",
-          "isOptional": true,
-          "comment": "flag data as required (visual only)"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "canAddItem?: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "canAddItem",
-          "isOptional": true,
-          "comment": "arrays only: if an item may be added without causing a validation error"
-        },
-        {
-          "kindName": "PropertySignature",
-          "text": "canRemoveItem?: boolean;",
-          "type": {
-            "kindName": "BooleanKeyword",
-            "text": "boolean"
-          },
-          "name": "canRemoveItem",
-          "isOptional": true,
-          "comment": "arrays only: if an item may be removed without causing a validation error"
+          "kindName": "TypeReference",
+          "name": "ExtendedNodeOptions"
         }
       ]
     },
@@ -148,7 +157,7 @@
   "CreateNode": {
     "kindName": "TypeAliasDeclaration",
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
-    "lineNumber": 55,
+    "lineNumber": 57,
     "type": {
       "kindName": "FunctionType",
       "type": {
@@ -289,7 +298,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
-    "lineNumber": 125,
+    "lineNumber": 127,
     "name": "getPropertyName",
     "value": {
       "kindName": "ArrowFunction",
@@ -313,7 +322,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
-    "lineNumber": 126,
+    "lineNumber": 128,
     "name": "isHidden",
     "value": {
       "kindName": "ArrowFunction",
@@ -375,7 +384,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/headless-json-editor/src/node/createNode.ts",
-    "lineNumber": 163,
+    "lineNumber": 165,
     "type": {
       "kindName": "TypeReference",
       "typeArguments": [
@@ -2892,6 +2901,249 @@
       }
     ],
     "comment": "Selects and renders a matching widget for the given JsonNode"
+  },
+  "WidgetFieldProps": {
+    "kindName": "TypeAliasDeclaration",
+    "filepath": "packages/react-json-editor/src/components/widget/WidgetField.tsx",
+    "lineNumber": 7,
+    "type": {
+      "kindName": "TypeLiteral",
+      "properties": [
+        {
+          "kindName": "PropertySignature",
+          "text": "widgetType: string;",
+          "type": {
+            "kindName": "StringKeyword",
+            "text": "string"
+          },
+          "name": "widgetType"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "node: JsonNode;",
+          "type": {
+            "kindName": "TypeReference",
+            "name": "JsonNode"
+          },
+          "name": "node"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "options: DefaultNodeOptions;",
+          "type": {
+            "kindName": "TypeReference",
+            "name": "DefaultNodeOptions"
+          },
+          "name": "options"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "showDescription?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "showDescription",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "showError?: boolean;",
+          "type": {
+            "kindName": "BooleanKeyword",
+            "text": "boolean"
+          },
+          "name": "showError",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "additionalError?: JsonError;",
+          "type": {
+            "kindName": "TypeReference",
+            "name": "JsonError"
+          },
+          "name": "additionalError",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "children: ReactNode;",
+          "type": {
+            "kindName": "TypeReference",
+            "name": "ReactNode"
+          },
+          "name": "children"
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "className?: string;",
+          "type": {
+            "kindName": "StringKeyword",
+            "text": "string"
+          },
+          "name": "className",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "style?: CSSProperties;",
+          "type": {
+            "kindName": "TypeReference",
+            "name": "CSSProperties"
+          },
+          "name": "style",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "onClick?: any;",
+          "type": {
+            "kindName": "AnyKeyword",
+            "text": "any"
+          },
+          "name": "onClick",
+          "isOptional": true
+        },
+        {
+          "kindName": "PropertySignature",
+          "text": "errors?: JsonError[];",
+          "type": {
+            "text": "JsonError[]",
+            "kindName": "TypeReference",
+            "name": "JsonError"
+          },
+          "name": "errors",
+          "isOptional": true
+        }
+      ]
+    },
+    "isExported": true,
+    "name": "WidgetFieldProps"
+  },
+  "WidgetFieldComponent": {
+    "kindName": "TypeAliasDeclaration",
+    "filepath": "packages/react-json-editor/src/components/widget/WidgetField.tsx",
+    "lineNumber": 23,
+    "type": {
+      "kindName": "IntersectionType",
+      "types": [
+        {
+          "kindName": "TypeReference",
+          "typeArguments": [
+            {
+              "kindName": "IntersectionType",
+              "types": [
+                {
+                  "kindName": "TypeReference",
+                  "typeArguments": [
+                    {
+                      "kindName": "TypeReference",
+                      "name": "WidgetFieldProps"
+                    }
+                  ],
+                  "name": "PropsWithoutRef"
+                },
+                {
+                  "kindName": "TypeReference",
+                  "typeArguments": [
+                    {
+                      "kindName": "TypeReference",
+                      "name": "HTMLDivElement"
+                    }
+                  ],
+                  "name": "RefAttributes"
+                }
+              ]
+            }
+          ],
+          "name": "ForwardRefExoticComponent"
+        },
+        {
+          "kindName": "TypeLiteral",
+          "properties": [
+            {
+              "kindName": "PropertySignature",
+              "text": "Header: typeof WidgetFieldHeader;",
+              "type": {},
+              "name": "Header"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "Error: typeof WidgetError;",
+              "type": {},
+              "name": "Error"
+            },
+            {
+              "kindName": "PropertySignature",
+              "text": "Description: typeof WidgetDescription;",
+              "type": {},
+              "name": "Description"
+            }
+          ]
+        }
+      ]
+    },
+    "name": "WidgetFieldComponent"
+  },
+  "WidgetField": {
+    "isExported": true,
+    "kindName": "VariableDeclaration",
+    "isComponent": true,
+    "filepath": "packages/react-json-editor/src/components/widget/WidgetField.tsx",
+    "lineNumber": 34,
+    "name": "WidgetField",
+    "comment": "container for root of a widget"
+  },
+  "WidgetFieldHeaderProps": {
+    "kindName": "TypeAliasDeclaration",
+    "filepath": "packages/react-json-editor/src/components/widget/WidgetField.tsx",
+    "lineNumber": 86,
+    "type": {
+      "kindName": "TypeLiteral",
+      "properties": [
+        {
+          "kindName": "PropertySignature",
+          "text": "children?: ReactNode | ReactNode[] | null;",
+          "type": {
+            "kindName": "UnionType",
+            "types": [
+              {
+                "kindName": "TypeReference",
+                "name": "ReactNode"
+              },
+              {
+                "text": "ReactNode[]",
+                "kindName": "TypeReference",
+                "name": "ReactNode"
+              },
+              {}
+            ]
+          },
+          "name": "children",
+          "isOptional": true
+        }
+      ]
+    },
+    "isExported": true,
+    "name": "WidgetFieldHeaderProps"
+  },
+  "WidgetFieldHeader": {
+    "kindName": "FunctionDeclaration",
+    "isComponent": true,
+    "returns": {
+      "type": "JSX.Element | null"
+    },
+    "parameters": [
+      {
+        "text": "{ children }: WidgetFieldHeaderProps",
+        "type": {
+          "kindName": "TypeReference",
+          "name": "WidgetFieldHeaderProps"
+        }
+      }
+    ],
+    "name": "WidgetFieldHeader"
   },
   "AnyOption": {
     "kindName": "TypeAliasDeclaration",
@@ -5671,6 +5923,10 @@
       "kindName": "IntersectionType",
       "types": [
         {
+          "kindName": "TypeReference",
+          "name": "DefaultNodeOptions"
+        },
+        {
           "kindName": "TypeLiteral",
           "properties": [
             {
@@ -5686,11 +5942,21 @@
             },
             {
               "kindName": "PropertySignature",
+              "text": "liveUpdate?: boolean;",
+              "type": {
+                "kindName": "BooleanKeyword",
+                "text": "boolean"
+              },
+              "name": "liveUpdate",
+              "isOptional": true,
+              "comment": "if value should update on each keystroke instead of on blur. Defaults to false"
+            },
+            {
+              "kindName": "PropertySignature",
               "text": "setup?: ReactCodeMirrorProps['basicSetup'];",
               "type": {},
               "name": "setup",
-              "isOptional": true,
-              "comment": "if value should update on each keystroke instead of on blur. Defaults to false"
+              "isOptional": true
             }
           ]
         },
@@ -5713,10 +5979,6 @@
             }
           ],
           "name": "Pick"
-        },
-        {
-          "kindName": "TypeReference",
-          "name": "DefaultNodeOptions"
         }
       ]
     },
@@ -5728,7 +5990,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-code-widgets/src/jsonwidget/JsonWidget.tsx",
-    "lineNumber": 56,
+    "lineNumber": 55,
     "name": "JsonDataWidget"
   },
   "JsonStringWidget": {
@@ -5736,7 +5998,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": true,
     "filepath": "packages/rje-code-widgets/src/jsonwidget/JsonWidget.tsx",
-    "lineNumber": 128,
+    "lineNumber": 127,
     "name": "JsonStringWidget"
   },
   "JsonWidgetPlugin": {
@@ -5744,7 +6006,7 @@
     "kindName": "VariableDeclaration",
     "isComponent": false,
     "filepath": "packages/rje-code-widgets/src/jsonwidget/JsonWidget.tsx",
-    "lineNumber": 206,
+    "lineNumber": 205,
     "type": {
       "kindName": "TypeReference",
       "name": "WidgetPlugin"

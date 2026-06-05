@@ -7,6 +7,8 @@ import { Code } from './components/Code';
 
 [Define WidgetPlugin](#create-a-widgetplugin-for-you-custom-widget) ·
 [Create Custom Widget for string-type](#create-a-custom-widget-for-string-type)
+[Array and Object Widgets](#array-and-object-widgets)
+[Conventions](#conventions)
 
 A widget is a react component that renders a web form associated with a JsonNode. For an input like `{ title: "Hi!" }` there will be a widget for rendering the object and a widget to render a form for title.
 
@@ -162,12 +164,56 @@ Helper to update the current value by `setValue(myValue)`. In many cases you wil
 
 ## Array and Object Widgets
 
-- getData
-- editor.\*
-- pointer
-- Widget
-- children
+Creating widgets for array and objects is usually more complex. Specific widgets might skip alot of the possible features, but writing a generic widget for arrays and objects needs to take care of delegating rendering of child nodes, adding and removing children and more. While you can always loook up the reference implementation [ObjectWidget](https://github.com/sagold/json-editor/blob/main/packages/rje-mantine-widgets/src/widgets/objectwidget/ObjectWidget.tsx#L55) and [ArrayWidget](https://github.com/sagold/json-editor/blob/main/packages/rje-mantine-widgets/src/widgets/arraywidget/ArrayWidget.tsx#L80), the basics are explained here.
+
+### Delegate Child Nodes
+
+You can iterate children on `node.children: JsonNode[]`, simply passing them back to _json-editor_:
+
+```tsx
+import { Widget } from '@sagold/react-json-editor';
+
+const ObjectWidget = widget<ObjectNode>(({ editor, node, options, setValue }) => {
+  return (
+    <div className="rje-object">
+      {node.children.map((childNode) => (
+        <Widget editor={editor} node={childNode} />
+      ))}
+    </div>
+  );
+});
+```
+
+Note that you can choose a pick you components, like managing properties or items in the object widget and passing other nodes back to be handled by json-editor. In case you want to wrap your childNodes, make sure you ignore hidden childNodes to prevent empty containers with
+
+<Code>
+  {`node.children
+    .filter(childNode => !childNode.options.hidden)
+    .map((childNode => { ... })`}
+</Code>
 
 ## Conventions
 
-classNames, option and html data-properties
+Keeping to some conventions will allow for certain cross functional features to work consistently. The main convention is an attribute `data-id`
+
+### data-id
+
+Every widget should contain a html property `data-id={node.pointer}`. This will allow to lookup input elements based on JSON Pointer syntax within an html tree. For example to evaluate if an element is focused, rendered to the dom and other tasks. If you use the WidgetField-helper, this will be taken care automatically.
+
+### `WidgetField` Component
+
+Wrap each widget-root into the WidgetField component to keep the dom structure consistent:
+
+```tsx
+import { ArrayNode, Widget, WidgetField } from '@sagold/react-json-editor';
+
+const ArrayWidget = widget<ArrayNode>(({ editor, node, options, setValue }) => {
+  return (
+    <WidgetField widgetType="array" node={node} options={options} showDescription={false} showError={false}>
+      {node.children.map((childNode) => (
+        <Widget editor={editor} node={childNode} />
+      ))}
+    </WidgetField>
+  );
+});
+```
