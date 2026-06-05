@@ -2,6 +2,7 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
 import { Code } from '../../components/Code';
+import { ReferenceDetails } from '../../components/ReferenceDetails';
 
 <Meta title="api/widgets/NumberWidgetPlugin" />
 <DocsHeader title="NumberWidgetPlugin" breadCrumbs="API reference » widgets » NumberWidgetPlugin" type="WidgetPlugin">
@@ -10,146 +11,111 @@ import { Code } from '../../components/Code';
 
 ## Properties
 
-### id
-
+#### id
 
 <Code>{`id: 'string-widget'`}</Code>
 
-
-### use
-
+#### use
 
 <Code>{`use: (node) => node.schema.type === 'number'`}</Code>
 
-
-### NumberWidget
-
+#### NumberWidget
 
 <Code>{`Widget: NumberWidget`}</Code>
-
 
 
 ## JSON Schema Options
 
 
-### classNames
-
-
-<Code>{`classNames?: string[];`}</Code>
-
-
-additional classnames the ui should add to the root of this data point
-
-### description
-
-
-<Code>{`description?: string;`}</Code>
-
-
-description of this data point
-
-### disabled
-
-
-<Code>{`disabled: boolean;`}</Code>
-
-
-if changes to this data point are disabled
-
-### placeholder
-
-
-<Code>{`placeholder?: string;`}</Code>
-
-
-if supported, will add a placeholder for the input element
-
-### hidden
-
-
-<Code>{`hidden: boolean;`}</Code>
-
-
-if this data point should be hidden from display
-
-### title
-
-
-<Code>{`title?: string;`}</Code>
-
-
-title of this data point
-
-### readOnly
-
-
-<Code>{`readOnly?: boolean;`}</Code>
-
-
-disable edit of form, but allow selection and copy of value
-
-### required
-
-
-<Code>{`required?: boolean;`}</Code>
-
-
-flag data as required (visual only)
-
-### canAddItem
-
-
-<Code>{`canAddItem?: boolean;`}</Code>
-
-
-arrays only: if an item may be added without causing a validation error
-
-### canRemoveItem
-
-
-<Code>{`canRemoveItem?: boolean;`}</Code>
-
-
-arrays only: if an item may be removed without causing a validation error
-
-### liveUpdate
-
+#### liveUpdate
 
 <Code>{`liveUpdate?: boolean;`}</Code>
 
 
 if value should update on each keystroke instead of on blur. Defaults to false
-
-### icon
-
+#### icon
 
 <Code>{`icon?: string;`}</Code>
 
-
-### tag
-
+#### tag
 
 <Code>{`tag?: string;`}</Code>
 
-
-### swapIconPosition
-
+#### swapIconPosition
 
 <Code>{`swapIconPosition?: boolean;`}</Code>
 
-
-### showHeader
-
+#### showHeader
 
 <Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
-
-### widgetMenuItems
-
+#### widgetMenuItems
 
 <Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
 
 
 internal option for menu action items
+### Referenced from `DefaultNodeOptions`
+
+#### classNames
+
+<Code>{`classNames?: string[];`}</Code>
+
+
+additional classnames the ui should add to the root of this data point
+#### description
+
+<Code>{`description?: string;`}</Code>
+
+
+description of this data point
+#### disabled
+
+<Code>{`disabled: boolean;`}</Code>
+
+
+if changes to this data point are disabled
+#### placeholder
+
+<Code>{`placeholder?: string;`}</Code>
+
+
+if supported, will add a placeholder for the input element
+#### hidden
+
+<Code>{`hidden: boolean;`}</Code>
+
+
+if this data point should be hidden from display
+#### title
+
+<Code>{`title?: string;`}</Code>
+
+
+title of this data point
+#### readOnly
+
+<Code>{`readOnly?: boolean;`}</Code>
+
+
+disable edit of form, but allow selection and copy of value
+#### required
+
+<Code>{`required?: boolean;`}</Code>
+
+
+flag data as required (visual only)
+#### canAddItem
+
+<Code>{`canAddItem?: boolean;`}</Code>
+
+
+arrays only: if an item may be added without causing a validation error
+#### canRemoveItem
+
+<Code>{`canRemoveItem?: boolean;`}</Code>
+
+
+arrays only: if an item may be removed without causing a validation error

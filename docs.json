@@ -41,57 +41,68 @@
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "DateWidgetPlugin",
-            "combine": [{ "identifier": "DateOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "DateOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "MultiSelectWidgetPlugin",
-            "combine": [{ "identifier": "MultiSelectOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "MultiSelectOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "NullWidgetPlugin",
-            "combine": [{ "identifier": "NullOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "NullOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "ObjectWidgetPlugin",
-            "combine": [{ "identifier": "ObjectOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "ObjectOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "OneOfSelectWidgetPlugin",
-            "combine": [{ "identifier": "OneOfSelectOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "OneOfSelectOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "StringWidgetPlugin",
-            "combine": [{ "identifier": "StringOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "StringOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "ColorWidgetPlugin",
-            "combine": [{ "identifier": "ColorOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "ColorOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "NumberWidgetPlugin",
-            "combine": [{ "identifier": "NumberOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "NumberOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "SelectWidgetPlugin",
-            "combine": [{ "identifier": "SelectOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "SelectOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "TagListWidgetPlugin",
-            "combine": [{ "identifier": "TagListOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "TagListOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         {
             "folderPath": "docs/src/api/widgets",
             "identifier": "TextWidgetPlugin",
-            "combine": [{ "identifier": "TextOptions", "header": "JSON Schema Options" }]
+            "combine": [{ "identifier": "TextOptions", "header": "JSON Schema Options" }],
+            "ignoreReference": ["DefaultNodeOptions"]
         },
         "docs/src/api/widgets/UnknownWidgetPlugin"
     ]

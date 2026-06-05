@@ -2,87 +2,70 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 import { Code } from '../components/Code';
+import { ReferenceDetails } from '../components/ReferenceDetails';
 
 <Meta title="api/DefaultNodeOptions" />
 <DocsHeader title="DefaultNodeOptions" breadCrumbs="API reference » DefaultNodeOptions" type="Type">
-  
+  [Properties](#properties)
 </DocsHeader>
 
+## Properties
 
-### classNames
-
+#### classNames
 
 <Code>{`classNames?: string[];`}</Code>
 
 
 additional classnames the ui should add to the root of this data point
-
-### description
-
+#### description
 
 <Code>{`description?: string;`}</Code>
 
 
 description of this data point
-
-### disabled
-
+#### disabled
 
 <Code>{`disabled: boolean;`}</Code>
 
 
 if changes to this data point are disabled
-
-### placeholder
-
+#### placeholder
 
 <Code>{`placeholder?: string;`}</Code>
 
 
 if supported, will add a placeholder for the input element
-
-### hidden
-
+#### hidden
 
 <Code>{`hidden: boolean;`}</Code>
 
 
 if this data point should be hidden from display
-
-### title
-
+#### title
 
 <Code>{`title?: string;`}</Code>
 
 
 title of this data point
-
-### readOnly
-
+#### readOnly
 
 <Code>{`readOnly?: boolean;`}</Code>
 
 
 disable edit of form, but allow selection and copy of value
-
-### required
-
+#### required
 
 <Code>{`required?: boolean;`}</Code>
 
 
 flag data as required (visual only)
-
-### canAddItem
-
+#### canAddItem
 
 <Code>{`canAddItem?: boolean;`}</Code>
 
 
 arrays only: if an item may be added without causing a validation error
-
-### canRemoveItem
-
+#### canRemoveItem
 
 <Code>{`canRemoveItem?: boolean;`}</Code>
 

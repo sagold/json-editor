@@ -2,6 +2,7 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 import { Code } from '../components/Code';
+import { ReferenceDetails } from '../components/ReferenceDetails';
 
 <Meta title="api/Editor" />
 <DocsHeader title="Editor" breadCrumbs="API reference » Editor" type="Class">
@@ -21,67 +22,45 @@ const editor = new Editor(options);
 ### `options: EditorOptions`
 
 #### schema (required)
-
 <Code>{`schema: JsonSchema;`}</Code>
-
 The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly.
 
 #### data
-
 <Code>{`data?: Data;`}</Code>
-
 The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form
 
 #### drafts
-
 <Code>{`drafts?: Draft[];`}</Code>
 
-
 #### plugins
-
 <Code>{`plugins?: Plugin[];`}</Code>
 
-
 #### validate
-
 <Code>{`validate?: boolean;`}</Code>
-
 if data should be initially validated
 
 #### addOptionalProps
-
 <Code>{`addOptionalProps?: boolean;`}</Code>
-
 if all optional properties should be added when missing
 
 #### extendDefaults
-
 <Code>{`extendDefaults?: boolean;`}</Code>
-
 if json-schema default-values should be extended (required properties, min-length of items). Defaults to false
 
 #### removeInvalidData
-
 <Code>{`removeInvalidData?: boolean;`}</Code>
-
 Remove data that does not match input schema. Defaults to false
 
 #### widgets
-
 <Code>{`widgets?: WidgetPlugin[];`}</Code>
-
 The list of available widgets to render the JSON Schema tree. Each node in the tree should have a matching widget to be rendered or the editor will either ignore or show an error using an Error Widget if added.
 
 #### liveUpdate
-
 <Code>{`liveUpdate?: boolean;`}</Code>
-
 Set to `true` to update form data on each keystroke instead of on blur. Only applied to supporting editors
 
 #### disabled
-
 <Code>{`disabled?: boolean;`}</Code>
-
 Set to true to deactivate all forms
 
 ## Returns
@@ -95,11 +74,7 @@ Returns an `editor` instance
 
 ### `addPlugin`
 
-
-```tsx
-addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]): ReturnType<T> | undefined
-```
-
+<Code>{`addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]): ReturnType<T> | undefined`}</Code>
 #### Parameters
 
 - **`plugin`** 
@@ -111,11 +86,7 @@ addPlugin<T extends Plugin>(plugin: T, pluginOptions?: Parameters<T>[1]): Return
 
 ### `addValue`
 
-
-```tsx
-addValue(pointer: string)
-```
-
+<Code>{`addValue(pointer: string)`}</Code>
 
 Add a value at a given location. This usually is used to add array-items
 
@@ -134,11 +105,7 @@ Add a value at a given location. This usually is used to add array-items
 
 ### `appendItem`
 
-
-```tsx
-appendItem(node: ArrayNode, itemSchema: JsonSchema)
-```
-
+<Code>{`appendItem(node: ArrayNode, itemSchema: JsonSchema)`}</Code>
 
 Add an item defined by a JSON Schema to the end of the target array
 
@@ -153,11 +120,7 @@ Add an item defined by a JSON Schema to the end of the target array
 
 ### `destroy`
 
-
-```tsx
-destroy()
-```
-
+<Code>{`destroy()`}</Code>
 
 destroys editor instance including all plugins, releasing used memory.
 
@@ -174,11 +137,7 @@ destroys editor instance including all plugins, releasing used memory.
 
 ### `findPlugin`
 
-
-```tsx
-findPlugin(pluginId: string)
-```
-
+<Code>{`findPlugin(pluginId: string)`}</Code>
 
 Get a plugin by pluginId
 
@@ -192,11 +151,7 @@ Get a plugin by pluginId
 
 ### `getArrayAddOptions`
 
-
-```tsx
-getArrayAddOptions(node: ArrayNode): SchemaNode[]
-```
-
+<Code>{`getArrayAddOptions(node: ArrayNode): SchemaNode[]`}</Code>
 
 Get all available items that can be added next to the specified array
 
@@ -210,11 +165,7 @@ Get all available items that can be added next to the specified array
 
 ### `getData`
 
-
-```tsx
-getData(pointer = '#')
-```
-
+<Code>{`getData(pointer = '#')`}</Code>
 
 Returns the current json data
 
@@ -228,11 +179,7 @@ Returns the current json data
 
 ### `getErrors`
 
-
-```tsx
-getErrors()
-```
-
+<Code>{`getErrors()`}</Code>
 
 Get current validation errors of node-tree.
 An error contains the following properties
@@ -248,11 +195,7 @@ For further details check [json-schema-library#validate](https://github.com/sago
 
 ### `getNode`
 
-
-```tsx
-getNode(): JsonNode;
-```
-
+<Code>{`getNode(): JsonNode;`}</Code>
 
 Get current root-node
 
@@ -264,11 +207,7 @@ Get current root-node
 
 ### `getNode`
 
-
-```tsx
-getNode(pointer: string): JsonNode | JsonError;
-```
-
+<Code>{`getNode(pointer: string): JsonNode | JsonError;`}</Code>
 
 Get current node at json-pointer location
 
@@ -282,11 +221,7 @@ Get current node at json-pointer location
 
 ### `getNode`
 
-
-```tsx
-getNode(pointer?: string)
-```
-
+<Code>{`getNode(pointer?: string)`}</Code>
 #### Parameters
 
 - **`pointer`** 
@@ -297,11 +232,7 @@ getNode(pointer?: string)
 
 ### `getSchema`
 
-
-```tsx
-getSchema()
-```
-
+<Code>{`getSchema()`}</Code>
 
 
 #### Returns
@@ -310,11 +241,7 @@ getSchema()
 
 ### `getTemplateData`
 
-
-```tsx
-getTemplateData(schema: JsonSchema, data = null)
-```
-
+<Code>{`getTemplateData(schema: JsonSchema, data = null)`}</Code>
 
 Shortcut to return default data based on json-schema only
 
@@ -329,11 +256,7 @@ Shortcut to return default data based on json-schema only
 
 ### `getWidget`
 
-
-```tsx
-getWidget(node: JsonNode, options?: Record<string, any>): WidgetComponent
-```
-
+<Code>{`getWidget(node: JsonNode, options?: Record<string, any>): WidgetComponent`}</Code>
 
 Use `editor.getWidget` to find a widget matching the requested `JsonNode`
 
@@ -348,11 +271,7 @@ Use `editor.getWidget` to find a widget matching the requested `JsonNode`
 
 ### `moveItem`
 
-
-```tsx
-moveItem(pointer: string, to: number)
-```
-
+<Code>{`moveItem(pointer: string, to: number)`}</Code>
 
 Move the referenced **array-item** to another array position
 
@@ -367,11 +286,7 @@ Move the referenced **array-item** to another array position
 
 ### `removeValue`
 
-
-```tsx
-removeValue(pointer: string)
-```
-
+<Code>{`removeValue(pointer: string)`}</Code>
 
 Delete the value at the given JSON Pointer
 
@@ -385,11 +300,7 @@ Delete the value at the given JSON Pointer
 
 ### `runPlugins`
 
-
-```tsx
-runPlugins(oldState: JsonNode, newState: JsonNode, changes: PluginEvent[])
-```
-
+<Code>{`runPlugins(oldState: JsonNode, newState: JsonNode, changes: PluginEvent[])`}</Code>
 
 Runs all plugins per given change, allowing them to return a modified newState
 
@@ -405,11 +316,7 @@ Runs all plugins per given change, allowing them to return a modified newState
 
 ### `setData`
 
-
-```tsx
-setData(data?: Data): JsonNode
-```
-
+<Code>{`setData(data?: Data): JsonNode`}</Code>
 
 Get current data or a subset of the data specified by a JSON Pointer
 
@@ -423,11 +330,7 @@ Get current data or a subset of the data specified by a JSON Pointer
 
 ### `setSchema`
 
-
-```tsx
-setSchema(schema: JsonSchema)
-```
-
+<Code>{`setSchema(schema: JsonSchema)`}</Code>
 
 Replace the JSON Schema and recreate the JsonNode tree of the form
 
@@ -441,11 +344,7 @@ Replace the JSON Schema and recreate the JsonNode tree of the form
 
 ### `setState`
 
-
-```tsx
-setState(state: JsonNode, changes: PluginEvent[])
-```
-
+<Code>{`setState(state: JsonNode, changes: PluginEvent[])`}</Code>
 
 Set new editor state (new tree of nodes)
 
@@ -460,11 +359,7 @@ Set new editor state (new tree of nodes)
 
 ### `setValue`
 
-
-```tsx
-setValue(pointer: string, value: unknown)
-```
-
+<Code>{`setValue(pointer: string, value: unknown)`}</Code>
 
 Set or replace a value at given data location
 
@@ -479,11 +374,7 @@ Set or replace a value at given data location
 
 ### `validate`
 
-
-```tsx
-validate()
-```
-
+<Code>{`validate()`}</Code>
 
 Run validation for the current form and update the list of errors
 

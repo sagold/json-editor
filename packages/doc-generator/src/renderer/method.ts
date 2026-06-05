@@ -1,5 +1,5 @@
 import { APIDocs } from '../parser/parse';
-import { codeBlock } from './codeBlock';
+import { codeBlock, simpleCodeBlock } from './codeBlock';
 import { getTags } from './utils/getTags';
 import { maybe } from './utils/maybe';
 
@@ -11,7 +11,7 @@ export const method = (method: APIDocs) => {
         `### \`${method.name}\``,
         '',
         // usage example
-        codeBlock(method.text?.replace(/\s*{(.|\n)*$/, '')),
+        simpleCodeBlock(method.text?.replace(/\s*{(.|\n)*$/, '')),
         // method description
         maybe('', method.comment),
         maybe(method.comment),

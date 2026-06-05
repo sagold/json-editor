@@ -54,7 +54,10 @@ function generateDocs(settings: GenerateDocsArgs) {
     }
 
     // create docs
-    const docs = kindRenderer[entity.kindName](data, entity, settings.ignoreReference) as (string | null)[];
+    const docs = kindRenderer[entity.kindName]({ api: data, ignoreReference: settings.ignoreReference }, entity) as (
+        | string
+        | null
+    )[];
     try {
         // append snippets
         const usage = fs.readFileSync(path.join(folderPath, `${entity.name}-usage.md`), 'utf8');
@@ -66,7 +69,10 @@ function generateDocs(settings: GenerateDocsArgs) {
             console.log(`Failed combining entity '${identifier}' - not found in data`);
             return;
         }
-        const combineDocs = kindRenderer[entity.kindName](data, entity, settings.ignoreReference) as (string | null)[];
+        const combineDocs = kindRenderer[entity.kindName](
+            { api: data, ignoreReference: settings.ignoreReference, ignoreHeader: true },
+            entity
+        ) as (string | null)[];
         docs.push('', `## ${header}`, '', ...combineDocs);
         try {
             // append snippets
@@ -98,6 +104,7 @@ function generateDocs(settings: GenerateDocsArgs) {
         "import { Meta, Canvas } from '@storybook/addon-docs/blocks';",
         `import { DocsHeader } from '${relUrl}/components/DocsHeader';`,
         `import { Code } from '${relUrl}/components/Code';`,
+        `import { ReferenceDetails } from '${relUrl}/components/ReferenceDetails';`,
         '',
         `<Meta title="${location}/${identifier}" />`,
         `<DocsHeader title="${identifier}" breadCrumbs="${breadCrumbs.join(' » ')}" type="${type}">`,

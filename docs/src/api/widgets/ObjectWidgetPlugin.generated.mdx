@@ -2,6 +2,7 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../../components/DocsHeader';
 import { Code } from '../../components/Code';
+import { ReferenceDetails } from '../../components/ReferenceDetails';
 
 <Meta title="api/widgets/ObjectWidgetPlugin" />
 <DocsHeader title="ObjectWidgetPlugin" breadCrumbs="API reference » widgets » ObjectWidgetPlugin" type="WidgetPlugin">
@@ -10,218 +11,165 @@ import { Code } from '../../components/Code';
 
 ## Properties
 
-### id
-
+#### id
 
 <Code>{`id: 'object-widget'`}</Code>
 
-
-### use
-
+#### use
 
 <Code>{`use: (node) => node.schema.type === 'object'`}</Code>
 
-
-### ObjectWidget
-
+#### ObjectWidget
 
 <Code>{`Widget: ObjectWidget`}</Code>
-
 
 
 ## JSON Schema Options
 
 
-### classNames
-
-
-<Code>{`classNames?: string[];`}</Code>
-
-
-additional classnames the ui should add to the root of this data point
-
-### description
-
-
-<Code>{`description?: string;`}</Code>
-
-
-description of this data point
-
-### disabled
-
-
-<Code>{`disabled: boolean;`}</Code>
-
-
-if changes to this data point are disabled
-
-### placeholder
-
-
-<Code>{`placeholder?: string;`}</Code>
-
-
-if supported, will add a placeholder for the input element
-
-### hidden
-
-
-<Code>{`hidden: boolean;`}</Code>
-
-
-if this data point should be hidden from display
-
-### title
-
-
-<Code>{`title?: string;`}</Code>
-
-
-title of this data point
-
-### readOnly
-
-
-<Code>{`readOnly?: boolean;`}</Code>
-
-
-disable edit of form, but allow selection and copy of value
-
-### required
-
-
-<Code>{`required?: boolean;`}</Code>
-
-
-flag data as required (visual only)
-
-### canAddItem
-
-
-<Code>{`canAddItem?: boolean;`}</Code>
-
-
-arrays only: if an item may be added without causing a validation error
-
-### canRemoveItem
-
-
-<Code>{`canRemoveItem?: boolean;`}</Code>
-
-
-arrays only: if an item may be removed without causing a validation error
-
-### collapsed
-
+#### collapsed
 
 <Code>{`collapsed?: boolean;`}</Code>
 
 
 if set, will add an accordion in the given toggle state
-
-### showEditJsonAction
-
+#### showEditJsonAction
 
 <Code>{`showEditJsonAction?: boolean;`}</Code>
 
 
 if set, will add an edit-json action to edit, copy and paste json-data for this location
-
-### isOptional
-
+#### isOptional
 
 <Code>{`isOptional?: boolean;`}</Code>
 
 
 Is set internally to true to add a delete option for this object.
-
-### showInlineAddAction
-
+#### showInlineAddAction
 
 <Code>{`showInlineAddAction?: boolean;`}</Code>
 
 
 set to true to show inline button at the end of the array to add another item
-
-### showHeaderMenu
-
+#### showHeaderMenu
 
 <Code>{`showHeaderMenu?: boolean;`}</Code>
 
 
 set to false to deactivate array menu
-
-### showItemControls
-
+#### showItemControls
 
 <Code>{`showItemControls?: boolean;`}</Code>
 
 
 set to false to deactivate any array item-controls
-
-### descriptionInline
-
+#### descriptionInline
 
 <Code>{`descriptionInline?: boolean;`}</Code>
 
 
 set to true to inline description
-
-### showTitleDivider
-
+#### showTitleDivider
 
 <Code>{`showTitleDivider?: boolean;`}</Code>
 
 
 if true will add a separator line to the header
-
-### selectable
-
+#### selectable
 
 <Code>{`selectable?: boolean;`}</Code>
 
-
-### dividerProps
-
+#### dividerProps
 
 <Code>{`dividerProps?: Pick<DividerProps, 'labelPosition' | 'color'>;`}</Code>
 
 
 placement of title within the separator
-
-### titleProps
-
+#### titleProps
 
 <Code>{`titleProps?: TitleProps;`}</Code>
 
 
 Mantine Title Props
-
-### hideChildren
-
+#### hideChildren
 
 <Code>{`hideChildren?: boolean;`}</Code>
 
 
 hide all children
-
-### showHeader
-
+#### showHeader
 
 <Code>{`showHeader?: boolean;`}</Code>
 
 
 if false, will hide title. will hide complete title-header if no menu-actions are available
-
-### widgetMenuItems
-
+#### widgetMenuItems
 
 <Code>{`widgetMenuItems?: WidgetMenuItems;`}</Code>
 
-
-### widget
-
+#### widget
 
 <Code>{`widget?: string;`}</Code>
 
+### Referenced from `DefaultNodeOptions`
+
+#### classNames
+
+<Code>{`classNames?: string[];`}</Code>
+
+
+additional classnames the ui should add to the root of this data point
+#### description
+
+<Code>{`description?: string;`}</Code>
+
+
+description of this data point
+#### disabled
+
+<Code>{`disabled: boolean;`}</Code>
+
+
+if changes to this data point are disabled
+#### placeholder
+
+<Code>{`placeholder?: string;`}</Code>
+
+
+if supported, will add a placeholder for the input element
+#### hidden
+
+<Code>{`hidden: boolean;`}</Code>
+
+
+if this data point should be hidden from display
+#### title
+
+<Code>{`title?: string;`}</Code>
+
+
+title of this data point
+#### readOnly
+
+<Code>{`readOnly?: boolean;`}</Code>
+
+
+disable edit of form, but allow selection and copy of value
+#### required
+
+<Code>{`required?: boolean;`}</Code>
+
+
+flag data as required (visual only)
+#### canAddItem
+
+<Code>{`canAddItem?: boolean;`}</Code>
+
+
+arrays only: if an item may be added without causing a validation error
+#### canRemoveItem
+
+<Code>{`canRemoveItem?: boolean;`}</Code>
+
+
+arrays only: if an item may be removed without causing a validation error

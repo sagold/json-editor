@@ -14,8 +14,8 @@ export function simpleCodeBlock(code?: string, language: string = 'tsx') {
     // TypeScript generics (<N>), array types (string[]), block bodies ({}) and
     // template interpolations (${}) would all be misinterpreted otherwise.
     const escaped = code
-        .replace(/\\/g, '\\\\')    // backslash      → \\
-        .replace(/`/g, '\\`')      // backtick        → \`
+        .replace(/\\/g, '\\\\') // backslash      → \\
+        .replace(/`/g, '\\`') // backtick        → \`
         .replace(/\$\{/g, '\\${'); // ${interpolation} → \${
-    return ['', `<Code>{\`${escaped}\`}</Code>`, ''];
+    return [`<Code>{\`${escaped}\`}</Code>`];
 }

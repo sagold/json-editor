@@ -1,4 +1,5 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Code } from './components/Code';
 
 <Meta title="HowTo Create a Widget" />
 
@@ -11,12 +12,12 @@ A widget is a react component that renders a web form associated with a JsonNode
 
 A JsonNode represents a data-point which holds its value, schema and some metadata. JsonNodes are created for all values, like string, a number, an object, etc.
 
-> Widgets fully control what they do with the JsonNode. They can skip them, render any UI and optionally pass any child back to json-editor to let other widgets take care of the JsonNode
+> Widgets fully control what they do with the JsonNode. They can skip them, render any UI and optionally pass any child JsonNodes back to json-editor to let other widgets rake care of the JsonNode
 
 Creating a custom widget is quite simple and straight forward. It requires basically two steps
 
 1. **create your custom component**, wrapped by the widget-decorator and
-2. **create the WidgetPlugin** object containing id, your custom component and a use-callback to register your component to render a specific node
+2. **create the WidgetPlugin** object to register your custom component to json-editor
 
 json-editor will accept your WidgetPlugin in the list of widgets passed to on initialization.
 
@@ -56,15 +57,15 @@ const editor = new Editor({
 
 Note that we added the widget first to ensure it is called begore any other widget might register.
 
-### WidgetPlugin id
+### `id` string
 
 A unique id for custom widget. If a widget with this id has already been registeres to json-editor it will throw an error. This id can be used to find certain widgets in the list od widgets.
 
-### WidgetPlugin Widget
+### `Widget` Component
 
 A Custom component receiving the editor instance, current node and options. The use of a widget decorator is recommended for performance reasons, to add the setValue helper and improved types. Read more about this in [widget-decorator](#widget-decorator)
 
-### Widget `use` callback
+### `use` callback
 
 The `use` callback serves to register a Widget to a JsonNode. From the list of widgets, the first widget to return `true`
 on this callback will be rendered.
@@ -77,29 +78,21 @@ To evaluate your requirements you receive the JsonNode **node**, an optional **o
 
 access the JSON Schema on the node to check for specific keywords. The following example will register to all string types
 
-```tsx
-const use = (node) => node.schema.type === 'string';
-```
+<Code>const use = (node) => node.schema.type === 'string';</Code>
 
 Of course you can be more specific than this
 
-```tsx
-const use = (node) => node.schema.type === 'string' && node.schema.format === 'email';
-```
+<Code>const use = (node) => node.schema.type === 'string' && node.schema.format === 'email';</Code>
 
 or look for custom atrributes
 
-```tsx
-const use = (node) => node.schema['x-widget'] === 'MyString';
-```
+<Code>const use = (node) => node.schema['x-widget'] === 'MyString';</Code>
 
 **inspect option**
 
 Options are passed when directly rendering this node or by any parent widget, which allows for control is specific parent-child contexts or to handle widget wrappers (to skip rendering themselves again)
 
-```tsx
-const use = (node, options) => node.schema.type === 'string' && options?.widget === 'MyString';
-```
+<Code>const use = (node, options) => node.schema.type === 'string' && options?.widget === 'MyString';</Code>
 
 **inspect data**
 
@@ -114,24 +107,67 @@ const use = (node) => getValue(node) === 'Hey';
 
 ## Create a custom widget for string-type
 
-Start by adding your component, wrapping it in the widget-decorator:
+Start by adding your component, wrapping it in the widget-decorator and hokk up you web form:
 
 ```tsx
 import { widget, StringNode } from '@sagold/react-json-editor';
 
-const MyStringWidget = widget<StringNode, string>(({ node, options, setValue }) => {
-  return <div>my custom widget</div>
+const MyStringWidget = widget<StringNode, string>(({ editor, node, options, setValue }) => {
+  return <input onChange={setValue} value={node.value} />
 }
 ```
 
-- widget
-- StringNode
-- node
-- options
-- setValue
+With this, you have created working string widget. Let us go through the details:
+
+### widget decorator
+
+The widget decorator wraps your component to add some essential functionalities, like types, adding a setValue helper and taking care of caching.
+
+`widget` takes two type parameters: the **NodeType** this widget is defined for and a Typescript **ValueType** for its expected data:
+
+<Code>{'widget<NodeType, ValueType>;'}</Code>
+
+In our case, we pass a NodeType `StringNode` as we render strings and an corresponding typescript type `string`. For complex types like object or array we would simply specify the NodeType like `widget<ObjectNode>`.
+
+Your component receives four arguments:
+
+```ts
+widget(({ editor, node, options, setValue }) => (<div />))
+```
+
+**editor**
+
+The editor instance that gives you access to methods to read or change states and some utility functions
+
+**node**
+
+The JsonNode that you registered to. It mainly contains the data and JSON Schema and its location in data, specified by a JSON Pointer string:
+
+- **node.pointer** the location in data this node represents, e.g. `/header/title`. Use this string to reference this node when using the editor instance: `editor.getValue(node.pointer)` and `editor.setValue(node.pointer, myValue)`. A JSON Lointer is very versatile, you can modify it to e.g. accesss the parent of this node
+- **node.value** Simple datatypes hold their current value on this property. Note that working with objects or arrays, values are distributes across child nodes. Here, you can use `getValue(node)` without the neeed for an editor instance
+- **node.schema** holds the JSON Schema for this node. This schema has been reduced from the original schema to only contain matching Schema information. e.g. oneOf will not be present in this schema
+- **node.errors** A list of possible JsonErrors associated with this value
+
+**options**
+
+Options holds a combination of settings:
+
+- your local JSON Schema `x-options` object
+- DefaultNodeOptions like title and description and
+- passed in options from parent widgets or directly added as Component options
+
+**setValue**
+
+Helper to update the current value by `setValue(myValue)`. In many cases you will use this function on callbacks and dont need to work with the editor instance. This helper simplifies registering onChange handlers. The alternative would be the use of `editor.setValue(node.pointer, myValue)`
+
+## Array and Object Widgets
 
 - getData
 - editor.\*
 - pointer
 - Widget
 - children
+
+## Conventions
+
+classNames, option and html data-properties

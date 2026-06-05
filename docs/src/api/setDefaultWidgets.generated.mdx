@@ -2,6 +2,7 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 import { Code } from '../components/Code';
+import { ReferenceDetails } from '../components/ReferenceDetails';
 
 <Meta title="api/setDefaultWidgets" />
 <DocsHeader title="setDefaultWidgets" breadCrumbs="API reference » setDefaultWidgets" type="Function">
@@ -25,22 +26,19 @@ If a list of widgets is added to editor.widgets, this default list will be overr
 list of widgets to set per default
 
 #### id
-
 <Code>{`readonly id: string;`}</Code>
-
 Unique id of this widget
 
+
 #### use
-
 <Code>{`use: (node: JsonNode, options?: AnyOption) => boolean;`}</Code>
-
 `use` will select this widget to render the passed JsonNode when true is returned
 
+
 #### Widget
-
 <Code>{`Widget: WidgetComponent<N>;`}</Code>
-
 The widget component to render
+
 
 ## Returns
 

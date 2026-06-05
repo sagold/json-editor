@@ -2,10 +2,11 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { DocsHeader } from '../components/DocsHeader';
 import { Code } from '../components/Code';
+import { ReferenceDetails } from '../components/ReferenceDetails';
 
 <Meta title="api/WidgetPlugin" />
 <DocsHeader title="WidgetPlugin" breadCrumbs="API reference » WidgetPlugin" type="Type">
-  
+  [Properties](#properties)
 </DocsHeader>
 
 Editor plugin type for widgets
@@ -23,33 +24,29 @@ const ArrayWidgetPlugin: WidgetPlugin<ArrayNode> = {
 const editor = new Editor({ widgets: [ArrayWidgetPlugin, ...defaultWidgets] });
 ```
 
+## Properties
 
-### id
-
+#### id
 
 <Code>{`readonly id: string;`}</Code>
 
 
 Unique id of this widget
-
-### use
-
+#### use
 
 <Code>{`use: (node: JsonNode, options?: AnyOption) => boolean;`}</Code>
 
 
 `use` will select this widget to render the passed JsonNode when true is returned
-
-#### Parameter
+##### Parameter
 
 - **`node`** JsonNode which searches for a matching widget to render
 - **`options`** node options and options passed to getWidget function
 
-#### Returns
+##### Returns
 
 **`boolean`** `true` if this widget should be selected to render the node
-### Widget
-
+#### Widget
 
 <Code>{`Widget: WidgetComponent<N>;`}</Code>
 
