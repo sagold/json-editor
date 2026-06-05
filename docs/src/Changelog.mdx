@@ -2,6 +2,63 @@ import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 
 <Meta title="Changelog" />
 
+# v1.0.0
+
+**Breaking Changes**
+
+- renamed type `Widget` to `WidgetComponent` to resolve naming collision with the `Widget` component — update type annotations and imports accordingly
+- removed generic from `DefaultNodeOptions` — replace `DefaultNodeOptions<{ myProp: boolean }>` with `DefaultNodeOptions & { myProp: boolean }` in custom widget option types
+- renamed `Node` to `JsonNode` to avoid collision with the native `Node` type
+- prefer `x-options` over `options` as schema keyword; changed format-ids to `x-widget`
+- set draft-2020-12 as the default JSON Schema draft
+
+**Features**
+
+- add: draft agnostic support — editor now works across multiple JSON Schema drafts (draft-04, draft-07, draft-2019-09, draft-2020-12)
+- add: drag and drop support between arrays
+- add: drop validation for draggable items
+- add: selection feature with `SelectionProvider`
+- add: `WidgetComponent` type exported from `@sagold/react-json-editor`
+- add: `doc-generator` promoted to standalone package `@sagold/doc-generator`
+- add: `optional oneOfIndex` to value nodes
+- add: package exports for all widgets and types
+- fix: `WidgetProps.node` typed as `T` so options type is correctly inferred from the passed node
+- upgrade: React 19, Mantine 8, Storybook/Vite, json-schema-library v10
+
+## Upgrade to v1.0.0
+
+**`Widget` type renamed to `WidgetComponent`**
+
+```ts
+// before
+import { type Widget } from '@sagold/react-json-editor';
+const myWidget: Widget<StringNode> = ...;
+
+// after
+import { type WidgetComponent } from '@sagold/react-json-editor';
+const myWidget: WidgetComponent<StringNode> = ...;
+```
+
+Note: the `Widget` field on `WidgetPlugin` objects is unchanged — only the *type* was renamed.
+
+**`DefaultNodeOptions` generic removed**
+
+```ts
+// before
+export type MyOptions = DefaultNodeOptions<{
+    myProp?: boolean;
+}>;
+
+// after
+export type MyOptions = DefaultNodeOptions & {
+    myProp?: boolean;
+};
+```
+
+# v0.36.0
+
+- mantine: remove CSS modules in favor of plain CSS
+
 # v0.35.0
 
 - Breaking: removed package rje-aria-widgets in favor of rje-mantine-widgets
