@@ -1,0 +1,83 @@
+// styles for mdx documents
+// main entry point: body.sb-show-main, #storybook-docs
+@use '../../../.storybook/styles/colors.scss' as *;
+
+.rje-docs-header {
+    position: relative;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    background: $navy;
+
+    .rje-docs-header__badges {
+        position: absolute;
+        left: calc(50% + 0.5rem);
+        transform: translateX(-50%);
+        top: 0.5rem;
+        max-width: 1000px;
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    img {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .rje-docs-header__content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-weight: 600;
+    }
+
+    .rje-docs-header-content {
+        min-height: 0.25rem;
+        .rje-docs-header-title {
+            border-top: 1px solid $navy;
+            // border-top: 1px solid #fff;
+        }
+    }
+
+    .rje-docs-header-content--green {
+        background-color: $green;
+        color: #fff;
+    }
+    .rje-docs-header-content--yellow {
+        background-color: $yellow;
+        color: $navy;
+    }
+    .rje-docs-header-content--orange {
+        background-color: $orange;
+        color: #fff;
+    }
+    .rje-docs-header-content--red {
+        background-color: $red;
+        color: #fff;
+    }
+
+    .rje-docs-header-title {
+        font-family: Inter;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 1;
+        gap: 0.25rem;
+        padding: 0.75em 0;
+
+        &.rje-docs-header-title--label-only {
+            padding: 0.25em 0;
+        }
+
+        .rje-docs-header-title__label {
+            font-size: 1rem;
+        }
+
+        .rje-docs-header-title__title {
+            font-size: 2rem;
+        }
+    }
+}

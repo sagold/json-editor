@@ -2,26 +2,11 @@ import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import { NpmPackageName } from './NpmPackageName';
 import logo from '../images/he-square-700x540-orange.png';
 import { Tabs } from './components/Tabs';
+import { Header } from './components/Header';
 import * as Introduction from './Introduction.stories';
 
 <Meta title="Introduction" />
-
-<div class="rje-docs-header rje-docs--fullwidth">
-  <img src={logo} />
-  <div class="rje-docs-header__labels">
-    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
-      <img src="https://badgen.net/badge/icon/github?icon=github&label" />
-    </a>
-    <a class="rje-docs-header-label" href="https://GitHub.com/sagold/json-editor/">
-      <img src="https://badgen.net/npm/v/@sagold/react-json-editor"  />
-    </a>
-  </div>
-
-  <div class="rje-docs-title" style={{ textAlign: 'center' }}>
-    <span class="rje-docs-title__label">@sagold</span>
-    <span class="rje-docs-title__name">react-json-editor</span>
-  </div>
-</div>
+<Header yellow={<Header.Title label="@sagold">react-json-editor</Header.Title>} />
 
 > A highly flexible react library to declaratively build interactive web forms.
 
