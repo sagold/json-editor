@@ -33,7 +33,7 @@
         "test": "pnpm run test:unit; pnpm run test:stories",
         "test:ci": "jest --maxWorkers=2 --ci --reporters=default --reporters=jest-junit",
         "test:coverage": "pnpm run test --collect-coverage",
-        "test:stories": "vitest --project=storybook",
+        "test:stories": "vitest --project=storybook --run",
         "test:stories:ci": "vitest --project=storybook --run --reporter junit --outputFile storybook-test-results.xml",
         "test:unit": "jest --maxWorkers=2 --verbose"
     },
@@ -41,12 +41,6 @@
         "@babel/preset-env": "^7.29.0",
         "@babel/preset-react": "^7.28.5",
         "@babel/preset-typescript": "^7.28.5",
-        "@codemirror/autocomplete": "^6.18.3",
-        "@codemirror/lang-json": "*",
-        "@codemirror/language": "^6.10.5",
-        "@codemirror/lint": "^6.9.4",
-        "@codemirror/state": "^6.4.1",
-        "@codemirror/view": "^6.38.1",
         "@eslint/js": "^10.0.1",
         "@mantine/core": "^8.3.14",
         "@mantine/dates": "^8.3.14",
@@ -120,9 +114,7 @@
         "@vitest/coverage-v8": "^4.1.8"
     },
     "resolutions": {
-        "jackspeak": "2.1.1",
-        "@codemirror/view": "^6.38.1",
-        "@codemirror/state": "^6.4.1"
+        "jackspeak": ">=2.1.1"
     },
     "packageManager": "pnpm@10.8.0"
 }

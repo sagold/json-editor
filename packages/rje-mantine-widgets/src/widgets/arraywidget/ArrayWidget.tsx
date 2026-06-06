@@ -252,7 +252,6 @@ function getArrayHeaderMenu(
         if (widgetMenuItems.length > 0) {
             widgetMenuItems.push('-');
         }
-        console.log('insertOptions', insertOptions);
         widgetMenuItems.push({
             icon: 'add',
             color: 'blue',

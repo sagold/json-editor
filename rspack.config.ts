@@ -25,6 +25,7 @@ const config: Configuration = {
         modules: [
             path.resolve(__dirname),
             path.resolve(__dirname, 'node_modules'),
+            path.resolve(__dirname, 'node_modules/.pnpm/node_modules'),
             path.resolve(__dirname, 'packages', PACKAGE_NAME, 'node_modules')
         ]
     },
