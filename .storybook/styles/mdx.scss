@@ -186,13 +186,17 @@
     code {
         font-size: 0.75em;
         font-family: ui-monospace, Menlo, Monaco, 'Roboto Mono', monospace;
-
+        color: #000;
         // border: none;
-        padding: 0.25em;
+        padding: 0.4em;
         text-transform: initial !important;
         white-space: break-spaces;
+        background: $yellow-lightest;
+        border: 1px solid $yellow;
+    }
+
+    strong > code {
         background: $yellow;
-        border: none;
     }
 
     div:not(.hljs):not(.docs-code) > code {
@@ -200,13 +204,14 @@
 
     .hljs,
     .docs-code {
-        border: 1px solid $yellow;
-        background-color: var(--docs-bg-canvas) !important;
+        border: 1px solid $background-lighter;
+        background-color: $background-darker !important;
 
         code {
             padding: 0.5rem 1rem;
             display: block;
             background: inherit;
+            border: none;
         }
     }
 

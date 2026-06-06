@@ -5,6 +5,7 @@ $red: #c12100;
 $orange: #f45050;
 $yellow: #f9d949;
 $yellow-light: hsl(from #{$yellow} h s calc(l + 6));
+$yellow-lightest: hsl(from #{$yellow} h s calc(l + 24));
 $green: #2baf8f;
 $green-lighter: #8fdeca;
 $green-light: #cff1e8;
