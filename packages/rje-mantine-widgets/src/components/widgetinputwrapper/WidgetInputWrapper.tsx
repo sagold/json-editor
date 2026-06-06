@@ -26,6 +26,8 @@ export function WidgetInputWrapper({ header, children, errors, options }: Widget
         <InputWrapper
             className={classNames('rje-widget__input-wrapper', !!header && 'with-title')}
             description={withInlineDescription ? <WidgetDescription text={options.description} /> : undefined}
+            // @ts-expect-error fixme
+            descriptionProps={{ component: 'div' }}
             label={header}
             error={errors?.map((e) => e.message).join('\n')}
             classNames={{ label: 'rje-widget__label' }}

@@ -38,7 +38,7 @@ describe('OneOfSelectWidget', () => {
                 <OneOfSelectWidget editor={editor} node={editor.getNode() as ValueNode} />
             </MantineProvider>
         );
-        const $select = screen.getByRole('select');
+        const $select = screen.getByRole('combobox');
         expect($select).toHaveValue('First-OneOf');
     });
 
@@ -49,7 +49,7 @@ describe('OneOfSelectWidget', () => {
                 <OneOfSelectWidget editor={editor} node={editor.getNode() as ValueNode} />
             </MantineProvider>
         );
-        const $select = screen.getByRole('select');
+        const $select = screen.getByRole('combobox');
         expect($select).toHaveValue('Second-OneOf');
     });
 
@@ -62,7 +62,7 @@ describe('OneOfSelectWidget', () => {
         );
 
         const user = userEvent.setup();
-        await user.click(screen.getByRole('select'));
+        await user.click(screen.getByRole('combobox'));
         await user.click(screen.getByText('Second-OneOf'));
 
         rerender(
@@ -70,7 +70,7 @@ describe('OneOfSelectWidget', () => {
                 <OneOfSelectWidget editor={editor} node={editor.getNode() as ValueNode} />
             </MantineProvider>
         );
-        const $select = screen.getByRole('select');
+        const $select = screen.getByRole('combobox');
         expect($select).toHaveValue('Second-OneOf');
     });
 });

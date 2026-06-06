@@ -213,7 +213,7 @@ const schema: JsonSchema = {
             description: 'standard mantine multi-select',
             type: 'array',
             uniqueItems: true,
-            options: {
+            'x-options': {
                 liveUpdate: true
             },
             items: {
@@ -225,7 +225,7 @@ const schema: JsonSchema = {
             title: 'multi-select tag',
             description: 'standard mantine multi-select',
             type: 'array',
-            'x-widget': 'select:taglist',
+            'x-widget': 'taglist',
             uniqueItems: true,
             items: {
                 type: 'string',
@@ -286,7 +286,7 @@ const schema: JsonSchema = {
             title: 'string-array',
             description: 'standard mantine TagsInput',
             type: 'array',
-            'x-widget': 'select:taglist',
+            'x-widget': 'taglist',
             maxItems: 6,
             minItems: 1,
             default: [],
