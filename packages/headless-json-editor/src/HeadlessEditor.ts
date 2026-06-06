@@ -48,6 +48,11 @@ export type Plugin<
 export type HeadlessEditorOptions<Data = unknown> = {
     /** The JSON Schema describing the form and its resulting data. JSON Schema `type` keywords are required for json-editor to work correctly. */
     schema: JsonSchema;
+    /**
+     * list of remote JSON Schema to add for $ref resolution. Each JSON Schema requires an $d or it will throw
+     * @throws
+     */
+    remotes?: JsonSchema[];
     /** The initial, partial data to be used to fill the form with values. The data has to match the JSON Schema or it will be ignored or invalidated in the we form */
     data?: Data;
     drafts?: Draft[];
@@ -87,6 +92,7 @@ export class HeadlessEditor<Data = unknown> {
     constructor(options: HeadlessEditorOptions<Data>) {
         const {
             schema,
+            remotes,
             data = {},
             plugins = [],
             drafts,
@@ -98,6 +104,7 @@ export class HeadlessEditor<Data = unknown> {
         // setup getTemplate options for json-schema-library so that options are used by createNode and others
         this.schemaNodeConfig = {
             drafts: drafts ?? defaultDrafts,
+            remotes,
             formatAssertion: true,
             getDataDefaultOptions: {
                 addOptionalProps,
