@@ -77,6 +77,10 @@ const config: Configuration = {
                 ]
             },
             {
+                test: /\.css$/,
+                type: 'css/auto'
+            },
+            {
                 test: /\.(sass|scss)$/,
                 use: [
                     {

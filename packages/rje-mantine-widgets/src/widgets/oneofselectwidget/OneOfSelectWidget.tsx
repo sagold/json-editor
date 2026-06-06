@@ -50,7 +50,6 @@ export const OneOfSelectWidget = widget<ValueNode<OneOfSelectOptions>>(({ editor
             showDivider={options.showTitleDivider ?? true}
             title={
                 <Select
-                    role="select"
                     id={node.id}
                     {...widgetInputProps(node, { ...options, title: undefined, description: undefined })}
                     style={options.description ? { paddingBottom: '0.2em' } : undefined}

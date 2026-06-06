@@ -112,7 +112,7 @@ export const ObjectWidget = widget<ObjectNode<ObjectOptions>>(({ node, options, 
         >
             <WidgetInputWrapper options={options} errors={node.errors} header={widgetHeader}>
                 <Collapse
-                    in={contentOpened}
+                    expanded={contentOpened}
                     className={classNames('rje-content--object', !!widgetHeader && 'rje-content--with-header')}
                 >
                     <Stack className="rje-object__properties">
