@@ -13,9 +13,10 @@
         "noPropertyAccessFromIndexSignature": false,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "types": ["node", "jest"]
     },
-    "include": ["src/**/*"],
+    "include": ["./src/**/*"],
     "references": [
         {
             "path": "../headless-json-editor"

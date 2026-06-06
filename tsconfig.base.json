@@ -1,7 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": ".",
+        "rootDir": ".",
         "composite": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
@@ -15,10 +15,10 @@
         "sourceMap": true,
         "target": "es2019",
         "paths": {
-            "@sagold/react-json-editor": ["packages/react-json-editor/src/index.ts"],
-            "@sagold/rje-code-widgets": ["packages/rje-code-widgets/src/index.ts"],
-            "@sagold/rje-mantine-widgets": ["packages/rje-mantine-widgets/src/index.ts"],
-            "headless-json-editor": ["packages/headless-json-editor/src/index.ts"]
+            "@sagold/react-json-editor": ["./packages/react-json-editor/src/index.ts"],
+            "@sagold/rje-code-widgets": ["./packages/rje-code-widgets/src/index.ts"],
+            "@sagold/rje-mantine-widgets": ["./packages/rje-mantine-widgets/src/index.ts"],
+            "headless-json-editor": ["./packages/headless-json-editor/src/index.ts"]
         }
     },
     "references": [
@@ -27,6 +27,6 @@
         { "path": "./packages/rje-code-widgets" },
         { "path": "./packages/rje-mantine-widgets" }
     ],
-    "include": ["packages/**/*.ts", "packages/**/*.tsx"],
-    "exclude": ["node_modules", "tmp", "dist"]
+    "include": ["./packages/**/*.ts", "./packages/**/*.tsx"],
+    "exclude": ["./node_modules", "./tmp", "./dist"]
 }

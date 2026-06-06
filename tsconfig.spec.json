@@ -2,7 +2,6 @@
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
         "esModuleInterop": true,
-        "rootDir": ".",
         "jsx": "react-jsx",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
@@ -12,5 +11,5 @@
         "noImplicitAny": true,
         "types": ["node", "jest"]
     },
-    "include": ["packages/*/src", "packages/*/tests", "docs/*", "node_modules/json-schema-library"]
+    "include": ["./packages/*/src", "./packages/*/tests", "./docs/*", "./node_modules/json-schema-library"]
 }

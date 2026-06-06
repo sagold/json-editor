@@ -41,3 +41,4 @@ stats.json
 # System Files
 .DS_Store
 Thumbs.db
+/tsconfig.spec.tsbuildinfo

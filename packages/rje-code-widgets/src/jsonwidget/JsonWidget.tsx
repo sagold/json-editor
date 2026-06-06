@@ -48,7 +48,7 @@ export type JsonWidgetOptions = DefaultNodeOptions & {
     /** JSON Schema when using JSON Widget on `type: "string"` */
     schema?: JsonSchema;
     /** if value should update on each keystroke instead of on blur. Defaults to false */
-    // liveUpdate?: boolean;
+    liveUpdate?: boolean;
     setup?: ReactCodeMirrorProps['basicSetup'];
 } & Pick<ReactCodeMirrorProps, 'theme' | 'height' | 'minHeight' | 'maxHeight' | 'indentWithTab'>;
 
