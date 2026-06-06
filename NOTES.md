@@ -3,7 +3,7 @@
 `pnpm run test`
 `pnpm run dist`
 `pnpm run set-version 1.0.0-rc6`
-`pnpm run install`
+`pnpm install`
 `npm login`
 `OTP=xyz pnpm run publish-all` for rc `TAG=next OTP=xyz pnpm run publish-all`
 
