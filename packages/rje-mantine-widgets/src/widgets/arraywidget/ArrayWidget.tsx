@@ -172,7 +172,7 @@ export const ArrayWidget = widget<ArrayNode<ArrayOptions>>(({ editor, node, opti
     return (
         <WidgetField widgetType="array" node={node} options={options} showError={false} showDescription={false}>
             <WidgetInputWrapper errors={node.errors} header={widgetHeader} options={options}>
-                <Collapse expanded={contentOpened}>
+                <Collapse in={contentOpened}>
                     <Table
                         className="rje-array__items"
                         striped

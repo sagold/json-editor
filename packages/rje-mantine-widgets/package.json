@@ -6,9 +6,9 @@
     "types": "./dist/es6/src/index.d.ts",
     "main": "dist/rjeMantineWidgets.js",
     "dependencies": {
-        "@mantine/core": "^9.3.0",
-        "@mantine/dates": "^9.3.0",
-        "@mantine/hooks": "^9.3.0",
+        "@mantine/core": "^8.3.14",
+        "@mantine/dates": "^8.3.14",
+        "@mantine/hooks": "^8.3.14",
         "@sagold/react-json-editor": "^1.0.0-rc5",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.20",
