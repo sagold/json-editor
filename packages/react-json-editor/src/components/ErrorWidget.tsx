@@ -1,4 +1,4 @@
-import { JsonError } from 'json-schema-library';
+import { JsonError } from '@sagold/react-json-editor';
 import { Editor } from '../Editor';
 import { WidgetPlugin } from '../decorators';
 import { JsonNode, isJsonError } from 'headless-json-editor';
@@ -16,7 +16,9 @@ export const ErrorWidget = ({ node, editor }: { node: JsonNode; editor: Editor }
             </div>
             <div className="rje-form__errors">
                 {node.errors.map((e, index) => (
-                    <div key={index} className="rje_form__error">{e.message}</div>
+                    <div key={index} className="rje_form__error">
+                        {e.message}
+                    </div>
                 ))}
             </div>
 

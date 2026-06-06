@@ -1,5 +1,14 @@
-import { isJsonError, JsonSchema, isParentNode, isValueNode } from 'headless-json-editor';
-import { extendDraft, draft07, draft2019, draft2020, oneOfFuzzyKeyword } from 'json-schema-library';
+import {
+    isJsonError,
+    JsonSchema,
+    isParentNode,
+    isValueNode,
+    extendDraft,
+    draft07,
+    draft2019,
+    draft2020,
+    oneOfFuzzyKeyword
+} from 'headless-json-editor';
 import { renderHook, act, render } from '@testing-library/react';
 import { strict as assert } from 'assert';
 import { useEditor, UseEditorOptions } from './useEditor';

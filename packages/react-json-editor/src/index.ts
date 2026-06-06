@@ -98,7 +98,44 @@ import {
     OnChangeListener,
     ParentNode,
     StringNode,
-    ValueNode
+    ValueNode,
+    // jlib
+    addKeywords,
+    draft04,
+    draft06,
+    draft07,
+    draft2019,
+    draft2020,
+    extendDraft,
+    getSchemaType,
+    getTypeOf,
+    isReduceable,
+    isSchemaNode,
+    mergeNode,
+    mergeSchema,
+    oneOfFuzzyKeyword,
+    oneOfKeyword,
+    render,
+    // jlib types
+    CompileOptions,
+    Context,
+    Draft,
+    DraftVersion,
+    ErrorConfig,
+    AnnotationData,
+    GetNodeOptions,
+    JsonSchemaReducer,
+    JsonSchemaReducerParams,
+    JsonSchemaResolver,
+    JsonSchemaResolverParams,
+    JsonSchemaValidator,
+    JsonSchemaValidatorParams,
+    Keyword,
+    NodeOrError,
+    OptionalNodeOrError,
+    SchemaNode,
+    ValidateReturnType,
+    ValidationPath
 } from 'headless-json-editor';
 
 export {
@@ -137,7 +174,24 @@ export {
     updateNode,
     updateOptions,
     updateSchema,
-    validateNode
+    validateNode,
+    // jlib
+    addKeywords,
+    draft04,
+    draft06,
+    draft07,
+    draft2019,
+    draft2020,
+    extendDraft,
+    getSchemaType,
+    getTypeOf,
+    isReduceable,
+    isSchemaNode,
+    mergeNode,
+    mergeSchema,
+    oneOfFuzzyKeyword,
+    oneOfKeyword,
+    render
 };
 
 export type {
@@ -159,5 +213,25 @@ export type {
     PluginInstance,
     PluginEvent,
     StringNode,
-    ValueNode
+    ValueNode,
+    // jlib types
+    CompileOptions,
+    Context,
+    Draft,
+    DraftVersion,
+    ErrorConfig,
+    AnnotationData,
+    GetNodeOptions,
+    JsonSchemaReducer,
+    JsonSchemaReducerParams,
+    JsonSchemaResolver,
+    JsonSchemaResolverParams,
+    JsonSchemaValidator,
+    JsonSchemaValidatorParams,
+    Keyword,
+    NodeOrError,
+    OptionalNodeOrError,
+    SchemaNode,
+    ValidateReturnType,
+    ValidationPath
 };

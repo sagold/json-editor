@@ -1,35 +1,35 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { JsonSchema, Editor, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
-import defaultWidgets, { JsonForm, Icon } from '@sagold/rje-mantine-widgets';
+import { JsonSchema, useEditor, Widget, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
+import defaultWidgets from '@sagold/rje-mantine-widgets';
 import { JsonWidget, JsonWidgetPlugin } from './jsonwidget/JsonWidget';
 import { MantineThemeDecorator } from './docs/MantineThemeDecorator';
 import { Button } from '@mantine/core';
 import './rje-code-widgets.scss';
 
 function CodeWidgetComponent(args) {
-    const [editor, setEditor] = useState<Editor>();
+    const editor = useEditor({
+        addOptionalProps: false,
+        schema: args.schema,
+        onChange: console.log,
+        data: args.data,
+        plugins:[HistoryPlugin],
+        widgets:[JsonWidgetPlugin, ...defaultWidgets]
+    });
     const history = useEditorPlugin(editor, HistoryPlugin);
+
+
     return (
         <div className="rje-form rje-theme rje-theme--light">
             <div style={{ display: 'flex', gap: 8 }}>
                 <Button onClick={() => history?.undo()} disabled={history?.getUndoCount() === 0}>
-                    <Icon>undo</Icon>
+                    <span>undo</span>
                 </Button>
                 <Button onClick={() => history?.redo()} disabled={history?.getRedoCount() === 0}>
-                    <Icon>redo</Icon>
+                    <span>redo</span>
                 </Button>
             </div>
-            <JsonForm
-                style={{ maxWidth: 680 }}
-                addOptionalProps={false}
-                schema={args.schema}
-                onChange={setData}
-                data={args.data}
-                editor={setEditor}
-                plugins={[HistoryPlugin]}
-                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-            />
+            <Widget editor={editor} />
         </div>
     );
 }

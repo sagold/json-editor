@@ -18,7 +18,11 @@ const config: StorybookConfig = {
         '../docs/src/**/*.stories.tsx'
     ],
 
-    addons: [getAbsolutePath('@storybook/addon-links'), getAbsolutePath('@storybook/addon-docs')],
+    addons: [
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-docs'),
+        getAbsolutePath("@storybook/addon-vitest")
+    ],
 
     framework: '@storybook/react-vite',
 

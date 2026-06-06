@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import defaultWidgets, { JsonForm } from '@sagold/rje-mantine-widgets';
+import defaultWidgets from '@sagold/rje-mantine-widgets';
 import { JsonWidgetPlugin } from './JsonWidget';
 import { MantineThemeDecorator } from '../docs/MantineThemeDecorator';
 import '../rje-code-widgets.scss';
-import { JsonSchema } from '@sagold/react-json-editor';
+import { JsonSchema, useEditor, Widget } from '@sagold/react-json-editor';
 
 type Story = StoryObj<{ schema: JsonSchema; theme?: string; data?: any }>;
 
@@ -26,15 +26,15 @@ const meta: Meta<{ schema: JsonSchema; theme?: string; data?: any }> = {
             }
         };
 
-        return (
-            <JsonForm
-                addOptionalProps={false}
-                schema={s}
-                data={data}
-                widgets={[JsonWidgetPlugin, ...defaultWidgets]}
-                style={{ width: '100%' }}
-            />
-        );
+        // eslint-ignore-next-line component function
+        const editor = useEditor({
+            schema: s,
+            data,
+            widget: [JsonWidgetPlugin, ...defaultWidgets],
+            addOptionalProps: false
+        });
+
+        return <Widget editor={editor} />;
     }
 };
 export default meta;
