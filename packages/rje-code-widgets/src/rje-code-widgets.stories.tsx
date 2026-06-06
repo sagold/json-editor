@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { JsonSchema, useEditor, Widget, HistoryPlugin, useEditorPlugin } from '@sagold/react-json-editor';
 import defaultWidgets from '@sagold/rje-mantine-widgets';
@@ -13,11 +12,10 @@ function CodeWidgetComponent(args) {
         schema: args.schema,
         onChange: console.log,
         data: args.data,
-        plugins:[HistoryPlugin],
-        widgets:[JsonWidgetPlugin, ...defaultWidgets]
+        plugins: [HistoryPlugin],
+        widgets: [JsonWidgetPlugin, ...defaultWidgets]
     });
     const history = useEditorPlugin(editor, HistoryPlugin);
-
 
     return (
         <div className="rje-form rje-theme rje-theme--light">

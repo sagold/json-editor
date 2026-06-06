@@ -1,8 +1,8 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
-import logo from '../../../docs/images/he-square-700x540-orange.png';
-import * as JsonObjectWidget from './jsonwidget/JsonWidget.Object.stories';
-import * as JsonStringWidget from './jsonwidget/JsonWidget.String.stories';
-import { Header } from '../../../docs/src/components/Header';
+import logo from '../../../../docs/images/he-square-700x540-orange.png';
+import * as JsonObjectWidget from '../jsonwidget/JsonWidget.Object.stories';
+import * as JsonStringWidget from '../jsonwidget/JsonWidget.String.stories';
+import { Header } from '../../../../docs/src/components/Header';
 
 <Meta title="packages/rje-code-widgets/Overview" />
 <Header
@@ -63,7 +63,7 @@ function MyForm({ schema, data }) {
   "type": "string",
   "format": "json",
 
-  "options": {
+  "x-options": {
     "schema": {
       "type": "object"
     }

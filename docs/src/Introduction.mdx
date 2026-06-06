@@ -22,7 +22,7 @@ In order to render any sub schema as input form, we add a set of **widgets** fro
 <Tabs>
   
   <div tabTitle="code">
-    ```ts
+    ```tsx
     import { useEditor, Widget } from '@sagold/react-json-editor';
     import widgets from '@sagold/rje-mantine-widgets';
     import { MantineProvider } from '@mantine/core';
@@ -50,7 +50,9 @@ In order to render any sub schema as input form, we add a set of **widgets** fro
 
       return (
           <MantineProvider>
+            <div className="rje-form">
               <Widget editor={editor} node={editor?.getNode()} />
+            </div>
           </MantineProvider>
       );
     }
@@ -64,7 +66,15 @@ In order to render any sub schema as input form, we add a set of **widgets** fro
     import '@mantine/core/styles/default-css-variables.css';
     import '@mantine/core/styles/global.css';
     import '@sagold/rje-mantine-widgets/dist/styles.css';
+
+    // To apply styles from rje-mantine-widgets add the class .rje-form to a Widget parent:
+    const form = <MantineProvider>
+      <div className="rje-form">
+        <Widget editor={editor} node={editor?.getNode()} />
+      </div>
+    </MantineProvider>;
     ```
+
   </div>
 </Tabs>
 

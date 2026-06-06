@@ -130,7 +130,20 @@
     }
 
     .cm-diagnostic {
-        color: #fff;
+        color: $color-black;
+    }
+
+    .cm-tooltip-section .rje-code-tooltip {
+        font-size: 0.9rem !important;
+        border-radius: $border-radius;
+        border-color: $color-black;
+
+        h1 {
+            font-size: 1.1rem !important;
+        }
+
+        color: #333;
+        background: $color-light-grey-2;
     }
 }
 
@@ -145,7 +158,7 @@
 }
 
 .rje-code-tooltip--jsonschema h1 {
-    font-size: 1.1em;
+    font-size: 1.1rem;
     color: #fafafa;
     font-weight: 500;
     line-height: 1.5em;

@@ -27,7 +27,9 @@ function MyForm() {
 
   return (
     <MantineProvider>
-      <Widget editor={editor} node={editor?.getNode()} />
+      <div className="rje-form">
+        <Widget editor={editor} node={editor?.getNode()} />
+      </div>
     </MantineProvider>
   );
 }

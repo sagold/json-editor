@@ -30,7 +30,7 @@ const meta: Meta<{ schema: JsonSchema; theme?: string; data?: any }> = {
         const editor = useEditor({
             schema: s,
             data,
-            widget: [JsonWidgetPlugin, ...defaultWidgets],
+            widgets: [JsonWidgetPlugin, ...defaultWidgets],
             addOptionalProps: false
         });
 
@@ -46,9 +46,9 @@ export const Default: Story = {
             description: '',
             type: 'object',
             format: 'json',
-            options: {
-                theme: 'dark'
-            },
+            // 'x-options': {
+            //     theme: 'dark'
+            // },
             required: ['string', 'number', 'object'],
             properties: {
                 string: {

@@ -47,7 +47,7 @@ export const Default: Story = {
             description: '',
             type: 'string',
             format: 'json',
-            options: {
+            'x-options': {
                 schema: {
                     type: 'object',
                     required: ['string', 'number', 'object'],
