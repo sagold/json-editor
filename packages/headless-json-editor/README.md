@@ -1,6 +1,5 @@
 <p align="center">
-    <img src="./docs/he-full-blue-2000x564.png" width="100%" alt="headless-json-editor"><br />
-    <img src="./docs/title-700x54.png" width="350px" alt="headless-json-editor">
+    <img src="../../docs/images/headless-json-editor-logo.png" width="100%" alt="headless-json-editor"><br />
 </p>
 
 <p align="center"><b>A simple beautiful api for your custom form generator powered by json-schema</b></p>

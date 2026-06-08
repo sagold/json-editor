@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="https://github.com/sagold/json-editor/blob/main/packages/react-json-editor/docs/he-full-2000x564.png?raw=true" width="100%" alt="_react-json-editor">   
-  <img src="../../images/title-rje-code-widgets-700.png" width="350px" alt="rje-code-widgets">
+  <img src="../../docs/images/code-widgets-logo.png" width="100%" alt="headless-json-editor"><br />
 </p>
 
 > Additional code widgets for [@sagold/react-json-editor](https://github.com/sagold/json-editor/tree/main/packages/react-json-editor) to edit code formatted strings, json and json with json-schema validation using [CodeMirror](https://codemirror.net/) and [@uiw/react-codemirror](https://github.com/uiwjs/react-codemirror).

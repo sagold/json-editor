@@ -1,6 +1,5 @@
 <p align="center">
-    <img src="./docs/images/he-full-trans-2000x564.png" width="100%" alt="headless-json-editor"><br />
-    <img src="./docs/images/json-editor-700x70.png" width="350px" alt="headless-json-editor">
+    <img src="./docs/images/json-editor-logo.png" width="100%" alt="headless-json-editor"><br />
 </p>
 
 **[json-editor](https://github.com/sagold/json-editor)** is the mono repository around [headless-json-editor](./packages/headless-json-editor)

@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="./docs/he-full-2000x564.png" width="100%" alt="react-json-editor"><br />
-  <img src="./docs/title-react-700x76.png" width="350px" alt="react-json-editor">
+  <img src="../../docs/images/react-json-editor-logo.png" width="100%" alt="headless-json-editor"><br />
 </p>
 
 > Simple and extensible React component capable of using JSON Schema to declaratively build and customize user forms.
