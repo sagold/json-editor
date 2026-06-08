@@ -28,9 +28,7 @@ function propertySortResult(aIndex: number, bIndex: number) {
     return aIndex - bIndex;
 }
 
-interface ExtendedNodeOptions {}
-
-export type DefaultNodeOptions = {
+export interface DefaultNodeOptions {
     /** additional classnames the ui should add to the root of this data point */
     classNames?: string[];
     /** description of this data point */
@@ -52,7 +50,7 @@ export type DefaultNodeOptions = {
     canAddItem?: boolean;
     /** arrays only: if an item may be removed without causing a validation error */
     canRemoveItem?: boolean;
-} & ExtendedNodeOptions;
+}
 
 type CreateNode = (schemaNode: SchemaNode, data: any, pointer: JsonPointer, isArrayItem: boolean) => JsonNode;
 
@@ -308,6 +306,11 @@ export function _createNode<T extends JsonNode = JsonNode>(
     pointer: JsonPointer,
     isArrayItem = false
 ): T {
+    if (isJsonError(schemaNode)) {
+        console.log(schemaNode);
+        throw new Error(schemaNode.message);
+    }
+
     const dataType = data == null ? 'null' : (getTypeOf(data ?? schemaNode.schema.const) as NodeType);
 
     // 03/12/24 we now resolve the type defined by json-schema instead of from data-type
