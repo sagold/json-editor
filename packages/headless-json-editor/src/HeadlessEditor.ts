@@ -1,7 +1,7 @@
 import gp from '@sagold/json-pointer';
 import { createNode } from './node/createNode';
 import { deepEqual } from 'fast-equals';
-import { CompileOptions, Draft, JsonError, SchemaNode, compileSchema } from 'json-schema-library';
+import { CompileOptions, Draft, JsonError, SchemaNode, compileSchema, isJsonSchema } from 'json-schema-library';
 import { getErrors } from './node/getErrors';
 import { getNodeList } from './node/getNodeList';
 import { getNode } from './node/getNode';
@@ -66,6 +66,10 @@ export type HeadlessEditorOptions<Data = unknown> = {
     extendDefaults?: boolean;
     /** Remove data that does not match input schema. Defaults to false */
     removeInvalidData?: boolean;
+    /** Set to true to throw an Error when encountering an invalid JSON Schema  */
+    throwOnInvalidSchema?: boolean;
+    /** Set to true to throw an Error when encountering an unresolvable ref  */
+    throwOnInvalidRef?: boolean;
     [p: string]: unknown;
 } & O;
 
@@ -98,7 +102,9 @@ export class HeadlessEditor<Data = unknown> {
             drafts,
             addOptionalProps = false,
             extendDefaults = false,
-            removeInvalidData = false
+            removeInvalidData = false,
+            throwOnInvalidRef = true,
+            throwOnInvalidSchema = true
         } = options;
         this.options = options;
         // setup getTemplate options for json-schema-library so that options are used by createNode and others
@@ -106,6 +112,8 @@ export class HeadlessEditor<Data = unknown> {
             drafts: drafts ?? defaultDrafts,
             remotes,
             formatAssertion: true,
+            throwOnInvalidSchema,
+            throwOnInvalidRef,
             getDataDefaultOptions: {
                 addOptionalProps,
                 extendDefaults,
@@ -457,7 +465,7 @@ export class HeadlessEditor<Data = unknown> {
             return [node.schemaNode.compileSchema({ type: 'string' })];
         }
 
-        const result = selections.filter((v) => v != null);
+        const result = selections.filter((v) => isJsonSchema(v));
         if (selections.length !== result.length) {
             console.warn('missing array add options. Probably incomplete schema for', node.schemaNode.schema);
             console.log(node.schemaNode);

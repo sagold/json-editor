@@ -1,3 +1,8 @@
+# 1.1.0
+
+- add option to throw on invalid JSON schema. Defaults: true
+- add option to throw on missing $ref. Defaults: true
+
 # 1.0.0
 
 **Breaking Changes**
