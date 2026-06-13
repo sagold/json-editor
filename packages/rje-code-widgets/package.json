@@ -14,7 +14,7 @@
         "@codemirror/state": "^6.6.0",
         "@codemirror/view": "^6.43.0",
         "@uiw/react-codemirror": "^4.25.10",
-        "markdown-to-jsx": "^9.8.1"
+        "markdown-to-jsx": "^9.8.2"
     },
     "peerDependencies": {
         "@sagold/react-json-editor": "^1.0.1"
