@@ -1,6 +1,6 @@
 {
     "name": "@sagold/rje-mantine-widgets",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "license": "MIT",
     "module": "./dist/es6/src/index.js",
     "types": "./dist/es6/src/index.d.ts",
@@ -9,7 +9,7 @@
         "@mantine/core": "^9.3.0",
         "@mantine/dates": "^9.3.0",
         "@mantine/hooks": "^9.3.0",
-        "@sagold/react-json-editor": "^1.0.0",
+        "@sagold/react-json-editor": "^1.1.1",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.20",
         "dayjs-plugin-utc": "^0.1.2",
